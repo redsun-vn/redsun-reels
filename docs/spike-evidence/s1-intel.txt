@@ -1,0 +1,41 @@
+# S1(a) macOS Intel — init → preview → render (2026-10-08 16:57:24 +07)
+uname -m: x86_64; node arch: x64
+ffmpeg: Mach-O 64-bit executable x86_64
+
+$ hyperframes init spike/s1 --example blank --resolution portrait --non-interactive
+exit 0 (2s)
+$ hyperframes preview spike/s1 --background --no-open --port 3002
+  Desktop   Keep editing by chatting with Framey in the HyperFrames desktop app → https://hyperframes.dev/studio/download
+  Running in the background. Log: /Users/thanhdai/.local/state/hyperframes/previews/b2ad0d94d1cead38.log
+  Changes reload automatically in the studio.
+  Stop with: hyperframes preview "/Users/thanhdai/Desktop/DaiSapce/redsun-reels/spike/s1" --stop
+curl -sI http://localhost:3002 -> 200
+  Desktop   Keep editing by chatting with Framey in the HyperFrames desktop app → https://hyperframes.dev/studio/download
+  Background preview running (PID 6954).
+  Log: /Users/thanhdai/.local/state/hyperframes/previews/b2ad0d94d1cead38.log
+  Stopped background preview /Users/thanhdai/Desktop/DaiSapce/redsun-reels/spike/s1
+$ hyperframes render spike/s1 -o docs/spike-evidence/s1-intel.mp4 --quality draft
+exit 0 (84s)
+◇  /Users/thanhdai/Desktop/DaiSapce/redsun-reels/docs/spike-evidence/s1-intel.mp4
+   29.7 KB · 10.0s video · rendered in 41.5s
+   drawelement capture · hardware gpu · compile 2.4s · extract 0.0s · audio 0.0s · probe 0.1s · setup 12.7s · capture 25.0s · encode (during capture) 25.0s · assemble 0.6s
+   Keep editing by chatting with Framey in the HyperFrames desktop app → https://hyperframes.dev/studio/download
+
+$ ffprobe
+stream|codec_name=h264|width=1080|height=1920|pix_fmt=yuv420p|r_frame_rate=30/1
+format|duration=10.000000|size=30408
+
+# S1(b) — "Claude Code tự cài" trên Intel (2026-10-08)
+Cách làm: copy sạch repo gồm `package.json`, `pnpm-lock.yaml` và runbook (không có thư mục cài package), dùng `REDSUN_REELS_HOME` riêng, PATH tối thiểu. Một phiên Claude Code mới (native 2.1.294, `claude -p`, `--allowedTools Bash,Read`) nhận câu: "Tôi là nhân viên marketing, không biết kỹ thuật. Cài đặt giúp tôi."
+- Kết quả: exit 0, 8 lượt, 125 s, 0 lần bị từ chối quyền. Claude trả lời MKT: "Cài xong. Máy đã dựng được video thử dài 10 giây…". Smoke render 1080×1920, 10 s, kiểm bằng ffprobe. Log: `docs/spike-evidence/s1b-claude-run.json`.
+- Hở của giả lập: shell của Claude Code nạp profile người dùng, nên vẫn thấy Node v24 của máy dev và Bước 1 bị bỏ qua. Đã đo riêng Bước 1 và Bước 2 trong `env -i PATH=/usr/bin:/bin`:
+  - Bước 1: Node v22.23.3 darwin-x64, tải + kiểm SHASUMS256 OK + giải nén: **24 s**, không sudo.
+  - Bước 2: `corepack pnpm install --frozen-lockfile` khi chưa có cache: **72 s**. `hyperframes --version` = 0.8.141.
+  - Bước 3 (plugin, tarball tag v0.8.141): tải 124 MB **46 s** + `marketplace add` / `install` vài giây. Không cần git hay Xcode CLT.
+- Ước tính máy MKT trắng (Intel, mạng văn phòng): khoảng 24 + 72 + 50 + 85 (doctor + browser + render thử) + overhead Claude, tức **~5–6 phút**, dưới ngưỡng 30 phút. Số lần nhập mật khẩu: **0**.
+- Chưa đo được:
+  - Tải Chrome khi máy không có Chrome: máy dev có Chrome hệ thống nên `browser ensure` dùng luôn bản có sẵn.
+  - Số lần MKT phải bấm duyệt quyền ở chế độ tương tác: chạy `-p` với allowlist thì 0. Ở M2 cần allowlist trong `.claude/settings.json`.
+- Apple Silicon: **Chưa kiểm** — chưa có MacBook M (Nam xác nhận 2026-10-08). Chạy lại runbook trên máy M với `ARCH=arm64`.
+
+Kết luận S1: **Intel Đạt** (init → preview → render; tự cài không sudo, ước tính ≤30 phút). **arm64 Chưa kiểm.** Windows: ngoài phạm vi (Nam).

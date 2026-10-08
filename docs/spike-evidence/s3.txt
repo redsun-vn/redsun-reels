@@ -1,0 +1,56 @@
+# [KHÔNG CÒN ÁP DỤNG] Nam 2026-10-08 bỏ lồng tiếng, chỉ dùng nhạc nền (decisions #20). Giữ file làm tham khảo.
+# S3 — Chọn TTS giọng nữ (không có API key) — 2026-10-08, Mac Intel i7-7700HQ
+
+Kịch bản: docs/spike-audio/script.txt (93 từ). Checklist 6/6 yếu tố ở docs/spike-audio/script-checklist.md.
+Quy tắc (Nam): không cấp API key nào. Thử VieNeu (provider) và macOS Linh (chỉ làm mốc). Không thử Piper, media-use/HeyGen.
+
+## Bảng provider (REQUIREMENTS §8.2)
+| Provider | Chạy được? | Lý do / key cần nếu sau này chạy |
+|---|---|---|
+| google-chirp3hd | Không | Không có API key (Nam). Cần: `GOOGLE_APPLICATION_CREDENTIALS` (service account JSON) + project bật billing + Text-to-Speech API |
+| gemini-tts | Không | Không có API key (Nam). Cần: `GEMINI_API_KEY`. Gemini 2.5 TTS chỉ mở cho người đã từng dùng (decisions #9). Bản "hào hứng, nhịp nhanh kiểu TikTok" theo §15 nên không làm được |
+| azure-hoaimy | Không | Không có API key (Nam). Cần: `AZURE_SPEECH_KEY` + `AZURE_SPEECH_REGION` (F0) |
+| vieneu | **Có** | v3 Turbo ONNX trên CPU, Apache-2.0, dùng thương mại được (decisions #13) |
+| media-use | Không thử (Nam) | Giọng = HeyGen (heygen CLI + OAuth hoặc `HEYGEN_API_KEY`) hoặc Kokoro (không có tiếng Việt). `hyperframes tts` = Kokoro-82M |
+| macOS `say -v Linh` (ngoài §8.2) | Có, chỉ làm mốc | Có sẵn trên macOS. SLA giọng hệ thống nhiều khả năng cấm dùng thương mại [VERIFY] → không được chọn làm provider |
+
+## Đo đạc
+| Bản | Giọng | Độ trễ sinh | Độ dài audio | Timestamp từng từ | Chi phí 200 video/tháng | License | Cài trên máy MKT |
+|---|---|---|---|---|---|---|---|
+| VieNeu v3 Turbo | Trúc Ly (Nữ · Bắc · tự nhiên) | 21.5 s (model nạp 8.5 s khi đã có cache; lần đầu ~125 s để tải model) | 25.9 s | Không → transcribe | 0 đ (CPU máy MKT) | Apache-2.0, thương mại OK, có watermark audio mặc định | `uv` + venv 649 MB + model ONNX |
+| VieNeu v3 Turbo | Ngọc Huyền (Nữ · Bắc · tự nhiên) | 24.5 s | 30.5 s | Không → transcribe | 0 đ | như trên | như trên |
+| macOS Linh (mốc) | Linh | 3.4 s | 39.4 s | Không | 0 đ | [VERIFY] SLA Apple | Không cần cài |
+Ghi chú: VieNeu sinh nhanh hơn thời gian thực trên CPU Intel 2017 (RTF ≈ 0.8). Trúc Ly đọc nhanh hơn (25.9 s), Ngọc Huyền sát mục tiêu ~30 s.
+
+## Transcribe (lấy timestamp từng từ cho caption)
+- Parakeet (`hyperframes models install parakeet`: 639 MB, 198 s): `hyperframes transcribe --engine parakeet --language vi` → exit 1, báo "Parakeet does not transcribe --language vi … Use --engine whisper". **Không dùng được.**
+- whisper.cpp qua hyperframes: `--no-runtime-install` → `whisper_unavailable`. Nếu cho phép tự cài runtime thì nó dùng Homebrew hoặc git+cmake, không hợp với máy MKT.
+- **faster-whisper 1.2.1** (wheel dựng sẵn, cài 16 s), audio decode bằng ffmpeg-static. Kết quả trên bản Ngọc Huyền:
+  | Model | Nạp | Chạy | Khớp từ so với kịch bản |
+  |---|---|---|---|
+  | small | 2.4 s | 11.9 s | 87.1 % |
+  | large-v3-turbo | 4.8 s | 35.2 s | 92.5 % |
+  Lỗi tập trung ở tên riêng (SIPOS → "sifos/xefeos", sipos.vn → "seapost vn", ERP → "i2p"). Caption hiển thị **văn bản gốc** (§8.4), ASR chỉ dùng để lấy timing, nên lỗi chính tả của ASR không lên màn hình. M1 cần map văn bản gốc vào timing ASR (sequence match, giống script asr_check.py).
+- Độ lệch timing (large-v3-turbo), so với ranh giới khoảng lặng của `ffmpeg silencedetect` (−35 dB, ≥0.25 s):
+  - Đầu câu: lệch tuyệt đối trung vị ~95 ms (4–158 ms), có 1 điểm ngoại lai 497 ms.
+  - Cuối câu: trung vị ~44 ms (14–82 ms).
+  - Bản small có trung vị tương tự, ngoại lai 537 ms.
+  - Đánh giá: phần lớn ≤100 ms, nhưng chưa đạt chắc tiêu chí §14.3 "≤100 ms". Bản thân silencedetect cũng không chính xác với phụ âm nhẹ. Cần kiểm thêm bằng tai ở M1, hoặc dùng forced alignment.
+- `hyperframes transcribe in.json` import file `[{text,start,end}]` → exit 0, `"format":"words-json","wordCount":96`. File mẫu: docs/spike-evidence/s3-transcript-large-v3-turbo.json.
+
+## Gói nghe mù (giao 3 MKT)
+- docs/spike-audio/A.mp3, B.mp3, C.mp3: cùng kịch bản, chuẩn hóa `loudnorm I=-16 TP=-1.5`, mono 48 kHz 128 kbps. Tên được xáo ngẫu nhiên (SystemRandom).
+- Mapping: spike/s3-mapping.csv (ngoài thư mục chấm, không commit).
+- Phiếu: docs/spike-audio/phieu-cham.md (1–5 × 3 tiêu chí + chọn 1 giọng).
+- Phát âm: docs/spike-audio/phat-am/{goc,phien-am-1,phien-am-2}.wav (giọng Trúc Ly) + van-ban.json, để Nam nghe chọn cách viết SIPOS/REDSUN/REDSUN BOS (đọc liền), ERP/POS, sipos.vn. Chưa ai nghe đánh giá.
+- Điểm chấm: **Chờ ≥3 MKT.** Không tự chấm.
+
+## Kết luận S3: **Không đạt** tiêu chí "chọn được 1 provider chính + 1 fallback"
+- Chỉ có 1 provider chạy được: VieNeu, với 2 giọng. Linh không dùng thương mại được.
+- Đề xuất **tạm thời** (chờ Nam chốt sau khi có phiếu chấm):
+  - Chính: VieNeu, giọng nào điểm cao hơn.
+  - "Fallback": giọng VieNeu còn lại, cùng provider. Đây chưa phải fallback thật về hạ tầng.
+- Workaround:
+  - (1) Chế độ **không giọng đọc: nhạc nền + chữ/caption theo phong cách** (Nam 2026-10-08), xem docs/video-style-catalog.md.
+  - (2) Khi có key thì chạy lại S3 với azure-hoaimy làm fallback đúng §16 Q2.
+  - (3) Nếu Nam duyệt thì cân nhắc thêm Piper.

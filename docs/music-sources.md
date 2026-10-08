@@ -1,0 +1,95 @@
+# Nguồn nhạc nền được phép dùng
+
+Cập nhật: 2026-10-08. Trạng thái: đề xuất cho §16 Q3 ("Thư viện nhạc nền có license từ đâu"), chờ Nam chốt.
+
+Nhu cầu: video Reel/TikTok/Shorts quảng bá sản phẩm (dùng thương mại), đăng lên Facebook, Instagram, TikTok, YouTube. Có chế độ chỉ nhạc nền, không giọng đọc. Nhạc được trộn sẵn vào MP4 khi render local. REQUIREMENTS §12 yêu cầu: chỉ dùng nhạc trong `brand/music/`, có manifest ghi nguồn + license.
+
+> Lưu ý: điều khoản các trang thay đổi theo thời gian. Phần dưới tổng hợp từ tìm kiếm ngày 2026-10-08, một số ý đến từ nguồn thứ cấp (ghi rõ). **Trước khi đưa một track vào `brand/music/`, người duyệt (MKT lead) phải mở trang license chính thức của track đó và lưu bằng chứng (mục 3).**
+
+## 0. Quyết định (Nam, 2026-10-08)
+- Video **chỉ đăng tự nhiên (organic)**, không chạy quảng cáo trả tiền → không cần thuê bao Nhóm D.
+- Nguồn chính **Pixabay Music**, nguồn phụ **Mixkit** (Nhóm A). Incompetech/Freesound CC0 chỉ dùng khi hai nguồn trên thiếu mood.
+- Trường `allowedUse` trong manifest chỉ cần `social-organic`. Muốn chạy ads sau này thì phải xét lại từng track.
+
+## 1. Khuyến nghị
+
+### Nhóm A — dùng ngay: miễn phí, thương mại được, không cần ghi nguồn
+| Nguồn | Điều khoản chính | Cần chú ý |
+|---|---|---|
+| **Pixabay Music** (pixabay.com/music) | Theo FAQ/Terms của Pixabay: dùng thương mại và phi thương mại, không cần ghi nguồn, quyền không độc quyền, vĩnh viễn | Không được bán/phân phối riêng track. Pixabay **không bảo đảm** quyền với sample, nhãn hiệu, người trong nội dung; trách nhiệm kiểm tra thuộc người dùng. Có báo cáo track bị đăng ký Content ID sau này (nguồn thứ cấp), nên tránh track có tag "Content ID" hoặc ghi chú tương tự của tác giả |
+| **Mixkit** (mixkit.co/free-stock-music) | Trang nhạc ghi: miễn phí cho cá nhân và thương mại, ghi nguồn "không bắt buộc" | Trang nhạc ghi không dùng cho CD, DVD, video game, **TV & radio broadcast**: không sao với reel mạng xã hội, nhưng **không** dùng cho quảng cáo truyền hình. Không bán lại track rời. Chưa đọc được trang license gốc, cần mở để xác nhận |
+
+### Nhóm B — dùng được, nhưng phải ghi nguồn hoặc lọc kỹ
+| Nguồn | Điều khoản | Cách dùng |
+|---|---|---|
+| **Incompetech** (Kevin MacLeod) | CC BY 4.0: thương mại OK, **bắt buộc ghi nguồn**. Có license trả phí để bỏ ghi nguồn | Ghi credit trong caption bài đăng, ví dụ: "Music: <tên track> by Kevin MacLeod (incompetech.com), CC BY 4.0" |
+| **Freesound** (hiệu ứng âm thanh, SFX) | License theo từng file: CC0, CC BY, CC BY-NC | **Chỉ lấy CC0** (thương mại, không cần ghi nguồn). CC BY phải ghi nguồn. **Cấm CC BY-NC** |
+
+### Nhóm C — chỉ dùng trong app của nền tảng, không trộn sẵn vào MP4
+| Nguồn | Ghi chú |
+|---|---|
+| **TikTok Commercial Music Library** | Dành cho tài khoản business/tổ chức đã xác minh, chọn nhạc ngay trong app TikTok. Video đã có sẵn nhạc từ nguồn khác thì license phải bao gồm dùng thương mại trên TikTok, và phải xác nhận Music Usage Confirmation khi đăng (nguồn thứ cấp) |
+| **Meta Sound Collection** (Facebook/Instagram) | Meta mô tả là miễn phí bản quyền, an toàn cho Reels/Stories. Thư viện nhạc licensed thông thường của Meta chỉ dùng phi thương mại, tài khoản business bị chặn. Chưa xác nhận được việc dùng cho **quảng cáo trả tiền** |
+Hai nguồn này hợp với cách "MKT đăng xong rồi gắn nhạc trong app". Pipeline render local của dự án không dùng được.
+
+### Nhóm D — nếu cần chắc chắn cho quảng cáo trả tiền
+Thư viện thuê bao có license business và cam kết Content ID, như Epidemic Sound, Artlist, Soundstripe… Mất phí, giá và điều khoản **chưa kiểm**. Nên cân nhắc nếu video chạy ads với ngân sách lớn.
+
+## 2. Không dùng
+| Nguồn | Lý do |
+|---|---|
+| **MusicGen** (Meta AudioCraft). `hyperframes doctor` có gợi ý cài làm "local music fallback" | Weights dùng **CC-BY-NC 4.0, không thương mại** |
+| **Uppbeat bản miễn phí** | 3 lượt tải/tháng, phải dán credit, license cá nhân. Quảng cáo và nội dung khách hàng nằm ở gói Pro |
+| **YouTube Audio Library** cho video đăng ngoài YouTube | Trợ giúp của YouTube chỉ nói về dùng trong video YouTube. Bảo vệ Content ID không áp dụng trên TikTok/Facebook. Chỉ dùng track ghi CC BY và có ghi nguồn |
+| Nhạc thịnh hành, nhạc ca sĩ, nhạc "no copyright" trôi nổi trên YouTube | Không có license rõ ràng |
+| Freesound **CC BY-NC**, mọi license có "NC" | Cấm thương mại |
+| **Stable Audio Open** (AI tạo nhạc) | Community License cho phép thương mại với tổ chức doanh thu ≤ 1 triệu USD/năm; trên mức đó cần license enterprise. **Chờ Nam xác nhận** doanh thu Redsun. Chưa đọc được bản license gốc |
+
+## 3. Quy trình đưa một track vào `brand/music/`
+1. MKT lead chọn track từ Nhóm A (ưu tiên) hoặc B. Chọn **nhạc không lời**, tránh track có sample giọng hoặc tên thương hiệu khác.
+2. Lưu bằng chứng license: URL trang track, ảnh chụp hoặc PDF trang license **kèm ngày tải**, tên tác giả, và license ID nếu trang có cung cấp. Lưu ở thư mục chung **ngoài repo** (như giấy đồng ý giọng đọc, §8.3).
+3. Dev thêm file vào `brand/music/` và thêm một dòng vào `brand/music/manifest.json`:
+   ```json
+   {
+     "id": "upbeat-01",
+     "file": "upbeat-01.mp3",
+     "title": "<tên track>",
+     "author": "<tác giả>",
+     "source": "pixabay",
+     "sourceUrl": "https://pixabay.com/music/…",
+     "license": "Pixabay Content License",
+     "attributionRequired": false,
+     "attributionText": null,
+     "downloadedAt": "2026-10-08",
+     "evidence": "<đường dẫn bằng chứng ngoài repo>",
+     "mood": ["vui-nhon", "khuyen-mai"],
+     "bpm": 120,
+     "durationSec": 60,
+     "allowedUse": ["social-organic"],
+     "notes": "không lời"
+   }
+   ```
+   - `mood` dùng id phong cách trong `docs/video-style-catalog.md`, để `music: auto` chọn đúng nhạc theo phong cách.
+   - `attributionRequired: true` (Incompetech, CC BY): skill `tao-reel` tự nhắc MKT dán `attributionText` vào caption bài đăng.
+4. `pnpm validate` (M1) chặn video dùng track không có trong manifest, thiếu `license`/`sourceUrl`, hoặc có license chứa "NC".
+5. Bị claim Content ID: gỡ track khỏi manifest (đánh dấu `"blocked": true`), dùng bằng chứng license để kháng nghị.
+
+## 4. Đề xuất khởi đầu
+Mỗi nhóm phong cách chính chọn 2–3 track, khoảng 20–30 track từ Pixabay Music + Mixkit. Ví dụ: tối giản / công nghệ, vui nhộn / khuyến mãi, lãng mạn / thư giãn, hành động / năng động, lễ hội / Tết, điện ảnh / kể chuyện. Spike chưa tải track nào, việc này để MKT lead chọn ở M0.2.
+
+## Nguồn tham khảo
+- Pixabay: [FAQ](https://pixabay.com/service/faq/), [Terms](https://pixabay.com/service/terms/); về rủi ro Content ID: [Thematic vs Pixabay](https://hellothematic.com/thematic-vs-pixabay/) (thứ cấp)
+- Mixkit: [Free stock music](https://mixkit.co/free-stock-music/), [Mixkit info](https://mixkit.co/llm-info/)
+- Incompetech: [licenseorg guide](https://licenseorg.com/guide/music-audio/incompetech) (thứ cấp)
+- Freesound: [Wikipedia](https://en.Wikipedia.com/wiki/Freesound), [Soundly FAQ](https://getsoundly.com/faq/how-can-i-use-the-freesound-library)
+- Uppbeat: [Pricing](https://uppbeat.io/pricing)
+- YouTube Audio Library: [Creator Essentials](https://www.creatoressentials.com/glossary/youtube-audio-library/) (thứ cấp)
+- TikTok CML: [Soundstripe](https://www.soundstripe.com/tiktok), [Social Media Today](https://www.socialmediatoday.com/news/tiktok-changes-rules-on-music-usage-by-businesses/577734/) (thứ cấp)
+- Meta Sound Collection: [Instagram Help](https://help.instagram.com/ipad-app/402084904469945)
+- MusicGen: [Replicate readme](https://replicate.com/meta/musicgen/readme); Stable Audio Open: [Hugging Face](https://huggingface.co/stabilityai/stable-audio-open-1.0), [Stability research](https://stability.ai/news/stable-audio-open-research-paper)
+
+## Câu hỏi chưa giải quyết
+1. (Đã chốt) Pixabay Music chính + Mixkit phụ; chỉ đăng organic.
+2. Nên cho MKT lead đăng thử 5–10 track ở chế độ riêng tư lên YouTube/Facebook để kiểm Content ID trước khi nhập hàng loạt?
+3. Doanh thu năm của Redsun có dưới 1 triệu USD không? Câu này quyết định việc dùng Stable Audio Open.
+4. (Đã chốt) Nam giữ bằng chứng license. Còn mở: thư mục Drive cụ thể.

@@ -1,0 +1,21 @@
+# S7 — Xác nhận lệnh CLI (hyperframes@0.8.141, macOS Intel, 2026-10-08)
+
+| Lệnh | Tồn tại | Composition đúng | Composition sai | Ghi chú |
+|---|---|---|---|---|
+| `lint [DIR]` | Có | exit 0 ("0 errors, 0 warnings") | exit 1 (`missing_timeline_registry`, `gsap_timeline_not_registered`) | Tĩnh, nhanh. Không bắt mã màu hex hay font-size px, nên brand lint (§13) phải tự viết |
+| `check [DIR]` | Có | exit 0 ("Check passed": lint + runtime + layout + motion + WCAG contrast, 9 mẫu) | exit 1. Trên `blank` chưa có animation cũng exit 1: "Timeline did not advance under seek" | Gộp lint + runtime + layout + contrast; có `--strict`, `--caption-zone`, `--frame-check` (dùng được cho safe zone) |
+| `snapshot [DIR]` | Có | exit 0, PNG + `contact-sheet.jpg` | exit 0 (chỉ chụp, không phải gate) | `--at`, `--frames`, `--zoom`. `--describe` cần `GEMINI_API_KEY` nên tự bỏ qua |
+| `doctor` | Có | exit 0 | exit 0 kể cả khi thiếu mục tùy chọn ("Some checks failed") | Nhận FFmpeg/ffprobe qua `HYPERFRAMES_FFMPEG_PATH`/`HYPERFRAMES_FFPROBE_PATH`. Gợi ý cài whisper-cpp bằng `brew` (không hợp với MKT) |
+| `validate [DIR]` | Có (thêm) | — | — | Runtime-validate trong headless Chrome |
+
+Phát hiện khác:
+- `render` hỗ trợ variables native: `--variables`, `--variables-file`, `--strict-variables`, `--batch`, với `data-composition-variables` trong composition. Đây là đầu vào cho S4.
+- `transcribe --engine auto`: dùng Parakeet nếu đã cài **và** nó hỗ trợ `--language`, nếu không thì dùng whisper. Model whisper liệt kê: tiny.en, base.en, small.en, medium.en, large-v3. Đầu vào cho S3.
+- `tts` dùng Kokoro-82M, không có tiếng Việt. Có `normalize-audio` (LUFS), dùng cho S5.
+- `init` mặc định kiểm và cài AI skills từ GitHub; đặt `HYPERFRAMES_SKIP_SKILLS=1` để chỉ dùng plugin đã pin. `--non-interactive`, `--resolution portrait`, `--example blank` chạy được.
+- Composition mẫu tải GSAP từ CDN jsdelivr, và compiler tải font từ Google Fonts (cache ở `~/.cache/hyperframes/fonts`). Lần render đầu cần internet.
+- Chrome: doctor dùng Chrome hệ thống (`/Applications/Google Chrome.app`). Máy không có Chrome thì cần `hyperframes browser`, sẽ kiểm ở S1(b).
+
+Kết luận S7: **Đạt.** Cả 4 lệnh tồn tại. `lint`/`check` trả exit ≠0 khi composition sai. `snapshot` và `doctor` không phải gate (exit 0).
+Log: `spike/s7-help.txt`, `spike/s7-clean.txt`, `spike/s7-broken.txt` (spike/ không commit). Trích ở trên.
+- `HYPERFRAMES_NO_TELEMETRY=1`: tắt telemetry PostHog (mã studio kiểm 1/true/yes/on); `hyperframes telemetry status|disable` cũng có. `HYPERFRAMES_NO_UPDATE_CHECK=1`: tắt kiểm tra bản mới (doctor vẫn in 'latest').

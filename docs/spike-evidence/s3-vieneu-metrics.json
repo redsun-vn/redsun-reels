@@ -1,0 +1,20 @@
+{
+  "model": "pnnbao-ump/VieNeu-TTS-v3-Turbo",
+  "backend": "onnx",
+  "sample_rate": 48000,
+  "load_s": 8.5,
+  "runs": [
+    {
+      "voice": "Trúc Ly",
+      "gen_s": 21.5,
+      "audio_s": 25.89,
+      "file": "vieneu-Trúc-Ly.wav"
+    },
+    {
+      "voice": "Ngọc Huyền",
+      "gen_s": 24.5,
+      "audio_s": 30.47,
+      "file": "vieneu-Ngọc-Huyền.wav"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+# Baseline 2026-10-08 16:43 +07
+e5b300e514a288f46f62de091e89b4e7b57b3de180b5fadce64ccc22d3f72939  REQUIREMENTS.md
+x86_64
+ProductName:		macOS
+ProductVersion:		15.5
+BuildVersion:		24F74
+node v24.10.0
+Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz
+RAM bytes 17179869184
+claude 2.1.6 (Claude Code)

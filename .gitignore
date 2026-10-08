@@ -1,0 +1,24 @@
+# Dependency & build
+node_modules/
+out/
+.env
+
+# Thử nghiệm Spike (sinh lại được, không phải code thật)
+spike/
+
+# Tài liệu và asset gốc của công ty: lưu ngoài repo (Drive). Logo dùng cho render được copy vào brand/logos/
+/Logos/
+/*.pdf
+
+# File media nặng của Spike: giữ trên máy dev, không đưa lên git
+docs/spike-evidence/*.mp4
+docs/spike-audio/*.mp3
+docs/spike-audio/**/*.wav
+
+# Bộ nhớ riêng của agent
+.claude/agent-memory/
+
+# Video thật của từng brief
+briefs/*/audio/
+
+.DS_Store

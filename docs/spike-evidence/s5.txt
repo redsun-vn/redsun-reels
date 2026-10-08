@@ -1,0 +1,32 @@
+# S5 — Audio ducking bằng /hyperframes:hyperframes-audio (voiceover carve) — 2026-10-08
+Composition: docs/spike-evidence/s5-composition-carved.html.
+- 36 s. Track nhạc `music` (group `music`) chạy 0–36 s. Giọng VieNeu Ngọc Huyền `vo` (group `voiceover`) chạy 3–33.5 s.
+- Nhạc test là pad tổng hợp bằng ffmpeg (sine 110–880 Hz + pink noise + tremolo), không có vấn đề license. Thư viện nhạc thật vẫn chờ Nam (§16 Q3).
+
+Lệnh (theo skill, references hyperframes-audio/SKILL.md "Voiceover carve"):
+  node ~/.claude/plugins/cache/hyperframes/hyperframes/0.8.141/skills/hyperframes-audio/scripts/carve.mjs --comp index.html --bed music --voice vo
+  → carve strength 0.8, 6 dải cắt (160/250/400/1000/2500 Hz −7.4 dB, 1600 Hz −14.8 dB), envelope mức 314 điểm, floor −19.1 dB, 7 lane automation. Ghi data-fx-carve + data-fx-chain + data-automation vào track nhạc.
+  Yêu cầu của carve.mjs:
+  - `@hyperframes/core@0.8.141` cài trong project (pnpm add -D, 4 s). Đây là dep ngoài §3, cần ghi nhận.
+  - `ffmpeg` có trong PATH (symlink từ ffmpeg-static).
+  - Đề xuất M1 thêm `@hyperframes/core` vào devDependencies, pin cùng version với CLI.
+
+Đo (render quality draft; bản "bed-only" đặt data-volume=0 cho giọng nhưng giữ nguyên chain/automation của carve). Mức mean_volume (volumedetect):
+| Bản | Trước voice 0.5–2.5 s | Trong voice 6–30 s | Sau voice 34–35.5 s |
+|---|---|---|---|
+| Nhạc, không carve | −26.9 dB | −26.9 dB | −26.9 dB |
+| Nhạc, có carve | −26.9 dB | **−46.6 dB** (−19.7 dB) | −34.2 dB (đang hồi + fade out) |
+
+Loudness bản mix (ebur128):
+- không carve: I −16.6 LUFS, peak −2.4 dBFS
+- có carve: I −16.8 LUFS, peak −3.8 dBFS
+- Mục tiêu §9.1 là −14 LUFS, còn mâu thuẫn −14/−16 (decisions #7). Pipeline M1 cần bước chuẩn hóa loudness cuối, `hyperframes normalize-audio` có sẵn.
+
+Lưu ý quy trình:
+- Lint báo `multiple_root_compositions` khi trong project có thêm file HTML khác có data-composition-id. Lỗi này có thể làm audio phát trùng.
+- Các bản biến thể phải để ngoài thư mục project. Bản render đầu (lúc còn file backup trong project) đã bỏ và render lại.
+
+Kết luận S5:
+- **Đạt (kỹ thuật).** Nhạc hạ 19.7 dB khi có giọng (≥ 6 dB đề xuất) và tự hồi sau giọng.
+- Mức hạ có thể quá sâu cho reel nhạc sôi động, chỉnh được bằng `--strength`.
+- "Nghe tự nhiên": **chờ Nam/MKT nghe** docs/spike-evidence/s5-carve.mp4 so với s5-nocarve.mp4.

@@ -1,0 +1,21 @@
+{
+  "name": "redsun-reels",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Hệ thống sản xuất video Reel/TikTok/Shorts nội bộ cho team Marketing Redsun (Claude Code + HyperFrames).",
+  "packageManager": "pnpm@10.34.6",
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "ffmpeg-static": "5.3.0",
+    "ffprobe-static": "3.1.0",
+    "hyperframes": "0.8.141"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "ffmpeg-static"
+    ]
+  }
+}

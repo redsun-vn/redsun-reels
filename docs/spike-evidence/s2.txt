@@ -1,0 +1,23 @@
+# S2 — Dấu tiếng Việt với Montserrat (hyperframes@0.8.141, macOS Intel, 2026-10-08)
+Composition: docs/spike-evidence/s2-composition.html (lang="vi", meta charset utf-8, text đã kiểm NFC bằng unicodedata.normalize).
+Gồm:
+- heading tĩnh, Montserrat 800, có fade-in;
+- caption 13 từ hiện dần, scale 0.6→1 (GSAP);
+- lower third Italic 500, trượt vào;
+- dòng phụ có đủ ă â đ ê ô ơ ư (thường + hoa) và 5 thanh, cả dấu chồng ẳ ẵ ặ ự ỵ;
+- tên SIPOS · REDSUN BOS · Webino.
+
+Font: không phải cài tay. Compiler của hyperframes tự tải "Montserrat" từ Google Fonts ("Fetched 11 font face(s)", cache ~/.cache/hyperframes/fonts/montserrat) và chèn @font-face cố định. Lần đầu cần internet. M0.2 nên copy font vào brand/fonts/ (§4) để render offline và ổn định.
+
+Lệnh và kết quả:
+- hyperframes lint spike/s2 → exit 0 (0 errors, 0 warnings)
+- hyperframes check spike/s2 → exit 0 (Check passed)
+- hyperframes render spike/s2 -o docs/spike-evidence/s2.mp4 → exit 0
+- hyperframes snapshot --at 0.3,3,5.9 → docs/spike-evidence/s2-snap/frame-0{0,1,2}-*.png
+- hyperframes snapshot --at 3 --zoom "#caption" → docs/spike-evidence/s2-zoom/frame-00-at-3s.png (zoom ×3, caption đang chạy animation)
+- ffprobe: stream|codec_name=h264|width=1080|height=1920|r_frame_rate=30/1 format|duration=6.000000 
+
+Soát bằng mắt (PNG gốc và PNG zoom): mọi dấu nằm đúng vị trí, không tách khỏi chữ, không rơi về font fallback, không ra ô vuông. Kiểm ở cả 3 vị trí (heading, caption động, lower third) × 3 thời điểm, và ở chữ hoa có dấu (Ứ, Ư, Ơ, Đ).
+Lỗi chồng chữ ở lần render đầu là do bố cục composition test đặt sai. Đã sửa vị trí, không liên quan đến font.
+
+Kết luận S2: **Đạt.**

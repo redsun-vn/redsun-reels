@@ -1,0 +1,68 @@
+# Plugin install 2026-10-08 16:46:24 +07
+$ claude plugin marketplace add heygen-com/hyperframes
+Adding marketplace...
+SSH not configured, cloning via HTTPS: https://github.com/heygen-com/hyperframes.git
+Cloning repository: https://github.com/heygen-com/hyperframes.git
+HTTPS clone failed, retrying with SSH: git@github.com:heygen-com/hyperframes.git
+Cloning repository: git@github.com:heygen-com/hyperframes.git
+✘ Failed to add marketplace: Failed to clone marketplace repository: Cloning into '/Users/thanhdai/.claude/plugins/marketplaces/heygen-com-hyperframes'...
+Updating files:  27% (2436/8936)Updating files:  28% (2503/8936)Updating files:  29% (2592/8936)Updating files:  30% (2681/8936)Updating files:  31% (2771/8936)Updating files:  32% (2860/8936)Updating files:  33% (2949/8936)Updating files:  34% (3039/8936)Updating files:  35% (3128/8936)Updating files:  36% (3217/8936)Updating files:  37% (3307/8936)Updating files:  38% (3396/8936)Updating files:  39% (3486/8936)Updating files:  40% (3575/8936)Updating files:  41% (3664/8936)Updating files:  42% (3754/8936)Updating files:  43% (3843/8936)Updating files:  44% (3932/8936)Updating files:  45% (4022/8936)Updating files:  46% (4111/8936)Updating files:  47% (4200/8936)Updating files:  48% (4290/8936)Updating files:  49% (4379/8936)Updating files:  50% (4468/8936)Updating files:  51% (4558/8936)Updating files:  52% (4647/8936)Updating files:  53% (4737/8936)Updating files:  54% (4826/8936)Updating files:  55% (4915/8936)Updating files:  55% (4968/8936)Updating files:  56% (5005/8936)Updating files:  57% (5094/8936)Updating files:  58% (5183/8936)Updating files:  59% (5273/8936)Updating files:  60% (5362/8936)Updating files:  61% (5451/8936)Updating files:  62% (5541/8936)Updating files:  63% (5630/8936)Updating files:  64% (5720/8936)Updating files:  65% (5809/8936)Updating files:  66% (5898/8936)Updating files:  67% (5988/8936)Updating files:  68% (6077/8936)Updating files:  69% (6166/8936)Updating files:  70% (6256/8936)Updating files:  71% (6345/8936)Updating files:  72% (6434/8936)warning: Clone succeeded, but checkout failed.
+You can inspect what was checked out with 'git status'
+and retry with 'git restore --source=HEAD :/'
+
+$ claude plugin install hyperframes@hyperframes
+Installing plugin "hyperframes@hyperframes"...
+✘ Failed to install plugin "hyperframes@hyperframes": Plugin "hyperframes" not found in marketplace "hyperframes"
+$ claude plugin list
+error: unknown command 'list'
+
+# Retry 2026-10-08 16:48:36 +07
+Adding marketplace...
+Cloning via SSH: git@github.com:heygen-com/hyperframes.git
+Cloning repository: git@github.com:heygen-com/hyperframes.git
+SSH clone failed, retrying with HTTPS: https://github.com/heygen-com/hyperframes.git
+Cloning repository: https://github.com/heygen-com/hyperframes.git
+✘ Failed to add marketplace: Failed to clone marketplace repository: Cloning into '/Users/thanhdai/.claude/plugins/marketplaces/heygen-com-hyperframes'...
+
+# Workaround: sparse clone tag v0.8.141 (commit 4a335aa6a1daf7bea766d9bbacc0cb6d43b1ad46, 32MB, 7s) vào ~/.redsun-reels/hyperframes-marketplace
+$ claude plugin marketplace add ~/.redsun-reels/hyperframes-marketplace
+Adding marketplace...
+✔ Successfully added marketplace: hyperframes
+$ claude plugin install hyperframes@hyperframes
+Installing plugin "hyperframes@hyperframes"...
+✔ Successfully installed plugin: hyperframes@hyperframes (scope: user)
+$ claude plugin --help (subcommands)
+Commands:
+  disable [options] <plugin>           Disable an enabled plugin
+  enable [options] <plugin>            Enable a disabled plugin
+  help [command]                       display help for command
+  install|i [options] <plugin>         Install a plugin from available
+                                       marketplaces (use plugin@marketplace for
+                                       specific marketplace)
+  marketplace                          Manage Claude Code marketplaces
+  uninstall|remove [options] <plugin>  Uninstall an installed plugin
+  update [options] <plugin>            Update a plugin to the latest version
+                                       (restart required to apply)
+  validate <path>                      Validate a plugin or marketplace
+                                       manifest
+
+# installed_plugins.json (hyperframes)
+[
+  {
+    "scope": "user",
+    "installPath": "/Users/thanhdai/.claude/plugins/cache/hyperframes/hyperframes/0.8.141",
+    "version": "0.8.141",
+    "installedAt": "2026-10-08T09:51:02.527Z",
+    "lastUpdated": "2026-10-08T09:51:02.527Z",
+    "gitCommitSha": "4a335aa6a1daf7bea766d9bbacc0cb6d43b1ad46"
+  }
+]
+# known_marketplaces.json (hyperframes)
+{
+  "source": {
+    "source": "directory",
+    "path": "/Users/thanhdai/.redsun-reels/hyperframes-marketplace"
+  },
+  "installLocation": "/Users/thanhdai/.redsun-reels/hyperframes-marketplace",
+  "lastUpdated": "2026-10-08T09:50:58.431Z"
+}

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="vi" data-resolution="portrait">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000000; }
+      #root { width: 100%; height: 100%; position: relative; font-family: Montserrat, sans-serif; color: #ffffff; }
+      .scene { position: absolute; inset: 0; overflow: hidden; }
+      .bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+      .head { position: absolute; top: 260px; left: 80px; font-size: 88px; font-weight: 800; }
+      .cap { position: absolute; bottom: 460px; left: 80px; right: 160px; font-size: 68px; font-weight: 700; line-height: 1.3; text-align: center; }
+      #logo { position: absolute; top: 120px; left: 80px; font-size: 40px; font-weight: 800; color: #E30000; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="30" data-width="1080" data-height="1920">
+      <div id="sc0" class="clip scene" data-start="0" data-duration="5" data-track-index="1">
+        <img class="bg" src="assets/bg1.png" alt="" />
+        <h2 class="head">Cảnh 1</h2>
+        <p class="cap"><span class="w">Bạn</span> <span class="w">còn</span> <span class="w">kiểm</span> <span class="w">kho</span> <span class="w">bằng</span> <span class="w">sổ</span> <span class="w">tay</span> <span class="w">mỗi</span> <span class="w">tối?</span> </p>
+      </div>
+      <div id="sc1" class="clip scene" data-start="5" data-duration="5" data-track-index="1">
+        <img class="bg" src="assets/bg2.png" alt="" />
+        <h2 class="head">Cảnh 2</h2>
+        <p class="cap"><span class="w">SIPOS</span> <span class="w">đếm</span> <span class="w">hàng</span> <span class="w">ngay</span> <span class="w">trên</span> <span class="w">điện</span> <span class="w">thoại</span> </p>
+      </div>
+      <div id="sc2" class="clip scene" data-start="10" data-duration="5" data-track-index="1">
+        <img class="bg" src="assets/bg3.png" alt="" />
+        <h2 class="head">Cảnh 3</h2>
+        <p class="cap"><span class="w">Quét</span> <span class="w">mã</span> <span class="w">vạch,</span> <span class="w">tồn</span> <span class="w">kho</span> <span class="w">cập</span> <span class="w">nhật</span> <span class="w">tức</span> <span class="w">thì</span> </p>
+      </div>
+      <div id="sc3" class="clip scene" data-start="15" data-duration="5" data-track-index="1">
+        <img class="bg" src="assets/bg1.png" alt="" />
+        <h2 class="head">Cảnh 4</h2>
+        <p class="cap"><span class="w">Báo</span> <span class="w">cáo</span> <span class="w">lãi</span> <span class="w">lỗ</span> <span class="w">rõ</span> <span class="w">ràng</span> <span class="w">mỗi</span> <span class="w">ngày</span> </p>
+      </div>
+      <div id="sc4" class="clip scene" data-start="20" data-duration="5" data-track-index="1">
+        <img class="bg" src="assets/bg2.png" alt="" />
+        <h2 class="head">Cảnh 5</h2>
+        <p class="cap"><span class="w">Giảm</span> <span class="w">30%</span> <span class="w">cho</span> <span class="w">khách</span> <span class="w">mới</span> <span class="w">tháng</span> <span class="w">này</span> </p>
+      </div>
+      <div id="sc5" class="clip scene" data-start="25" data-duration="5" data-track-index="1">
+        <img class="bg" src="assets/bg3.png" alt="" />
+        <h2 class="head">Cảnh 6</h2>
+        <p class="cap"><span class="w">Dùng</span> <span class="w">thử</span> <span class="w">miễn</span> <span class="w">phí</span> <span class="w">tại</span> <span class="w">sipos.vn</span> </p>
+      </div>
+      <div id="logo" class="clip" data-start="0" data-duration="30" data-track-index="2">SIPOS</div>
+      <audio id="music" src="assets/music.mp3" data-start="0" data-duration="30" data-track-index="3" data-volume="0.5"></audio>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#sc0 .bg", { scale: 1 }, { scale: 1.12, duration: 5, ease: "none" }, 0);
+      tl.fromTo("#sc0 .head", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5 }, 0);
+      gsap.utils.toArray("#sc0 .w").forEach((el, k) => {
+        tl.fromTo(el, { opacity: 0.25, color: "#ffffff" }, { opacity: 1, color: "#FFD23F", duration: 0.2 }, 0 + 0.6 + k * 0.45);
+      });
+      tl.fromTo("#sc1 .bg", { scale: 1 }, { scale: 1.12, duration: 5, ease: "none" }, 5);
+      tl.fromTo("#sc1 .head", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5 }, 5);
+      gsap.utils.toArray("#sc1 .w").forEach((el, k) => {
+        tl.fromTo(el, { opacity: 0.25, color: "#ffffff" }, { opacity: 1, color: "#FFD23F", duration: 0.2 }, 5 + 0.6 + k * 0.45);
+      });
+      tl.fromTo("#sc2 .bg", { scale: 1 }, { scale: 1.12, duration: 5, ease: "none" }, 10);
+      tl.fromTo("#sc2 .head", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5 }, 10);
+      gsap.utils.toArray("#sc2 .w").forEach((el, k) => {
+        tl.fromTo(el, { opacity: 0.25, color: "#ffffff" }, { opacity: 1, color: "#FFD23F", duration: 0.2 }, 10 + 0.6 + k * 0.45);
+      });
+      tl.fromTo("#sc3 .bg", { scale: 1 }, { scale: 1.12, duration: 5, ease: "none" }, 15);
+      tl.fromTo("#sc3 .head", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5 }, 15);
+      gsap.utils.toArray("#sc3 .w").forEach((el, k) => {
+        tl.fromTo(el, { opacity: 0.25, color: "#ffffff" }, { opacity: 1, color: "#FFD23F", duration: 0.2 }, 15 + 0.6 + k * 0.45);
+      });
+      tl.fromTo("#sc4 .bg", { scale: 1 }, { scale: 1.12, duration: 5, ease: "none" }, 20);
+      tl.fromTo("#sc4 .head", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5 }, 20);
+      gsap.utils.toArray("#sc4 .w").forEach((el, k) => {
+        tl.fromTo(el, { opacity: 0.25, color: "#ffffff" }, { opacity: 1, color: "#FFD23F", duration: 0.2 }, 20 + 0.6 + k * 0.45);
+      });
+      tl.fromTo("#sc5 .bg", { scale: 1 }, { scale: 1.12, duration: 5, ease: "none" }, 25);
+      tl.fromTo("#sc5 .head", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5 }, 25);
+      gsap.utils.toArray("#sc5 .w").forEach((el, k) => {
+        tl.fromTo(el, { opacity: 0.25, color: "#ffffff" }, { opacity: 1, color: "#FFD23F", duration: 0.2 }, 25 + 0.6 + k * 0.45);
+      });
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

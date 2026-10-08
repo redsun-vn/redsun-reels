@@ -1,0 +1,26 @@
+# S4 — Phương án A (variables native) hay B (sinh HTML) — hyperframes@0.8.141, 2026-10-08
+Nguồn: skill /hyperframes:hyperframes-core → references/variables-and-media.md, data-attributes.md, determinism-rules.md.
+Prototype: docs/spike-evidence/s4-composition.html. Một composition, không sửa HTML giữa 2 lần render. Props: s4-props-5.json (và bản 3 cảnh).
+
+Cơ chế:
+- Khai báo variables trên <html data-composition-variables='[...]'>. Kiểu hỗ trợ: string, number, color, boolean, enum. KHÔNG có kiểu mảng.
+- Thay text và asset không cần script: data-var-text="id", data-var-src="id". Mỗi biến scalar tự thành CSS var --id.
+- Logic (lặp, điều kiện): window.__hyperframes.getVariables() đọc một lần lúc init.
+- Truyền lúc render: hyperframes render --variables-file props.json --strict-variables (sai key hoặc sai kiểu thành lỗi). Có thêm --batch để render nhiều bản.
+- Thời lượng: root data-duration bị khóa lúc compile; script hay variables không đổi được. Bỏ data-duration ở root thì renderer tính tổng thời lượng từ DOM/timeline sau khi script chạy. data-duration của từng clip thì script đặt được.
+
+| Tiêu chí | A (variables) | Bằng chứng |
+|---|---|---|
+| Text | Đạt | data-var-text="title" → "SIPOS — 5 cảnh"; text từng cảnh lấy từ biến |
+| Đường dẫn asset | Đạt | img src lấy từ biến (assets/a.png / b.png) |
+| Số cảnh động | Đạt | biến "scenes" là chuỗi JSON (mảng không phải kiểu hợp lệ) → script tạo 3 hoặc 5 clip |
+| Timing | Đạt | data-start/data-duration từng clip do script tính. Root không khai duration → 3 cảnh ra 6.000 s, 5 cảnh ra 10.000 s (ffprobe), đúng kỳ vọng ±0 s |
+
+Lệnh: lint exit 0; check exit 0; render (3 cảnh, 5 cảnh) exit 0 với --strict-variables. Ảnh: s4-3scenes-strip.png, s4-5scenes-strip.png. Mỗi cảnh hiện đúng text và đúng màu ảnh.
+Lần thử đầu Không đạt: để root data-duration="2" thì cả hai bản đều ra 2.000 s. Đã sửa bằng cách bỏ data-duration ở root, đúng như tài liệu.
+
+Kết luận S4: **Phương án A.** build.ts chỉ cần ghi props.json, gồm scenes dạng chuỗi JSON và timing lấy từ timing.json, rồi gọi render --variables-file --strict-variables. Không cần template engine (Eta/Handlebars, §3 [TBD]).
+Lưu ý cho M1:
+- (1) Root của template KHÔNG được khai data-duration.
+- (2) Mảng phải truyền dưới dạng chuỗi JSON, zod validate trước khi stringify.
+- (3) Text đưa vào DOM bằng textContent, không dùng innerHTML, để tránh lỗi HTML trong lời thoại.

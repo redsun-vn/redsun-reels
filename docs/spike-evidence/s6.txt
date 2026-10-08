@@ -1,0 +1,31 @@
+# S6 — Hiệu năng render 30s 1080×1920 (hyperframes@0.8.141, 2026-10-08)
+Máy: MacBook Intel i7-7700HQ (2017, 4 nhân / 8 luồng), 16 GB, macOS 15.5, GPU Intel HD 630 ("hardware gpu"). Chrome hệ thống.
+Composition: docs/spike-evidence/s6-composition.html. 6 cảnh × 5 s, mỗi cảnh có:
+- ảnh nền phóng chậm (Ken Burns);
+- heading fade;
+- caption 6–8 từ highlight lần lượt;
+- logo cố định;
+- 1 track nhạc 30 s.
+Font Montserrat, quality mặc định (standard), workers auto.
+
+Lệnh: /usr/bin/time -l corepack pnpm exec hyperframes render spike/s6 -o …  (1 lần warm-up + 3 lần đo)
+run=warmup exit=0 wall=111.98s maxrss=564MB |  4.2 MB · 30.0s video · rendered in 1m 47.0s  drawelement capture · hardware gpu · compile 5.5s · extract 0.0s · audio 1.3s · probe 0.3s · setup 1.1s · capture 1m 33.6s · encode (during capture) 1m 33.5s · assemble 5.2s 
+run=1 exit=0 wall=117.17s maxrss=565MB |  4.2 MB · 30.0s video · rendered in 1m 48.5s  drawelement capture · hardware gpu · compile 3.0s · extract 0.0s · audio 2.1s · probe 0.5s · setup 1.9s · capture 1m 33.6s · encode (during capture) 1m 33.6s · assemble 7.4s 
+run=2 exit=0 wall=164.46s maxrss=565MB |  4.2 MB · 30.0s video · rendered in 2m 32.7s  drawelement capture · hardware gpu · compile 4.1s · extract 0.0s · audio 3.3s · probe 1.0s · setup 3.2s · capture 2m 16.7s · encode (during capture) 2m 16.7s · assemble 5.1s 
+run=3 exit=0 wall=152.54s maxrss=564MB |  4.2 MB · 30.0s video · rendered in 2m 24.2s  drawelement capture · hardware gpu · compile 3.1s · extract 0.0s · audio 2.0s · probe 0.4s · setup 1.9s · capture 2m 11.4s · encode (during capture) 2m 11.4s · assemble 5.5s 
+workers=4 exit=0 wall=133s | rendered in 2m 7.6s
+workers=6 exit=0 wall=171s | rendered in 2m 41.9s
+
+Output (ffprobe out-3): h264 1080×1920 yuv420p 30fps + aac 48 kHz, 30.000 s, 4.2 MB. Mẫu: docs/spike-evidence/s6-30s.mp4.
+
+Kết quả:
+- 3 lần đo: 117 s / 164 s / 153 s (wall), trung vị **153 s (2 phút 33 giây)**. Ngưỡng §12 là ≤ 3 phút → **Đạt** trên Intel.
+- Dao động lớn (+40%) giữa các lần. Nhiều khả năng do máy 2017 nóng lên (thermal throttling) khi render liên tiếp. Lần chạy "mát" (warm-up, lần 1) khoảng 1 phút 50 giây.
+- Thời gian gần như toàn bộ nằm ở bước capture + encode (93–137 s). Compile 3–6 s, audio 1–3 s.
+- `--workers 4`: 2 phút 8 giây. `--workers 6`: 2 phút 42 giây. Tăng worker không giúp trên máy 4 nhân này; để `auto`.
+- RAM tiến trình Node khoảng 565 MB. Mỗi worker Chrome thêm khoảng 256 MB (theo `render --help`).
+
+Workaround nếu máy MKT chậm hơn: dùng `--quality draft` khi xem thử, chỉ render `standard` khi "xuất".
+- Apple Silicon: **Chưa kiểm** (chưa có máy M). Máy M thường nhanh hơn đáng kể, nhưng chưa có số đo.
+
+Kết luận S6: **Đạt (Intel)**. arm64 Chưa kiểm.
