@@ -213,9 +213,12 @@ Tên đọc liền như một từ: SIPOS, REDSUN, REDSUN BOS. Chữ trên màn 
 
 ### 5.4 Safe zone
 Reels/TikTok che một phần màn hình bằng UI. Text quan trọng phải nằm trong safe zone:
-- Top: chừa `[TBD: 220px]`
-- Bottom: chừa `[TBD: 420px]`
-- Phải: chừa `[TBD: 160px]`
+- Top: chừa 220px
+- Bottom: chừa 420px
+- Phải: chừa 160px
+- Trái: chừa 80px
+
+Dùng chung cho TikTok, Reels, Shorts (mức chừa rộng). Nếu thực tế bị che thì chỉ sửa biến trong `brand.css`.
 
 Giá trị đặt trong `brand.css`. Sub-composition `safe-zone.html` chỉ hiển thị khi preview với cờ debug, **không bao giờ** xuất hiện trong bản render. `hyperframes check --caption-zone / --frame-check` dùng để kiểm tự động.
 
@@ -612,7 +615,4 @@ Ràng buộc skill:
 - Làm 3 template M4 cho 5 loại video còn lại (7.1, 15).
 - **Nam** là dev maintainer, người duy nhất được nâng version HyperFrames, người giữ bằng chứng license nhạc, và người lo MacBook Apple Silicon để hoàn tất S1/S6.
 
-| # | Câu hỏi còn mở | Mặc định nếu chưa chốt |
-|---|---|---|
-| 1 | Giá trị safe zone chính xác theo từng nền tảng | Giá trị mục 5.4 |
-| 2 | Nơi lưu bằng chứng license nhạc (thư mục Drive nào) | Drive công ty, thư mục do Nam tạo |
+Không còn câu hỏi mở. Safe zone dùng mức chung ở 5.4; nơi lưu bằng chứng license nhạc do Nam tự quản (bỏ qua trong tài liệu).
