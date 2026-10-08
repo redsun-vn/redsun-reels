@@ -1,7 +1,7 @@
 ---
 phase: 2
 title: "Lệnh info, post + skill tao-reel"
-status: pending
+status: completed
 priority: P1
 effort: "5h"
 dependencies: [1]

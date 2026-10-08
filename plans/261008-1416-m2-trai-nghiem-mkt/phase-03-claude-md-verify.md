@@ -1,7 +1,7 @@
 ---
 phase: 3
 title: "CLAUDE.md, quyền, README, kiểm tra"
-status: pending
+status: completed
 priority: P1
 effort: "3h"
 dependencies: [1, 2]

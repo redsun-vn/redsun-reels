@@ -1,0 +1,22 @@
+#!/bin/bash
+# ./reel <lệnh> [tham số] — chạy lệnh của dự án (pnpm doctor/new/validate/build/preview/render/make/info/post/…)
+# bằng Node đã cài trong ~/.redsun-reels (scripts/cai-dat.sh). Nếu máy chưa cài: nói với Claude "cài đặt giúp tôi".
+H="${REDSUN_REELS_HOME:-$HOME/.redsun-reels}"
+[ -d "$H/node/bin" ] && export PATH="$H/node/bin:$PATH"
+export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+[ -d "$H/corepack" ] && export COREPACK_HOME="$H/corepack"
+cd "$(dirname "$0")" || exit 1
+if ! command -v corepack >/dev/null 2>&1; then
+  echo "Máy chưa cài môi trường làm video. Nói với Claude: \"cài đặt giúp tôi\"."
+  exit 1
+fi
+if [ $# -eq 0 ]; then
+  echo "Cách dùng: ./reel <lệnh>. Ví dụ: ./reel doctor, ./reel make <tên-video>, ./reel info"
+  exit 1
+fi
+if ! grep -q "\"$1\": \"" package.json; then
+  echo "Không có lệnh \"$1\". Các lệnh: $(grep -oE '^    "[a-z:-]+": "node' package.json | cut -d'"' -f2 | tr '\n' ' ')"
+  exit 1
+fi
+# Luôn dùng "run": "pnpm doctor" là lệnh có sẵn của pnpm, không phải script doctor của dự án.
+exec corepack pnpm -s run "$@"

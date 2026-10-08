@@ -1,7 +1,7 @@
 ---
 phase: 1
 title: "Script cài đặt + ./reel + skill cai-dat"
-status: pending
+status: completed
 priority: P1
 effort: "4h"
 dependencies: []

@@ -1,5 +1,15 @@
 {
   "enabledPlugins": {
     "hyperframes@hyperframes": true
+  },
+  "permissions": {
+    "allow": [
+      "Skill(tao-reel)",
+      "Skill(cai-dat)",
+      "Bash(./reel:*)",
+      "Bash(bash ./scripts/cai-dat.sh)",
+      "Edit(briefs/**)",
+      "Write(briefs/**)"
+    ]
   }
 }

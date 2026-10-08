@@ -210,3 +210,21 @@ Nguồn tham khảo:
   - Bộ lọc "tải tài nguyên lỗi" chỉ bắt HTTP 404 / request failed / `net::`. HyperFrames có in dòng `Asset load failure: [FrameCapture:INIT] complete` dù không có lỗi; bộ lọc cũ bắt nhầm dòng này làm 1 brief e2e fail ngẫu nhiên.
 - **Chưa làm** (theo review, mức thấp): brand lint chưa bắt màu viết camelCase trong JS hay tên màu CSS (`red`), và có thể báo nhầm selector dạng `#add`.
 - **Chưa có**: nhạc thật (Nam chọn); lower third (Testimonial, M3).
+
+## 10. M2: trải nghiệm MKT (2026-10-08)
+
+- **Cài đặt**: `scripts/cai-dat.sh` (bash thuần, vì máy MKT có thể chưa có Node) làm theo runbook S1.
+  - Không sudo, không git; Node v22.23.3 tải tarball và kiểm SHASUMS256; plugin HyperFrames lấy từ tarball tag v0.8.141.
+  - Mọi thứ nằm trong `~/.redsun-reels` (đổi được bằng `REDSUN_REELS_HOME`).
+  - Đã chạy 2 lần liên tiếp trong môi trường `env -i` sạch: lần 1 mất 89 giây, lần 2 mất 24 giây (bỏ qua các bước đã xong), cả hai exit 0.
+- **`./reel`**: lệnh gọn để skill và CLAUDE.md không phải nhắc PATH/corepack. Luôn chạy `pnpm run`, vì `pnpm doctor` là lệnh có sẵn của pnpm chứ không phải script của dự án. Lệnh không tồn tại thì báo tiếng Việt.
+- **Skill** (`.claude/skills/`): `cai-dat` và `tao-reel`, qua `quick_validate.py` và `lint_cruft.py` của ak-skill-creator. Không skill có sẵn nào thay được (mục 6).
+- **Lệnh mới**: `info` (tra loại video / phong cách / thời lượng cảnh), `post` (caption + hashtag + credit nhạc, có unit test).
+- **Quyền** (`.claude/settings.json`): cho phép `Skill(tao-reel)`, `Skill(cai-dat)`, `./reel`, script cài, và sửa `briefs/**`.
+- **Thử bằng phiên Claude Code mới** (`claude -p` + `--resume`, đóng stdin). Đi đủ: brief → 3 concept (dừng) → kịch bản + bảng duyệt (dừng) → xem thử (HTTP 200) → xuất MP4 20 giây + post.md → tự tắt bản xem thử. Bài học:
+  - Không ghi chuỗi dấu chấm than liền dấu backtick trong SKILL.md: Claude Code hiểu đó là lệnh shell cần chạy khi nạp skill, và skill nạp lỗi ("Execute skill: tao-reel").
+  - Khi skill nạp lỗi, Claude tự làm theo kiểu tự do và bịa số liệu ("trước 3 ngày", "37%", "dùng thử miễn phí"). Skill vì vậy có quy tắc riêng: góc hook "con số" chỉ dùng khi MKT đưa số; CTA mặc định lấy `defaultCta` trong `products.json`.
+  - CLAUDE.md ghi rõ "bắt buộc gọi skill trước khi làm gì khác". Không có câu này, Claude đọc REQUIREMENTS rồi tự làm, bỏ qua skill.
+  - `claude -p` không đóng stdin sẽ treo; khi chạy nền phải `< /dev/null`.
+- **Chưa xong theo §15**: tiêu chí "1 người MKT tự làm 1 video, dev chỉ quan sát" cần người thật.
+

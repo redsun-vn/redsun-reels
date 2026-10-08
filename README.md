@@ -12,7 +12,7 @@ Hệ thống làm video ngắn dọc (Reels, TikTok, Shorts) cho team Marketing 
 |---|---|---|
 | M0 | Thử nghiệm HyperFrames, khởi tạo brand, môi trường | ✅ Xong trên Mac Intel. Mac chip M chưa kiểm |
 | M1 | Lõi pipeline, 2 mẫu video (FeatureLaunch, TipOfTheDay), 3 phong cách | ✅ Xong. Còn chờ nhạc thật |
-| M2 | Skill Claude Code `cai-dat` (tự cài máy) và `tao-reel` (dẫn MKT làm video) | ⏳ Chưa làm |
+| M2 | Skill Claude Code `cai-dat` (tự cài máy) và `tao-reel` (dẫn MKT làm video) | ✅ Xong, đã thử bằng phiên Claude Code mới. Chờ 1 bạn MKT tự làm 1 video |
 | M3 | 3 mẫu: BeforeAfter, Testimonial, Promo, và 16 phong cách còn lại | ⏳ |
 | M4 | 3 mẫu: EventRecap, Stats, TalkingHead (đủ 20 loại video) | ⏳ |
 
@@ -28,14 +28,19 @@ Hiện **chưa có nhạc thật** trong thư viện. Repo chỉ có một track
 - Không cần biết lập trình. Không cần mật khẩu máy, Homebrew hay API key.
 
 ### Cài đặt lần đầu
-Từ M2, chỉ cần mở Claude Code trong thư mục dự án và nói:
+1. Tải dự án về máy: trên GitHub bấm **Code → Download ZIP**, giải nén.
+2. Mở Claude Code trong thư mục vừa giải nén, nói:
 
-> cài đặt giúp tôi
+   > cài đặt giúp tôi
 
-Hiện skill `cai-dat` chưa có. Trong lúc chờ, hãy đưa Claude Code đường dẫn [`docs/spike-evidence/s1-install-runbook.md`](docs/spike-evidence/s1-install-runbook.md) và nói "làm theo hướng dẫn cài đặt này". Trên máy thử nghiệm, việc cài mất khoảng 5–6 phút. Xong thì kiểm tra lại bằng câu "chạy pnpm doctor".
+Claude tự cài mọi thứ (khoảng 2–10 phút tuỳ mạng) rồi dựng thử 1 video ngắn. Lỗi gì Claude sẽ nói bằng tiếng Việt và hướng dẫn cách xử lý. Muốn kiểm lại máy sau này, nói "kiểm tra máy".
 
 ### Làm một video
-Quy trình (skill `tao-reel` ở M2 sẽ tự dẫn từng bước):
+Nói với Claude, ví dụ:
+
+> làm reel mẹo cho SIPOS về cảnh báo tồn kho thấp, khoảng 20 giây, cho chủ tiệm tạp hoá
+
+Claude dẫn từng bước:
 
 1. **Viết brief.** Claude tạo thư mục `briefs/<tên-video>/brief.md` và hỏi bạn tối đa 5 câu: sản phẩm, loại video, mục tiêu, thời lượng, lời kêu gọi.
 2. **Chọn concept.** Claude đưa 3 hướng ý tưởng, mỗi hướng một kiểu câu mở đầu. Bạn chọn 1.
@@ -44,6 +49,8 @@ Quy trình (skill `tao-reel` ở M2 sẽ tự dẫn từng bước):
 5. **Xuất video.** Nói "xuất". File nằm ở `out/<tên-video>.mp4`. Claude soạn sẵn caption và hashtag để bạn copy khi đăng.
 
 Muốn đổi phong cách thì cứ nói, ví dụ "đổi sang phong cách vui nhộn". Mỗi loại video có sẵn phong cách mặc định.
+
+Claude chỉ sửa trong thư mục `briefs/` của video bạn đang làm. Muốn thêm mẫu video hay phong cách mới thì cần dev.
 
 ### Loại video và phong cách
 - **20 loại video**: ra mắt tính năng, demo, mẹo "Bạn có biết?", hướng dẫn nhiều bước, khuyến mãi, chúc mừng dịp lễ… Xem [`docs/video-type-guide.md`](docs/video-type-guide.md).
@@ -63,7 +70,7 @@ Muốn đổi phong cách thì cứ nói, ví dụ "đổi sang phong cách vui 
 ### Công nghệ
 - [HyperFrames](https://github.com/heygen-com/hyperframes) `0.8.141`: CLI + plugin Claude Code, khóa version, không bật auto-update.
 - Node ≥ 22.18. File `.ts` chạy trực tiếp nhờ Node tự bỏ phần khai báo kiểu (type stripping), không cần `tsx`.
-- pnpm `10.34.6` qua corepack. Chạy lệnh bằng `corepack pnpm …`.
+- pnpm `10.34.6` qua corepack. Chạy lệnh bằng `./reel <lệnh>`: lệnh này tự dùng Node trong `~/.redsun-reels` (do `scripts/cai-dat.sh` cài), tương đương `corepack pnpm run <lệnh>`.
 - FFmpeg từ `ffmpeg-static` / `ffprobe-static`, không cần cài FFmpeg hệ thống.
 - zod, yaml, Vitest, TypeScript 7 (typecheck).
 - GSAP `3.14.2` bản local (`runtime/gsap/`), font Montserrat local (`brand/fonts/`). Render không tải gì từ mạng.
@@ -72,6 +79,9 @@ Muốn đổi phong cách thì cứ nói, ví dụ "đổi sang phong cách vui 
 
 | Lệnh | Việc làm |
 |---|---|
+| `bash ./scripts/cai-dat.sh` | Cài môi trường (Node tarball có kiểm SHA, thư viện, plugin HyperFrames, trình duyệt render, nhạc thử, render thử). Chạy lại được nhiều lần |
+| `pnpm info [loại-video]` | Loại video, phong cách đã dựng được, thứ tự cảnh; `info thoi-luong "<chữ>"` tính thời lượng tối thiểu |
+| `pnpm post <slug>` | Soạn `briefs/<slug>/post.md`: caption, hashtag, credit nhạc |
 | `pnpm doctor` | Kiểm máy: Node, HyperFrames, FFmpeg, font, GSAP, nhạc, trình duyệt render |
 | `pnpm new <slug>` | Tạo `briefs/<slug>/brief.md` từ `briefs/_example` |
 | `pnpm validate <slug>` | Kiểm brief + kịch bản: hook, thứ tự vai trò cảnh, thời lượng đọc, file hình, nhạc, NFC |
@@ -92,18 +102,21 @@ Cờ chung:
 - `--safe-zone`: hiện vùng an toàn khi xem thử.
 - `--test-music`: cho phép dùng nhạc thử nghiệm. Chỉ dùng khi dev kiểm template, không dùng cho video thật.
 
-Thử nhanh: `corepack pnpm make _example --test-music`. Lệnh này xuất video mẫu SIPOS 21 giây, mất khoảng 40 giây trên Mac Intel 2017.
+Thử nhanh: `./reel make _example --test-music`. Lệnh này xuất video mẫu SIPOS 21 giây, mất khoảng 40 giây trên Mac Intel 2017.
 
 ### Cấu trúc
 
 ```
+CLAUDE.md         quy tắc cho Claude Code: chế độ MKT (mặc định) / chế độ dev
+.claude/skills/   cai-dat (gọi scripts/cai-dat.sh), tao-reel (quy trình 8 bước + references/script-format.md)
+reel              lệnh gọn ./reel <lệnh> = pnpm run <lệnh> với Node trong ~/.redsun-reels
 brand/            brand.css (biến màu/font/safe zone theo sản phẩm), frame.md, products.json,
                   fonts/, logos/, styles/<phong-cách>.json, music/manifest.json
 config/           styles.ts (19), video-types.ts (20), scene-timing.ts, schema brief/script/preset/nhạc
 templates/        _shared/ (scene-kit.js, kit.css, safe-zone.css), FeatureLaunch/, TipOfTheDay/, _blank/
 scripts/          lệnh pnpm + lib/ (validate, build-props, stage-project, render-video, loudness, lint-brand…)
 runtime/gsap/     GSAP local
-briefs/<slug>/    brief.md, concepts.md, script.json, props.json, review.md, cost.json
+briefs/<slug>/    brief.md, concepts.md, script.json, props.json, review.md, cost.json, post.md
 tests/            unit test, fixtures/briefs/ (8 brief mẫu), baseline/ (ảnh chuẩn render test)
 docs/             decisions, spike-report, video-type-guide, video-style-catalog, music-sources
 plans/            plan theo milestone, báo cáo, journal

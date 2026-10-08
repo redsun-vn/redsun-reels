@@ -23,7 +23,9 @@
     "test": "vitest run",
     "test:render": "node scripts/render-test.ts",
     "test:e2e": "node scripts/make-all-fixtures.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "info": "node scripts/info.ts",
+    "post": "node scripts/post.ts"
   },
   "devDependencies": {
     "@types/node": "22.20.5",
