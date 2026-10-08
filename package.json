@@ -10,10 +10,19 @@
   },
   "scripts": {
     "doctor": "node scripts/doctor.ts",
+    "new": "node scripts/new.ts",
+    "validate": "node scripts/validate.ts",
+    "build": "node scripts/build.ts",
     "preview": "node scripts/preview.ts",
+    "render": "node scripts/render.ts",
+    "make": "node scripts/make.ts",
     "render:blank": "node scripts/render-blank.ts",
     "gen:test-music": "node scripts/gen-test-music.ts",
+    "lint:brand": "node scripts/lint-brand.ts",
+    "lint:music": "node scripts/lint-music.ts",
     "test": "vitest run",
+    "test:render": "node scripts/render-test.ts",
+    "test:e2e": "node scripts/make-all-fixtures.ts",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
@@ -24,6 +33,7 @@
     "hyperframes": "0.8.141",
     "typescript": "7.0.2",
     "vitest": "5.0.3",
+    "yaml": "2.9.1",
     "zod": "4.6.5"
   },
   "pnpm": {

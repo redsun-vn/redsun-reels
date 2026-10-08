@@ -1,0 +1,79 @@
+{
+  "template": "FeatureLaunch",
+  "product": "sipos",
+  "logoOnDark": "brand/logos/sipos/sipos-logo-trang.png",
+  "logoOnLight": "brand/logos/sipos/sipos-logo-chuan.svg",
+  "style": {
+    "id": "toi-gian",
+    "transition": {
+      "type": "vertical-push",
+      "duration": 0.45,
+      "ease": "power3.inOut"
+    },
+    "text": {
+      "enter": "rise",
+      "duration": 0.5,
+      "ease": "power3.out",
+      "wordStagger": 0.04
+    },
+    "kenBurns": 1.05,
+    "accent": "underline",
+    "ctaPulse": false,
+    "musicMood": [
+      "toi-gian",
+      "robot-cong-nghe",
+      "tin-cay"
+    ]
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "role": "hook",
+      "text": "Bạn vẫn kiểm kho bằng sổ tay?",
+      "visual": {
+        "type": "text"
+      },
+      "start": 0,
+      "duration": 3.5
+    },
+    {
+      "id": "noi-dau",
+      "role": "problem",
+      "text": "Mỗi tối lại ngồi đếm hàng",
+      "sub": "Sai một số là lệch cả tháng",
+      "visual": {
+        "type": "text"
+      },
+      "start": 3.5,
+      "duration": 6.5
+    },
+    {
+      "id": "giai-phap",
+      "role": "solution",
+      "text": "Quét mã vạch, tồn kho cập nhật ngay",
+      "sub": "Ngay trên điện thoại",
+      "visual": {
+        "type": "phone",
+        "src": "assets/_demo/sipos-kiem-kho.png",
+        "focus": {
+          "x": 50,
+          "y": 22
+        }
+      },
+      "start": 10,
+      "duration": 7
+    },
+    {
+      "id": "cta",
+      "role": "cta",
+      "text": "Tìm hiểu thêm tại sipos.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "start": 17,
+      "duration": 4
+    }
+  ],
+  "totalSec": 21,
+  "numberSteps": false
+}

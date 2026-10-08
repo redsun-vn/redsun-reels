@@ -1,0 +1,76 @@
+{
+  "concept": {
+    "title": "Mẫu demo-san-pham",
+    "bigIdea": "Fixture kiểm template M1",
+    "hookAngle": "con-so"
+  },
+  "videoType": "demo-san-pham",
+  "style": "khuyen-mai",
+  "template": "FeatureLaunch",
+  "product": "bos",
+  "hook": "Chỉ 3 bước để chốt đơn",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Chỉ 3 bước để chốt đơn",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 4.0
+    },
+    {
+      "id": "c1-solution",
+      "role": "solution",
+      "onScreenText": "Bước 1: chọn khách hàng",
+      "visual": {
+        "type": "phone",
+        "src": "assets/_demo/sipos-kiem-kho.png",
+        "focus": {
+          "x": 50,
+          "y": 40
+        }
+      },
+      "durationSec": 7.5
+    },
+    {
+      "id": "c2-solution",
+      "role": "solution",
+      "onScreenText": "Bước 2: thêm sản phẩm",
+      "visual": {
+        "type": "phone",
+        "src": "assets/_demo/screen-record-test.mp4",
+        "focus": {
+          "x": 50,
+          "y": 55
+        }
+      },
+      "durationSec": 7.5
+    },
+    {
+      "id": "c3-solution",
+      "role": "solution",
+      "onScreenText": "Bước 3: xác nhận đơn",
+      "visual": {
+        "type": "phone",
+        "src": "assets/_demo/sipos-kiem-kho.png",
+        "focus": {
+          "x": 50,
+          "y": 92
+        }
+      },
+      "durationSec": 7.5
+    },
+    {
+      "id": "c4-cta",
+      "role": "cta",
+      "onScreenText": "Yêu cầu tư vấn tại redsun.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 4.0
+    }
+  ],
+  "cta": "Yêu cầu tư vấn tại redsun.vn",
+  "music": "test-pad-01"
+}

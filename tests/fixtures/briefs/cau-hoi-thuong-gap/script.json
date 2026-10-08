@@ -1,0 +1,44 @@
+{
+  "concept": {
+    "title": "Mẫu cau-hoi-thuong-gap",
+    "bigIdea": "Fixture kiểm template M1",
+    "hookAngle": "cau-hoi-noi-dau"
+  },
+  "videoType": "cau-hoi-thuong-gap",
+  "style": "toi-gian",
+  "template": "TipOfTheDay",
+  "product": "bos",
+  "hook": "Dữ liệu cũ có chuyển sang được không?",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Dữ liệu cũ có chuyển sang được không?",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 5.0
+    },
+    {
+      "id": "c1-solution",
+      "role": "solution",
+      "onScreenText": "Có. Đội Redsun hỗ trợ chuyển dữ liệu",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 8.5,
+      "subText": "Từ file Excel hoặc phần mềm cũ"
+    },
+    {
+      "id": "c2-cta",
+      "role": "cta",
+      "onScreenText": "Yêu cầu tư vấn tại redsun.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 4.0
+    }
+  ],
+  "cta": "Yêu cầu tư vấn tại redsun.vn",
+  "music": "test-pad-01"
+}

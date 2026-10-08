@@ -1,0 +1,59 @@
+{
+  "concept": {
+    "title": "Test dấu tiếng Việt",
+    "bigIdea": "Chuỗi §13 ở mọi vị trí chữ",
+    "hookAngle": "con-so"
+  },
+  "videoType": "ra-mat-tinh-nang",
+  "style": "vui-nhon",
+  "template": "FeatureLaunch",
+  "product": "sipos",
+  "hook": "Ứng dụng quản lý bán hàng —\nưu đãi đặc biệt, giảm 30%!",
+  "scenes": [
+    {
+      "id": "hook",
+      "role": "hook",
+      "onScreenText": "Ứng dụng quản lý bán hàng — ưu đãi đặc biệt, giảm 30%!",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 6
+    },
+    {
+      "id": "dau",
+      "role": "problem",
+      "onScreenText": "ă â đ ê ô ơ ư — Ă Â Đ Ê Ô Ơ Ư",
+      "subText": "Ứng dụng quản lý bán hàng — ưu đãi đặc biệt, giảm 30%!",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 11
+    },
+    {
+      "id": "phone",
+      "role": "solution",
+      "onScreenText": "ằ ắ ẳ ẵ ặ · ừ ứ ử ữ ự · ỳ ý ỷ ỹ ỵ",
+      "subText": "SIPOS · REDSUN BOS · Webino",
+      "visual": {
+        "type": "phone",
+        "src": "assets/_demo/sipos-kiem-kho.png",
+        "focus": {
+          "x": 50,
+          "y": 22
+        }
+      },
+      "durationSec": 8.5
+    },
+    {
+      "id": "cta",
+      "role": "cta",
+      "onScreenText": "Tìm hiểu thêm tại sipos.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 3.5
+    }
+  ],
+  "cta": "Tìm hiểu thêm tại sipos.vn",
+  "music": "test-pad-01"
+}

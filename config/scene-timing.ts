@@ -8,10 +8,12 @@ export const SCENE_TIMING = {
   enterAnimationSeconds: 0.5,
 } as const;
 
-/** Đếm từ theo khoảng trắng (tiếng Việt viết tách âm tiết, mỗi âm tiết tính là một từ). */
+/** Đếm từ theo khoảng trắng (tiếng Việt viết tách âm tiết, mỗi âm tiết là một từ); bỏ qua cụm chỉ có dấu câu như "—", "·". */
 export function countWords(text: string): number {
-  const trimmed = text.normalize('NFC').trim();
-  return trimmed === '' ? 0 : trimmed.split(/\s+/u).length;
+  return text
+    .normalize('NFC')
+    .split(/\s+/u)
+    .filter((w) => /[\p{L}\p{N}]/u.test(w)).length;
 }
 
 /** Thời lượng tối thiểu của một cảnh từ chữ chính và dòng phụ. */

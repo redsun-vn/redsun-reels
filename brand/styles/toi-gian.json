@@ -1,0 +1,9 @@
+{
+  "id": "toi-gian",
+  "transition": { "type": "vertical-push", "duration": 0.45, "ease": "power3.inOut" },
+  "text": { "enter": "rise", "duration": 0.5, "ease": "power3.out", "wordStagger": 0.04 },
+  "kenBurns": 1.05,
+  "accent": "underline",
+  "ctaPulse": false,
+  "musicMood": ["toi-gian", "robot-cong-nghe", "tin-cay"]
+}

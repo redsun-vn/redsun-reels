@@ -1,0 +1,22 @@
+/**
+ * Frontmatter của briefs/<slug>/brief.md (REQUIREMENTS v0.4 §6.1).
+ */
+import { z } from 'zod';
+import { PRODUCT_IDS, TEMPLATE_IDS } from './video-types.ts';
+
+export const BriefSchema = z.object({
+  product: z.enum(PRODUCT_IDS),
+  videoType: z.string().min(1),
+  style: z.string().nullish(),
+  occasion: z.string().nullish(),
+  template: z.union([z.literal('auto'), z.enum(TEMPLATE_IDS)]).default('auto'),
+  goal: z.string().min(1),
+  audience: z.string().min(1),
+  duration: z.number().min(7).max(60),
+  tone: z.string().min(1),
+  cta: z.string().min(1),
+  music: z.string().min(1).default('auto'),
+  assets: z.array(z.string()).default([]),
+});
+
+export type Brief = z.infer<typeof BriefSchema>;

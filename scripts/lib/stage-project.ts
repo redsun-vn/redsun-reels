@@ -5,9 +5,9 @@
  * và bước này copy chúng vào. Font, GSAP, nhạc đều local, nên render không tải gì từ mạng.
  */
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, extname, isAbsolute, join, normalize } from 'node:path';
 import { checkTrack, findTrack, MusicManifestSchema, type MusicPurpose } from '../../config/music-manifest.ts';
-import { REPO_ROOT } from './hyperframes-env.ts';
+import { REPO_ROOT, runFfmpeg } from './hyperframes-env.ts';
 
 export interface StageOptions {
   /** Tên thư mục trong templates/ (vd. `_blank`, `FeatureLaunch`). */
@@ -17,6 +17,8 @@ export interface StageOptions {
   /** id track trong brand/music/manifest.json. */
   musicId: string;
   purpose: MusicPurpose;
+  /** Hình/clip dùng trong video, đường dẫn tương đối theo repo (vd. assets/sipos/x.png). Copy giữ nguyên đường dẫn. */
+  assets?: string[];
 }
 
 export interface StagedProject {
@@ -57,9 +59,23 @@ export function stageProject(opts: StageOptions): StagedProject {
     cpSync(join(REPO_ROOT, 'brand', part), join(dir, 'brand', part), { recursive: true });
   }
   cpSync(join(REPO_ROOT, 'runtime'), join(dir, 'runtime'), { recursive: true });
+  for (const a of new Set(opts.assets ?? [])) {
+    const rel = normalize(a);
+    if (isAbsolute(rel) || rel.startsWith('..')) throw new Error(`Đường dẫn hình/clip "${a}" phải nằm trong repo (vd. assets/sipos/…).`);
+    const src = join(REPO_ROOT, rel);
+    if (!existsSync(src)) throw new Error(`Thiếu file hình/clip: ${a}.`);
+    mkdirSync(join(dir, dirname(rel)), { recursive: true });
+    cpSync(src, join(dir, rel));
+  }
+
+  // Nhạc luôn nằm ở music/bgm.mp3 trong stage (template trỏ cố định tới đây)
   mkdirSync(join(dir, 'music'), { recursive: true });
-  const musicFile = `music/${track.file}`;
-  cpSync(trackPath, join(dir, musicFile));
+  const musicFile = 'music/bgm.mp3';
+  if (extname(track.file).toLowerCase() === '.mp3') cpSync(trackPath, join(dir, musicFile));
+  else {
+    const r = runFfmpeg(['-v', 'error', '-y', '-i', trackPath, '-ar', '48000', '-b:a', '192k', join(dir, musicFile)]);
+    if (r.status !== 0) throw new Error(`Không đổi được file nhạc "${track.file}" sang mp3: ${r.stderr}`);
+  }
 
   return { dir, musicFile };
 }

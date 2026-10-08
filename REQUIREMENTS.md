@@ -361,7 +361,7 @@ Chung cho mọi template:
 | **Stats** | M4 | Số liệu / thành tích | Con số đếm lên, biểu đồ, 2–3 chỉ số |
 | **TalkingHead** | M4 | Video có người nói trước camera (MKT tự quay) | Giữ âm thanh gốc, chữ nhấn ý chính, lower third, overlay |
 
-Sub-composition dùng chung (`templates/_shared/`): `hook`, `text-reveal`, `phone-frame`, `callout`, `lower-third`, `cta-outro`, `logo-bug`, `safe-zone`.
+Khối dùng chung (`templates/_shared/scene-kit.js` + `kit.css`): hook, chữ cảnh (tự co cỡ khi dài), phone frame, callout + zoom, lower third (M3), CTA outro, logo bug, safe zone. Làm dưới dạng thư viện JS/CSS vì số cảnh động (xem `docs/decisions.md` mục 9).
 
 ### 7.2 Loại video
 Chi tiết ở `docs/video-type-guide.md`, cấu hình ở `config/video-types.ts`. Có 20 loại; 15 loại chạy trên 5 template M1–M3:
@@ -575,7 +575,7 @@ Ràng buộc skill:
 - `build` (timing cảnh theo độ dài chữ), `render`, `make`.
 - Template **FeatureLaunch**, **TipOfTheDay** + fixtures; phong cách `toi-gian`, `khuyen-mai`, `vui-nhon`.
 - Brand lint, music lint.
-- **Done khi:** `pnpm make _example` ra MP4 đạt mục 9.1; test dấu tiếng Việt, brand lint, music lint pass; loại video 1–5 chạy được.
+- **Done khi:** `pnpm make _example` ra MP4 đạt mục 9.1; test dấu tiếng Việt, brand lint, music lint pass; các loại video dùng FeatureLaunch/TipOfTheDay (1, 2, 3, 4, 14, 15, 18) chạy được. (Loại 5 `truoc-sau` dùng BeforeAfter, thuộc M3.)
 
 ### M2 — Trải nghiệm MKT (2 ngày)
 - Skill `cai-dat` và `tao-reel`, `CLAUDE.md` hoàn chỉnh (kiểm kê skill có sẵn trước).

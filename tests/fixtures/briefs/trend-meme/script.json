@@ -1,0 +1,43 @@
+{
+  "concept": {
+    "title": "Mẫu trend-meme",
+    "bigIdea": "Fixture kiểm template M1",
+    "hookAngle": "lat-nguoc"
+  },
+  "videoType": "trend-meme",
+  "style": "vui-nhon",
+  "template": "TipOfTheDay",
+  "product": "sipos",
+  "hook": "Chủ quán lúc 11 giờ đêm",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Chủ quán lúc 11 giờ đêm",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 3.0
+    },
+    {
+      "id": "c1-problem",
+      "role": "problem",
+      "onScreenText": "vẫn ngồi đếm từng gói đường",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 3.0
+    },
+    {
+      "id": "c2-solution",
+      "role": "solution",
+      "onScreenText": "Chủ quán dùng SIPOS: đi ngủ",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 3.0
+    }
+  ],
+  "cta": "Theo dõi để xem thêm mẹo",
+  "music": "test-pad-01"
+}

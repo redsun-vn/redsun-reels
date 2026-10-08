@@ -37,11 +37,12 @@
   --type-hero: 120px;
   --type-h1: 96px;
   --type-h2: 72px;
+  --type-h3: 60px;
   --type-body: 52px;
   --type-caption: 44px;
   --type-small: 32px;
-  --line-tight: 1.1;
-  --line-normal: 1.3;
+  --line-tight: 1.25; /* tiếng Việt có dấu chồng (Ứ, ặ, ễ): dưới 1.2 là dấu chạm dòng trên */
+  --line-normal: 1.45;
 
   /* Safe zone (REQUIREMENTS §5.4, giá trị mặc định chờ chốt theo nền tảng) */
   --safe-top: 220px;
@@ -76,6 +77,7 @@
   --color-background: #FFFFFF;
   --color-text: #111111;
   --color-text-inverse: #FFFFFF;
+  --color-on-accent: #111111; /* chữ đặt trên nền màu nhấn, đạt tương phản ≥ 3:1 */
 }
 
 /* SIPOS — logo chuẩn Logo_green-01.png: teal #0B4B54, đỏ #E30000 */
@@ -86,6 +88,7 @@
   --color-background: #0B4B54;
   --color-text: #FFFFFF;
   --color-text-inverse: #0B4B54;
+  --color-on-accent: #FFFFFF;
 }
 
 /* Redsun BOS — logo: đỏ #D1262D, mận #3D0023, vàng #EAAE2D, xanh #44649B; chữ logo #0C4559 */
@@ -97,6 +100,7 @@
   --color-background: #0C4559;
   --color-text: #FFFFFF;
   --color-text-inverse: #0C4559;
+  --color-on-accent: #3D0023;
 }
 
 /* Webino — logo: cyan #00B2DB, tím #5B1A9A */
@@ -107,6 +111,7 @@
   --color-background: #5B1A9A;
   --color-text: #FFFFFF;
   --color-text-inverse: #5B1A9A;
+  --color-on-accent: #3D0F66;
 }
 
 /* Redsun (công ty) — logo vector: đỏ #BA0000, vàng #EBAB32, xám #58595B */
@@ -117,4 +122,5 @@
   --color-background: #FFFFFF;
   --color-text: #111111;
   --color-text-inverse: #FFFFFF;
+  --color-on-accent: #111111;
 }

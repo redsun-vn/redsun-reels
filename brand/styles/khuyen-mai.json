@@ -1,0 +1,9 @@
+{
+  "id": "khuyen-mai",
+  "transition": { "type": "zoom-through", "duration": 0.3, "ease": "expo.inOut" },
+  "text": { "enter": "slam", "duration": 0.3, "ease": "power4.out", "wordStagger": 0.03 },
+  "kenBurns": 1.12,
+  "accent": "block",
+  "ctaPulse": true,
+  "musicMood": ["khuyen-mai", "hanh-dong", "nang-dong"]
+}

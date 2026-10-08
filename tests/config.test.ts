@@ -33,6 +33,7 @@ describe('scene timing', () => {
   it('đếm từ tiếng Việt theo âm tiết', () => {
     expect(countWords('Kiểm kho bằng điện thoại')).toBe(5);
     expect(countWords('   ')).toBe(0);
+    expect(countWords('SIPOS — REDSUN · Webino')).toBe(3);
   });
 
   it('áp tối thiểu 1.5 giây + 0.5 giây animation', () => {

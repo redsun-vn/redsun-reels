@@ -22,7 +22,7 @@ try {
     console.error(`Render lỗi:\n${log}`);
     process.exit(1);
   }
-  const remoteFetch = log.split('\n').filter((l) => /Fetched .* from Google Fonts|cdn\.jsdelivr|HTTP404|Asset load failure/.test(l));
+  const remoteFetch = log.split('\n').filter((l) => /Fetched .* from Google Fonts|cdn\.jsdelivr|HTTP404|REQUESTFAILED|Asset load failure: .*(HTTP\d{3}|net::)/.test(l));
   if (remoteFetch.length) {
     console.error(`Render vẫn tải tài nguyên từ mạng hoặc thiếu file:\n${remoteFetch.join('\n')}`);
     process.exit(1);

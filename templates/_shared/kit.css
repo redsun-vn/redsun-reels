@@ -1,0 +1,240 @@
+/*
+ * Kiểu dáng các khối dùng chung (scene-kit.js). Chỉ dùng biến trong brand/brand.css:
+ * không hex, không font-family hay font-size cứng (brand lint, REQUIREMENTS §5.2, §13).
+ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: var(--canvas-width);
+  height: var(--canvas-height);
+  overflow: hidden;
+  background: var(--color-black);
+}
+
+#root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+
+.kit-bg {
+  position: absolute;
+  inset: 0;
+  background: var(--color-background);
+}
+
+.kit-logo-bug {
+  position: absolute;
+  top: var(--safe-top);
+  left: var(--safe-left);
+  width: 280px;
+  height: 80px;
+  object-fit: contain;
+  object-position: left center;
+  z-index: 50;
+}
+
+.kit-scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+/* Vùng chữ: luôn trong safe zone */
+.kit-text-block {
+  position: absolute;
+  z-index: 5;
+  left: var(--safe-left);
+  right: var(--safe-right);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.kit-text-block.center {
+  top: var(--safe-top);
+  bottom: var(--safe-bottom);
+  justify-content: center;
+}
+
+.kit-text-block.top {
+  top: calc(var(--safe-top) + 120px);
+}
+
+.kit-text-block.bottom {
+  bottom: var(--safe-bottom);
+}
+
+.kit-main {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
+  font-size: var(--type-h1);
+  line-height: var(--line-tight);
+}
+
+.kit-main.hook {
+  font-weight: var(--weight-hero);
+  font-size: var(--type-hero);
+}
+
+.kit-main.small {
+  font-size: var(--type-h2);
+}
+
+.kit-sub {
+  font-weight: var(--weight-body);
+  font-size: var(--type-body);
+  line-height: var(--line-normal);
+  opacity: 0.92;
+}
+
+.kit-word {
+  display: inline-block;
+  white-space: pre;
+  will-change: transform, opacity;
+}
+
+/* Nhấn từ khóa (số, %, tên sản phẩm) theo preset phong cách */
+.accent-underline .kit-accent {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 8px;
+  text-underline-offset: 10px;
+}
+
+.accent-block .kit-accent {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  padding: 0 12px;
+}
+
+.accent-sticker .kit-accent {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  padding: 0 14px;
+  border-radius: 18px;
+  transform: rotate(-3deg);
+}
+
+/* Ảnh / clip toàn màn hình */
+.kit-media-full {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.kit-dim {
+  position: absolute;
+  inset: 0;
+  background: var(--color-background);
+  opacity: 0.55;
+}
+
+/* Phone mockup (FeatureLaunch) */
+.kit-phone {
+  position: absolute;
+  left: 50%;
+  top: 720px;
+  width: 430px;
+  height: 760px;
+  margin-left: -215px;
+  border-radius: 64px;
+  border: 18px solid var(--color-black);
+  background: var(--color-white);
+  overflow: hidden;
+  transform-origin: 50% 50%;
+}
+
+.kit-phone img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.kit-callout {
+  position: absolute;
+  width: 96px;
+  height: 96px;
+  margin: -48px 0 0 -48px;
+  border-radius: 50%;
+  border: 8px solid var(--color-accent);
+}
+
+.kit-phone.has-video {
+  background: transparent;
+}
+
+/* Video màn hình: con trực tiếp của root, đặt đúng vùng màn hình của .kit-phone (left 325 + viền 18, top 720 + viền 18) */
+.kit-phone-video {
+  position: absolute;
+  left: 343px;
+  top: 738px;
+  width: 394px;
+  height: 724px;
+  border-radius: 46px;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* TipOfTheDay */
+.kit-tag {
+  align-self: flex-start;
+  padding: 10px 28px;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-weight: var(--weight-heading);
+  font-size: var(--type-small);
+}
+
+.kit-step {
+  align-self: flex-start;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-weight: var(--weight-hero);
+  font-size: var(--type-h2);
+}
+
+/* CTA outro */
+.kit-cta {
+  position: absolute;
+  top: var(--safe-top);
+  bottom: var(--safe-bottom);
+  left: var(--safe-left);
+  right: var(--safe-right);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+  text-align: center;
+}
+
+.kit-cta-logo {
+  width: 640px;
+  height: 320px;
+  object-fit: contain;
+}
+
+.kit-cta .kit-main {
+  font-size: var(--type-h2);
+}

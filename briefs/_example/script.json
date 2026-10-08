@@ -1,0 +1,17 @@
+{
+  "concept": { "title": "Kiểm kho 5 phút", "bigIdea": "Đếm hàng bằng điện thoại thay cho sổ tay", "hookAngle": "cau-hoi-noi-dau" },
+  "videoType": "ra-mat-tinh-nang",
+  "style": "toi-gian",
+  "template": "FeatureLaunch",
+  "product": "sipos",
+  "hook": "Bạn vẫn kiểm kho\nbằng sổ tay?",
+  "scenes": [
+    { "id": "hook", "role": "hook", "onScreenText": "Bạn vẫn kiểm kho bằng sổ tay?", "visual": { "type": "text" }, "durationSec": 3.5 },
+    { "id": "noi-dau", "role": "problem", "onScreenText": "Mỗi tối lại ngồi đếm hàng", "subText": "Sai một số là lệch cả tháng", "visual": { "type": "text" }, "durationSec": 6.5 },
+    { "id": "giai-phap", "role": "solution", "onScreenText": "Quét mã vạch, tồn kho cập nhật ngay", "subText": "Ngay trên điện thoại", "visual": { "type": "phone", "src": "assets/_demo/sipos-kiem-kho.png", "focus": { "x": 50, "y": 22 } }, "durationSec": 7 },
+    { "id": "cta", "role": "cta", "onScreenText": "Tìm hiểu thêm tại sipos.vn", "visual": { "type": "logo" }, "durationSec": 4 }
+  ],
+  "cta": "Tìm hiểu thêm tại sipos.vn",
+  "music": "test-pad-01",
+  "selfScore": { "total": 88, "notes": "Hook 22/25 (câu hỏi nỗi đau, 2 dòng ≤ 40 ký tự). Một thông điệp 18/20. Đọc kịp 20/20 (mọi cảnh ≥ công thức). Brand + sự thật 20/20 (không số liệu ngoài brief). CTA 8/15 (chưa có ưu đãi, vì brief không cho phép)." }
+}

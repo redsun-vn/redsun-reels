@@ -1,0 +1,43 @@
+{
+  "concept": {
+    "title": "Mẫu thong-bao",
+    "bigIdea": "Fixture kiểm template M1",
+    "hookAngle": "con-so"
+  },
+  "videoType": "thong-bao",
+  "style": "toi-gian",
+  "template": "TipOfTheDay",
+  "product": "webino",
+  "hook": "Webino có giao diện mới",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Webino có giao diện mới",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 2.5
+    },
+    {
+      "id": "c1-solution",
+      "role": "solution",
+      "onScreenText": "Trình chỉnh sửa nhanh hơn, gọn hơn",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 3.5
+    },
+    {
+      "id": "c2-cta",
+      "role": "cta",
+      "onScreenText": "Tạo website tại webino.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 3.5
+    }
+  ],
+  "cta": "Tạo website tại webino.vn",
+  "music": "test-pad-01"
+}

@@ -172,3 +172,41 @@ Nguồn tham khảo:
 - **Quy tắc template** (rút ra khi làm `_blank`): nền và mọi lớp phủ (kể cả lưới safe zone) phải là **clip có timing** (`class="clip"` + `data-start`/`data-duration`). Nền đặt trên root, hoặc phần tử không có timing, không được vẽ ra.
 - **Safe zone debug**: `templates/_shared/safe-zone.css` + biến `debugSafeZone` (boolean). Mặc định tắt; bản render thật không bật.
 - **Nhạc test**: `test-pad-01` tự sinh (`pnpm gen:test-music`), `allowedUse: internal-test`. Bị chặn khi dùng cho video thật (`checkTrack(…, 'production')`).
+
+## 9. M1 — lõi pipeline + FeatureLaunch + TipOfTheDay (2026-10-08)
+- **Khối dùng chung là thư viện CSS + JS** (`templates/_shared/scene-kit.js`, `kit.css`), không phải sub-composition của HyperFrames. Lý do: số cảnh thay đổi theo kịch bản và được tạo bằng script (S4), còn việc nạp sub-composition động chưa được kiểm chứng. REQUIREMENTS §7.1 vẫn liệt kê các khối (hook, chữ cảnh, phone frame, callout, lower third, CTA, logo); chúng nằm trong kit.
+- **Đăng ký timeline trong template**: `hyperframes lint` chỉ đọc mã tĩnh, nên mỗi template tự tạo timeline paused và gán `window.__timelines["main"]`; kit nhận `tl` để thêm hiệu ứng. Thẻ `<audio>` có sẵn `data-start` tĩnh.
+- **Ghi props thành giá trị mặc định của biến trong bản stage**, vì `hyperframes check` và Studio không nhận `--variables-file`. Render vẫn truyền `--variables-file --strict-variables --strict`.
+- **Chuyển cảnh** theo `/hyperframes:hyperframes-animation`: cảnh cũ và cảnh mới chuyển động cùng lúc tại mốc T, nên clip cảnh cũ được kéo dài thêm đúng thời lượng chuyển cảnh. Không có animation thoát, trừ cảnh cuối (mờ dần 0.4 giây). Cảnh được đánh dấu `data-layout-allow-overlap` vì chồng lấn trong lúc chuyển là có chủ ý.
+- **Preset phong cách** (`brand/styles/*.json`, schema `config/style-preset.schema.ts`):
+
+  | Phong cách | Chuyển cảnh | Chữ hiện | Nhấn từ khóa |
+  |---|---|---|---|
+  | `toi-gian` | vertical push 0.45 giây | rise | gạch chân |
+  | `khuyen-mai` | zoom through 0.3 giây | slam | khối nền, CTA nhịp |
+  | `vui-nhon` | elastic push 0.5 giây | pop | sticker, CTA nhịp |
+
+  Từ được nhấn là từ có số, %, hoặc tên sản phẩm.
+- **Cỡ chữ tự co** (Nam: "nếu tràn thì nên giảm size chữ"):
+  - Kit chọn cỡ lớn nhất trong thang `--type-hero/h1/h2/h3/body` sao cho khối chữ vừa chiều cao vùng **và** không vượt số dòng tối đa (hook 3, chữ cảnh 4, chữ trên phone 3, CTA 2).
+  - Ước lượng bằng số ký tự × 0.6em, không đo DOM, nên render vẫn xác định.
+- **Khoảng cách dòng** (Nam: "text dính nhau quá gần"): `--line-tight` 1.1 → **1.25**, `--line-normal` 1.3 → **1.45**, vì dấu chồng tiếng Việt cần chỗ.
+- **Chữ trên nền màu nhấn**: thêm `--color-on-accent` theo sản phẩm (SIPOS trắng, BOS mận, Webino tím đậm, Redsun đen). `hyperframes check` từng báo tương phản 1.99:1 khi dùng màu teal trên nền đỏ.
+- **Đếm từ cho công thức thời lượng**: bỏ qua cụm chỉ có dấu câu ("—", "·").
+- **Loudness**: render xong → ffmpeg `afade` 0.5 giây vào/ra + `loudnorm` 2 lượt (I −14, TP −1.5, linear), copy luồng hình, kiểm lại bằng `ebur128`. Các bản e2e đo được −13.8…−14.0 LUFS.
+- **Nhạc trong stage** luôn ở `music/bgm.mp3`; file khác định dạng được đổi sang mp3 khi stage.
+- **Thư viện `yaml`** 2.9.1 (ISC) để đọc frontmatter brief. Đây là dep thêm ngoài §3, Nam đã ủy quyền chọn công cụ.
+- **Ảnh minh họa fixture** `assets/_demo/sipos-kiem-kho.png`: chụp từ `assets/_demo/sipos-kiem-kho.html` (mock giao diện kiểm kho do repo tự dựng, không phải ảnh chụp sản phẩm thật). Chỉ dùng cho brief mẫu và test.
+- **Render test**: chụp khung đã đứng yên (cuối hook, cuối cảnh giữa, cuối CTA) của 2 template × 3 phong cách; so SSIM với `tests/baseline/` (ngưỡng 0.97). Hai lần render liên tiếp cho SSIM 1.0000, tức render xác định.
+- **Hiệu năng**: `pnpm make _example` (21 giây, quality standard) mất ~42 giây; 8 brief e2e bản draft mất 35–75 giây mỗi brief trên Mac Intel 2017.
+- **Video (quay màn hình, clip)**: phải là clip có timing riêng, nằm trực tiếp trong root, không nằm trong phần tử có timing. Đã thử: video không có timing đặt trong cảnh thì **đứng hình** (khung 13 giây = 16 giây). `scene-kit.js` chèn video ngay trước cảnh của nó (đặt đúng vùng màn hình phone, hoặc tràn màn hình), cho chạy cùng hiệu ứng vào/zoom của phone. Khi chuyển cảnh, video tịnh tiến theo cảnh (push) hoặc mờ dần (zoom/blur). Fixture `demo-san-pham` (video trong phone) và `huong-dan-nhieu-buoc` (video tràn màn hình) kiểm điều này trong e2e.
+- **Sửa sau code review** (`plans/reports/code-reviewer-261008-m1-review.md`):
+  - Render ra file tạm, chỉ thay `out/<slug>.mp4` khi đạt chuẩn, và luôn dọn file tạm.
+  - `validate` báo phong cách chưa có preset; đối chiếu `style`/`music` của brief với kịch bản; cảnh báo khi brief để trống phong cách mà kịch bản khác mặc định; chặn asset ngoài dự án, sai đuôi hoặc là thư mục; chặn mã cảnh trùng; video > 45 giây tối đa 3 ý; cảnh báo chữ cảnh > 10 từ và thiếu `selfScore`.
+  - Lỗi dài: chỉ in 12 dòng đầu cho MKT, phần đủ ghi vào `out/last-error.log`.
+  - `preview` chỉ tắt bản xem thử của dự án (project trong `out/stage/`), và tắt trước khi dựng lại.
+  - Cờ dòng lệnh lạ thì báo lỗi.
+  - e2e không ghi `props.json` vào fixture.
+  - Bộ lọc "tải tài nguyên lỗi" chỉ bắt HTTP 404 / request failed / `net::`. HyperFrames có in dòng `Asset load failure: [FrameCapture:INIT] complete` dù không có lỗi; bộ lọc cũ bắt nhầm dòng này làm 1 brief e2e fail ngẫu nhiên.
+- **Chưa làm** (theo review, mức thấp): brand lint chưa bắt màu viết camelCase trong JS hay tên màu CSS (`red`), và có thể báo nhầm selector dạng `#add`.
+- **Chưa có**: nhạc thật (Nam chọn); lower third (Testimonial, M3).

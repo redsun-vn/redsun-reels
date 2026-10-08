@@ -1,0 +1,59 @@
+{
+  "concept": {
+    "title": "Mẫu ra-mat-tinh-nang",
+    "bigIdea": "Fixture kiểm template M1",
+    "hookAngle": "cau-hoi-noi-dau"
+  },
+  "videoType": "ra-mat-tinh-nang",
+  "style": "toi-gian",
+  "template": "FeatureLaunch",
+  "product": "sipos",
+  "hook": "Bạn vẫn kiểm kho bằng sổ tay?",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Bạn vẫn kiểm kho bằng sổ tay?",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 4.5
+    },
+    {
+      "id": "c1-problem",
+      "role": "problem",
+      "onScreenText": "Mỗi tối lại ngồi đếm hàng",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 7.0,
+      "subText": "Sai một số là lệch cả tháng"
+    },
+    {
+      "id": "c2-solution",
+      "role": "solution",
+      "onScreenText": "Quét mã vạch, tồn kho cập nhật ngay",
+      "visual": {
+        "type": "phone",
+        "src": "assets/_demo/sipos-kiem-kho.png",
+        "focus": {
+          "x": 50,
+          "y": 22
+        }
+      },
+      "durationSec": 8.5,
+      "subText": "Ngay trên điện thoại"
+    },
+    {
+      "id": "c3-cta",
+      "role": "cta",
+      "onScreenText": "Tìm hiểu thêm tại sipos.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 3.5
+    }
+  ],
+  "cta": "Tìm hiểu thêm tại sipos.vn",
+  "music": "test-pad-01"
+}

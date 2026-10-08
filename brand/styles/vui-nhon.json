@@ -1,0 +1,9 @@
+{
+  "id": "vui-nhon",
+  "transition": { "type": "elastic-push", "duration": 0.5, "ease": "power4.out" },
+  "text": { "enter": "pop", "duration": 0.4, "ease": "back.out(2.2)", "wordStagger": 0.05 },
+  "kenBurns": 1.08,
+  "accent": "sticker",
+  "ctaPulse": true,
+  "musicMood": ["vui-nhon", "nang-dong"]
+}

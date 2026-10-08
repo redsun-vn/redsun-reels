@@ -31,13 +31,13 @@ colors:
   black: "#111111"
 
 typography:
-  hero:    { fontFamily: "Montserrat", px: 120, weight: 800, lineHeight: 1.1 }
-  h1:      { fontFamily: "Montserrat", px: 96,  weight: 700, lineHeight: 1.1 }
-  h2:      { fontFamily: "Montserrat", px: 72,  weight: 700, lineHeight: 1.15 }
-  body:    { fontFamily: "Montserrat", px: 52,  weight: 500, lineHeight: 1.3 }
-  caption: { fontFamily: "Montserrat", px: 44,  weight: 700, lineHeight: 1.3 }
-  small:   { fontFamily: "Montserrat", px: 32,  weight: 500, lineHeight: 1.3 }
-  quote:   { fontFamily: "Montserrat", px: 64,  weight: 500, italic: true, lineHeight: 1.25 }
+  hero:    { fontFamily: "Montserrat", px: 120, weight: 800, lineHeight: 1.25 }
+  h1:      { fontFamily: "Montserrat", px: 96,  weight: 700, lineHeight: 1.25 }
+  h2:      { fontFamily: "Montserrat", px: 72,  weight: 700, lineHeight: 1.25 }
+  body:    { fontFamily: "Montserrat", px: 52,  weight: 500, lineHeight: 1.45 }
+  caption: { fontFamily: "Montserrat", px: 44,  weight: 700, lineHeight: 1.45 }
+  small:   { fontFamily: "Montserrat", px: 32,  weight: 500, lineHeight: 1.45 }
+  quote:   { fontFamily: "Montserrat", px: 64,  weight: 500, italic: true, lineHeight: 1.35 }
 
 spacing:
   safe-top: "220px"
@@ -78,6 +78,8 @@ Video ngắn dọc cho 3 sản phẩm (SIPOS, Redsun BOS, Webino) và thương h
 
 ## Typography
 - **Chỉ Montserrat** (variable 100–900, có italic), file local ở `brand/fonts/`. Không thêm font thứ hai cho mọi phong cách, kể cả `thu-cong`.
+- Khoảng cách dòng tối thiểu 1.25 cho tiêu đề, 1.45 cho chữ thường (dấu chồng tiếng Việt cần chỗ).
+- Chữ dài tự co cỡ theo thang hero → h1 → h2 → h3 → body để không tràn vùng (hook tối đa 3 dòng, chữ cảnh 4 dòng).
 - Hook dùng `hero` 800; chữ cảnh dùng `h1`/`h2` 700; dòng phụ dùng `body` 500. Chữ số viết bằng số (30%, 199.000đ).
 - Viết hoa đúng tên sản phẩm: SIPOS, REDSUN BOS, Webino.
 
