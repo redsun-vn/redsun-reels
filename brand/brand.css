@@ -1,0 +1,120 @@
+/*
+ * brand.css — nguồn biến CSS duy nhất cho mọi template, sub-composition và preset phong cách.
+ * Đồng bộ với brand/frame.md (frontmatter là chuẩn). Template KHÔNG được hard-code màu, font, cỡ chữ.
+ * Màu lấy từ logo chính thức (REQUIREMENTS v0.4 §5.3). Chọn sản phẩm bằng thuộc tính data-product trên root.
+ */
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("./fonts/montserrat-variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("./fonts/montserrat-italic-variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: block;
+}
+
+:root {
+  /* Canvas */
+  --canvas-width: 1080px;
+  --canvas-height: 1920px;
+
+  /* Font: một họ duy nhất (Montserrat), tối đa 2 font theo frame.md */
+  --font-heading: "Montserrat", sans-serif;
+  --font-body: "Montserrat", sans-serif;
+  --weight-hero: 800;
+  --weight-heading: 700;
+  --weight-body: 500;
+  --weight-light: 400;
+
+  /* Thang chữ cho 1080×1920 */
+  --type-hero: 120px;
+  --type-h1: 96px;
+  --type-h2: 72px;
+  --type-body: 52px;
+  --type-caption: 44px;
+  --type-small: 32px;
+  --line-tight: 1.1;
+  --line-normal: 1.3;
+
+  /* Safe zone (REQUIREMENTS §5.4, giá trị mặc định chờ chốt theo nền tảng) */
+  --safe-top: 220px;
+  --safe-bottom: 420px;
+  --safe-right: 160px;
+  --safe-left: 80px;
+
+  /* Khoảng cách */
+  --space-xs: 12px;
+  --space-sm: 24px;
+  --space-md: 40px;
+  --space-lg: 64px;
+  --space-xl: 96px;
+
+  /* Chuyển động cơ bản (preset phong cách ghi đè trong brand/styles/) */
+  --motion-fast: 0.25s;
+  --motion-medium: 0.45s;
+  --motion-slow: 0.8s;
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --scene-enter: 0.5s; /* khớp tham số "animation vào" trong config/scene-timing.ts */
+
+  /* Màu trung tính dùng chung */
+  --color-white: #FFFFFF;
+  --color-black: #111111;
+  --color-gray: #58595B;
+  --color-debug-unsafe: rgba(255, 0, 80, 0.28); /* chỉ dùng cho lớp debug safe zone */
+
+  /* Mặc định = Redsun (công ty) */
+  --color-primary: #BA0000;
+  --color-secondary: #58595B;
+  --color-accent: #EBAB32;
+  --color-background: #FFFFFF;
+  --color-text: #111111;
+  --color-text-inverse: #FFFFFF;
+}
+
+/* SIPOS — logo chuẩn Logo_green-01.png: teal #0B4B54, đỏ #E30000 */
+[data-product="sipos"] {
+  --color-primary: #0B4B54;
+  --color-secondary: #E30000;
+  --color-accent: #E30000;
+  --color-background: #0B4B54;
+  --color-text: #FFFFFF;
+  --color-text-inverse: #0B4B54;
+}
+
+/* Redsun BOS — logo: đỏ #D1262D, mận #3D0023, vàng #EAAE2D, xanh #44649B; chữ logo #0C4559 */
+[data-product="bos"] {
+  --color-primary: #D1262D;
+  --color-secondary: #3D0023;
+  --color-accent: #EAAE2D;
+  --color-highlight: #44649B;
+  --color-background: #0C4559;
+  --color-text: #FFFFFF;
+  --color-text-inverse: #0C4559;
+}
+
+/* Webino — logo: cyan #00B2DB, tím #5B1A9A */
+[data-product="webino"] {
+  --color-primary: #00B2DB;
+  --color-secondary: #5B1A9A;
+  --color-accent: #00B2DB;
+  --color-background: #5B1A9A;
+  --color-text: #FFFFFF;
+  --color-text-inverse: #5B1A9A;
+}
+
+/* Redsun (công ty) — logo vector: đỏ #BA0000, vàng #EBAB32, xám #58595B */
+[data-product="redsun"] {
+  --color-primary: #BA0000;
+  --color-secondary: #58595B;
+  --color-accent: #EBAB32;
+  --color-background: #FFFFFF;
+  --color-text: #111111;
+  --color-text-inverse: #FFFFFF;
+}

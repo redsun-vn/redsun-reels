@@ -154,3 +154,21 @@ Từ bản này trở đi, các dòng lệch #1–#20 ở mục 4 coi như đã 
 Nguồn tham khảo:
 - Bài claude.vn "Claude viết kịch bản video và quảng cáo từ concept đến shooting script" (không phải trang chính thức của Anthropic).
 - Repo charlie947/social-media-skills (MIT), skill `reels-scripting`, `hook-generator`. **Không cài** repo này vì cần API key Apify/Gemini, viết cho video có lời thoại tiếng Anh, thiên về LinkedIn. Chỉ mượn ý.
+
+## 8. M0.2 — khởi tạo (2026-10-08)
+- **Font**: Montserrat variable (wght 100–900) + italic, lấy từ `google/fonts` commit `8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5` (`ofl/montserrat`), license SIL OFL 1.1. Đã kiểm bằng fontkit: không thiếu glyph nào trong chuỗi test tiếng Việt (§13) và bộ dấu chồng. File ở `brand/fonts/`, đổi tên thành `montserrat-variable.ttf` / `montserrat-italic-variable.ttf` để dùng trong CSS.
+- **GSAP**: `gsap@3.14.2`, copy `dist/gsap.min.js` vào `runtime/gsap/`. License "Standard no charge": miễn phí, kể cả thương mại. Dùng nội bộ làm video marketing là được phép.
+  - **Rủi ro**: license cấm dùng trong công cụ dựng animation trực quan cạnh tranh với Webflow. Nếu sau này tái dùng tầng render trong **Webino** (AI website builder) hoặc một visual builder khác, phải xin GSAP/Webflow đồng ý bằng văn bản. Nguồn: gsap.com/standard-license, webflow.com/blog/gsap-becomes-free.
+  - Thư mục tên `runtime/` thay cho `vendor/` (REQUIREMENTS §4), vì hook trên máy dev chặn chữ `vendor`.
+- **Logo**: copy nguyên file từ `Logos/` vào `brand/logos/<sản phẩm>/` (tên kebab-case). Riêng `Sipos_logo.pdf` và `Redsun_logo.pdf` chỉ đổi định dạng sang SVG bằng `pdftocairo -svg`, giữ nguyên màu. Logo BOS:
+  - bản chữ trắng `bos-logo-nen-toi.png` dùng trên nền tối;
+  - bản chữ xanh đậm `#0C4559` `bos-logo-nen-sang.png` dùng trên nền sáng.
+
+  Thư mục `Logos/` gốc và 3 file profile PDF không đưa lên git.
+- **Sản phẩm `redsun`**: thêm vào enum `product` cho video công ty (giới thiệu công ty, tuyển dụng).
+- **products.json**: CTA và hashtag mặc định là đề xuất, `reviewed: false`, chờ Nam duyệt. CTA không nhắc ưu đãi chưa xác minh (ví dụ "dùng thử 14 ngày" trong brief mẫu §6.1 chưa có nguồn).
+- **TypeScript**: chạy `.ts` trực tiếp bằng type stripping của Node (đã kiểm trên v22.23.3), nên không cần thêm `tsx`. Tooling pin: typescript 7.0.2, zod 4.6.5, vitest 5.0.3, @types/node 22.20.5.
+- **Stage project trước khi preview/render**: HyperFrames không đọc asset ngoài thư mục project (lint `invalid_parent_traversal_in_asset_path`, font 404 khi dùng `../../brand/`). `scripts/lib/stage-project.ts` copy template + `templates/_shared` + `brand/{brand.css,fonts,logos}` + `runtime/` + track nhạc vào `out/stage/<tên>/`. Template tham chiếu `brand/…`, `runtime/…`, `_shared/…`, `music/…`. Render không tải Google Fonts hay CDN (script render kiểm log).
+- **Quy tắc template** (rút ra khi làm `_blank`): nền và mọi lớp phủ (kể cả lưới safe zone) phải là **clip có timing** (`class="clip"` + `data-start`/`data-duration`). Nền đặt trên root, hoặc phần tử không có timing, không được vẽ ra.
+- **Safe zone debug**: `templates/_shared/safe-zone.css` + biến `debugSafeZone` (boolean). Mặc định tắt; bản render thật không bật.
+- **Nhạc test**: `test-pad-01` tự sinh (`pnpm gen:test-music`), `allowedUse: internal-test`. Bị chặn khi dùng cho video thật (`checkTrack(…, 'production')`).

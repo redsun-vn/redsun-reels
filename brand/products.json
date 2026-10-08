@@ -1,0 +1,57 @@
+{
+  "$comment": "Cấu hình theo sản phẩm (REQUIREMENTS v0.4 §5.3). Tagline/URL lấy từ profile 2026 và website chính thức. CTA và hashtag là đề xuất mặc định, chưa chạy thử: Nam/MKT lead duyệt rồi đổi `reviewed` thành true.",
+  "products": {
+    "sipos": {
+      "displayName": "SIPOS",
+      "url": "sipos.vn",
+      "tagline": "Không chỉ là phần mềm, là Trợ lý tăng trưởng",
+      "logos": {
+        "onDark": "brand/logos/sipos/sipos-logo-trang.png",
+        "onLight": "brand/logos/sipos/sipos-logo-chuan.svg",
+        "icon": "brand/logos/sipos/sipos-icon.webp"
+      },
+      "defaultCta": "Tìm hiểu thêm tại sipos.vn",
+      "hashtags": ["#SIPOS", "#phanmemquanlybanhang", "#Redsun"],
+      "reviewed": false
+    },
+    "bos": {
+      "displayName": "REDSUN BOS",
+      "url": "redsun.vn/phan-mem-van-hanh-doanh-nghiep-redsun-bos",
+      "tagline": "Nền tảng quản trị doanh nghiệp với AI",
+      "logos": {
+        "onDark": "brand/logos/bos/bos-logo-nen-toi.png",
+        "onLight": "brand/logos/bos/bos-logo-nen-sang.png"
+      },
+      "defaultCta": "Yêu cầu tư vấn tại redsun.vn",
+      "hashtags": ["#RedsunBOS", "#quantridoanhnghiep", "#Redsun"],
+      "reviewed": false
+    },
+    "webino": {
+      "displayName": "Webino",
+      "url": "webino.vn",
+      "tagline": "Color Your Web, Create Your World",
+      "logos": {
+        "onDark": "brand/logos/webino/webino-logo-trang.png",
+        "onLight": "brand/logos/webino/webino-logo-chuan.png",
+        "icon": "brand/logos/webino/webino-icon.png",
+        "iconOnDark": "brand/logos/webino/webino-icon-trang.png"
+      },
+      "defaultCta": "Tạo website tại webino.vn",
+      "hashtags": ["#Webino", "#AIwebsitebuilder", "#Redsun"],
+      "reviewed": false
+    },
+    "redsun": {
+      "displayName": "REDSUN",
+      "url": "redsun.vn",
+      "tagline": "The Leading Web Based Solutions",
+      "logos": {
+        "onDark": "brand/logos/redsun/redsun-logo-trang.png",
+        "onLight": "brand/logos/redsun/redsun-logo-chuan.svg",
+        "icon": "brand/logos/redsun/redsun-icon.png"
+      },
+      "defaultCta": "Tìm hiểu thêm tại redsun.vn",
+      "hashtags": ["#Redsun", "#RedsunEcosys"],
+      "reviewed": false
+    }
+  }
+}

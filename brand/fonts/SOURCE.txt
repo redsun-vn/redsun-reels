@@ -1,0 +1,3 @@
+Montserrat (SIL Open Font License 1.1)
+Nguồn: https://github.com/google/fonts/tree/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/montserrat
+montserrat-variable.ttf = Montserrat[wght].ttf, montserrat-italic-variable.ttf = Montserrat-Italic[wght].ttf (đổi tên để dùng trong CSS)

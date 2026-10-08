@@ -148,18 +148,19 @@ redsun-reels/
 ├── brand/
 │   ├── frame.md                # Design system cho video (chuẩn HyperFrames)
 │   ├── brand.css               # CSS variables sinh từ / đồng bộ với frame.md
-│   ├── products.json           # Cấu hình theo sản phẩm: SIPOS / BOS / Webino
+│   ├── products.json           # Cấu hình theo sản phẩm: SIPOS / BOS / Webino / Redsun
 │   ├── styles/                 # Preset phong cách: <id>.json hoặc <id>.css
 │   ├── fonts/                  # Montserrat (OFL), bản local
 │   ├── logos/
 │   └── music/                  # Nhạc đã có license + manifest.json (mục 8)
-├── vendor/                     # GSAP bản local
+├── runtime/                    # GSAP bản local (runtime/gsap/)
 ├── assets/
 │   ├── sipos/                  # screenshot, screen record, ảnh
 │   ├── bos/
 │   └── webino/
 ├── templates/
-│   ├── _shared/                # sub-composition dùng chung (mục 7)
+│   ├── _shared/                # sub-composition + CSS dùng chung (safe-zone.css…) (mục 7)
+│   ├── _blank/                 # composition trống để kiểm môi trường (M0.2)
 │   ├── FeatureLaunch/
 │   │   ├── index.html          # composition gốc (root KHÔNG khai data-duration)
 │   │   ├── template.schema.ts  # zod schema cho props của template
@@ -179,7 +180,7 @@ redsun-reels/
 │   ├── validate.ts             # Validate brief/script/props/assets/nhạc
 │   ├── build.ts                # brief + script + nhạc → props.json (timing cảnh theo độ dài chữ)
 │   └── render.ts               # gọi hyperframes render --variables-file + kiểm tra output
-└── out/                        # Gitignored
+└── out/                        # Gitignored; out/stage/<tên>/ = project tạm cho preview/render
 ```
 
 ---
@@ -199,14 +200,14 @@ Nguồn sự thật duy nhất cho định hướng thị giác, viết theo chu
 CSS custom properties (`--color-primary`, `--font-heading`, `--type-hero`…). Mọi template, sub-composition và preset phong cách **chỉ** dùng các biến này. Cấm hard-code màu, font, cỡ chữ trong template. Có script/lint kiểm tra (mục 13). `hyperframes lint` không bắt lỗi này, nên phải tự viết.
 
 ### 5.3 `brand/products.json`
-Mỗi sản phẩm có: tên hiển thị, logo, màu, tagline, CTA mặc định, hashtag mặc định. Template nhận `product: "sipos" | "bos" | "webino"` và lấy cấu hình tương ứng.
+Mỗi sản phẩm có: tên hiển thị, logo, màu, tagline, CTA mặc định, hashtag mặc định. Template nhận `product: "sipos" | "bos" | "webino" | "redsun"` (đặt `data-product` trên root) và lấy cấu hình tương ứng.
 
 | Sản phẩm | Màu chính | Màu nhấn / phụ | Logo chuẩn | Trạng thái |
 |---|---|---|---|---|
 | SIPOS | `#0B4B54` | `#E30000` | `Logos/Sipos_Logo/Logo_green-01.png` + `Sipos_logo.pdf` | Nam đã chốt |
 | Redsun (công ty) | `#BA0000` | `#EBAB32`, xám `#58595B` | `Logos/Redsun_Logo/Redsun_logo.pdf` | Lấy từ logo (Nam chốt) |
 | Webino | `#00B2DB` | tím `#5B1A9A` | `Logos/Webino_Logo/Logo.png` (và bản trắng, icon) | Lấy từ logo (Nam chốt) |
-| Redsun BOS | `#D1262D` | mận `#3D0023`, vàng `#EAAE2D`, xanh `#44649B` | `Logos/REDSUN BOS_Logo/Logo Redsun BOS-sáng.png` / `-tối.png` | Lấy từ logo (Nam chốt) |
+| Redsun BOS | `#D1262D` | mận `#3D0023`, vàng `#EAAE2D`, xanh `#44649B`, chữ logo `#0C4559` | `Logos/REDSUN BOS_Logo/Logo Redsun BOS-sáng.png` / `-tối.png` | Lấy từ logo (Nam chốt) |
 
 Tên đọc liền như một từ: SIPOS, REDSUN, REDSUN BOS. Chữ trên màn hình luôn viết hoa đúng tên sản phẩm.
 
@@ -227,7 +228,7 @@ File `briefs/<slug>/brief.md` với YAML frontmatter:
 
 ```yaml
 ---
-product: sipos                 # sipos | bos | webino
+product: sipos                 # sipos | bos | webino | redsun (video công ty: giới thiệu, tuyển dụng)
 videoType: ra-mat-tinh-nang    # id trong config/video-types.ts, hoặc "auto" để Claude đề xuất
 style:                         # tùy chọn: bỏ trống = mặc định của videoType; "auto" = Claude đề xuất
 occasion:                      # tùy chọn: dịp lễ (tet, 14-2, 8-3, 20-10…), có thể đổi phong cách mặc định
@@ -266,7 +267,7 @@ const Script = z.object({
   videoType: z.string(),
   style: z.string(),
   template: z.string(),
-  product: z.enum(['sipos', 'bos', 'webino']),
+  product: z.enum(['sipos', 'bos', 'webino', 'redsun']),
   hook: z.string(),        // chữ 3 giây đầu — bắt buộc
   scenes: z.array(Scene).min(2).max(12),
   cta: z.string(),
@@ -321,7 +322,8 @@ briefs/2026-10-08-sipos-tinh-nang-kho/
 
 ### 6.4 Từ props đến video (phương án A — đã chốt ở Spike S4)
 - Template khai `data-composition-variables` trên `<html>`, dùng `data-var-text` / `data-var-src`, đọc logic qua `window.__hyperframes.getVariables()`.
-- `build.ts` chỉ ghi `props.json`; `render.ts` gọi `hyperframes render <template> --variables-file props.json --strict-variables`.
+- `build.ts` chỉ ghi `props.json`. `render.ts` dựng project tạm `out/stage/<slug>/` (copy template, `_shared`, `brand/`, `runtime/`, nhạc), vì HyperFrames không đọc asset ngoài thư mục project. Sau đó gọi `hyperframes render out/stage/<slug> --variables-file props.json --strict-variables`.
+- Nền và lớp phủ phải là clip có timing (`class="clip"`); không đặt nền trên root.
 - Bắt buộc:
   - Root composition **không** khai `data-duration`. Thời lượng root bị khóa lúc compile; bỏ đi thì renderer tự tính từ các clip.
   - Danh sách cảnh truyền dưới dạng **chuỗi JSON**, vì variables không có kiểu mảng. zod validate trước khi stringify.
@@ -558,7 +560,7 @@ Ràng buộc skill:
 
 **M0.2 Khởi tạo (0.5–1 ngày)**
 - Scaffold repo theo mục 4, pin version (đã có `package.json`), `.claude/settings.json`.
-- `brand/frame.md` + `brand.css` theo mục 5.3, `brand/fonts/` (Montserrat), `vendor/` (GSAP local).
+- `brand/frame.md` + `brand.css` theo mục 5.3, `brand/fonts/` (Montserrat), `runtime/` (GSAP local).
 - `brand/music/`: MKT lead chọn 20–30 track không lời từ Pixabay Music + Mixkit theo nhóm phong cách, lưu bằng chứng license, dev ghi manifest. Nên đăng thử 5–10 track ở chế độ riêng tư để kiểm Content ID.
 - `config/video-types.ts`, `config/styles.ts` theo `docs/video-type-guide.md`.
 - `pnpm doctor`.

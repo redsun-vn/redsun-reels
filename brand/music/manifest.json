@@ -1,0 +1,23 @@
+{
+  "tracks": [
+    {
+      "id": "test-pad-01",
+      "file": "test-pad-01.mp3",
+      "title": "Test pad 01 (tự sinh)",
+      "author": "redsun-reels (scripts/gen-test-music.ts)",
+      "source": "generated-in-repo",
+      "sourceUrl": "scripts/gen-test-music.ts",
+      "license": "Nội bộ, tự sinh bằng ffmpeg (không có bên thứ ba)",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-08",
+      "evidence": "n/a",
+      "mood": ["toi-gian", "thu-gian"],
+      "bpm": null,
+      "durationSec": 40,
+      "allowedUse": ["internal-test"],
+      "blocked": false,
+      "notes": "Chỉ để preview/render thử ở M0.2. Nhạc thật do Nam chọn từ Pixabay Music + Mixkit (docs/music-sources.md)."
+    }
+  ]
+}

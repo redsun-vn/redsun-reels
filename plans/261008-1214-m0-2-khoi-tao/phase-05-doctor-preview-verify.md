@@ -1,7 +1,7 @@
 ---
 phase: 5
 title: "doctor + preview + kiểm tra"
-status: pending
+status: completed
 priority: P1
 effort: "2h"
 dependencies: [2, 3, 4]
@@ -16,8 +16,9 @@ dependencies: [2, 3, 4]
 - Create: `scripts/lib/hyperframes-env.ts`: đặt `HYPERFRAMES_FFMPEG_PATH`/`FFPROBE_PATH`, `HYPERFRAMES_NO_TELEMETRY`, `HYPERFRAMES_NO_UPDATE_CHECK`, `HYPERFRAMES_SKIP_SKILLS`; chạy CLI.
 - Create: `scripts/doctor.ts`: Node ≥22, hyperframes version = pin, `hyperframes doctor`, file font, GSAP, manifest nhạc hợp lệ. Thông báo tiếng Việt.
 - Create: `scripts/preview.ts`: mặc định mở `templates/_blank` (port 3002, `--background`), có `--stop`.
-- Create: `templates/_shared/safe-zone.html` (chỉ hiện khi debug), `templates/_blank/index.html` (dùng brand.css, font local, GSAP local, track nhạc test, safe zone debug bật bằng biến `debugSafeZone`).
-- Create: script copy `brand/`, `vendor/` vào project template khi preview/render nếu HyperFrames không đọc được đường dẫn ngoài thư mục project. Spike sẽ xác định có cần không.
+- Create: `templates/_shared/safe-zone.css` (thay cho safe-zone.html; chỉ hiện khi debug), `templates/_blank/index.html` (dùng brand.css, font local, GSAP local, track nhạc test, safe zone debug bật bằng biến `debugSafeZone`).
+- Create: `scripts/lib/stage-project.ts`: **cần**. HyperFrames không đọc asset ngoài project (lint `invalid_parent_traversal_in_asset_path`, font 404), nên copy `brand/`, `runtime/`, `_shared`, nhạc vào `out/stage/<tên>/`.
+- Create: `scripts/render-blank.ts` (`pnpm render:blank [--safe-zone]`).
 
 ## Verification
 - `pnpm doctor` exit 0.

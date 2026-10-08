@@ -1,0 +1,48 @@
+/*
+ * Lớp debug safe zone (REQUIREMENTS §5.4). Chỉ hiện khi root có class `debug-safe-zone`
+ * (bật bằng biến `debugSafeZone` lúc preview). Bản render thật luôn tắt.
+ */
+.safe-zone-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.debug-safe-zone .safe-zone-overlay {
+  display: block;
+}
+
+.safe-zone-overlay .unsafe {
+  position: absolute;
+  background: var(--color-debug-unsafe);
+}
+
+.safe-zone-overlay .unsafe.top {
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--safe-top);
+}
+
+.safe-zone-overlay .unsafe.bottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--safe-bottom);
+}
+
+.safe-zone-overlay .unsafe.right {
+  top: var(--safe-top);
+  bottom: var(--safe-bottom);
+  right: 0;
+  width: var(--safe-right);
+}
+
+.safe-zone-overlay .unsafe.left {
+  top: var(--safe-top);
+  bottom: var(--safe-bottom);
+  left: 0;
+  width: var(--safe-left);
+}

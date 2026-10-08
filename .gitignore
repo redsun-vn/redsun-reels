@@ -22,3 +22,6 @@ docs/spike-audio/**/*.wav
 briefs/*/audio/
 
 .DS_Store
+
+# Nhạc test tự sinh (pnpm gen:test-music)
+brand/music/test-pad-01.mp3

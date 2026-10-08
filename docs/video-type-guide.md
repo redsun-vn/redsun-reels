@@ -148,7 +148,8 @@ Phần lớn kết hợp loại × phong cách đều dùng được. Bảng dư
 | Chúc mừng dịp lễ | `khuyen-mai`, `tin-tuc` | lời chúc không nên giống quảng cáo |
 | Demo thao tác, Hướng dẫn | `glitch-cyberpunk`, `hanh-dong` | chuyển động nhanh che mất UI |
 | Khuyến mãi | `thu-gian`, `sang-trong` | năng lượng không khớp sự gấp gáp |
-| Tuyển dụng, Giới thiệu công ty | `glitch-cyberpunk`, `vui-nhon` (nếu B2B) | không hợp hình ảnh doanh nghiệp, cần Nam chốt |
+| Giới thiệu công ty | `glitch-cyberpunk`, `vui-nhon` | không hợp hình ảnh doanh nghiệp |
+| Tuyển dụng | `glitch-cyberpunk` | `vui-nhon` được phép (văn hóa công ty trẻ), khớp `config/video-types.ts` |
 
 ## 5. Đề xuất triển khai
 
