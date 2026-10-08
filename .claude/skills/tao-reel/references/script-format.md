@@ -22,14 +22,22 @@ Mỗi cảnh:
 - `role`: `hook` / `problem` / `solution` / `proof` / `cta`, theo đúng thứ tự `./reel info <loại>`.
 - `onScreenText`: chữ chính, ≤ 80 ký tự, nên ≤ 10 từ.
 - `subText` (tuỳ chọn): dòng phụ, ≤ 120 ký tự.
-- `visual`: `{ type, src?, focus? }`:
+- `visual`: `{ type, src?, focus?, srcs?, clipStart?, mute? }`:
   - `text`: chỉ có chữ.
   - `phone`: ảnh/clip màn hình trong khung điện thoại. Cần `src`. `focus: {x, y}` (phần trăm) là chỗ cần vòng chỉ vào và zoom.
   - `asset`: ảnh/clip tràn màn hình, chữ ở dưới. Cần `src`.
+    - Clip: `clipStart` = giây bắt đầu trong clip gốc. Cảnh liền nhau cùng clip, không ghi `clipStart` → clip chạy liền mạch qua các cảnh, chỉ chữ đổi.
+    - Loại video giữ tiếng gốc (`khach-hang-noi`, `video-co-nguoi-noi`): clip giữ tiếng, nhạc tự hạ xuống. `mute: true` để tắt tiếng một clip.
+  - `montage` (EventRecap): `srcs` là 2–6 ảnh/clip cắt nhanh trong một cảnh, mỗi hình ≥ 0.6 giây.
   - `split` (BeforeAfter): màn hình chia đôi. `src` là ảnh/clip TRƯỚC, `srcAfter` là ảnh/clip SAU.
   - `logo`: dùng cho cảnh `cta` (logo lớn + câu kêu gọi).
 - `durationSec`: số giây hiển thị.
-- `attribution` (Testimonial): tên khách + cửa hàng cho lower third, ≤ 60 ký tự, vd. `"Chị Hạnh · Quán cà phê Mộc, Đà Lạt"`. Cảnh này hiện dạng câu trích dẫn (ngoặc kép lớn, chữ nghiêng).
+- `attribution` (Testimonial, TalkingHead): tên + cửa hàng/chức danh cho lower third, ≤ 60 ký tự, vd. `"Chị Hạnh · Quán cà phê Mộc, Đà Lạt"`. Testimonial: cảnh hiện dạng câu trích dẫn (ngoặc kép lớn, chữ nghiêng). TalkingHead: tên người nói dưới chữ.
+- `stats` (Stats): 1–3 chỉ số `{ value, label }`.
+  - `value` ≤ 12 ký tự, chép đúng cách viết trong brief, vd. `"1.200+"`, `"98%"`, `"4,8"`, `"10 phút"`. Số đếm lên từ 0; giá trị có `%` có thêm thanh tiến độ.
+  - `label` ≤ 40 ký tự.
+  - `chart: "bar"`: vẽ thành biểu đồ cột ngang. Cần ≥ 2 chỉ số cùng đơn vị.
+  - Cảnh dài ≥ 2.9 giây + 0.3 giây mỗi chỉ số thêm (`./reel validate` báo con số cụ thể). Visual là `text`.
 - `promo` (Promo): `{ badge?, priceOld?, priceNew?, deadline?, countdownFrom? }`.
   - `badge` ≤ 12 ký tự, vd. `"-30%"`, `"Miễn phí"`.
   - `priceOld` là giá cũ, hiện gạch ngang; `priceNew` là giá mới, hiện to.
@@ -43,10 +51,14 @@ Mỗi cảnh:
 | BeforeAfter | Cảnh `problem` gắn nhãn TRƯỚC (ảnh bị làm nhạt), `solution` gắn nhãn SAU; lần chuyển vào cảnh SAU đầu tiên luôn là wipe. Cảnh `proof` nên dùng `split` |
 | Testimonial | Cảnh có `attribution` = lời khách. Quote phải là **nguyên văn hoặc rút gọn** lời khách trong brief, không đổi ý |
 | Promo | Cảnh có `promo` hiện badge, giá, hạn chót, đếm ngược ở nửa dưới; chữ chính lên trên |
+| EventRecap | Cảnh `montage` cắt nhanh ảnh/clip thật của sự kiện, chữ tiêu đề ở dưới. Ảnh phải là ảnh thật MKT đưa |
+| Stats | Cảnh có `stats` hiện số đếm lên ở nửa dưới; chữ chính (tiêu đề nhóm số) lên trên |
+| TalkingHead | Clip người nói tràn màn hình, giữ tiếng. `onScreenText` là **ý chính** của lời nói (không phải phụ đề từng chữ), đặt cảnh theo lúc người nói chuyển ý. Cảnh CTA không có clip nên nhạc lên lại |
 
 Quy tắc chung:
 - Cảnh đầu là `hook`, có `onScreenText` = `hook` (bỏ `\n`).
 - Ảnh/clip đặt trong `assets/…`. Đuôi hỗ trợ: png, jpg, webp, svg, mp4, mov, webm.
+- Clip phải đủ dài cho đoạn dùng (`clipStart` + thời lượng các cảnh nối tiếp); validate đo bằng ffprobe.
 
 ## Thời lượng mỗi cảnh
 `durationSec ≥ max(1.5, số từ × 0.4) + 0.5` giây. Số từ tính cả `subText`, không tính dấu câu đứng riêng.
@@ -54,7 +66,7 @@ Quy tắc chung:
 - Có thể cho cảnh dài hơn mức tối thiểu để khớp thời lượng của brief.
 
 ## Chống bịa (validate kiểm)
-- Số trong `promo` (giá, %, ngày) phải có nguyên văn trong brief: **lỗi** nếu không có.
+- Số trong `promo` (giá, %, ngày) và `stats.value` phải có nguyên văn trong brief (kể cả đơn vị): **lỗi** nếu không có.
 - Tên trong `attribution` phải có trong brief: **lỗi** nếu không có.
 - Quote khác lời khách trong brief, hoặc số trong chữ cảnh không có trong brief: **cảnh báo**, hỏi MKT.
 
@@ -75,4 +87,4 @@ Tổng thời lượng phải đạt cả hai điều kiện:
 Ghi `notes` dạng: `"Hook 22/25 (…). Thông điệp 18/20 (…). …"`. Mỗi điểm có lý do cụ thể.
 
 ## Ví dụ
-Xem `briefs/_example/script.json` (SIPOS, ra mắt tính năng, FeatureLaunch, tối giản) và các brief mẫu trong `tests/fixtures/briefs/` (mỗi loại video một brief). Mẫu M3: `truoc-sau`, `so-sanh` (BeforeAfter), `khach-hang-noi` (Testimonial), `khuyen-mai`, `dem-nguoc`, `chuc-mung-dip-le`, `su-kien-webinar`, `thu-gian-asmr` (Promo).
+Xem `briefs/_example/script.json` (SIPOS, ra mắt tính năng, FeatureLaunch, tối giản) và các brief mẫu trong `tests/fixtures/briefs/` (mỗi loại video một brief). Mẫu M3: `truoc-sau`, `so-sanh` (BeforeAfter), `khach-hang-noi` (Testimonial), `khuyen-mai`, `dem-nguoc`, `chuc-mung-dip-le`, `su-kien-webinar`, `thu-gian-asmr` (Promo). Mẫu M4: `tong-ket-su-kien`, `gioi-thieu-cong-ty`, `tuyen-dung` (EventRecap), `so-lieu-thanh-tich` (Stats), `video-co-nguoi-noi` (TalkingHead).

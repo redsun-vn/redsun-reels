@@ -281,3 +281,29 @@ Nguồn tham khảo:
 - **Render test**: 5 template × 19 phong cách = 95 tổ hợp × 4 khung (thêm 1 khung giữa lần chuyển cảnh đầu). Ảnh chuẩn đổi sang JPEG 360×640, `-q:v 3` (≈ 30 KB/ảnh). `--only=<chuỗi>` để chạy một phần. Lưu ý: `hyperframes snapshot` không vẽ khung video, nên video kiểm bằng MP4 của e2e.
 - **E2E**: 16 brief mẫu (15 loại video của 5 template + test dấu). Ảnh minh họa mới: `assets/_demo/so-tay-kiem-kho.png` (mock sổ tay, tự dựng từ HTML, không phải ảnh thật).
 - **Chưa làm (M4)**: âm thanh gốc clip khách + hạ nhạc tự động. Làm cùng TalkingHead. Testimonial M3 tắt tiếng clip, lời khách hiện bằng chữ.
+
+## 12. M4: EventRecap, Stats, TalkingHead, tiếng gốc clip (2026-10-09)
+Nam: "tiếp tục" (2026-10-09). Plan: `plans/261009-0512-m4-du-20-loai/`. Nhạc giữ Pixabay/Mixkit (§8.1), chưa đổi.
+- **Template mới** (cùng vỏ `index.html`, dựng bằng kit):
+  - EventRecap: cảnh `montage` (`visual.srcs` 2–6 ảnh/clip), chia đều thời lượng cảnh, cắt gọn và zoom 1.12 → 1 mỗi hình, mỗi hình ≥ 0.6 giây. Chữ tiêu đề ở dưới trên lớp tối gradient.
+  - Stats: `stats` 1–3 chỉ số `{ value, label }`. Số đếm lên 1.2 giây bằng `onUpdate` (GSAP gọi cả khi seek nên vẫn xác định theo khung). Giá trị giữ đúng cách viết: "1.200+" (chấm nghìn), "4,8" (phẩy thập phân), "98%" (thêm thanh tiến độ). `chart: "bar"` vẽ cột ngang, cần ≥ 2 chỉ số cùng đơn vị. Nhịp chung `config/stats-timing.ts` ↔ `kit-blocks.js`.
+  - TalkingHead: clip người nói tràn khung, chữ ý chính ở dưới (nhỏ hơn để thấy người), lower third tên người nói (`attribution`).
+- **Đoạn clip liền mạch** (`scripts/lib/build-props.ts` `assignShots`), chỉ ở loại video giữ tiếng gốc: cảnh liền nhau cùng file clip, không khai `visual.clipStart` → một video chạy qua các cảnh, giữa các cảnh chỉ đổi chữ (chuyển cảnh `text-swap`). Đổi `mute` giữa chừng mở đoạn mới nhưng clip chạy tiếp từ chỗ cũ. `clipStart` (`data-media-start`) dùng được ở mọi template. Loại video khác giữ cách cũ (mỗi cảnh một clip từ 0, chuyển cảnh theo phong cách), để không đổi video đang làm. Cảnh CTA không tính.
+- **Tiếng gốc**: loại video có `keepClipAudio` (khach-hang-noi, video-co-nguoi-noi) giữ tiếng clip, trừ `visual.mute`. Testimonial có clip nay cũng giữ tiếng (M3 tắt).
+  - Video luôn `muted`; tiếng là một `<audio>` riêng (track 15) đúng đoạn của cảnh. Lý do: hình được kéo dài qua chuyển cảnh, còn tiếng thì không (tránh tiếng chồng khi hai đoạn có tiếng nối nhau). Đây là cách J/L cut của `hyperframes-core` creator-editing-recipes.
+  - Media tạo lúc chạy phải có `id`, nếu không mixer bỏ qua.
+- **Hạ nhạc** (`scripts/lib/music-ducking.ts`): lane `volume` của `data-automation` trên `#music`, 0.18 (≈ −15 dB) trong lúc có tiếng, dốc 0.3 giây, gộp khoảng cách nhau < 0.8 giây.
+  - Thử 2026-10-09 trên 0.8.141: gán `data-automation` bằng JS lúc chạy **không có tác dụng**; ghi sẵn trong HTML thì nhạc hạ ~12 dB đúng khoảng. Vì vậy bước build ghi lane vào `index.html` của bản stage (giống `injectDefaults`).
+  - Không dùng voiceover carve: carve cần phân tích offline bằng `carve.mjs` mỗi lần build, và loa điện thoại nghe Reels thì hạ âm lượng là đủ. Có thể thêm sau nếu MKT thấy nhạc lấn giọng.
+  - Đo trên brief mẫu `video-co-nguoi-noi`: nhạc (dải < 140 Hz) −28 đến −30 dB khi có tiếng, −21 đến −23 dB ở cảnh CTA; sau đó chuẩn hoá cả bài về −14 LUFS như cũ.
+- **Validate**:
+  - Lỗi: `stats.value` không có nguyên cụm trong brief, hoặc viết số mập mờ (trộn chấm và phẩy như "1.234,5"; `STAT_NUMBER_RE`, template hiện nguyên chữ nếu lọt); cảnh stats ngắn hơn `statsSequenceSec`; `chart` khác đơn vị hoặc < 2 chỉ số; video Số liệu không có cảnh stats; TalkingHead không có clip; montage thiếu `srcs` hoặc quá ngắn; clip không đủ dài cho `clipStart` + thời lượng (ffprobe, `scripts/lib/clip-check.ts`).
+  - Cảnh báo: clip giữ tiếng nhưng không có tiếng; khi đó build bỏ tiếng đoạn này và không hạ nhạc. "98 %" khớp "98%". TalkingHead không cảnh báo "quote không khớp brief", vì chữ là ý chính, còn lời nói đã có trong clip.
+- **Sửa tương phản phong cách gạch chân** (9 phong cách: toi-gian, du-lieu, tin-cay…): chữ nhấn trước đây đổi sang màu nhấn. Đỏ SIPOS trên nền teal chỉ 1.99:1 (cần 3:1); render test không chạy `check` nên trước đây không bắt được, brief mẫu Stats bắt được. Nay chữ giữ màu chữ, chỉ vạch gạch chân mang màu nhấn. Phong cách `thu-cong` (gạch lượn) cùng lỗi, sửa cùng cách. Số của Stats cũng dùng màu chữ, màu nhấn nằm ở vạch trái và thanh.
+- **Sửa sau code review** (`plans/reports/code-reviewer-261009-m4-review.md`):
+  - Lớp tối (`kit-dim`) đi cùng video qua chuyển cảnh từng bị tween opacity lên 1, che kín clip ở 10/19 phong cách. Nay độ trong suốt nằm trong màu nền (`color-mix`), và lớp tối chỉ tách khỏi cảnh khi đoạn clip kéo qua nhiều cảnh.
+  - Biểu đồ phần trăm so với 100%, đơn vị khác so với chỉ số lớn nhất.
+  - Chưa làm: kiểm cặp số–nhãn của Stats (chỉ kiểm số; nhãn có số lạ thì cảnh báo) và kiểm chữ ý chính của TalkingHead với lời nói (Claude không nghe được clip; skill yêu cầu MKT ghi lời nói vào brief).
+- **Asset thử** (`assets/_demo/`, mock tự dựng, không phải ảnh/người thật): `su-kien-1…4.jpg` (HTML `su-kien-mock.html`), `nguoi-noi-test.mp4` (ảnh `nguoi-noi-mock.html` + giọng đọc macOS "Linh", 17 giây).
+- **Render test**: 8 template × 19 phong cách = 152 tổ hợp. Video tạo lúc chạy nay có `id`, và `hyperframes snapshot` vẽ được khung video (trước đây không có `id` thì không vẽ, xem §11). Vì vậy ảnh chuẩn của mọi cảnh có clip đổi theo: đây là thay đổi do công cụ kiểm thấy thêm, không phải đổi giao diện.
+- **E2E**: 21 brief mẫu (20 loại video + test dấu).

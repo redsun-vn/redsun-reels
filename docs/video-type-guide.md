@@ -39,7 +39,7 @@ Viết tắt template: **FL** FeatureLaunch, **TIP** TipOfTheDay, **BA** BeforeA
 | 19 | `video-co-nguoi-noi` Có người nói trước camera | MKT tự quay, cần caption + overlay | 15–60 s | TalkingHead (M4) | `tin-cay` / `toi-gian` | âm thanh gốc của clip + N | mọi SP |
 | 20 | `thu-gian-asmr` Thư giãn / không khí quán | F&B, quán đẹp, nhạc nhẹ | 10–20 s | PRO hoặc TES | `thu-gian`, `lang-man` | N | SIPOS (F&B) |
 
-Có 15/20 loại chạy trên 5 template M1–M3. Năm loại còn lại chạy trên 3 template M4: EventRecap, Stats, TalkingHead (Nam duyệt 2026-10-08, REQUIREMENTS v0.4 §7.1).
+Cả 20 loại đã chạy được: 15 loại trên 5 template M1–M3, 5 loại trên 3 template M4 (EventRecap, Stats, TalkingHead; Nam duyệt 2026-10-08, REQUIREMENTS v0.4 §7.1). Trường riêng của từng template: `.claude/skills/tao-reel/references/script-format.md`.
 
 ## 2. Cấu trúc cảnh theo loại video
 
@@ -159,7 +159,7 @@ Phần lớn kết hợp loại × phong cách đều dùng được. Bảng dư
 - **Thứ tự làm**:
   - M1: loại 1–5, chạy trên FL + TIP.
   - M3: loại 6–11, 14, 15, 18, 20, chạy trên BA/TES/PRO.
-  - M4: 5 loại 12, 13, 16, 17, 19 chạy trên 3 template mới EventRecap, Stats, TalkingHead (Nam đã duyệt).
+  - M4 (xong 2026-10-09): 5 loại 12, 13, 16, 17, 19 chạy trên 3 template mới EventRecap, Stats, TalkingHead.
 - **Asset MKT cần chuẩn bị theo loại**:
   - quay màn hình (1, 2, 4);
   - ảnh/video khách hàng kèm văn bản đồng ý (7, 19);

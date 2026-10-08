@@ -36,7 +36,10 @@
     var tr = ctx.style.transition;
     var d = tr.duration;
     var type = typeOverride || tr.type;
-    if (type === "wipe") {
+    if (type === "text-swap") {
+      // Đổi chữ trên cùng một đoạn clip (TalkingHead): chữ cũ tắt nhanh, chữ mới hiện theo hiệu ứng chữ của phong cách
+      tl.to(outgoing, { opacity: 0, duration: Math.min(d, 0.25), ease: "sine.in" }, T);
+    } else if (type === "wipe") {
       // Trước → sau: cảnh mới lộ dần từ trái sang phải, có vạch chia màu nhấn chạy theo
       var bar = decorative(K.clip(K.el("div", "kit-wipe-bar", ctx.root), T, 0.9, 16));
       tl.fromTo(incoming, { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.8, ease: "power2.inOut" }, T);

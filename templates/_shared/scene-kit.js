@@ -22,7 +22,7 @@
   /* Chiều cao tối đa của khối chữ theo vùng (px trên canvas 1080×1920), đã trừ nhãn/số bước/lower third. */
   function zoneHeight(position, opts) {
     var full = K.cssPx("--canvas-height") - K.cssPx("--safe-top") - K.cssPx("--safe-bottom");
-    var extras = (opts.tag ? 80 : 0) + (opts.step ? 150 : 0) + (opts.quote ? 220 : 0);
+    var extras = (opts.tag ? 80 : 0) + (opts.step ? 150 : 0) + (opts.quote ? 220 : 0) + (opts.speaker ? 100 : 0);
     if (position === "top") return 330 - extras; // từ safe-top+120 đến đỉnh phone mockup / khối promo (720px)
     if (position === "bottom") return full * 0.5 - extras;
     return full - 120 - extras;
@@ -110,6 +110,9 @@
       }
     }
     if (t === "Testimonial" && sc.attribution) o.quote = true;
+    if (t === "TalkingHead" && sc.attribution) o.speaker = true;
+    // Chữ trên clip người nói / montage nhỏ hơn để còn thấy người, hình
+    if ((t === "TalkingHead" || t === "EventRecap") && sc.role !== "hook" && sc.visual && sc.visual.type !== "text") o.small = true;
     return o;
   }
 
@@ -140,6 +143,12 @@
       total: total,
       ctaStart: last.role === "cta" ? last.start : total,
       // Cảnh được kéo dài thêm thời lượng chuyển cảnh để còn hiện trong lúc cảnh sau vào; trước wipe (0.8s) thì kéo đủ wipe
+      // Cảnh cuối của đoạn clip bắt đầu ở cảnh i
+      shotEnd: function (i) {
+        var j = i;
+        while (j + 1 < scenes.length && scenes[j + 1].continues) j++;
+        return scenes[j];
+      },
       tail: function (sc) {
         var i = scenes.indexOf(sc);
         if (i === scenes.length - 1) return 0;
@@ -161,6 +170,8 @@
       return [];
     });
     scenes.forEach(function (sc, i) {
+      // Cảnh nối tiếp đoạn clip của cảnh trước: dùng chung danh sách video (chuyển cảnh cuối đoạn kéo clip theo)
+      if (sc.continues) videos[i] = videos[i - 1];
       var scene = K.clip(K.el("div", "kit-scene", root), sc.start, sc.duration + ctx.tail(sc), 2 + (i % 2));
       scene.id = "scene-" + sc.id;
       // Cảnh cũ và mới cùng hiện trong lúc chuyển cảnh: chồng lấn có chủ ý
@@ -176,17 +187,14 @@
         B.split(ctx, scene, sc, videos[i], at);
         enterBlock(ctx, textBlock(scene, sc, "bottom", opts), at + 1.4);
       } else if (v.type === "asset" && v.src) {
-        var m = K.media(ctx, scene, scene, v.src, "kit-media-full" + (options.template === "BeforeAfter" && sc.role === "problem" ? " kit-before" : ""), sc, videos[i]);
-        K.el("div", "kit-dim", scene);
-        tl.fromTo(m, { scale: 1 }, { scale: style.kenBurns, duration: sc.duration, ease: "none" }, sc.start);
-        if (sc.promo && options.template === "Promo") {
-          enterBlock(ctx, textBlock(scene, sc, "top", Object.assign({ small: true }, opts)), at);
-          B.promo(ctx, scene, sc, at + 0.4, style);
-        } else {
-          var tb = textBlock(scene, sc, "bottom", opts);
-          if (opts.quote) quote(ctx, tb, sc, at);
-          enterBlock(ctx, tb, at);
-        }
+        assetScene(ctx, scene, sc, i, at, opts, videos);
+      } else if (v.type === "montage" && v.srcs) {
+        B.montage(ctx, scene, sc, videos[i]);
+        K.el("div", "kit-dim soft", scene);
+        enterBlock(ctx, textBlock(scene, sc, "bottom", opts), at);
+      } else if (sc.stats && options.template === "Stats") {
+        enterBlock(ctx, textBlock(scene, sc, "top", Object.assign({ small: true }, opts)), at);
+        B.stats(ctx, scene, sc, at + 0.2);
       } else if (v.type === "phone" && v.src) {
         phoneScene(ctx, scene, sc, at, opts, videos[i]);
       } else if (sc.promo && options.template === "Promo") {
@@ -201,6 +209,11 @@
 
     for (var k = 0; k + 1 < containers.length; k++) {
       var type = k + 1 === wipeAt ? "wipe" : null;
+      // Trong một đoạn clip liền mạch chỉ đổi chữ: clip (và tiếng người nói) chạy tiếp, không chuyển cảnh hình
+      if (scenes[k + 1].continues) {
+        M.transition(ctx, containers[k], containers[k + 1], scenes[k + 1].start, "text-swap");
+        continue;
+      }
       M.transition(ctx, containers[k], containers[k + 1], scenes[k + 1].start, type);
       M.transitionVideos(ctx, videos[k], videos[k + 1], scenes[k + 1].start, type);
     }
@@ -214,6 +227,43 @@
     if (music) K.clip(music, 0, total, 9);
     var sz = document.getElementById("safe-zone");
     if (sz) K.clip(sz, 0, total, 8);
+  }
+
+  /*
+   * Cảnh ảnh/clip toàn khung. Clip video: cảnh đầu của một đoạn liền mạch (sc.shot) tạo video kéo qua mọi cảnh
+   * nối tiếp, kèm lớp tối riêng (con của root, đi cùng video) và tiếng gốc nếu giữ; cảnh nối tiếp chỉ có chữ.
+   */
+  function assetScene(ctx, scene, sc, i, at, opts, videos) {
+    var tl = ctx.tl;
+    var dimCls = ctx.template === "TalkingHead" ? "kit-dim soft" : "kit-dim";
+    var cls = "kit-media-full" + (ctx.template === "BeforeAfter" && sc.role === "problem" ? " kit-before" : "");
+    if (sc.shot) {
+      var end = ctx.shotEnd(i);
+      var dur = end.start + end.duration - sc.start;
+      var m = K.media(ctx, scene, scene, sc.visual.src, cls, sc, videos[i], { start: sc.start, duration: dur + ctx.tail(end), mediaStart: sc.shot.mediaStart });
+      if (end === sc) K.el("div", dimCls, scene);
+      else {
+        // Đoạn kéo qua nhiều cảnh: lớp tối là con của root, đi cùng video, để không tắt theo chữ của từng cảnh
+        var dim = K.clip(K.el("div", dimCls, null), sc.start, dur + ctx.tail(end), 7);
+        ctx.root.insertBefore(dim, scene);
+        videos[i].push(dim);
+      }
+      if (sc.shot.audio) K.clipAudio(ctx.root, sc.visual.src, sc.start, sc.shot.duration, sc.shot.mediaStart);
+      tl.fromTo(m, { scale: 1 }, { scale: ctx.style.kenBurns, duration: dur, ease: "none" }, sc.start);
+    } else if (!sc.continues) {
+      var img = K.media(ctx, scene, scene, sc.visual.src, cls, sc, videos[i]);
+      K.el("div", dimCls, scene);
+      tl.fromTo(img, { scale: 1 }, { scale: ctx.style.kenBurns, duration: sc.duration, ease: "none" }, sc.start);
+    }
+    if (sc.promo && ctx.template === "Promo") {
+      enterBlock(ctx, textBlock(scene, sc, "top", Object.assign({ small: true }, opts)), at);
+      B.promo(ctx, scene, sc, at + 0.4, ctx.style);
+      return;
+    }
+    var tb = textBlock(scene, sc, "bottom", opts);
+    if (opts.quote) quote(ctx, tb, sc, at);
+    if (opts.speaker) B.lowerThird(ctx, tb.block, sc.attribution, at + 0.6);
+    enterBlock(ctx, tb, at);
   }
 
   /* Testimonial: dấu ngoặc kép lớn + lower third tên khách. */

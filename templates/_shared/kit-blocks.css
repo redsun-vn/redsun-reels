@@ -35,8 +35,7 @@
   right: var(--safe-right);
 }
 .kit-dim.soft {
-  opacity: 0.92;
-  background: linear-gradient(to bottom, transparent 42%, var(--color-background) 82%);
+  background: linear-gradient(to bottom, transparent 42%, color-mix(in srgb, var(--color-background) 92%, transparent) 82%);
 }
 
 /* ---------- Testimonial ---------- */
@@ -160,4 +159,72 @@
   font-weight: var(--weight-hero);
   font-size: calc(var(--type-hero) * 2.6);
   line-height: 1;
+}
+
+/* ---------- EventRecap ---------- */
+.kit-montage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* ---------- Stats ---------- */
+/* Cùng vùng với khối khuyến mãi: dưới khối chữ "top", trong safe zone */
+.kit-stats {
+  position: absolute;
+  z-index: 5;
+  left: var(--safe-left);
+  right: var(--safe-right);
+  top: 720px;
+  bottom: var(--safe-bottom);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-lg);
+}
+.kit-stats.three {
+  gap: var(--space-md);
+}
+.kit-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding-left: var(--space-md);
+  border-left: 12px solid var(--color-accent);
+}
+.kit-stat-num {
+  font-weight: var(--weight-hero);
+  font-size: var(--type-hero);
+  line-height: var(--line-tight);
+  font-variant-numeric: tabular-nums;
+}
+.kit-stat-num.sm,
+.kit-stats.three .kit-stat-num {
+  font-size: var(--type-h1);
+}
+.kit-stats.three .kit-stat-num.sm {
+  font-size: var(--type-h2);
+}
+.kit-stat-label {
+  font-weight: var(--weight-body);
+  font-size: var(--type-caption);
+  line-height: var(--line-normal);
+}
+.kit-stats.three .kit-stat-label {
+  font-size: var(--type-small);
+}
+.kit-stat-track {
+  height: 22px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-text) 18%, transparent);
+  overflow: hidden;
+}
+.kit-stats.chart .kit-stat-track {
+  height: 44px;
+  border-radius: 12px;
+}
+.kit-stat-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-accent);
 }

@@ -1,0 +1,81 @@
+{
+  "concept": {
+    "title": "Mẫu so-lieu-thanh-tich",
+    "bigIdea": "Fixture kiểm template M4",
+    "hookAngle": "con-so"
+  },
+  "videoType": "so-lieu-thanh-tich",
+  "style": "du-lieu",
+  "template": "Stats",
+  "product": "sipos",
+  "hook": "1.200+ cửa hàng\nđã chọn SIPOS",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "1.200+ cửa hàng đã chọn SIPOS",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 3.5
+    },
+    {
+      "id": "c1-proof",
+      "role": "proof",
+      "onScreenText": "SIPOS năm 2026",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 4.0,
+      "stats": [
+        {
+          "value": "1.200+",
+          "label": "cửa hàng dùng SIPOS"
+        },
+        {
+          "value": "98%",
+          "label": "khách hài lòng"
+        },
+        {
+          "value": "4,8",
+          "label": "điểm đánh giá trên ứng dụng"
+        }
+      ]
+    },
+    {
+      "id": "c2-proof",
+      "role": "proof",
+      "onScreenText": "Thời gian chốt ca",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 3.6,
+      "stats": [
+        {
+          "value": "60 phút",
+          "label": "trước khi dùng"
+        },
+        {
+          "value": "10 phút",
+          "label": "với SIPOS"
+        }
+      ],
+      "chart": "bar"
+    },
+    {
+      "id": "c3-cta",
+      "role": "cta",
+      "onScreenText": "Tìm hiểu thêm tại sipos.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 3.5
+    }
+  ],
+  "cta": "Tìm hiểu thêm tại sipos.vn",
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 90,
+    "notes": "Fixture kiểm template, không đăng."
+  }
+}

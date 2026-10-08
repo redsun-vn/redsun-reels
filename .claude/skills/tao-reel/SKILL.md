@@ -45,6 +45,9 @@ description: Dẫn nhân viên marketing làm một video Reel/TikTok/Shorts d�
 - **Khách hàng nói**: cần lời khách thật, tên + cửa hàng, và khách đã đồng ý xuất hiện. MKT chưa đưa thì hỏi, không tự viết lời khách.
 - **Khuyến mãi / sự kiện**: cần mức giảm, giá, hạn chót, giờ… do MKT đưa (ghi vào brief). Không tự đặt.
 - **Trước / sau**: cần ảnh/clip TRƯỚC và SAU thật (hoặc làm bản chỉ có chữ).
+- **Tổng kết sự kiện / giới thiệu công ty / tuyển dụng**: cần ảnh/clip thật của sự kiện, đội ngũ (càng nhiều càng tốt, mỗi cảnh montage 2–6 hình).
+- **Số liệu**: cần con số thật kèm nguồn do MKT đưa (ghi vào brief, đúng cách viết: "1.200+", "98%"). Không có số thì không làm loại này.
+- **Có người nói trước camera**: cần clip MKT tự quay, dọc 9:16, có tiếng, nói rõ; tên + chức danh người nói. Claude không nghe được clip: nhờ MKT ghi lời nói và mốc giây chuyển ý (vd. "0–5s chào, 5–12s kể khó khăn") vào brief, rồi chia cảnh theo các mốc đó. Clip giữ tiếng gốc, nhạc nền tự hạ xuống.
 
 ### 5. Kịch bản — **DỪNG chờ MKT duyệt**
 - Viết `briefs/<tên-video>/script.json` theo [references/script-format.md](references/script-format.md).

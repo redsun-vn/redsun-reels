@@ -105,9 +105,10 @@ body {
 }
 
 /* Nhấn từ khóa (số, %, tên sản phẩm) theo preset phong cách */
+/* Chữ giữ màu chữ, chỉ vạch gạch chân mang màu nhấn: màu nhấn trên nền (vd. đỏ SIPOS trên nền teal, 1.99:1) không đạt tương phản 3:1 */
 .accent-underline .kit-accent {
-  color: var(--color-accent);
   text-decoration: underline;
+  text-decoration-color: var(--color-accent);
   text-decoration-thickness: 8px;
   text-underline-offset: 10px;
 }
@@ -135,11 +136,12 @@ body {
   object-fit: cover;
 }
 
+/* Độ trong suốt nằm trong màu nền (không dùng opacity): lớp tối của đoạn clip đi theo video qua chuyển cảnh,
+   và tween opacity 0 → 1 của chuyển cảnh không được biến nó thành nền đặc */
 .kit-dim {
   position: absolute;
   inset: 0;
-  background: var(--color-background);
-  opacity: 0.55;
+  background: color-mix(in srgb, var(--color-background) 55%, transparent);
 }
 
 /* Phone mockup (FeatureLaunch) */

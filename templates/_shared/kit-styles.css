@@ -304,9 +304,8 @@
   position: absolute;
 }
 
-/* Nhấn từ khóa: gạch chân lượn như vẽ tay */
+/* Nhấn từ khóa: gạch chân lượn như vẽ tay. Chữ giữ màu chữ (màu nhấn trên nền có thể dưới 3:1, xem accent-underline) */
 .accent-scribble .kit-accent {
-  color: var(--color-accent);
   text-decoration: underline wavy var(--color-accent);
   text-decoration-thickness: 6px;
   text-underline-offset: 14px;

@@ -11,6 +11,8 @@ import { countWords, sceneDurationSec } from '../../config/scene-timing.ts';
 import { availableStylePresets, hasStylePreset } from '../../config/style-preset.schema.ts';
 import { resolveStyle } from './resolve-style.ts';
 import { factIssues } from './fact-check.ts';
+import { assetPaths } from './build-props.ts';
+import { clipIssues } from './clip-check.ts';
 import { getOccasion, OCCASIONS } from '../../config/occasions.ts';
 import { ScriptSchema, type Script } from '../../config/script.schema.ts';
 import { getVideoType, type SceneRole, type VideoType } from '../../config/video-types.ts';
@@ -168,7 +170,7 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose } 
   const texts = [
     script.hook,
     script.cta,
-    ...script.scenes.flatMap((s) => [s.onScreenText, s.subText ?? '', s.attribution ?? '', ...Object.values(s.promo ?? {}).map(String)]),
+    ...script.scenes.flatMap((s) => [s.onScreenText, s.subText ?? '', s.attribution ?? '', ...Object.values(s.promo ?? {}).map(String), ...(s.stats ?? []).flatMap((st) => [st.value, st.label])]),
   ];
   if (texts.some((t) => t !== t.normalize('NFC'))) issues.push(err('Có chữ chưa ở dạng Unicode NFC (dấu tiếng Việt bị tách). Gõ lại hoặc chuẩn hóa NFC.'));
 
@@ -179,8 +181,8 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose } 
   }
 
   // Asset
-  const assetPaths = [...brief.assets, ...script.scenes.flatMap((s) => [s.visual.src, s.visual.srcAfter]).filter((x): x is string => !!x)];
-  for (const a of new Set(assetPaths)) {
+  const assetCountBefore = issues.length;
+  for (const a of new Set([...brief.assets, ...assetPaths(script)])) {
     const rel = normalize(a);
     if (isAbsolute(rel) || rel.startsWith('..')) {
       issues.push(err(`Hình/clip "${a}" phải nằm trong thư mục dự án (vd. assets/sipos/…).`));
@@ -196,6 +198,8 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose } 
       issues.push(err(`Cảnh "${s.id}" kiểu "${s.visual.type}" cần đường dẫn hình/clip (visual.src).`));
     }
   }
+  // Độ dài / tiếng của clip: chỉ khi mọi file đã có
+  if (issues.length === assetCountBefore) issues.push(...clipIssues(script));
 
   // Nhạc
   try {

@@ -1,0 +1,79 @@
+{
+  "concept": {
+    "title": "Mẫu tong-ket-su-kien",
+    "bigIdea": "Fixture kiểm template M4",
+    "hookAngle": "con-so"
+  },
+  "videoType": "tong-ket-su-kien",
+  "style": "nang-dong",
+  "template": "EventRecap",
+  "product": "sipos",
+  "hook": "300 chủ quán\nđã đến cùng SIPOS",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "300 chủ quán đã đến cùng SIPOS",
+      "visual": {
+        "type": "montage",
+        "srcs": [
+          "assets/_demo/su-kien-1.jpg",
+          "assets/_demo/su-kien-2.jpg"
+        ]
+      },
+      "durationSec": 4.0
+    },
+    {
+      "id": "c1-proof",
+      "role": "proof",
+      "onScreenText": "Trải nghiệm SIPOS tại gian hàng",
+      "visual": {
+        "type": "montage",
+        "srcs": [
+          "assets/_demo/su-kien-3.jpg",
+          "assets/_demo/screen-record-test.mp4",
+          "assets/_demo/su-kien-4.jpg"
+        ]
+      },
+      "durationSec": 4.5
+    },
+    {
+      "id": "c2-proof",
+      "role": "proof",
+      "onScreenText": "Cảm ơn mọi người đã đến",
+      "visual": {
+        "type": "asset",
+        "src": "assets/_demo/su-kien-2.jpg"
+      },
+      "durationSec": 4.0
+    },
+    {
+      "id": "c3-proof",
+      "role": "proof",
+      "onScreenText": "Hẹn gặp ở sự kiện sau",
+      "visual": {
+        "type": "montage",
+        "srcs": [
+          "assets/_demo/su-kien-4.jpg",
+          "assets/_demo/su-kien-1.jpg"
+        ]
+      },
+      "durationSec": 4.0
+    },
+    {
+      "id": "c4-cta",
+      "role": "cta",
+      "onScreenText": "Tìm hiểu thêm tại sipos.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 4.0
+    }
+  ],
+  "cta": "Tìm hiểu thêm tại sipos.vn",
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 90,
+    "notes": "Fixture kiểm template, không đăng."
+  }
+}

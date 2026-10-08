@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8" />
+<!-- Ảnh minh họa (mock) "sự kiện" cho fixture EventRecap. Không phải ảnh chụp thật. Chọn cảnh bằng #1..#4. -->
+<style>
+body{margin:0;width:750px;height:1334px;overflow:hidden;position:relative;font-family:sans-serif}
+.s{position:absolute;inset:0;display:none}
+.p{position:absolute;border-radius:50% 50% 0 0}
+.h{position:absolute;border-radius:50%}
+/* 1: sân khấu */
+#s1{background:linear-gradient(#1a1030,#3b1d4f 60%,#2a1530)}
+#s1 .screen{position:absolute;left:95px;top:260px;width:560px;height:320px;background:linear-gradient(135deg,#c0392b,#e67e22);border-radius:8px;box-shadow:0 0 120px rgba(230,126,34,.6)}
+#s1 .stage{position:absolute;left:0;right:0;top:820px;height:80px;background:#4a2a3a}
+#s1 .beam{position:absolute;top:0;width:180px;height:900px;background:linear-gradient(rgba(255,240,200,.35),transparent);transform-origin:top}
+/* 2: khán giả */
+#s2{background:linear-gradient(#20263a,#0f1220)}
+#s2 .glow{position:absolute;left:-100px;right:-100px;top:120px;height:500px;background:radial-gradient(ellipse at center,rgba(255,200,120,.5),transparent 65%)}
+/* 3: gian hàng */
+#s3{background:linear-gradient(#e8eef5,#c9d6e3)}
+#s3 .booth{position:absolute;left:80px;top:300px;width:590px;height:520px;background:#b22;border-radius:12px}
+#s3 .booth:after{content:"";position:absolute;left:40px;right:40px;top:40px;height:200px;background:#fff;border-radius:8px}
+#s3 .table{position:absolute;left:60px;top:900px;width:630px;height:60px;background:#5a4636;border-radius:8px}
+/* 4: đội ngũ */
+#s4{background:linear-gradient(#f6d365,#fda085)}
+</style></head><body>
+<div class="s" id="s1"><div class="beam" style="left:120px;transform:rotate(-12deg)"></div><div class="beam" style="left:450px;transform:rotate(12deg)"></div><div class="screen"></div><div class="stage"></div>
+<div class="p" style="left:340px;top:660px;width:70px;height:170px;background:#111"></div><div class="h" style="left:350px;top:610px;width:50px;height:50px;background:#111"></div></div>
+<div class="s" id="s2"><div class="glow"></div></div>
+<div class="s" id="s3"><div class="booth"></div><div class="table"></div></div>
+<div class="s" id="s4"></div>
+<script>
+var n = (location.hash || "#1").slice(1);
+document.getElementById("s" + n).style.display = "block";
+function crowd(parent, rows, top, size, colors) {
+  for (var r = 0; r < rows; r++) for (var c = 0; c < 9; c++) {
+    var x = c * 88 + (r % 2) * 44 - 20, y = top + r * size * 1.25, k = (r * 9 + c) % colors.length;
+    var b = document.createElement("div"); b.className = "p"; b.style.cssText = "left:" + x + "px;top:" + (y + size * 0.55) + "px;width:" + size * 1.2 + "px;height:" + size * 1.6 + "px;background:" + colors[k];
+    var h = document.createElement("div"); h.className = "h"; h.style.cssText = "left:" + (x + size * 0.25) + "px;top:" + y + "px;width:" + size * 0.7 + "px;height:" + size * 0.7 + "px;background:" + colors[(k + 1) % colors.length];
+    parent.appendChild(b); parent.appendChild(h);
+  }
+}
+if (n === "1") crowd(document.getElementById("s1"), 3, 1000, 70, ["#0b0b14", "#15121f", "#1d1626"]);
+if (n === "2") crowd(document.getElementById("s2"), 6, 520, 90, ["#2b2f45", "#3a3550", "#463a4e", "#1e2233"]);
+if (n === "3") crowd(document.getElementById("s3"), 2, 1040, 100, ["#2c3e50", "#7f8c8d", "#c0392b", "#34495e"]);
+if (n === "4") crowd(document.getElementById("s4"), 3, 560, 130, ["#b22222", "#8e44ad", "#2c3e50", "#d35400", "#16a085"]);
+</script>
+</body></html>

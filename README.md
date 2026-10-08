@@ -14,7 +14,7 @@ Hệ thống làm video ngắn dọc (Reels, TikTok, Shorts) cho team Marketing 
 | M1 | Lõi pipeline, 2 mẫu video (FeatureLaunch, TipOfTheDay), 3 phong cách | ✅ Xong. Còn chờ nhạc thật |
 | M2 | Skill Claude Code `cai-dat` (tự cài máy) và `tao-reel` (dẫn MKT làm video) | ✅ Xong, đã thử bằng phiên Claude Code mới. Chờ 1 bạn MKT tự làm 1 video |
 | M3 | 3 mẫu: BeforeAfter, Testimonial, Promo, 16 phong cách còn lại, lịch dịp lễ | ✅ Xong phần kỹ thuật. Chờ 10 video thử nghiệm của MKT (§14) |
-| M4 | 3 mẫu: EventRecap, Stats, TalkingHead (đủ 20 loại video) | ⏳ |
+| M4 | 3 mẫu: EventRecap, Stats, TalkingHead (đủ 20 loại video), giữ tiếng gốc clip người nói + tự hạ nhạc | ✅ Xong phần kỹ thuật. Chờ clip quay thật của MKT để thử TalkingHead |
 
 Hiện **chưa có nhạc thật** trong thư viện. Repo chỉ có một track thử nghiệm tự sinh, và track này bị chặn khi xuất video thật. Muốn đăng thật thì Nam/MKT lead phải thêm nhạc theo [`docs/music-sources.md`](docs/music-sources.md).
 
@@ -22,18 +22,72 @@ Hiện **chưa có nhạc thật** trong thư viện. Repo chỉ có một track
 
 ## Dành cho team Marketing
 
-### Cần gì
-- MacBook (chip Intel hoặc chip M), có mạng.
-- Đã cài **Claude Code**.
-- Không cần biết lập trình. Không cần mật khẩu máy, Homebrew hay API key.
+### Cần chuẩn bị
+- MacBook chip Intel hoặc chip M.
+- Ổ đĩa còn trống ít nhất **3 GB**.
+- Mạng Internet ổn định. Lần cài đầu tải vài trăm MB.
+- Tài khoản Claude của công ty (hỏi Nam nếu chưa có).
+- Không cần biết lập trình. Không cần mật khẩu máy, Homebrew, git hay API key.
 
-### Cài đặt lần đầu
-1. Tải dự án về máy: trên GitHub bấm **Code → Download ZIP**, giải nén.
-2. Mở Claude Code trong thư mục vừa giải nén, nói:
+### Cài đặt lần đầu (khoảng 15 phút)
+
+**Bước 1. Cài Claude Code**
+1. Vào [claude.ai/download](https://claude.ai/download), tải bản cho macOS, rồi kéo biểu tượng Claude vào thư mục **Applications**.
+2. Mở Claude, đăng nhập bằng tài khoản công ty.
+3. Chuyển sang mục **Code** (Claude Code) trong ứng dụng.
+
+> Bạn quen dùng Terminal? Có thể cài bản dòng lệnh theo [hướng dẫn chính thức](https://docs.claude.com/en/docs/claude-code/setup), rồi gõ `claude` trong thư mục dự án. Các bước sau giữ nguyên.
+
+**Bước 2. Tải dự án về máy**
+1. Mở [github.com/redsun-vn/redsun-reels](https://github.com/redsun-vn/redsun-reels).
+2. Bấm nút xanh **Code**, chọn **Download ZIP**.
+3. Mở thư mục **Downloads** (Tải về), bấm đúp file `redsun-reels-main.zip` để giải nén.
+4. Kéo thư mục `redsun-reels-main` sang **Documents** (Tài liệu). Có thể đổi tên thành `redsun-reels`.
+   - Không để dự án trong Downloads hoặc Desktop. macOS hay hỏi quyền với hai thư mục này, làm việc cài bị gián đoạn.
+   - Lỡ di chuyển hoặc đổi tên thư mục sau khi cài: mở thư mục ở chỗ mới trong Claude Code, gõ "cài lại".
+
+**Bước 3. Mở dự án trong Claude Code**
+1. Trong Claude Code, chọn mở thư mục (Open folder), trỏ tới `Documents/redsun-reels`.
+2. Nếu Claude hỏi có tin tưởng thư mục này không, chọn **Yes / Trust**.
+
+**Bước 4. Nhờ Claude cài**
+1. Gõ vào ô chat:
 
    > cài đặt giúp tôi
 
-Claude tự cài mọi thứ (khoảng 2–10 phút tuỳ mạng) rồi dựng thử 1 video ngắn. Lỗi gì Claude sẽ nói bằng tiếng Việt và hướng dẫn cách xử lý. Muốn kiểm lại máy sau này, nói "kiểm tra máy".
+2. Nếu Claude hỏi quyền chạy lệnh cài đặt, chọn **Yes** (hoặc **Allow**).
+3. Để máy chạy, đừng đóng Claude và đừng cho máy ngủ. Claude cài lần lượt 7 bước:
+   1. Kiểm tra máy (loại chip, ổ đĩa, mạng).
+   2. Cài Node.js vào thư mục riêng `~/.redsun-reels`, không đụng tới phần mềm khác trên máy.
+   3. Cài thư viện của dự án.
+   4. Cài plugin HyperFrames cho Claude Code. Bản desktop có thể báo bỏ qua bước này, không sao.
+   5. Chuẩn bị trình duyệt để dựng video.
+   6. Chuẩn bị nhạc thử.
+   7. Kiểm tra máy và dựng thử 1 video ngắn.
+
+**Bước 5. Kiểm tra đã xong**
+- Claude báo **"Cài xong rồi"** là được.
+- Nếu Claude nhắc mở lại Claude Code, đóng hẳn ứng dụng (⌘Q) rồi mở lại, mở đúng thư mục dự án.
+- Để thử, gõ **"kiểm tra máy"**. Mọi dòng đều có dấu ✓ là máy sẵn sàng.
+
+### Khi cài gặp lỗi
+Claude sẽ nói lỗi bằng tiếng Việt và cách xử lý. Các lỗi hay gặp:
+
+| Claude báo | Cách xử lý |
+|---|---|
+| Không kết nối được Internet | Kiểm tra wifi, rồi gõ "cài lại" |
+| Ổ đĩa còn dưới 3 GB trống | Xoá bớt file (video cũ, thùng rác), rồi gõ "cài lại" |
+| Tải không thành công, lỗi mạng giữa chừng | Gõ "cài lại". Bước nào đã xong sẽ được bỏ qua, không phải làm lại từ đầu |
+| Máy chưa cài môi trường làm video | Bạn chưa cài hoặc đang mở nhầm thư mục. Mở đúng thư mục dự án, gõ "cài đặt giúp tôi" |
+| Có nhắc tới một file log | Gửi file log đó cho Nam |
+
+Cài lại bao nhiêu lần cũng được.
+
+### Cập nhật bản mới
+1. Tải ZIP mới như Bước 2, giải nén.
+2. Mở `briefs/` của bản cũ, copy các thư mục video của bạn (trừ `_example`) vào `briefs/` của bản mới. Video đã xuất nằm ở `out/` bản cũ: copy cả thư mục `out/` sang bản mới (bản mới chưa có thư mục này).
+3. Xoá bản cũ, đặt bản mới đúng chỗ cũ, cùng tên.
+4. Mở trong Claude Code, gõ "cài lại".
 
 ### Làm một video
 Nói với Claude, ví dụ:
@@ -55,7 +109,8 @@ Claude chỉ sửa trong thư mục `briefs/` của video bạn đang làm. Mu�
 ### Loại video và phong cách
 - **20 loại video**: ra mắt tính năng, demo, mẹo "Bạn có biết?", hướng dẫn nhiều bước, khuyến mãi, chúc mừng dịp lễ… Xem [`docs/video-type-guide.md`](docs/video-type-guide.md).
 - **19 phong cách**: tối giản, sang trọng, lãng mạn, hành động, bí ẩn, tương lai, robot, vui nhộn, lễ hội… Xem [`docs/video-style-catalog.md`](docs/video-style-catalog.md).
-- Hiện làm được **15 loại video** trên 5 mẫu (FeatureLaunch, TipOfTheDay, BeforeAfter, Testimonial, Promo) và **cả 19 phong cách**. 5 loại còn lại (tổng kết sự kiện, giới thiệu công ty, tuyển dụng, số liệu, người nói trước camera) có ở M4.
+- Làm được **cả 20 loại video** trên 8 mẫu (FeatureLaunch, TipOfTheDay, BeforeAfter, Testimonial, Promo, EventRecap, Stats, TalkingHead) và **cả 19 phong cách**.
+- Video có người nói (bạn tự quay) hoặc khách hàng nói: giữ tiếng gốc, nhạc nền tự nhỏ lại khi có người nói.
 - Dịp lễ (20/10, Halloween, Tết…) tự chọn phong cách hợp dịp. Xem lịch: nói với Claude "có những dịp lễ nào".
 
 ### Quy tắc nội dung
@@ -67,6 +122,16 @@ Claude chỉ sửa trong thư mục `briefs/` của video bạn đang làm. Mu�
 ---
 
 ## Dành cho dev
+
+### Cài cho dev
+```bash
+git clone git@github.com:redsun-vn/redsun-reels.git
+cd redsun-reels
+bash ./scripts/cai-dat.sh   # Node vào ~/.redsun-reels, pnpm install, plugin HyperFrames, trình duyệt render, render thử
+./reel doctor
+./reel test && ./reel typecheck
+```
+Không cần Node hệ thống: `./reel` tự dùng Node trong `~/.redsun-reels`.
 
 ### Công nghệ
 - [HyperFrames](https://github.com/heygen-com/hyperframes) `0.8.141`: CLI + plugin Claude Code, khóa version, không bật auto-update.
@@ -94,8 +159,8 @@ Claude chỉ sửa trong thư mục `briefs/` của video bạn đang làm. Mu�
 | `pnpm lint:music` | Kiểm thư viện nhạc: schema, file, license (cấm "NC") |
 | `pnpm test` | Unit test (Vitest) |
 | `pnpm typecheck` | `tsc --noEmit` |
-| `pnpm test:render [--update] [--only=<chuỗi>]` | So khung hình 5 mẫu × 19 phong cách với ảnh chuẩn `tests/baseline/` (SSIM ≥ 0.97, ~25 phút) |
-| `pnpm test:e2e [--draft]` | Dựng + xuất 16 brief mẫu trong `tests/fixtures/briefs/` |
+| `pnpm test:render [--update] [--only=<chuỗi>]` | So khung hình 8 mẫu × 19 phong cách với ảnh chuẩn `tests/baseline/` (SSIM ≥ 0.97, ~45 phút) |
+| `pnpm test:e2e [--draft]` | Dựng + xuất 21 brief mẫu trong `tests/fixtures/briefs/` (20 loại video + test dấu) |
 | `pnpm gen:test-music` | Sinh lại track nhạc thử nghiệm |
 
 Cờ chung:
@@ -115,11 +180,11 @@ brand/            brand.css (biến màu/font/safe zone theo sản phẩm), fram
                   fonts/, logos/, styles/<phong-cách>.json, music/manifest.json
 config/           styles.ts (19), video-types.ts (20), occasions.ts (lịch dịp lễ), scene-timing.ts, schema brief/script/preset/nhạc
 templates/        _shared/ (kit-core, kit-motion, kit-blocks, scene-kit .js + kit, kit-styles, kit-blocks, safe-zone .css),
-                  FeatureLaunch/, TipOfTheDay/, BeforeAfter/, Testimonial/, Promo/, _blank/
+                  FeatureLaunch/, TipOfTheDay/, BeforeAfter/, Testimonial/, Promo/, EventRecap/, Stats/, TalkingHead/, _blank/
 scripts/          lệnh pnpm + lib/ (validate, build-props, stage-project, render-video, loudness, lint-brand…)
 runtime/gsap/     GSAP local
 briefs/<slug>/    brief.md, concepts.md, script.json, props.json, review.md, cost.json, post.md
-tests/            unit test, fixtures/briefs/ (8 brief mẫu), baseline/ (ảnh chuẩn render test)
+tests/            unit test, fixtures/briefs/ (21 brief mẫu), baseline/ (ảnh chuẩn render test)
 docs/             decisions, spike-report, video-type-guide, video-style-catalog, music-sources
 plans/            plan theo milestone, báo cáo, journal
 out/              (gitignore) video xuất ra + project tạm out/stage/
@@ -130,8 +195,9 @@ out/              (gitignore) video xuất ra + project tạm out/stage/
 2. `durationSec` mỗi cảnh ≥ `max(1.5 giây, số từ × 0.4 giây) + 0.5 giây`. `validate` báo lỗi nếu cảnh quá ngắn để đọc.
 3. `build-props.ts` tính mốc bắt đầu từng cảnh, lấy logo theo sản phẩm, nạp preset phong cách, rồi ghi `props.json`.
 4. `stage-project.ts` copy template, `_shared`, `brand`, `runtime`, hình và nhạc vào `out/stage/<slug>/`. Bước này cần vì HyperFrames không đọc file nằm ngoài thư mục project. Props được ghi thành giá trị mặc định của biến để `check` và Studio thấy đúng dữ liệu.
-5. `templates/_shared/scene-kit.js` đọc biến `props` và dựng mọi khối thành clip có timing: nền, logo, chữ từng từ (tự co cỡ khi dài), phone mockup + callout + zoom, ảnh hoặc video quay màn hình, nhãn, số bước, TRƯỚC/SAU + màn chia đôi, quote + lower third, badge/giá/hạn chót/đếm ngược, CTA. Chuyển cảnh, lớp phủ, nền và hiệu ứng chữ lấy theo preset phong cách (`kit-motion.js`, `kit-styles.css`).
-6. `hyperframes render --variables-file --strict-variables --strict`, sau đó ffmpeg `loudnorm` 2 lượt (−14 LUFS, TP ≤ −1 dBTP, fade 0.5 giây), copy luồng hình, rồi kiểm bằng ffprobe.
+5. `templates/_shared/scene-kit.js` đọc biến `props` và dựng mọi khối thành clip có timing: nền, logo, chữ từng từ (tự co cỡ khi dài), phone mockup + callout + zoom, ảnh hoặc video quay màn hình, nhãn, số bước, TRƯỚC/SAU + màn chia đôi, quote + lower third, badge/giá/hạn chót/đếm ngược, montage, số đếm lên + biểu đồ, clip người nói giữ tiếng, CTA. Chuyển cảnh, lớp phủ, nền và hiệu ứng chữ lấy theo preset phong cách (`kit-motion.js`, `kit-styles.css`).
+6. Clip giữ tiếng gốc: bước build ghi lane hạ nhạc (`data-automation`) vào `index.html` của bản stage (`scripts/lib/music-ducking.ts`).
+7. `hyperframes render --variables-file --strict-variables --strict`, sau đó ffmpeg `loudnorm` 2 lượt (−14 LUFS, TP ≤ −1 dBTP, fade 0.5 giây), copy luồng hình, rồi kiểm bằng ffprobe.
 
 ### Quy tắc khi sửa template
 - Chỉ dùng biến trong `brand/brand.css`. `pnpm lint:brand` sẽ chặn nếu viết cứng.

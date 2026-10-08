@@ -1,0 +1,61 @@
+{
+  "concept": {
+    "title": "Mẫu video-co-nguoi-noi",
+    "bigIdea": "Fixture kiểm template M4",
+    "hookAngle": "quote"
+  },
+  "videoType": "video-co-nguoi-noi",
+  "style": "tin-cay",
+  "template": "TalkingHead",
+  "product": "sipos",
+  "hook": "Cuối ngày mất cả tiếng\nđể ghi sổ?",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Cuối ngày mất cả tiếng để ghi sổ?",
+      "visual": {
+        "type": "asset",
+        "src": "assets/_demo/nguoi-noi-test.mp4"
+      },
+      "durationSec": 4.5
+    },
+    {
+      "id": "c1-problem",
+      "role": "problem",
+      "onScreenText": "Đếm tiền, ghi sổ mất cả tiếng",
+      "visual": {
+        "type": "asset",
+        "src": "assets/_demo/nguoi-noi-test.mp4"
+      },
+      "durationSec": 4.5,
+      "attribution": "Anh Minh · Tiệm tạp hóa Minh Phát"
+    },
+    {
+      "id": "c2-solution",
+      "role": "solution",
+      "onScreenText": "Doanh thu tự tổng hợp",
+      "visual": {
+        "type": "asset",
+        "src": "assets/_demo/nguoi-noi-test.mp4"
+      },
+      "durationSec": 7.0,
+      "subText": "Mở điện thoại là biết bán được bao nhiêu"
+    },
+    {
+      "id": "c3-cta",
+      "role": "cta",
+      "onScreenText": "Tìm hiểu thêm tại sipos.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 3.5
+    }
+  ],
+  "cta": "Tìm hiểu thêm tại sipos.vn",
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 90,
+    "notes": "Fixture kiểm template, không đăng."
+  }
+}

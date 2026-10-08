@@ -5,6 +5,7 @@
  */
 import type { Script } from '../../config/script.schema.ts';
 import { promoSequenceSec } from '../../config/promo-timing.ts';
+import { STAT_NUMBER_RE, splitStatValue, statsSequenceSec } from '../../config/stats-timing.ts';
 
 export interface FactIssue {
   level: 'error' | 'warning';
@@ -12,6 +13,8 @@ export interface FactIssue {
 }
 
 const VIDEO_RE = /\.(mp4|mov|webm)$/i;
+/** Mỗi hình trong montage hiện ít nhất chừng này giây (khớp kit-blocks.js `montage`). */
+export const MONTAGE_MIN_SHOT_SEC = 0.6;
 
 /** Hai kiểu đặt dấu thanh (cũ/mới) cùng một chữ: "hoá" = "hóa", "uỷ" = "ủy". Quy về kiểu mới. */
 const TONE_PLACEMENT: Array<[RegExp, string]> = [
@@ -32,9 +35,9 @@ const TONE_PLACEMENT: Array<[RegExp, string]> = [
   [/uỵ/g, 'ụy'],
 ];
 
-/** Gộp số: bỏ phân cách nghìn (". , dấu cách") giữa nhóm 3 chữ số và số 0 đầu: "1.200.000" → "1200000", "08/03" → "8/3". */
+/** Gộp số: "98 %" → "98%"; bỏ phân cách nghìn (". , dấu cách") giữa nhóm 3 chữ số và số 0 đầu: "1.200.000" → "1200000", "08/03" → "8/3". */
 function normalizeNumbers(text: string): string {
-  return text.replace(/(\d)[.,\s ](?=\d{3}\b)/g, '$1').replace(/\b0+(\d)/g, '$1');
+  return text.replace(/(\d)[.,\s ](?=\d{3}\b)/g, '$1').replace(/\b0+(\d)/g, '$1').replace(/(\d)\s+%/g, '$1%');
 }
 
 /** Các con số trong chữ (đã gộp): "99.000đ" → "99000", "-30%" → "30". */
@@ -92,11 +95,42 @@ export function factIssues(script: Script, briefBody: string): FactIssue[] {
       if (!containsPhrase(briefNorm, normalizeText(s.attribution))) {
         err(`Cảnh "${s.id}": tên khách "${s.attribution}" không có trong brief. Chỉ dùng khách thật MKT đưa (đã đồng ý xuất hiện).`);
       }
-      if (!containsPhrase(briefNorm, normalizeText(s.onScreenText))) {
+      // Testimonial: chữ cảnh là lời khách. TalkingHead: chữ cảnh là ý chính, tiếng người nói đã có trong clip.
+      if (script.template !== 'TalkingHead' && !containsPhrase(briefNorm, normalizeText(s.onScreenText))) {
         warn(`Cảnh "${s.id}": câu quote không khớp nguyên văn lời khách trong brief. Chỉ rút gọn, không đổi ý; nhờ MKT xác nhận.`);
       }
       if (s.visual.type !== 'text' && s.visual.type !== 'asset') err(`Cảnh "${s.id}" có lời khách chỉ dùng visual "text" hoặc "asset".`);
-      if (script.template !== 'Testimonial') warn(`Cảnh "${s.id}" có "attribution" nhưng template ${script.template} không hiện lower third (chỉ Testimonial).`);
+      if (script.template !== 'Testimonial' && script.template !== 'TalkingHead') {
+        warn(`Cảnh "${s.id}" có "attribution" nhưng template ${script.template} không hiện lower third (chỉ Testimonial, TalkingHead).`);
+      }
+    }
+
+    if (s.stats) {
+      // Số liệu khớp NGUYÊN CỤM trong brief, kể cả đơn vị: "98%" không mượn được "98 cửa hàng"
+      for (const st of s.stats) {
+        if (!STAT_NUMBER_RE.test(splitStatValue(st.value).number)) err(`Cảnh "${s.id}": số liệu "${st.value}" viết chưa rõ. Viết kiểu "1.200", "1.200+", "4,8", "98%" (không trộn chấm và phẩy).`);
+        if (!containsPhrase(briefNorm, normalizeText(st.value))) err(`Cảnh "${s.id}": số liệu "${st.value}" không có nguyên văn trong brief. Chỉ dùng số MKT đưa (kèm nguồn).`);
+        const miss = numberTokens(st.label).filter((n) => !briefNumbers.has(n));
+        if (miss.length) warn(`Cảnh "${s.id}": nhãn "${st.label}" có số ${miss.join(', ')} không có trong brief.`);
+      }
+      const need = statsSequenceSec(s.stats.length);
+      if (s.durationSec < need) err(`Cảnh "${s.id}" có ${s.stats.length} chỉ số cần dài ít nhất ${need}s (số đếm lên rồi giữ để đọc).`);
+      if (s.visual.type !== 'text') err(`Cảnh "${s.id}" có số liệu chỉ dùng visual "text".`);
+      if (script.template !== 'Stats') warn(`Cảnh "${s.id}" có "stats" nhưng template ${script.template} không hiện khối này (chỉ Stats).`);
+      if (s.chart === 'bar') {
+        const units = new Set(s.stats.map((st) => splitStatValue(st.value).suffix + '|' + splitStatValue(st.value).prefix));
+        if (s.stats.length < 2) err(`Cảnh "${s.id}": biểu đồ cột cần ít nhất 2 chỉ số.`);
+        else if (units.size > 1) err(`Cảnh "${s.id}": biểu đồ cột chỉ so các chỉ số cùng đơn vị (đang có ${s.stats.map((st) => st.value).join(', ')}).`);
+      }
+    } else if (s.chart) err(`Cảnh "${s.id}" có "chart" nhưng không có "stats".`);
+
+    if (s.visual.type === 'montage') {
+      if (!s.visual.srcs) err(`Cảnh "${s.id}" kiểu "montage" cần danh sách 2–6 ảnh/clip (visual.srcs).`);
+      else if (s.durationSec < s.visual.srcs.length * MONTAGE_MIN_SHOT_SEC) {
+        const need = Math.round(s.visual.srcs.length * MONTAGE_MIN_SHOT_SEC * 10) / 10;
+        err(`Cảnh "${s.id}" có ${s.visual.srcs.length} hình cần dài ít nhất ${need}s (mỗi hình ≥ ${MONTAGE_MIN_SHOT_SEC}s).`);
+      }
+      if (script.template !== 'EventRecap') warn(`Cảnh "${s.id}" kiểu "montage" chỉ dựng ở EventRecap.`);
     }
 
     if (s.visual.type === 'split') {
@@ -109,6 +143,12 @@ export function factIssues(script: Script, briefBody: string): FactIssue[] {
 
   if (script.videoType === 'khach-hang-noi' && !script.scenes.some((s) => s.attribution)) {
     err('Video "Khách hàng nói" cần ít nhất một cảnh có lời khách kèm tên (attribution).');
+  }
+  if (script.template === 'Stats' && !script.scenes.some((s) => s.stats)) {
+    err('Video "Số liệu" cần ít nhất một cảnh có số liệu (stats) lấy từ brief.');
+  }
+  if (script.template === 'TalkingHead' && !script.scenes.some((s) => s.visual.type === 'asset' && VIDEO_RE.test(s.visual.src ?? ''))) {
+    err('TalkingHead cần clip quay người nói (cảnh visual "asset" là file .mp4/.mov/.webm).');
   }
   if (script.template === 'BeforeAfter' && !script.scenes.some((s) => s.role === 'problem')) {
     err('BeforeAfter cần cảnh "problem" (TRƯỚC) và cảnh "solution" (SAU).');

@@ -130,25 +130,46 @@
    * Video (quay màn hình, clip) phải là clip có timing riêng và KHÔNG được nằm trong phần tử có timing
    * (hyperframes-core: video_nested_in_timed_element; video không timing thì đứng hình). Vì vậy video là con
    * trực tiếp của root, chèn ngay TRƯỚC cảnh của nó để chữ/khung phone của cảnh luôn nằm trên.
+   * Video luôn tắt tiếng; tiếng gốc (nếu giữ) là một <audio> riêng (clipAudio) để hình được kéo dài qua
+   * chuyển cảnh mà tiếng không kéo theo (J/L cut, hyperframes-core creator-editing-recipes).
    */
-  function videoClip(root, scene, src, cls, start, duration, track) {
+  var mediaSeq = 0;
+
+  function videoClip(root, scene, src, cls, start, duration, track, mediaStart) {
     var v = document.createElement("video");
+    v.id = "kit-v-" + ++mediaSeq; // media cần id (lint media_missing_id; mixer bỏ qua media không id)
     v.className = cls;
     v.src = src;
     v.muted = true;
     v.setAttribute("muted", "");
     v.setAttribute("playsinline", "");
+    if (mediaStart) v.dataset.mediaStart = String(round(mediaStart));
     root.insertBefore(v, scene);
     return clip(v, start, duration, track);
   }
 
+  /* Tiếng gốc của clip người nói: đúng đoạn của cảnh, không kéo qua chuyển cảnh. Track 15 dành riêng. */
+  function clipAudio(root, src, start, duration, mediaStart) {
+    var a = document.createElement("audio");
+    a.id = "kit-a-" + ++mediaSeq;
+    a.src = src;
+    a.dataset.volume = "1";
+    if (mediaStart) a.dataset.mediaStart = String(round(mediaStart));
+    root.appendChild(a);
+    clip(a, start, duration, 15);
+    a.classList.remove("clip"); // hyperframes-core: media không mang class "clip"
+    return a;
+  }
+
   /*
    * Ảnh hoặc video (theo đuôi file). Ảnh nằm trong `parent`; video là con của root, chèn trước `scene`.
-   * Video được ghi vào danh sách để chuyển cảnh kéo theo.
+   * Video được ghi vào danh sách để chuyển cảnh kéo theo. `timing` (tuỳ chọn) thay mốc mặc định của cảnh:
+   * { start, duration, mediaStart } — dùng cho đoạn clip kéo qua nhiều cảnh.
    */
-  function media(ctx, parent, scene, src, cls, sc, videoList) {
+  function media(ctx, parent, scene, src, cls, sc, videoList, timing) {
     if (VIDEO_RE.test(src)) {
-      var v = videoClip(ctx.root, scene, src, cls, sc.start, sc.duration + ctx.tail(sc), 6);
+      var t = timing || { start: sc.start, duration: sc.duration + ctx.tail(sc) };
+      var v = videoClip(ctx.root, scene, src, cls, t.start, t.duration, 6, t.mediaStart);
       videoList.push(v);
       return v;
     }
@@ -169,6 +190,7 @@
     textEnter: textEnter,
     image: image,
     videoClip: videoClip,
+    clipAudio: clipAudio,
     media: media,
   };
 })();

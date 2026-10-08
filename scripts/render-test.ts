@@ -2,7 +2,8 @@
  * pnpm test:render [--update]
  * Render test (REQUIREMENTS v0.4 §13): mỗi template × phong cách đã có preset, chụp khung lúc đã đứng yên ở cuối cảnh hook,
  * giữa lần chuyển cảnh đầu, cuối cảnh giữa và cuối CTA
- * (hyperframes snapshot), rồi so với ảnh chuẩn trong tests/baseline/ bằng SSIM (ffmpeg).
+ * (hyperframes snapshot; video có `id` nên khung video cũng được vẽ),
+ * rồi so với ảnh chuẩn trong tests/baseline/ bằng SSIM (ffmpeg).
  * `--only=<chuỗi>` chỉ chạy tổ hợp có tên chứa chuỗi đó (vd. --only=Promo).
  * `--update` ghi lại ảnh chuẩn: chỉ dùng khi thay đổi giao diện có chủ ý (đã xem bằng mắt).
  * Chạy trước mỗi lần nâng version HyperFrames.
@@ -20,8 +21,11 @@ const FIXTURES: Record<string, string> = {
   BeforeAfter: 'truoc-sau',
   Testimonial: 'khach-hang-noi',
   Promo: 'khuyen-mai',
+  EventRecap: 'tong-ket-su-kien',
+  Stats: 'so-lieu-thanh-tich',
+  TalkingHead: 'video-co-nguoi-noi',
 };
-/** Ảnh chuẩn lưu JPEG 360×640 (95 tổ hợp × 3 khung) cho gọn git; ảnh so sánh cũng nén cùng cách nên SSIM vẫn ổn định. */
+/** Ảnh chuẩn lưu JPEG 360×640 (152 tổ hợp × 4 khung) cho gọn git; ảnh so sánh cũng nén cùng cách nên SSIM vẫn ổn định. */
 const BASE_SIZE = 'scale=360:640';
 const BASE_EXT = 'jpg';
 const ONLY = process.argv.find((a) => a.startsWith('--only='))?.slice(7);

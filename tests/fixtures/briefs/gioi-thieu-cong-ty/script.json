@@ -1,0 +1,76 @@
+{
+  "concept": {
+    "title": "Mẫu gioi-thieu-cong-ty",
+    "bigIdea": "Fixture kiểm template M4",
+    "hookAngle": "thuong-hieu"
+  },
+  "videoType": "gioi-thieu-cong-ty",
+  "style": "dien-anh",
+  "template": "EventRecap",
+  "product": "redsun",
+  "hook": "Phần mềm Việt\ncho cửa hàng Việt",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Phần mềm Việt cho cửa hàng Việt",
+      "visual": {
+        "type": "montage",
+        "srcs": [
+          "assets/_demo/su-kien-1.jpg",
+          "assets/_demo/su-kien-4.jpg"
+        ]
+      },
+      "durationSec": 5.0
+    },
+    {
+      "id": "c1-problem",
+      "role": "problem",
+      "onScreenText": "Chủ cửa hàng mất nhiều giờ cho sổ sách",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 6.0
+    },
+    {
+      "id": "c2-solution",
+      "role": "solution",
+      "onScreenText": "SIPOS, REDSUN BOS, Webino",
+      "visual": {
+        "type": "montage",
+        "srcs": [
+          "assets/_demo/su-kien-3.jpg",
+          "assets/_demo/screen-record-test.mp4",
+          "assets/_demo/su-kien-2.jpg"
+        ]
+      },
+      "durationSec": 7.0,
+      "subText": "Phần mềm cho cửa hàng và doanh nghiệp"
+    },
+    {
+      "id": "c3-proof",
+      "role": "proof",
+      "onScreenText": "Đội ngũ REDSUN luôn đồng hành",
+      "visual": {
+        "type": "asset",
+        "src": "assets/_demo/su-kien-4.jpg"
+      },
+      "durationSec": 6.5
+    },
+    {
+      "id": "c4-cta",
+      "role": "cta",
+      "onScreenText": "Tìm hiểu thêm tại redsun.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 5.5
+    }
+  ],
+  "cta": "Tìm hiểu thêm tại redsun.vn",
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 90,
+    "notes": "Fixture kiểm template, không đăng."
+  }
+}

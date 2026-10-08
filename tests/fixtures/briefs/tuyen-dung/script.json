@@ -1,0 +1,67 @@
+{
+  "concept": {
+    "title": "Mẫu tuyen-dung",
+    "bigIdea": "Fixture kiểm template M4",
+    "hookAngle": "lat-nguoc"
+  },
+  "videoType": "tuyen-dung",
+  "style": "nang-dong",
+  "template": "EventRecap",
+  "product": "redsun",
+  "hook": "Bạn nghĩ làm phần mềm\nlà ngồi một mình?",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Bạn nghĩ làm phần mềm là ngồi một mình?",
+      "visual": {
+        "type": "montage",
+        "srcs": [
+          "assets/_demo/su-kien-4.jpg",
+          "assets/_demo/su-kien-2.jpg"
+        ]
+      },
+      "durationSec": 4.5
+    },
+    {
+      "id": "c1-proof",
+      "role": "proof",
+      "onScreenText": "Ở REDSUN, mình làm việc nhóm",
+      "visual": {
+        "type": "montage",
+        "srcs": [
+          "assets/_demo/su-kien-3.jpg",
+          "assets/_demo/su-kien-4.jpg",
+          "assets/_demo/su-kien-1.jpg"
+        ]
+      },
+      "durationSec": 5.0
+    },
+    {
+      "id": "c2-solution",
+      "role": "solution",
+      "onScreenText": "Tuyển lập trình viên và kinh doanh",
+      "visual": {
+        "type": "asset",
+        "src": "assets/_demo/su-kien-1.jpg"
+      },
+      "durationSec": 6.0,
+      "subText": "Học mỗi ngày cùng đội ngũ"
+    },
+    {
+      "id": "c3-cta",
+      "role": "cta",
+      "onScreenText": "Tìm hiểu thêm tại redsun.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 5.0
+    }
+  ],
+  "cta": "Tìm hiểu thêm tại redsun.vn",
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 90,
+    "notes": "Fixture kiểm template, không đăng."
+  }
+}

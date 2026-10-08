@@ -6,8 +6,10 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { MusicPurpose } from '../../config/music-manifest.ts';
 import type { Script } from '../../config/script.schema.ts';
-import { assetPaths, buildProps, type TemplateProps, variablesFile } from './build-props.ts';
+import { assetPaths, buildProps, type TemplateProps, variablesFile, voiceWindowsOf } from './build-props.ts';
+import { dropSilentClipAudio } from './clip-check.ts';
 import { REPO_ROOT, runHyperframes, stripAnsi } from './hyperframes-env.ts';
+import { injectMusicDucking } from './music-ducking.ts';
 import { stageProject } from './stage-project.ts';
 import { formatIssues, hasErrors, type Issue, validateVideo } from './validate-video.ts';
 
@@ -27,6 +29,8 @@ export function buildVideo(opts: { dir: string; name: string; musicPurpose: Musi
   if (hasErrors(issues) || !script) throw new BuildError(`Kịch bản chưa dựng được:\n${formatIssues(issues)}`);
 
   const props = buildProps(REPO_ROOT, script);
+  dropSilentClipAudio(props.scenes);
+  props.voiceWindows = voiceWindowsOf(props.scenes);
   if (opts.writeProps !== false) writeFileSync(join(opts.dir, 'props.json'), JSON.stringify(props, null, 2) + '\n');
 
   const { dir: stageDir } = stageProject({ template: script.template, name: opts.name, musicId: script.music, purpose: opts.musicPurpose, assets: assetPaths(script) });
@@ -34,6 +38,7 @@ export function buildVideo(opts: { dir: string; name: string; musicPurpose: Musi
   const varsFile = join(stageDir, 'variables.json');
   writeFileSync(varsFile, JSON.stringify(vars));
   injectDefaults(join(stageDir, 'index.html'), vars);
+  injectMusicDucking(join(stageDir, 'index.html'), props.voiceWindows, props.totalSec);
 
   const lint = runHyperframes(['lint', stageDir]);
   if (lint.status !== 0) throw new BuildError(`Template ${script.template} còn lỗi (hyperframes lint):\n${stripAnsi(lint.stdout + lint.stderr)}`);
