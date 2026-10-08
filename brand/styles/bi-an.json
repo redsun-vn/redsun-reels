@@ -1,0 +1,23 @@
+{
+  "id": "bi-an",
+  "transition": {
+    "type": "dip-black",
+    "duration": 0.7,
+    "ease": "power3.inOut"
+  },
+  "text": {
+    "enter": "blur",
+    "duration": 0.6,
+    "ease": "power3.out",
+    "wordStagger": 0.08
+  },
+  "kenBurns": 1.1,
+  "accent": "underline",
+  "ctaPulse": false,
+  "overlay": "vignette",
+  "background": "gradient",
+  "textFx": "glow",
+  "musicMood": [
+    "bi-an"
+  ]
+}

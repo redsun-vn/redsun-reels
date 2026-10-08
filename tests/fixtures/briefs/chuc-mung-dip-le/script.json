@@ -1,0 +1,48 @@
+{
+  "concept": {
+    "title": "Mẫu chuc-mung-dip-le",
+    "bigIdea": "Fixture kiểm template M3",
+    "hookAngle": "thuong-hieu"
+  },
+  "videoType": "chuc-mung-dip-le",
+  "style": "lang-man",
+  "template": "Promo",
+  "product": "sipos",
+  "hook": "Chúc mừng 20/10",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Chúc mừng 20/10",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 3.0
+    },
+    {
+      "id": "c1-solution",
+      "role": "solution",
+      "onScreenText": "Cảm ơn các chị em chủ quán",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 7.1,
+      "subText": "Luôn tận tâm với từng vị khách"
+    },
+    {
+      "id": "c2-cta",
+      "role": "cta",
+      "onScreenText": "Tìm hiểu thêm tại sipos.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 3.5
+    }
+  ],
+  "cta": "Tìm hiểu thêm tại sipos.vn",
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 90,
+    "notes": "Fixture kiểm template, không đăng."
+  }
+}

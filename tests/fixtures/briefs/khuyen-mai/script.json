@@ -1,0 +1,53 @@
+{
+  "concept": {
+    "title": "Mẫu khuyen-mai",
+    "bigIdea": "Fixture kiểm template M3",
+    "hookAngle": "con-so"
+  },
+  "videoType": "khuyen-mai",
+  "style": "khuyen-mai",
+  "template": "Promo",
+  "product": "sipos",
+  "hook": "Giảm 30% gói SIPOS năm",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Giảm 30% gói SIPOS năm",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 2.5
+    },
+    {
+      "id": "c1-solution",
+      "role": "solution",
+      "onScreenText": "Chỉ còn 840.000đ",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 6.0,
+      "promo": {
+        "badge": "-30%",
+        "priceOld": "1.200.000đ",
+        "priceNew": "840.000đ",
+        "deadline": "Đến hết 31/10"
+      }
+    },
+    {
+      "id": "c2-cta",
+      "role": "cta",
+      "onScreenText": "Tìm hiểu thêm tại sipos.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 3.5
+    }
+  ],
+  "cta": "Tìm hiểu thêm tại sipos.vn",
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 90,
+    "notes": "Fixture kiểm template, không đăng."
+  }
+}

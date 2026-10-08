@@ -66,3 +66,17 @@ describe('resolveStyle', () => {
     expect(() => resolveStyle({ videoType: 'meo-hay', style: 'khong-co' })).toThrow(/Không có phong cách/);
   });
 });
+
+describe('fact-check', () => {
+  it('tách số bỏ dấu phân cách và so quote không phân biệt dấu câu', async () => {
+    const { numberTokens, normalizeText } = await import('../scripts/lib/fact-check.ts');
+    expect(numberTokens('Giảm 30%, còn 99.000đ đến 20/10')).toEqual(['30', '99000', '20', '10']);
+    expect(normalizeText('“Từ ngày dùng SIPOS, tôi ngủ ngon!”')).toBe('từ ngày dùng sipos tôi ngủ ngon');
+  });
+
+  it('lịch dịp lễ khớp phong cách mặc định cũ', async () => {
+    const { OCCASION_STYLES } = await import('../config/video-types.ts');
+    expect(OCCASION_STYLES['20-10']).toBe('lang-man');
+    expect(OCCASION_STYLES['halloween']).toBe('bi-an');
+  });
+});

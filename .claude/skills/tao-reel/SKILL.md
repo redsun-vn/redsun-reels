@@ -28,7 +28,7 @@ description: Dẫn nhân viên marketing làm một video Reel/TikTok/Shorts d�
 ### 2. Loại video và phong cách
 - Xem danh sách: `./reel info`. Chi tiết một loại: `./reel info <loại-video>`.
 - `videoType: auto` → đề xuất 1 loại kèm lý do 1 câu.
-- Phong cách: MKT chọn thì dùng. Bỏ trống thì dùng mặc định của loại (báo cho MKT biết tên phong cách). Có dịp lễ thì dùng phong cách theo dịp.
+- Phong cách: MKT chọn thì dùng. Bỏ trống thì dùng mặc định của loại (báo cho MKT biết tên phong cách). Có dịp lễ thì ghi `occasion` (mã trong `./reel info dip-le`) và dùng phong cách theo dịp.
 - Chỉ dùng loại video có ✓ và phong cách có ✓ trong `./reel info`. Cái chưa dựng thì nói "phong cách này sẽ có ở bản sau" và gợi ý cái gần nhất.
 - Phong cách nằm trong "Nên tránh" của loại đó: hỏi lại MKT một câu, họ vẫn được giữ.
 
@@ -42,6 +42,9 @@ description: Dẫn nhân viên marketing làm một video Reel/TikTok/Shorts d�
 - Cảnh kiểu `phone` hoặc `asset` cần ảnh/clip thật trong `assets/<sản-phẩm>/` (ảnh chụp màn hình, quay màn hình, ảnh quán…).
 - Thiếu → viết `briefs/<tên-video>/shotlist.md`: số shot, cảnh, địa điểm, mô tả, đạo cụ, ánh sáng, thời lượng. Quay/chụp **dọc 9:16**, chừa trên 220px, dưới 420px, phải 160px không có chữ quan trọng. Nhóm theo địa điểm. **DỪNG** chờ MKT gửi file, hoặc đề xuất làm bản chỉ có chữ (cảnh `text`) nếu MKT muốn làm ngay.
 - Không dùng ảnh không rõ nguồn, không lấy ảnh trên mạng.
+- **Khách hàng nói**: cần lời khách thật, tên + cửa hàng, và khách đã đồng ý xuất hiện. MKT chưa đưa thì hỏi, không tự viết lời khách.
+- **Khuyến mãi / sự kiện**: cần mức giảm, giá, hạn chót, giờ… do MKT đưa (ghi vào brief). Không tự đặt.
+- **Trước / sau**: cần ảnh/clip TRƯỚC và SAU thật (hoặc làm bản chỉ có chữ).
 
 ### 5. Kịch bản — **DỪNG chờ MKT duyệt**
 - Viết `briefs/<tên-video>/script.json` theo [references/script-format.md](references/script-format.md).

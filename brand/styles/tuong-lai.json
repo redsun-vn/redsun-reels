@@ -1,0 +1,24 @@
+{
+  "id": "tuong-lai",
+  "transition": {
+    "type": "zoom-through",
+    "duration": 0.6,
+    "ease": "power3.inOut"
+  },
+  "text": {
+    "enter": "blur",
+    "duration": 0.5,
+    "ease": "sine.out",
+    "wordStagger": 0.05
+  },
+  "kenBurns": 1.1,
+  "accent": "underline",
+  "ctaPulse": false,
+  "overlay": "grain",
+  "background": "aurora",
+  "textFx": "glass",
+  "musicMood": [
+    "tuong-lai",
+    "robot-cong-nghe"
+  ]
+}

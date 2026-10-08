@@ -10,6 +10,8 @@ import { checkTrack, findTrack, MusicManifestSchema, type MusicPurpose } from '.
 import { countWords, sceneDurationSec } from '../../config/scene-timing.ts';
 import { availableStylePresets, hasStylePreset } from '../../config/style-preset.schema.ts';
 import { resolveStyle } from './resolve-style.ts';
+import { factIssues } from './fact-check.ts';
+import { getOccasion, OCCASIONS } from '../../config/occasions.ts';
 import { ScriptSchema, type Script } from '../../config/script.schema.ts';
 import { getVideoType, type SceneRole, type VideoType } from '../../config/video-types.ts';
 import { readBriefFile, readScriptFile } from './brief.ts';
@@ -163,11 +165,21 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose } 
   }
 
   // Tiếng Việt: chuẩn NFC
-  const texts = [script.hook, script.cta, ...script.scenes.flatMap((s) => [s.onScreenText, s.subText ?? ''])];
+  const texts = [
+    script.hook,
+    script.cta,
+    ...script.scenes.flatMap((s) => [s.onScreenText, s.subText ?? '', s.attribution ?? '', ...Object.values(s.promo ?? {}).map(String)]),
+  ];
   if (texts.some((t) => t !== t.normalize('NFC'))) issues.push(err('Có chữ chưa ở dạng Unicode NFC (dấu tiếng Việt bị tách). Gõ lại hoặc chuẩn hóa NFC.'));
 
+  // Chống bịa: số, giá, tên khách, quote phải có trong brief
+  issues.push(...factIssues(script, readBriefFile(dir).body));
+  if (brief.occasion && !getOccasion(brief.occasion)) {
+    issues.push(warn(`Dịp lễ "${brief.occasion}" chưa có trong lịch, nên không tự chọn phong cách theo dịp. Có: ${OCCASIONS.map((o) => o.id).join(', ')}.`));
+  }
+
   // Asset
-  const assetPaths = [...brief.assets, ...script.scenes.map((s) => s.visual.src).filter((x): x is string => !!x)];
+  const assetPaths = [...brief.assets, ...script.scenes.flatMap((s) => [s.visual.src, s.visual.srcAfter]).filter((x): x is string => !!x)];
   for (const a of new Set(assetPaths)) {
     const rel = normalize(a);
     if (isAbsolute(rel) || rel.startsWith('..')) {

@@ -1,0 +1,23 @@
+{
+  "id": "retro",
+  "transition": {
+    "type": "glitch-cut",
+    "duration": 0.3,
+    "ease": "steps(3)"
+  },
+  "text": {
+    "enter": "rise",
+    "duration": 0.4,
+    "ease": "power2.out",
+    "wordStagger": 0.04
+  },
+  "kenBurns": 1.06,
+  "accent": "block",
+  "ctaPulse": false,
+  "overlay": "vhs",
+  "background": "gradient",
+  "textFx": "rgb-split",
+  "musicMood": [
+    "retro"
+  ]
+}

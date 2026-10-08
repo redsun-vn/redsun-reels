@@ -1,0 +1,313 @@
+/*
+ * Phần trang trí phủ lên chữ (vignette, ánh sáng loang, scanline, confetti…) vẽ bằng ::before để hyperframes check
+ * không coi là phần tử che chữ; chúng gần trong suốt hoặc chỉ lướt qua.
+ *
+ * Kiểu theo preset phong cách (kit-motion.js): nền, lớp phủ, hiệu ứng chữ, cách nhấn từ khóa.
+ * Chỉ dùng biến brand; độ trong suốt pha bằng color-mix (brand lint cấm hex/rgb).
+ * Tham chiếu kỹ thuật: signature features của github.com/vincentwei1021/mg-styles-15 (MIT).
+ */
+
+/* ---------- Nền ---------- */
+.kit-bg.bg-gradient {
+  background: linear-gradient(170deg, var(--color-background) 35%, color-mix(in srgb, var(--color-background) 72%, var(--color-black)));
+}
+
+/* Aurora: đốm màu brand lớn, mờ, trôi chậm (thay vì palette của block) */
+.kit-aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.kit-aurora-blob {
+  position: absolute;
+  width: 1000px;
+  height: 1000px;
+  border-radius: 50%;
+  filter: blur(110px);
+}
+.kit-aurora-blob.blob-a {
+  left: -260px;
+  top: 120px;
+  background: color-mix(in srgb, var(--color-accent) 22%, transparent);
+}
+.kit-aurora-blob.blob-b {
+  right: -320px;
+  top: 760px;
+  background: color-mix(in srgb, var(--color-text) 18%, transparent);
+}
+.kit-aurora-blob.blob-c {
+  left: 80px;
+  bottom: -420px;
+  background: color-mix(in srgb, var(--color-primary) 45%, transparent);
+}
+
+/* ---------- Lớp dùng chung cho chuyển cảnh ---------- */
+.kit-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  z-index: 45;
+  pointer-events: none;
+}
+.kit-dip {
+  background: var(--color-black);
+}
+.kit-flash {
+  background: var(--color-white);
+}
+.kit-wipe-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -6px;
+  width: 12px;
+  background: var(--color-accent);
+  z-index: 46;
+}
+
+/* ---------- Lớp phủ ---------- */
+.kit-overlay {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 40;
+}
+.kit-overlay.under {
+  z-index: auto;
+}
+
+.ov-vignette::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 45%, transparent 55%, color-mix(in srgb, var(--color-black) 55%, transparent) 100%);
+}
+
+/* Hạt nhiễu: feTurbulence trong SVG (seed cố định), khử bão hòa để chỉ còn độ sáng */
+.kit-grain {
+  position: absolute;
+  inset: -120px;
+  opacity: 0.09;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>");
+}
+
+.kit-leak {
+  position: absolute;
+  left: -300px;
+  top: -200px;
+  width: 1400px;
+  height: 1400px;
+  border-radius: 50%;
+  filter: blur(80px);
+  mix-blend-mode: screen;
+}
+.kit-leak::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 24%, transparent), color-mix(in srgb, var(--color-white) 14%, transparent) 45%, transparent 70%);
+}
+
+.ov-grid {
+  background-image: linear-gradient(color-mix(in srgb, var(--color-text) 8%, transparent) 2px, transparent 2px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-text) 8%, transparent) 2px, transparent 2px);
+  background-size: 90px 90px;
+}
+
+.ov-paper {
+  background: repeating-linear-gradient(to bottom, transparent 0 70px, color-mix(in srgb, var(--color-text) 9%, transparent) 70px 73px);
+}
+.ov-paper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50px;
+  width: 4px;
+  background: color-mix(in srgb, var(--color-accent) 45%, transparent);
+}
+.ov-paper .kit-grain {
+  mix-blend-mode: multiply;
+  opacity: 0.14;
+}
+
+/* VHS / scanline: sọc 2px, vệt sáng chạy dọc */
+.ov-scanlines::before,
+.ov-vhs::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(to bottom, color-mix(in srgb, var(--color-black) 16%, transparent) 0 2px, transparent 2px 4px);
+}
+.kit-scan-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 160px;
+}
+.kit-scan-band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--color-white) 8%, transparent), transparent);
+}
+.kit-rec {
+  position: absolute;
+  top: var(--safe-top);
+  right: var(--safe-right);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-weight: var(--weight-heading);
+  font-size: var(--type-small);
+  color: var(--color-text);
+}
+.kit-rec-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+/* HUD: 4 góc khóa mục tiêu + radar quét */
+.kit-hud-frame {
+  position: absolute;
+  left: calc(var(--safe-left) - 30px);
+  right: calc(var(--safe-right) - 30px);
+  top: calc(var(--safe-top) + 110px);
+  bottom: calc(var(--safe-bottom) - 30px);
+}
+.kit-hud-corner {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border: 0 solid color-mix(in srgb, var(--color-accent) 85%, transparent);
+}
+.kit-hud-corner.tl {
+  left: 0;
+  top: 0;
+  border-left-width: 6px;
+  border-top-width: 6px;
+}
+.kit-hud-corner.tr {
+  right: 0;
+  top: 0;
+  border-right-width: 6px;
+  border-top-width: 6px;
+}
+.kit-hud-corner.bl {
+  left: 0;
+  bottom: 0;
+  border-left-width: 6px;
+  border-bottom-width: 6px;
+}
+.kit-hud-corner.br {
+  right: 0;
+  bottom: 0;
+  border-right-width: 6px;
+  border-bottom-width: 6px;
+}
+.kit-hud-radar {
+  position: absolute;
+  top: var(--safe-top);
+  right: var(--safe-right);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid color-mix(in srgb, var(--color-accent) 60%, transparent);
+}
+.kit-hud-radar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, color-mix(in srgb, var(--color-accent) 55%, transparent), transparent 28%);
+}
+
+.kit-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 150px;
+  background: var(--color-black);
+}
+.kit-bar.top {
+  top: 0;
+}
+.kit-bar.bottom {
+  bottom: 0;
+}
+
+.kit-confetti {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 30px;
+}
+.kit-confetti::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+}
+.kit-confetti.c-accent::before {
+  background: var(--color-accent);
+}
+.kit-confetti.c-primary::before {
+  background: var(--color-primary);
+}
+.kit-confetti.c-text::before {
+  background: var(--color-text);
+}
+
+/* ---------- Hiệu ứng chữ ---------- */
+.fx-glow .kit-main {
+  text-shadow: 0 0 24px color-mix(in srgb, var(--color-text) 40%, transparent);
+}
+
+/* Lệch kênh màu kiểu VHS / glitch: 2 bóng lệch ngang */
+.fx-rgb-split .kit-main {
+  text-shadow: -4px 0 color-mix(in srgb, var(--color-accent) 85%, transparent), 4px 0 color-mix(in srgb, var(--color-white) 45%, transparent);
+}
+
+/* Hanazi (chữ kiểu show giải trí): viền đậm + bóng khối màu nhấn */
+.fx-hanazi .kit-main {
+  -webkit-text-stroke: 10px var(--color-black);
+  paint-order: stroke fill;
+  text-shadow: 8px 8px 0 var(--color-accent);
+}
+
+/* Kính mờ (glassmorphism) sau khối chữ; nền lấn ra ngoài, chữ vẫn trong safe zone */
+.fx-glass .kit-text-block {
+  margin: 0 calc(-1 * var(--space-md));
+  padding: var(--space-md);
+  border-radius: 40px;
+  background: color-mix(in srgb, var(--color-white) 9%, transparent);
+  border: 2px solid color-mix(in srgb, var(--color-white) 28%, transparent);
+  backdrop-filter: blur(28px);
+}
+.fx-glass .kit-text-block.center {
+  bottom: auto;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Line boil (thu-cong): bộ lọc SVG #kit-boil do scene-kit.js tạo */
+.fx-boil .kit-main {
+  filter: url(#kit-boil);
+}
+.kit-fx-defs {
+  position: absolute;
+}
+
+/* Nhấn từ khóa: gạch chân lượn như vẽ tay */
+.accent-scribble .kit-accent {
+  color: var(--color-accent);
+  text-decoration: underline wavy var(--color-accent);
+  text-decoration-thickness: 6px;
+  text-underline-offset: 14px;
+}

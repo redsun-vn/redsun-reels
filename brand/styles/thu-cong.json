@@ -1,0 +1,24 @@
+{
+  "id": "thu-cong",
+  "transition": {
+    "type": "vertical-push",
+    "duration": 0.5,
+    "ease": "back.out(1.4)"
+  },
+  "text": {
+    "enter": "pop",
+    "duration": 0.4,
+    "ease": "back.out(1.6)",
+    "wordStagger": 0.05
+  },
+  "kenBurns": 1.04,
+  "accent": "scribble",
+  "ctaPulse": false,
+  "overlay": "paper",
+  "background": "flat",
+  "textFx": "boil",
+  "musicMood": [
+    "thu-cong",
+    "vui-nhon"
+  ]
+}

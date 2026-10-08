@@ -3,6 +3,7 @@
  * Mỗi loại khai: template, độ dài, thứ tự vai trò cảnh, góc hook gợi ý, phong cách mặc định / gợi ý / nên tránh, mood nhạc.
  */
 import { z } from 'zod';
+import { OCCASIONS } from './occasions.ts';
 import { STYLE_IDS, type StyleId } from './styles.ts';
 
 export const TEMPLATE_IDS = [
@@ -82,26 +83,8 @@ export const VIDEO_TYPES: readonly VideoType[] = [
   { id: 'thu-gian-asmr', name: 'Thư giãn / không khí quán', templates: ['Promo', 'Testimonial'], minSec: 10, maxSec: 20, roles: ['hook', 'solution', 'cta'], hookAngles: [], defaultStyle: 'thu-gian', suggestedStyles: ['lang-man'], avoidStyles: [], music: 'nhac-nen', keepClipAudio: false, products: ['sipos'] },
 ];
 
-/** Dịp lễ → phong cách mặc định (docs/video-style-catalog.md §4). Ghi đè mặc định theo loại video. */
-export const OCCASION_STYLES: Readonly<Record<string, StyleId>> = {
-  'tet-duong-lich': 'le-hoi',
-  'tet': 'le-hoi',
-  '14-2': 'lang-man',
-  '8-3': 'lang-man',
-  '30-4': 'nang-dong',
-  '1-6': 'vui-nhon',
-  'tuu-truong': 'vui-nhon',
-  'trung-thu': 'le-hoi',
-  '20-10': 'lang-man',
-  'halloween': 'bi-an',
-  '11-11': 'khuyen-mai',
-  'black-friday': 'khuyen-mai',
-  '20-11': 'tin-cay',
-  'giang-sinh': 'le-hoi',
-  'khai-truong': 'le-hoi',
-  'sinh-nhat-cong-ty': 'dien-anh',
-  'the-thao': 'nang-dong',
-};
+/** Dịp lễ → phong cách mặc định (config/occasions.ts). Ghi đè mặc định theo loại video. */
+export const OCCASION_STYLES: Readonly<Record<string, StyleId>> = Object.fromEntries(OCCASIONS.map((o) => [o.id, o.style]));
 
 export function getVideoType(id: string): VideoType | undefined {
   return VIDEO_TYPES.find((t) => t.id === id);

@@ -1,0 +1,60 @@
+{
+  "concept": {
+    "title": "Mẫu su-kien-webinar",
+    "bigIdea": "Fixture kiểm template M3",
+    "hookAngle": "cau-hoi-noi-dau"
+  },
+  "videoType": "su-kien-webinar",
+  "style": "tin-tuc",
+  "template": "Promo",
+  "product": "bos",
+  "hook": "Vận hành rối vì\nsố liệu rời rạc?",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Vận hành rối vì số liệu rời rạc?",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 4.2
+    },
+    {
+      "id": "c1-solution",
+      "role": "solution",
+      "onScreenText": "Webinar: Số hoá vận hành doanh nghiệp",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 4.3
+    },
+    {
+      "id": "c2-proof",
+      "role": "proof",
+      "onScreenText": "Đăng ký tham dự",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 4.1,
+      "promo": {
+        "badge": "Miễn phí",
+        "deadline": "20:00 thứ Năm 15/10"
+      }
+    },
+    {
+      "id": "c3-cta",
+      "role": "cta",
+      "onScreenText": "Yêu cầu tư vấn tại redsun.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 3.9
+    }
+  ],
+  "cta": "Yêu cầu tư vấn tại redsun.vn",
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 90,
+    "notes": "Fixture kiểm template, không đăng."
+  }
+}

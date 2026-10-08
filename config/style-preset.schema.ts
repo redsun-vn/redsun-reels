@@ -8,8 +8,12 @@ import { join } from 'node:path';
 import { z } from 'zod';
 import { STYLE_IDS } from './styles.ts';
 
-export const TRANSITIONS = ['vertical-push', 'zoom-through', 'elastic-push', 'blur-crossfade'] as const;
-export const TEXT_ENTERS = ['rise', 'slam', 'pop'] as const;
+export const TRANSITIONS = ['vertical-push', 'zoom-through', 'elastic-push', 'blur-crossfade', 'dip-black', 'flash-white', 'whip', 'glitch-cut'] as const;
+export const TEXT_ENTERS = ['rise', 'slam', 'pop', 'blur', 'type', 'track'] as const;
+/** Một lớp phủ mỗi video (docs/video-style-catalog.md §1). `paper`, `grid` nằm dưới chữ; còn lại nằm trên. */
+export const OVERLAYS = ['none', 'vignette', 'grain', 'light-leak', 'grid', 'hud', 'scanlines', 'confetti', 'letterbox', 'paper', 'vhs'] as const;
+export const BACKGROUNDS = ['flat', 'gradient', 'aurora'] as const;
+export const TEXT_FX = ['none', 'glow', 'rgb-split', 'hanazi', 'glass', 'boil'] as const;
 
 export const StylePresetSchema = z.object({
   id: z.enum(STYLE_IDS),
@@ -28,7 +32,12 @@ export const StylePresetSchema = z.object({
   /** Độ phóng chậm ảnh nền/asset trong suốt cảnh (1 = không phóng). */
   kenBurns: z.number().min(1).max(1.2),
   /** Cách nhấn từ khóa: gạch chân màu nhấn / khối nền màu nhấn / nhãn dán nghiêng. */
-  accent: z.enum(['underline', 'block', 'sticker']),
+  accent: z.enum(['underline', 'block', 'sticker', 'scribble']),
+  overlay: z.enum(OVERLAYS),
+  /** Nền: phẳng / gradient 2 sắc cùng họ màu brand / aurora (đốm màu brand mờ trôi chậm). */
+  background: z.enum(BACKGROUNDS),
+  /** Hiệu ứng chữ chính: phát sáng, lệch kênh màu, hanazi (viền + bóng khối), kính mờ, nét rung vẽ tay. */
+  textFx: z.enum(TEXT_FX),
   /** Cảnh cuối: chữ CTA nhấp nhịp nhẹ để kêu gọi. */
   ctaPulse: z.boolean(),
   musicMood: z.array(z.enum(STYLE_IDS)).min(1),

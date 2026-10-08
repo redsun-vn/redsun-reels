@@ -1,0 +1,24 @@
+{
+  "id": "tin-cay",
+  "transition": {
+    "type": "blur-crossfade",
+    "duration": 0.6,
+    "ease": "sine.inOut"
+  },
+  "text": {
+    "enter": "rise",
+    "duration": 0.5,
+    "ease": "power2.out",
+    "wordStagger": 0.05
+  },
+  "kenBurns": 1.04,
+  "accent": "underline",
+  "ctaPulse": false,
+  "overlay": "none",
+  "background": "flat",
+  "textFx": "none",
+  "musicMood": [
+    "tin-cay",
+    "toi-gian"
+  ]
+}

@@ -3,6 +3,9 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import type { Script } from '../config/script.schema.ts';
+import { loadStylePreset } from '../config/style-preset.schema.ts';
+import { STYLE_IDS } from '../config/styles.ts';
+import { REPO_ROOT } from '../scripts/lib/hyperframes-env.ts';
 import { hasErrors, hookIssues, rolesMatch, validateVideo } from '../scripts/lib/validate-video.ts';
 
 const BRIEF = `---
@@ -100,10 +103,50 @@ describe('validateVideo', () => {
     expect(errorsOf(s, BRIEF.replace('template: FeatureLaunch', 'template: auto')).join(' ')).toMatch(/dùng template FeatureLaunch/);
   });
 
-  it('phong cách chưa có preset bị chặn với thông báo tiếng Việt', () => {
+  it('cả 19 phong cách đều có preset hợp lệ; id lạ báo lỗi tiếng Việt', () => {
+    for (const id of STYLE_IDS) expect(loadStylePreset(REPO_ROOT, id).id).toBe(id);
+    expect(() => loadStylePreset(REPO_ROOT, 'khong-co')).toThrow(/chưa dựng được/);
+  });
+
+  it('chống bịa: ưu đãi và tên khách phải có nguyên văn trong phần nội dung brief', () => {
     const s = baseScript();
-    s.style = 'retro';
-    expect(errorsOf(s).join(' ')).toMatch(/chưa dựng được ở bản hiện tại/);
+    s.scenes[2].promo = { badge: '-30%', priceNew: '99.000đ' };
+    s.scenes[2].attribution = 'Chị Lan · Tạp hoá Lan';
+    const msgs = errorsOf(s).join(' ');
+    expect(msgs).toMatch(/badge "-30%" không có nguyên văn trong brief/);
+    expect(msgs).toMatch(/priceNew "99.000đ" không có nguyên văn/);
+    expect(msgs).toMatch(/tên khách "Chị Lan · Tạp hoá Lan" không có trong brief/);
+  });
+
+  it('chống bịa: số trong frontmatter (duration 22) không hợp thức hoá badge -22%', () => {
+    const s = baseScript();
+    s.scenes[2].promo = { badge: '-22%' };
+    expect(errorsOf(s).join(' ')).toMatch(/badge "-22%" không có nguyên văn/);
+  });
+
+  it('chống bịa: ngày 20/10 không hợp thức hoá -20%; brief có đủ thì qua (kể cả hoá/hóa, 1.200.000 / 1 200 000)', () => {
+    const s = baseScript();
+    s.scenes[2].promo = { badge: '-20%' };
+    expect(errorsOf(s, BRIEF + 'Lời chúc 20/10.\n').join(' ')).toMatch(/badge "-20%" không có nguyên văn/);
+    s.scenes[2].promo = { badge: '-20%', priceOld: '1.200.000đ', deadline: 'Đến hết 31/10' };
+    s.scenes[2].attribution = 'Chị Lan · Tạp hoá Lan';
+    const body = 'Giảm 20%, giá cũ 1 200 000đ, đến hết 31/10. Khách: chị Lan, Tạp hóa Lan.\n';
+    const msgs = errorsOf(s, BRIEF + body).join(' ');
+    expect(msgs).not.toMatch(/không có nguyên văn|tên khách/);
+  });
+
+  it('khối khuyến mãi: cảnh quá ngắn và đếm ngược đi cùng giá bị chặn', () => {
+    const s = baseScript();
+    s.scenes[2].promo = { countdownFrom: 5, badge: '-20%' };
+    const msgs = errorsOf(s, BRIEF + 'Giảm 20%.\n').join(' ');
+    expect(msgs).toMatch(/cần dài ít nhất 7.2s/);
+    expect(msgs).toMatch(/đếm ngược không đi cùng badge/);
+  });
+
+  it('split cần cả ảnh trước và sau', () => {
+    const s = baseScript();
+    s.scenes[2].visual = { type: 'split', src: 'assets/_demo/sipos-kiem-kho.png' };
+    expect(errorsOf(s).join(' ')).toMatch(/cần cả ảnh trước/);
   });
 
   it('brief và kịch bản chọn khác phong cách / nhạc', () => {

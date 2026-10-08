@@ -1,0 +1,71 @@
+{
+  "concept": {
+    "title": "Mẫu truoc-sau",
+    "bigIdea": "Fixture kiểm template M3",
+    "hookAngle": "truoc-sau"
+  },
+  "videoType": "truoc-sau",
+  "style": "dien-anh",
+  "template": "BeforeAfter",
+  "product": "sipos",
+  "hook": "Kiểm kho bằng sổ tay\nhay bằng điện thoại?",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Kiểm kho bằng sổ tay hay bằng điện thoại?",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 4.1
+    },
+    {
+      "id": "c1-problem",
+      "role": "problem",
+      "onScreenText": "Đếm tay, gạch xoá, vẫn lệch 2 gói",
+      "visual": {
+        "type": "asset",
+        "src": "assets/_demo/so-tay-kiem-kho.png"
+      },
+      "durationSec": 6.7,
+      "subText": "Sổ ghi tay mỗi tối"
+    },
+    {
+      "id": "c2-solution",
+      "role": "solution",
+      "onScreenText": "Quét mã, tồn kho tự cập nhật",
+      "visual": {
+        "type": "asset",
+        "src": "assets/_demo/sipos-kiem-kho.png"
+      },
+      "durationSec": 5.4,
+      "subText": "Ngay trên điện thoại"
+    },
+    {
+      "id": "c3-proof",
+      "role": "proof",
+      "onScreenText": "Cùng một kho, hai cách kiểm",
+      "visual": {
+        "type": "split",
+        "src": "assets/_demo/so-tay-kiem-kho.png",
+        "srcAfter": "assets/_demo/sipos-kiem-kho.png"
+      },
+      "durationSec": 4.9
+    },
+    {
+      "id": "c4-cta",
+      "role": "cta",
+      "onScreenText": "Tìm hiểu thêm tại sipos.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 4.0
+    }
+  ],
+  "cta": "Tìm hiểu thêm tại sipos.vn",
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 90,
+    "notes": "Fixture kiểm template, không đăng."
+  }
+}

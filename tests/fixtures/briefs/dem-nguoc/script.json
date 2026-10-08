@@ -1,0 +1,51 @@
+{
+  "concept": {
+    "title": "Mẫu dem-nguoc",
+    "bigIdea": "Fixture kiểm template M3",
+    "hookAngle": "sap-thay-doi"
+  },
+  "videoType": "dem-nguoc",
+  "style": "bi-an",
+  "template": "Promo",
+  "product": "webino",
+  "hook": "Webino sắp có\nđiều mới",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Webino sắp có điều mới",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 3.0
+    },
+    {
+      "id": "c1-proof",
+      "role": "proof",
+      "onScreenText": "Đếm ngược ngày ra mắt",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 7.6,
+      "promo": {
+        "countdownFrom": 5,
+        "deadline": "Ra mắt 20/10"
+      }
+    },
+    {
+      "id": "c2-cta",
+      "role": "cta",
+      "onScreenText": "Tạo website tại webino.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 2.1
+    }
+  ],
+  "cta": "Tạo website tại webino.vn",
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 90,
+    "notes": "Fixture kiểm template, không đăng."
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "concept": {
+    "title": "Mẫu khach-hang-noi",
+    "bigIdea": "Fixture kiểm template M3",
+    "hookAngle": "quote"
+  },
+  "videoType": "khach-hang-noi",
+  "style": "tin-cay",
+  "template": "Testimonial",
+  "product": "sipos",
+  "hook": "Chủ quán cà phê\nvề sớm mỗi tối?",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Chủ quán cà phê về sớm mỗi tối?",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 4.2
+    },
+    {
+      "id": "c1-problem",
+      "role": "problem",
+      "onScreenText": "Chốt sổ đến 11 giờ đêm",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 5.5,
+      "subText": "Trước khi dùng SIPOS"
+    },
+    {
+      "id": "c2-solution",
+      "role": "solution",
+      "onScreenText": "Doanh thu tự tổng hợp cuối ngày",
+      "visual": {
+        "type": "asset",
+        "src": "assets/_demo/screen-record-test.mp4"
+      },
+      "durationSec": 4.3
+    },
+    {
+      "id": "c3-proof",
+      "role": "proof",
+      "onScreenText": "Từ ngày dùng SIPOS, tối nào tôi cũng về sớm",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 6.0,
+      "attribution": "Chị Hạnh · Quán cà phê Mộc, Đà Lạt"
+    },
+    {
+      "id": "c4-cta",
+      "role": "cta",
+      "onScreenText": "Tìm hiểu thêm tại sipos.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 4.0
+    }
+  ],
+  "cta": "Tìm hiểu thêm tại sipos.vn",
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 90,
+    "notes": "Fixture kiểm template, không đăng."
+  }
+}

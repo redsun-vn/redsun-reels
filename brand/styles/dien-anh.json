@@ -1,0 +1,24 @@
+{
+  "id": "dien-anh",
+  "transition": {
+    "type": "dip-black",
+    "duration": 0.8,
+    "ease": "sine.inOut"
+  },
+  "text": {
+    "enter": "blur",
+    "duration": 0.8,
+    "ease": "power2.out",
+    "wordStagger": 0.08
+  },
+  "kenBurns": 1.06,
+  "accent": "underline",
+  "ctaPulse": false,
+  "overlay": "letterbox",
+  "background": "gradient",
+  "textFx": "none",
+  "musicMood": [
+    "dien-anh",
+    "sang-trong"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "sang-trong",
+  "transition": {
+    "type": "blur-crossfade",
+    "duration": 0.7,
+    "ease": "sine.inOut"
+  },
+  "text": {
+    "enter": "track",
+    "duration": 0.8,
+    "ease": "power2.out",
+    "wordStagger": 0.06
+  },
+  "kenBurns": 1.04,
+  "accent": "underline",
+  "ctaPulse": false,
+  "overlay": "vignette",
+  "background": "gradient",
+  "textFx": "none",
+  "musicMood": [
+    "sang-trong",
+    "dien-anh"
+  ]
+}

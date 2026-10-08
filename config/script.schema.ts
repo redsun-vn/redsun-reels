@@ -15,11 +15,27 @@ export const SceneSchema = z.object({
   visual: z.object({
     type: z.enum(VISUAL_TYPES),
     src: z.string().optional(),
+    /** Ảnh/clip "sau" của cảnh `split` (BeforeAfter): `src` là trước, `srcAfter` là sau. */
+    srcAfter: z.string().optional(),
     /** Vùng cần chỉ vào / zoom trên ảnh (phần trăm 0–100), dùng cho callout của FeatureLaunch. */
     focus: z.object({ x: z.number().min(0).max(100), y: z.number().min(0).max(100) }).optional(),
   }),
   transition: z.string().optional(),
   durationSec: z.number().positive(),
+  /** Testimonial: tên khách + cửa hàng hiện ở lower third, vd. "Chị Lan · Tạp hoá Lan, Hà Đông". Phải có trong brief. */
+  attribution: z.string().min(1).max(60).optional(),
+  /** Promo: các con số phải có trong brief (validate kiểm). */
+  promo: z
+    .object({
+      badge: z.string().min(1).max(10).optional(),
+      priceOld: z.string().min(1).max(14).optional(),
+      priceNew: z.string().min(1).max(14).optional(),
+      deadline: z.string().min(1).max(32).optional(),
+      /** Đếm ngược N → 1, mỗi số 1 giây. */
+      countdownFrom: z.number().int().min(2).max(10).optional(),
+    })
+    .refine((p) => Object.values(p).some((v) => v !== undefined), 'promo cần ít nhất một trường')
+    .optional(),
 });
 export type Scene = z.infer<typeof SceneSchema>;
 

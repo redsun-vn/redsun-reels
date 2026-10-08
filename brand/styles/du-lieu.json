@@ -1,0 +1,24 @@
+{
+  "id": "du-lieu",
+  "transition": {
+    "type": "vertical-push",
+    "duration": 0.4,
+    "ease": "power2.inOut"
+  },
+  "text": {
+    "enter": "rise",
+    "duration": 0.35,
+    "ease": "power2.out",
+    "wordStagger": 0.04
+  },
+  "kenBurns": 1.0,
+  "accent": "underline",
+  "ctaPulse": false,
+  "overlay": "grid",
+  "background": "flat",
+  "textFx": "none",
+  "musicMood": [
+    "du-lieu",
+    "toi-gian"
+  ]
+}

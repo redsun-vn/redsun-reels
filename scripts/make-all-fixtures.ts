@@ -1,5 +1,5 @@
 /**
- * pnpm test:e2e [--draft] — dựng + xuất mọi brief mẫu trong tests/fixtures/briefs/ (7 loại video dùng FL/TIP ở M1)
+ * pnpm test:e2e [--draft] — dựng + xuất mọi brief mẫu trong tests/fixtures/briefs/ (15 loại video của 5 template M1–M3 + test dấu tiếng Việt)
  * bằng nhạc thử nghiệm, rồi kiểm output spec. Dùng trước khi phát hành hoặc nâng version HyperFrames.
  */
 import { readdirSync } from 'node:fs';

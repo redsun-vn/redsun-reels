@@ -1,0 +1,67 @@
+{
+  "concept": {
+    "title": "Mẫu so-sanh",
+    "bigIdea": "Fixture kiểm template M3",
+    "hookAngle": "lat-nguoc"
+  },
+  "videoType": "so-sanh",
+  "style": "du-lieu",
+  "template": "BeforeAfter",
+  "product": "bos",
+  "hook": "Excel gửi qua Zalo\nđã đủ chưa?",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Excel gửi qua Zalo đã đủ chưa?",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 3.8
+    },
+    {
+      "id": "c1-problem",
+      "role": "problem",
+      "onScreenText": "Mỗi phòng một file, cuối tháng mới gộp",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 4.7
+    },
+    {
+      "id": "c2-solution",
+      "role": "solution",
+      "onScreenText": "Số liệu về một chỗ",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 4.3,
+      "subText": "REDSUN BOS"
+    },
+    {
+      "id": "c3-proof",
+      "role": "proof",
+      "onScreenText": "Xem báo cáo mọi lúc",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 5.1,
+      "subText": "Không chờ cuối tháng"
+    },
+    {
+      "id": "c4-cta",
+      "role": "cta",
+      "onScreenText": "Yêu cầu tư vấn tại redsun.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 4.4
+    }
+  ],
+  "cta": "Yêu cầu tư vấn tại redsun.vn",
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 90,
+    "notes": "Fixture kiểm template, không đăng."
+  }
+}

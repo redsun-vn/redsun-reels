@@ -26,8 +26,23 @@ Mỗi cảnh:
   - `text`: chỉ có chữ.
   - `phone`: ảnh/clip màn hình trong khung điện thoại. Cần `src`. `focus: {x, y}` (phần trăm) là chỗ cần vòng chỉ vào và zoom.
   - `asset`: ảnh/clip tràn màn hình, chữ ở dưới. Cần `src`.
+  - `split` (BeforeAfter): màn hình chia đôi. `src` là ảnh/clip TRƯỚC, `srcAfter` là ảnh/clip SAU.
   - `logo`: dùng cho cảnh `cta` (logo lớn + câu kêu gọi).
 - `durationSec`: số giây hiển thị.
+- `attribution` (Testimonial): tên khách + cửa hàng cho lower third, ≤ 60 ký tự, vd. `"Chị Hạnh · Quán cà phê Mộc, Đà Lạt"`. Cảnh này hiện dạng câu trích dẫn (ngoặc kép lớn, chữ nghiêng).
+- `promo` (Promo): `{ badge?, priceOld?, priceNew?, deadline?, countdownFrom? }`.
+  - `badge` ≤ 12 ký tự, vd. `"-30%"`, `"Miễn phí"`.
+  - `priceOld` là giá cũ, hiện gạch ngang; `priceNew` là giá mới, hiện to.
+  - `deadline` ≤ 32 ký tự, vd. `"Đến hết 31/10"`.
+  - `countdownFrom` 2–10 (đếm ngược mỗi số 1 giây; cảnh phải dài ≥ số này + 1.5 giây).
+  - Cảnh có `promo` không dùng `visual.type: phone`.
+
+## Theo template
+| Template | Cảnh đặc thù |
+|---|---|
+| BeforeAfter | Cảnh `problem` gắn nhãn TRƯỚC (ảnh bị làm nhạt), `solution` gắn nhãn SAU; lần chuyển vào cảnh SAU đầu tiên luôn là wipe. Cảnh `proof` nên dùng `split` |
+| Testimonial | Cảnh có `attribution` = lời khách. Quote phải là **nguyên văn hoặc rút gọn** lời khách trong brief, không đổi ý |
+| Promo | Cảnh có `promo` hiện badge, giá, hạn chót, đếm ngược ở nửa dưới; chữ chính lên trên |
 
 Quy tắc chung:
 - Cảnh đầu là `hook`, có `onScreenText` = `hook` (bỏ `\n`).
@@ -37,6 +52,11 @@ Quy tắc chung:
 `durationSec ≥ max(1.5, số từ × 0.4) + 0.5` giây. Số từ tính cả `subText`, không tính dấu câu đứng riêng.
 - Tính nhanh: `./reel info thoi-luong "<chữ chính>" "<dòng phụ>"`.
 - Có thể cho cảnh dài hơn mức tối thiểu để khớp thời lượng của brief.
+
+## Chống bịa (validate kiểm)
+- Số trong `promo` (giá, %, ngày) phải có nguyên văn trong brief: **lỗi** nếu không có.
+- Tên trong `attribution` phải có trong brief: **lỗi** nếu không có.
+- Quote khác lời khách trong brief, hoặc số trong chữ cảnh không có trong brief: **cảnh báo**, hỏi MKT.
 
 Tổng thời lượng phải đạt cả hai điều kiện:
 - nằm trong khoảng của loại video;
@@ -55,4 +75,4 @@ Tổng thời lượng phải đạt cả hai điều kiện:
 Ghi `notes` dạng: `"Hook 22/25 (…). Thông điệp 18/20 (…). …"`. Mỗi điểm có lý do cụ thể.
 
 ## Ví dụ
-Xem `briefs/_example/script.json` (SIPOS, ra mắt tính năng, FeatureLaunch, tối giản) và các brief mẫu trong `tests/fixtures/briefs/` (mỗi loại video một brief).
+Xem `briefs/_example/script.json` (SIPOS, ra mắt tính năng, FeatureLaunch, tối giản) và các brief mẫu trong `tests/fixtures/briefs/` (mỗi loại video một brief). Mẫu M3: `truoc-sau`, `so-sanh` (BeforeAfter), `khach-hang-noi` (Testimonial), `khuyen-mai`, `dem-nguoc`, `chuc-mung-dip-le`, `su-kien-webinar`, `thu-gian-asmr` (Promo).

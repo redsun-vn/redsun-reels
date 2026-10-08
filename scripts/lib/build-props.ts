@@ -14,6 +14,8 @@ export interface PropsScene {
   text: string;
   sub?: string;
   visual: Script['scenes'][number]['visual'];
+  attribution?: string;
+  promo?: Script['scenes'][number]['promo'];
   start: number;
   duration: number;
 }
@@ -43,7 +45,7 @@ export function buildProps(repoRoot: string, script: Script): TemplateProps {
 
   let t = 0;
   const scenes = script.scenes.map((s) => {
-    const scene: PropsScene = { id: s.id, role: s.role, text: s.onScreenText, sub: s.subText, visual: s.visual, start: round(t), duration: s.durationSec };
+    const scene: PropsScene = { id: s.id, role: s.role, text: s.onScreenText, sub: s.subText, visual: s.visual, attribution: s.attribution, promo: s.promo, start: round(t), duration: s.durationSec };
     t += s.durationSec;
     return scene;
   });
@@ -68,7 +70,7 @@ export function variablesFile(props: TemplateProps, debugSafeZone = false): { pr
 
 /** Các đường dẫn hình/clip cần copy vào stage. */
 export function assetPaths(script: Script): string[] {
-  return script.scenes.map((s) => s.visual.src).filter((x): x is string => !!x);
+  return script.scenes.flatMap((s) => [s.visual.src, s.visual.srcAfter]).filter((x): x is string => !!x);
 }
 
 function round(n: number): number {

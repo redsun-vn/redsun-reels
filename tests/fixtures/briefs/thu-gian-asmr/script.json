@@ -1,0 +1,48 @@
+{
+  "concept": {
+    "title": "Mẫu thu-gian-asmr",
+    "bigIdea": "Fixture kiểm template M3",
+    "hookAngle": "thuong-hieu"
+  },
+  "videoType": "thu-gian-asmr",
+  "style": "thu-gian",
+  "template": "Promo",
+  "product": "sipos",
+  "hook": "Một buổi sáng\nở quán",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Một buổi sáng ở quán",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 3.5
+    },
+    {
+      "id": "c1-solution",
+      "role": "solution",
+      "onScreenText": "Mọi đơn đều gọn gàng",
+      "visual": {
+        "type": "asset",
+        "src": "assets/_demo/screen-record-test.mp4"
+      },
+      "durationSec": 4.5
+    },
+    {
+      "id": "c2-cta",
+      "role": "cta",
+      "onScreenText": "Tìm hiểu thêm tại sipos.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 3.5
+    }
+  ],
+  "cta": "Tìm hiểu thêm tại sipos.vn",
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 90,
+    "notes": "Fixture kiểm template, không đăng."
+  }
+}

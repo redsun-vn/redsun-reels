@@ -228,3 +228,56 @@ Nguồn tham khảo:
   - `claude -p` không đóng stdin sẽ treo; khi chạy nền phải `< /dev/null`.
 - **Chưa xong theo §15**: tiêu chí "1 người MKT tự làm 1 video, dev chỉ quan sát" cần người thật.
 
+
+## 11. M3: BeforeAfter, Testimonial, Promo, 16 phong cách, lịch dịp lễ (2026-10-08)
+
+- **Kit tách module** (scene-kit.js vượt 300 dòng):
+  - `kit-core.js`: chữ, tự co cỡ, ảnh/video;
+  - `kit-motion.js`: chuyển cảnh, nền, lớp phủ;
+  - `kit-blocks.js`: khối riêng theo template;
+  - `scene-kit.js`: dựng video.
+  - CSS tách thành `kit-styles.css` (phong cách) và `kit-blocks.css` (template). Mọi template nạp cùng bộ file.
+- **Preset phong cách** thêm:
+  - chuyển cảnh `dip-black`, `flash-white`, `whip`, `glitch-cut`;
+  - kiểu hiện chữ `blur`, `type`, `track`;
+  - lớp phủ (1 lớp/video): `vignette`, `grain`, `light-leak`, `grid`, `hud`, `scanlines`, `confetti`, `letterbox`, `paper`, `vhs`;
+  - nền `flat` / `gradient` / `aurora`;
+  - hiệu ứng chữ `glow`, `rgb-split`, `hanazi`, `glass`, `boil`;
+  - cách nhấn `scribble`.
+  - Bảng id → tham số: `brand/styles/*.json` (19 file).
+- **Tham chiếu kỹ thuật** (Nam gửi 2026-10-08): mục "signature features" của [mg-styles-15](https://github.com/vincentwei1021/mg-styles-15) (MIT). Chỉ lấy ý tưởng chuyển động, viết lại bằng CSS/GSAP theo brand, không chép code:
+  - HUD → `robot-cong-nghe`;
+  - VHS → `retro`, `glitch-cyberpunk`;
+  - line boil + nền giấy → `thu-cong`;
+  - aurora + kính mờ → `tuong-lai`, `thu-gian`;
+  - chữ hanazi → `vui-nhon`, `le-hoi`.
+  - Những phong cách cần WebGL/Blender (3D, liquid…) không áp dụng: không hợp mẫu điền chữ.
+- **Lệch §7.1 "ưu tiên block registry"**: các block registry trong catalog là composition riêng, có màu và font cố định. Đổi sang brand cần sửa gần hết, lại không ghép được vào cảnh động của kit. Vì vậy dùng hiệu ứng tự viết trong kit, chỉ dùng biến brand, kiểm bằng brand lint. Không cài block nào.
+- **Phần trang trí phủ lên chữ** vẽ bằng `::before`, và lớp phủ có `data-layout-allow-occlusion`. Lý do:
+  - `hyperframes check` coi phần tử có nền gradient là "đục", nên báo che chữ dù lớp phủ gần trong suốt.
+  - Pseudo-element không bị công cụ dò tới.
+  - Lỗi thật đã gặp và sửa: lớp tối của màn split nằm đè nhãn TRƯỚC/SAU.
+- **Tương phản**: quầng sáng `glow` từng dùng màu nhấn. Với Webino (cyan), chữ nhấn cyan trên quầng cyan chỉ đạt 2.58:1. Đã đổi quầng sang màu chữ (40%).
+- **Chống bịa** (`scripts/lib/fact-check.ts`), chỉ đối chiếu **phần nội dung** của `brief.md`. Frontmatter không tính, vì `duration: 22` hay `occasion: 20-10` từng hợp thức hoá badge "-22%" / "-20%".
+  - **Lỗi**:
+    - `promo.badge/priceOld/priceNew/deadline` không có **nguyên cụm** trong brief (so cả đơn vị %, đ, ngày);
+    - tên khách (`attribution`) không có trong brief;
+    - video "khách hàng nói" không có lời khách;
+    - `split` thiếu `srcAfter`, hoặc ảnh trước là ảnh tĩnh còn ảnh sau là clip;
+    - cảnh promo ngắn hơn `promoSequenceSec`;
+    - đếm ngược đi cùng badge/giá;
+    - promo/attribution đặt trên visual phone/split.
+  - **Cảnh báo**: số trong chữ cảnh không có trong brief; quote không khớp lời khách.
+  - **Chuẩn hoá trước khi so**: NFC; gộp hai kiểu dấu thanh (hoá/hóa, uỷ/ủy); gộp phân cách nghìn (1.200.000 = 1 200 000) và số 0 đầu (08/03 = 8/3); so theo từ, nên "Chị An" không khớp "chị Anh".
+  - Nhịp hiện khối promo dùng chung `config/promo-timing.ts` ↔ `kit-blocks.js`.
+- **Lịch dịp lễ**: `config/occasions.ts` (17 dịp, ngày, phong cách). `OCCASION_STYLES` lấy từ đây. `./reel info dip-le` in lịch. Brief ghi `occasion` lạ thì có cảnh báo.
+- **Sửa sau code review** (`plans/reports/code-reviewer-261008-m3-review.md`), ngoài phần chống bịa ở trên:
+  - Cảnh TRƯỚC được kéo dài ≥ 0.9 giây cho wipe (trước đây phong cách chuyển cảnh nhanh làm lộ nền).
+  - Video trong khung phone không còn hai tween opacity/y chồng nhau.
+  - Video đi đúng nhịp cảnh với whip / glitch-cut / dip-black / flash-white.
+  - Khối promo: badge và giá dài thì nhỏ lại; giới hạn badge ≤ 10, giá ≤ 14 ký tự; đếm ngược cao 360px.
+  - Lặp lại của lớp phủ và confetti không vượt tổng thời lượng.
+  - Kiểm NFC cả `attribution`, `promo`.
+- **Render test**: 5 template × 19 phong cách = 95 tổ hợp × 4 khung (thêm 1 khung giữa lần chuyển cảnh đầu). Ảnh chuẩn đổi sang JPEG 360×640, `-q:v 3` (≈ 30 KB/ảnh). `--only=<chuỗi>` để chạy một phần. Lưu ý: `hyperframes snapshot` không vẽ khung video, nên video kiểm bằng MP4 của e2e.
+- **E2E**: 16 brief mẫu (15 loại video của 5 template + test dấu). Ảnh minh họa mới: `assets/_demo/so-tay-kiem-kho.png` (mock sổ tay, tự dựng từ HTML, không phải ảnh thật).
+- **Chưa làm (M4)**: âm thanh gốc clip khách + hạ nhạc tự động. Làm cùng TalkingHead. Testimonial M3 tắt tiếng clip, lời khách hiện bằng chữ.

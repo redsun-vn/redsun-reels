@@ -1,0 +1,24 @@
+{
+  "id": "lang-man",
+  "transition": {
+    "type": "blur-crossfade",
+    "duration": 0.7,
+    "ease": "sine.inOut"
+  },
+  "text": {
+    "enter": "blur",
+    "duration": 0.7,
+    "ease": "sine.out",
+    "wordStagger": 0.07
+  },
+  "kenBurns": 1.06,
+  "accent": "underline",
+  "ctaPulse": false,
+  "overlay": "light-leak",
+  "background": "gradient",
+  "textFx": "none",
+  "musicMood": [
+    "lang-man",
+    "thu-gian"
+  ]
+}

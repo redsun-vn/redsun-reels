@@ -13,7 +13,7 @@ Hệ thống làm video ngắn dọc (Reels, TikTok, Shorts) cho team Marketing 
 | M0 | Thử nghiệm HyperFrames, khởi tạo brand, môi trường | ✅ Xong trên Mac Intel. Mac chip M chưa kiểm |
 | M1 | Lõi pipeline, 2 mẫu video (FeatureLaunch, TipOfTheDay), 3 phong cách | ✅ Xong. Còn chờ nhạc thật |
 | M2 | Skill Claude Code `cai-dat` (tự cài máy) và `tao-reel` (dẫn MKT làm video) | ✅ Xong, đã thử bằng phiên Claude Code mới. Chờ 1 bạn MKT tự làm 1 video |
-| M3 | 3 mẫu: BeforeAfter, Testimonial, Promo, và 16 phong cách còn lại | ⏳ |
+| M3 | 3 mẫu: BeforeAfter, Testimonial, Promo, 16 phong cách còn lại, lịch dịp lễ | ✅ Xong phần kỹ thuật. Chờ 10 video thử nghiệm của MKT (§14) |
 | M4 | 3 mẫu: EventRecap, Stats, TalkingHead (đủ 20 loại video) | ⏳ |
 
 Hiện **chưa có nhạc thật** trong thư viện. Repo chỉ có một track thử nghiệm tự sinh, và track này bị chặn khi xuất video thật. Muốn đăng thật thì Nam/MKT lead phải thêm nhạc theo [`docs/music-sources.md`](docs/music-sources.md).
@@ -55,7 +55,8 @@ Claude chỉ sửa trong thư mục `briefs/` của video bạn đang làm. Mu�
 ### Loại video và phong cách
 - **20 loại video**: ra mắt tính năng, demo, mẹo "Bạn có biết?", hướng dẫn nhiều bước, khuyến mãi, chúc mừng dịp lễ… Xem [`docs/video-type-guide.md`](docs/video-type-guide.md).
 - **19 phong cách**: tối giản, sang trọng, lãng mạn, hành động, bí ẩn, tương lai, robot, vui nhộn, lễ hội… Xem [`docs/video-style-catalog.md`](docs/video-style-catalog.md).
-- Hiện làm được 7 loại video dùng mẫu FeatureLaunch và TipOfTheDay: ra mắt tính năng, demo, mẹo, hướng dẫn, bắt trend, hỏi đáp, thông báo. Có 3 phong cách: **tối giản, khuyến mãi, vui nhộn**.
+- Hiện làm được **15 loại video** trên 5 mẫu (FeatureLaunch, TipOfTheDay, BeforeAfter, Testimonial, Promo) và **cả 19 phong cách**. 5 loại còn lại (tổng kết sự kiện, giới thiệu công ty, tuyển dụng, số liệu, người nói trước camera) có ở M4.
+- Dịp lễ (20/10, Halloween, Tết…) tự chọn phong cách hợp dịp. Xem lịch: nói với Claude "có những dịp lễ nào".
 
 ### Quy tắc nội dung
 - Video ≤ 45 giây chỉ nên có 1–2 ý chính. Câu mở đầu tối đa 2 dòng, mỗi dòng ≤ 40 ký tự.
@@ -93,8 +94,8 @@ Claude chỉ sửa trong thư mục `briefs/` của video bạn đang làm. Mu�
 | `pnpm lint:music` | Kiểm thư viện nhạc: schema, file, license (cấm "NC") |
 | `pnpm test` | Unit test (Vitest) |
 | `pnpm typecheck` | `tsc --noEmit` |
-| `pnpm test:render [--update]` | So khung hình mỗi mẫu × phong cách với ảnh chuẩn `tests/baseline/` (SSIM ≥ 0.97) |
-| `pnpm test:e2e [--draft]` | Dựng + xuất 8 brief mẫu trong `tests/fixtures/briefs/` |
+| `pnpm test:render [--update] [--only=<chuỗi>]` | So khung hình 5 mẫu × 19 phong cách với ảnh chuẩn `tests/baseline/` (SSIM ≥ 0.97, ~25 phút) |
+| `pnpm test:e2e [--draft]` | Dựng + xuất 16 brief mẫu trong `tests/fixtures/briefs/` |
 | `pnpm gen:test-music` | Sinh lại track nhạc thử nghiệm |
 
 Cờ chung:
@@ -112,8 +113,9 @@ CLAUDE.md         quy tắc cho Claude Code: chế độ MKT (mặc định) / c
 reel              lệnh gọn ./reel <lệnh> = pnpm run <lệnh> với Node trong ~/.redsun-reels
 brand/            brand.css (biến màu/font/safe zone theo sản phẩm), frame.md, products.json,
                   fonts/, logos/, styles/<phong-cách>.json, music/manifest.json
-config/           styles.ts (19), video-types.ts (20), scene-timing.ts, schema brief/script/preset/nhạc
-templates/        _shared/ (scene-kit.js, kit.css, safe-zone.css), FeatureLaunch/, TipOfTheDay/, _blank/
+config/           styles.ts (19), video-types.ts (20), occasions.ts (lịch dịp lễ), scene-timing.ts, schema brief/script/preset/nhạc
+templates/        _shared/ (kit-core, kit-motion, kit-blocks, scene-kit .js + kit, kit-styles, kit-blocks, safe-zone .css),
+                  FeatureLaunch/, TipOfTheDay/, BeforeAfter/, Testimonial/, Promo/, _blank/
 scripts/          lệnh pnpm + lib/ (validate, build-props, stage-project, render-video, loudness, lint-brand…)
 runtime/gsap/     GSAP local
 briefs/<slug>/    brief.md, concepts.md, script.json, props.json, review.md, cost.json, post.md
@@ -128,7 +130,7 @@ out/              (gitignore) video xuất ra + project tạm out/stage/
 2. `durationSec` mỗi cảnh ≥ `max(1.5 giây, số từ × 0.4 giây) + 0.5 giây`. `validate` báo lỗi nếu cảnh quá ngắn để đọc.
 3. `build-props.ts` tính mốc bắt đầu từng cảnh, lấy logo theo sản phẩm, nạp preset phong cách, rồi ghi `props.json`.
 4. `stage-project.ts` copy template, `_shared`, `brand`, `runtime`, hình và nhạc vào `out/stage/<slug>/`. Bước này cần vì HyperFrames không đọc file nằm ngoài thư mục project. Props được ghi thành giá trị mặc định của biến để `check` và Studio thấy đúng dữ liệu.
-5. `templates/_shared/scene-kit.js` đọc biến `props` và dựng mọi khối thành clip có timing: nền, logo, chữ từng từ (tự co cỡ khi dài), phone mockup + callout + zoom, ảnh hoặc video quay màn hình, nhãn, số bước, CTA. Chuyển cảnh và hiệu ứng chữ lấy theo preset phong cách.
+5. `templates/_shared/scene-kit.js` đọc biến `props` và dựng mọi khối thành clip có timing: nền, logo, chữ từng từ (tự co cỡ khi dài), phone mockup + callout + zoom, ảnh hoặc video quay màn hình, nhãn, số bước, TRƯỚC/SAU + màn chia đôi, quote + lower third, badge/giá/hạn chót/đếm ngược, CTA. Chuyển cảnh, lớp phủ, nền và hiệu ứng chữ lấy theo preset phong cách (`kit-motion.js`, `kit-styles.css`).
 6. `hyperframes render --variables-file --strict-variables --strict`, sau đó ffmpeg `loudnorm` 2 lượt (−14 LUFS, TP ≤ −1 dBTP, fade 0.5 giây), copy luồng hình, rồi kiểm bằng ffprobe.
 
 ### Quy tắc khi sửa template

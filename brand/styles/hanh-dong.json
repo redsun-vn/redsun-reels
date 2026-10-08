@@ -1,0 +1,24 @@
+{
+  "id": "hanh-dong",
+  "transition": {
+    "type": "whip",
+    "duration": 0.25,
+    "ease": "expo.out"
+  },
+  "text": {
+    "enter": "slam",
+    "duration": 0.25,
+    "ease": "expo.out",
+    "wordStagger": 0.03
+  },
+  "kenBurns": 1.12,
+  "accent": "block",
+  "ctaPulse": true,
+  "overlay": "none",
+  "background": "flat",
+  "textFx": "none",
+  "musicMood": [
+    "hanh-dong",
+    "nang-dong"
+  ]
+}

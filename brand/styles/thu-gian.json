@@ -1,0 +1,24 @@
+{
+  "id": "thu-gian",
+  "transition": {
+    "type": "blur-crossfade",
+    "duration": 0.8,
+    "ease": "sine.inOut"
+  },
+  "text": {
+    "enter": "blur",
+    "duration": 0.9,
+    "ease": "sine.inOut",
+    "wordStagger": 0.1
+  },
+  "kenBurns": 1.04,
+  "accent": "underline",
+  "ctaPulse": false,
+  "overlay": "grain",
+  "background": "aurora",
+  "textFx": "none",
+  "musicMood": [
+    "thu-gian",
+    "lang-man"
+  ]
+}

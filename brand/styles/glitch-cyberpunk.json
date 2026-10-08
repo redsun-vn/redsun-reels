@@ -1,0 +1,24 @@
+{
+  "id": "glitch-cyberpunk",
+  "transition": {
+    "type": "glitch-cut",
+    "duration": 0.3,
+    "ease": "steps(4)"
+  },
+  "text": {
+    "enter": "slam",
+    "duration": 0.25,
+    "ease": "expo.out",
+    "wordStagger": 0.03
+  },
+  "kenBurns": 1.05,
+  "accent": "block",
+  "ctaPulse": true,
+  "overlay": "scanlines",
+  "background": "gradient",
+  "textFx": "rgb-split",
+  "musicMood": [
+    "glitch-cyberpunk",
+    "hanh-dong"
+  ]
+}

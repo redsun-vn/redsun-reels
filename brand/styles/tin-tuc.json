@@ -1,0 +1,23 @@
+{
+  "id": "tin-tuc",
+  "transition": {
+    "type": "flash-white",
+    "duration": 0.3,
+    "ease": "power2.out"
+  },
+  "text": {
+    "enter": "rise",
+    "duration": 0.3,
+    "ease": "power3.out",
+    "wordStagger": 0.03
+  },
+  "kenBurns": 1.04,
+  "accent": "block",
+  "ctaPulse": false,
+  "overlay": "none",
+  "background": "flat",
+  "textFx": "none",
+  "musicMood": [
+    "tin-tuc"
+  ]
+}
