@@ -21,7 +21,7 @@ const script = {
 const brief = 'Ưu đãi: giảm 20% khi mua gói giải pháp.';
 
 function page(body: string, js = ''): string {
-  return `<!doctype html><html lang="vi"><head><style>.a{font-family: var(--font-body)}</style></head><body>
+  return `<!doctype html><html lang="vi"><head><meta charset="utf-8" /><style>.a{font-family: var(--font-body)}</style></head><body>
 <div id="root" data-composition-id="main" data-duration="12" data-width="1080" data-height="1920">${body}
 <audio id="music" src="music/bgm.mp3" data-start="0"></audio></div>
 <script>const tl = gsap.timeline({ paused: true });${js}

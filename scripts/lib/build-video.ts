@@ -78,5 +78,9 @@ export function injectDefaults(indexHtml: string, vars: Record<string, string | 
   const decls = JSON.parse(unescape(m[1])) as Array<{ id: string; default: unknown }>;
   for (const d of decls) if (d.id in vars) d.default = vars[d.id];
   const escaped = JSON.stringify(decls).replace(/&/g, '&amp;').replace(/'/g, '&#39;');
-  writeFileSync(indexHtml, html.replace(m[0], () => `data-composition-variables='${escaped}'`));
+  // Thuộc tính biến trên <html> dài vài KB đẩy <meta charset> ra khỏi 1024 byte đầu: Chrome phải đoán bảng mã và có lúc
+  // đoán sai (chữ Việt vỡ thành "chá»§"). Khai <meta charset> ngay sau doctype (chuẩn HTML cho phép; thuộc tính của <html>
+  // vẫn được gộp). Không dùng BOM: HyperFrames ghép HTML, BOM thành ký tự thừa đẩy khung hình lệch xuống.
+  const out = html.replace(m[0], () => `data-composition-variables='${escaped}'`);
+  writeFileSync(indexHtml, /^<!doctype html>\s*<meta charset/i.test(out) ? out : out.replace(/^(<!doctype html>)/i, '$1<meta charset="utf-8" />'));
 }

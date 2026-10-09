@@ -102,6 +102,8 @@ export function customIssues(dir: string, script: Script, briefBody: string, tot
 
   // Cấu trúc HyperFrames
   if (!/<html[^>]*\blang="vi"/.test(html)) err('Bản dựng riêng thiếu lang="vi" trên thẻ <html>.');
+  // Chrome chỉ dò <meta charset> trong 1024 byte đầu; quá đó có thể đọc sai bảng mã, chữ Việt bị vỡ
+  if (!/<meta\s+charset=["']?utf-8/i.test(Buffer.from(html, 'utf8').subarray(0, 1024).toString('latin1'))) err('Bản dựng riêng phải có <meta charset="utf-8" /> ngay đầu <head> (trong 1024 byte đầu file).');
   if (!/data-composition-id="main"/.test(html)) err('Gốc bản dựng riêng phải có data-composition-id="main".');
   const dur = /data-composition-id="main"[^>]*data-duration="([\d.]+)"|data-duration="([\d.]+)"[^>]*data-composition-id="main"/.exec(html);
   const d = dur ? Number(dur[1] ?? dur[2]) : NaN;
