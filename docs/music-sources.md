@@ -79,14 +79,16 @@ Mỗi nhóm phong cách chính chọn 2–3 track, khoảng 20–30 track từ P
 
 ## 5. Thư viện hiện có (2026-10-09)
 - **Nghe và chọn**: `./reel music:page` rồi mở `out/nghe-nhac.html` (trình duyệt, chạy offline). Đánh dấu Giữ/Bỏ/Dùng thật, bấm "Copy kết quả" gửi dev cập nhật manifest.
-- **20 bài Mixkit** (`mixkit-*`), dùng được cho video thật. Mỗi phong cách có ít nhất 2 bài. Xem: `./reel info nhac <phong-cách>`.
+- **24 bài Mixkit** (`mixkit-*`), dùng được cho video thật. Mỗi phong cách có ít nhất 2 bài.
+  - Đợt 1 (20 bài): Nam nghe 2026-10-09, bỏ 6 bài (Curiosity, Digital Clouds, Motivating Mornings, Trap Electro Vibes, Serene View, Relax Beat), đã xoá khỏi manifest.
+  - Đợt 2 (10 bài, ghi chú "Ứng viên đợt 2"): thêm để bù phong cách thiếu (thư giãn còn 0 bài), chờ Nam nghe. Xem: `./reel info nhac <phong-cách>`.
   - Claude chọn theo thẻ thể loại/tâm trạng trên Mixkit, bài không lời, dài ≥ 88 giây. **Chưa ai nghe**: MKT lead nghe lại, bỏ bài không hợp (đặt `"blocked": true`), và đăng thử riêng tư để kiểm Content ID.
   - License (bản gốc, render từ `mixkit.co/license/#musicFree` ngày 2026-10-09): dùng thương mại và phi thương mại; được dùng trên web, mạng xã hội, quảng cáo online, podcast. **Không** dùng cho CD/DVD, game, phát sóng TV/radio; không remix thành bài nhạc riêng, không nhận là của mình, **không đăng ký vào dịch vụ quản lý bản quyền** (Content ID). Bị claim thì gửi chi tiết tới team@mixkit.co.
   - Bằng chứng: `~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/` trên máy Nam (PDF + văn bản license, trang danh sách, mã SHA-256 từng bài). Nam chuyển lên Drive.
 - **Không đưa file nhạc bên thứ ba lên repo**: repo công khai, còn license cấm phân phối lại track rời. Manifest ghi `downloadUrl` + `sha256`; máy MKT tự tải khi cài (`cai-dat.sh` bước 6, hoặc `./reel music:fetch`). File ở nguồn đổi (sai SHA) thì không dùng, báo dev.
 - **Pixabay**: trang chặn tải tự động (HTTP 403, 2026-10-09). Muốn thêm bài Pixabay, MKT lead tải tay, Nam để file ở nơi tải được bằng link (Drive riêng), rồi ghi `downloadUrl` + `sha256` như Mixkit.
 - **Nhạc MKT tự tìm** (`./reel music:add`): MKT bỏ file + ảnh chụp trang bài (cùng tên) vào `nhac-tu-tim/`. Lệnh chỉ nhận link Pixabay/Mixkit, bắt buộc có ảnh chụp, ghi bài vào manifest trên máy đó với `localOnly: true`. Thư mục `nhac-tu-tim/` nằm ngoài git. **Nam gom vào thư viện chung**: lấy file và ảnh từ máy MKT, lưu bằng chứng lên Drive, đặt file ở link tải được, rồi thêm vào manifest với `downloadUrl` + `sha256` (bỏ `localOnly`).
-- **5 bài tự sinh** (`gen-*`, mgaudio từ [mg-styles-15](https://github.com/vincentwei1021/mg-styles-15), code MIT, mẫu VCSL CC0): bản quyền thuộc Redsun, nên nằm trong repo. Hiện để `internal-test` (chỉ xem thử) vì nguồn chính Nam đã chốt là Pixabay/Mixkit. Nam nghe xong, muốn dùng thật thì đổi `allowedUse` sang `social-organic`.
+- **Bài tự sinh** (`gen-*`; Nam nghe 2026-10-09, bỏ explainer, synthwave, ambient, future_bass; còn `gen-pop-01`, mgaudio từ [mg-styles-15](https://github.com/vincentwei1021/mg-styles-15), code MIT, mẫu VCSL CC0): bản quyền thuộc Redsun, nên nằm trong repo. Hiện để `internal-test` (chỉ xem thử) vì nguồn chính Nam đã chốt là Pixabay/Mixkit. Nam nghe xong, muốn dùng thật thì đổi `allowedUse` sang `social-organic`.
 
 ## Nguồn tham khảo
 - Pixabay: [FAQ](https://pixabay.com/service/faq/), [Terms](https://pixabay.com/service/terms/); về rủi ro Content ID: [Thematic vs Pixabay](https://hellothematic.com/thematic-vs-pixabay/) (thứ cấp)

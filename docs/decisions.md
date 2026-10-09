@@ -310,7 +310,7 @@ Nam: "tiếp tục" (2026-10-09). Plan: `plans/261009-0512-m4-du-20-loai/`. Nh�
 
 ## 13. Thư viện nhạc, chuẩn hoá âm thanh, tài liệu thử nghiệm MKT (2026-10-09)
 Nam: "làm tất cả trừ số 4" (nhạc thật, nhạc tự sinh, chuẩn bị 10 video thử nghiệm và clip người nói; Mac chip M để sau).
-- **Nhạc**: 20 bài Mixkit (dùng thật) + 5 bài tự sinh bằng mgaudio (chỉ xem thử, chờ Nam nghe). Chi tiết, license, bằng chứng: [`music-sources.md`](music-sources.md) §5.
+- **Nhạc**: 20 bài Mixkit (dùng thật) + 5 bài tự sinh bằng mgaudio (chỉ xem thử). Nam nghe qua `./reel music:page`: bỏ 6 bài Mixkit + 4 bài tự sinh (xoá khỏi manifest); thêm 10 bài Mixkit đợt 2 để mỗi phong cách còn ≥ 2 bài. Chi tiết, license, bằng chứng: [`music-sources.md`](music-sources.md) §5.
   - File nhạc bên thứ ba không vào repo công khai. Manifest có `downloadUrl` + `sha256`; `scripts/fetch-music.ts` (`./reel music:fetch`, cài đặt bước 6) tải và kiểm mã. `.gitignore` bỏ `brand/music/mixkit-*.mp3`, `pixabay-*.mp3`. Validate báo lỗi nếu bài bên thứ ba thiếu `downloadUrl`/`sha256`.
   - mgaudio: repo chỉ kèm một phần bộ mẫu VCSL (496/598 file liệt kê trong `index.json` không có trong repo), nên chỉ chạy được công thức thuần tổng hợp: explainer, pop, synthwave, ambient (glass), future_bass. Lofi, variety cần mẫu thiếu. Thông số sinh ghi ở `notes` từng bài; chạy bằng Python venv riêng, không phải phụ thuộc của dự án.
   - `./reel info nhac [phong-cách]` liệt kê bài theo phong cách; skill `tao-reel` dùng lệnh này khi chọn nhạc. `briefs/_example` dùng bài Mixkit, nên `./reel make _example` xuất được video thật.

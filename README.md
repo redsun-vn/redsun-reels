@@ -16,7 +16,7 @@ Hệ thống làm video ngắn dọc (Reels, TikTok, Shorts) cho team Marketing 
 | M3 | 3 mẫu: BeforeAfter, Testimonial, Promo, 16 phong cách còn lại, lịch dịp lễ | ✅ Xong phần kỹ thuật. Chờ 10 video thử nghiệm của MKT (§14) |
 | M4 | 3 mẫu: EventRecap, Stats, TalkingHead (đủ 20 loại video), giữ tiếng gốc clip người nói + tự hạ nhạc | ✅ Xong phần kỹ thuật. Chờ clip quay thật của MKT để thử TalkingHead |
 
-Thư viện nhạc có **20 bài Mixkit dùng được cho video thật** (máy tự tải khi cài, không nằm trong repo) và 5 bài tự sinh để nghe thử. MKT lead cần nghe lại các bài này trước khi đăng hàng loạt. Xem [`docs/music-sources.md`](docs/music-sources.md).
+Thư viện nhạc có **24 bài Mixkit dùng được cho video thật** (máy tự tải khi cài, không nằm trong repo), mỗi phong cách ít nhất 2 bài, và 1 bài tự sinh để nghe thử. Nam đã nghe đợt 1 (2026-10-09); 10 bài đợt 2 chờ nghe: `./reel music:page`. Xem [`docs/music-sources.md`](docs/music-sources.md).
 
 **Thử nghiệm với MKT**: làm theo [`docs/huong-dan-thu-nghiem-mkt.md`](docs/huong-dan-thu-nghiem-mkt.md) (10 video, phiếu chấm, cách quay clip người nói).
 
@@ -111,7 +111,7 @@ Muốn đổi phong cách thì cứ nói, ví dụ "đổi sang phong cách vui 
 Claude chỉ sửa trong thư mục `briefs/` của video bạn đang làm. Muốn thêm mẫu video hay phong cách mới thì cần dev.
 
 ### Dùng nhạc bạn tự tìm
-Thư viện có sẵn 20 bài. Muốn dùng bài khác:
+Thư viện có sẵn 24 bài. Muốn dùng bài khác:
 1. Chỉ lấy nhạc từ **[Pixabay Music](https://pixabay.com/music/)** hoặc **[Mixkit](https://mixkit.co/free-stock-music/)**, chọn bài **không lời**. Không dùng nhạc YouTube, nhạc ca sĩ, nhạc trong app TikTok.
 2. Tải file nhạc (mp3) về.
 3. Chụp màn hình trang bài nhạc, thấy được tên bài, tác giả và chữ license.

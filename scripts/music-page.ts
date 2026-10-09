@@ -22,6 +22,8 @@ const tracks = manifest.tracks.filter((t) => t.id !== 'test-pad-01').map((t) => 
   real: t.allowedUse.includes('social-organic'),
   blocked: t.blocked,
   local: !!t.localOnly,
+  /** Bài mới thêm, Nam chưa nghe (ghi chú "chờ Nam nghe" trong manifest). */
+  pending: /chờ Nam nghe/.test(t.notes ?? ''),
 }));
 const styles = STYLES.map((s) => ({ id: s.id, name: s.name }));
 const data = JSON.stringify({ tracks, styles }).replace(/</g, '\\u003c');
@@ -75,14 +77,14 @@ let state = {};
 try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) {}
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
 const styleName = Object.fromEntries(DATA.styles.map((s) => [s.id, s.name]));
-let filter = 'all';
+let filter = DATA.tracks.some((t) => t.pending) ? 'pending' : 'all';
 let current = -1;
 const player = document.getElementById('player');
 const mmss = (s) => Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
 
 function filters() {
   const used = new Set(DATA.tracks.flatMap((t) => t.mood));
-  const opts = [['all', 'Tất cả'], ['real', 'Đăng được'], ['test', 'Chỉ xem thử'], ['todo', 'Chưa chấm']].concat(DATA.styles.filter((s) => used.has(s.id)).map((s) => [s.id, s.name]));
+  const opts = [['all', 'Tất cả'], ['pending', 'Chờ nghe'], ['real', 'Đăng được'], ['test', 'Chỉ xem thử'], ['todo', 'Chưa chấm']].concat(DATA.styles.filter((s) => used.has(s.id)).map((s) => [s.id, s.name]));
   const bar = document.getElementById('filters');
   bar.innerHTML = '';
   for (const [id, label] of opts) {
@@ -95,7 +97,7 @@ function filters() {
 }
 
 function visible() {
-  return DATA.tracks.filter((t) => filter === 'all' || (filter === 'real' && t.real) || (filter === 'test' && !t.real) || (filter === 'todo' && !(state[t.id] && state[t.id].pick)) || t.mood.includes(filter));
+  return DATA.tracks.filter((t) => filter === 'all' || (filter === 'pending' && t.pending) || (filter === 'real' && t.real) || (filter === 'test' && !t.real) || (filter === 'todo' && !(state[t.id] && state[t.id].pick)) || t.mood.includes(filter));
 }
 
 function render() {
@@ -117,6 +119,7 @@ function render() {
     badge.className = 'badge ' + (t.real ? 'real' : 'test');
     badge.textContent = t.real ? 'đăng được' : 'chỉ xem thử';
     name.appendChild(badge);
+    if (t.pending) { const nb = document.createElement('span'); nb.className = 'badge test'; nb.textContent = 'mới'; name.appendChild(nb); }
     const meta = document.createElement('div');
     meta.className = 'meta';
     meta.textContent = t.author + ' · ' + t.source + ' · ' + mmss(t.sec) + ' · ' + t.id + (t.blocked ? ' · ĐÃ KHOÁ' : '') + (t.local ? ' · MKT tự thêm' : '');
