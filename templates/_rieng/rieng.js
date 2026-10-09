@@ -147,51 +147,5 @@
     tl.fromTo(el, { opacity: peak || 0.6 }, { opacity: 0, duration: 0.18, ease: "power2.out", immediateRender: false }, at);
   };
 
-  /**
-   * Nhân vật phẳng (SVG) — người thật được ưu tiên (hình MKT gửi trong hinh/); nhân vật này dùng khi chưa có hình.
-   * kind: "bust" (nửa người, nhìn thẳng). opts: { shirt: "a"|"b"|"c", hair: "long"|"short"|"bun", phone: true, phoneOk: true (dấu tick xanh trên màn hình) }.
-   * Đổi nét mặt bằng RS.mood(el, "binh-thuong"|"nhiu-may"|"sung-sot"|"nhe-nhom"|"cuoi").
-   */
-  RS.person = function (opts) {
-    opts = opts || {};
-    var shirt = "shirt-" + (opts.shirt || "a");
-    var hairBack = {
-      long: '<path class="hair" d="M120 150 C 110 60, 290 60, 280 150 L 292 330 C 250 350, 150 350, 108 330 Z"/>',
-      bun: '<circle class="hair" cx="200" cy="58" r="40"/><path class="hair" d="M118 160 C 110 70, 290 70, 282 160 Z"/>',
-      short: '<path class="hair" d="M118 170 C 104 70, 296 70, 282 170 Z"/>',
-    }[opts.hair || "short"];
-    var fringe = '<path class="hair" d="M128 150 C 150 96, 250 92, 274 150 C 240 128, 170 126, 128 150 Z"/>';
-    var face =
-      '<g class="mood binh-thuong"><path class="ink-line" d="M175 205 h12 M213 205 h12"/><path class="ink-line" d="M180 252 q20 12 40 0"/></g>' +
-      '<g class="mood nhiu-may" style="display:none"><path class="ink-line" d="M168 186 l22 8 M232 186 l-22 8"/><circle class="ink" cx="182" cy="210" r="7"/><circle class="ink" cx="218" cy="210" r="7"/><path class="ink-line" d="M182 262 q18 -12 36 0"/></g>' +
-      '<g class="mood sung-sot" style="display:none"><path class="ink-line" d="M166 178 q14 -10 28 0 M206 178 q14 -10 28 0"/><circle class="ink" cx="182" cy="206" r="9"/><circle class="ink" cx="218" cy="206" r="9"/><ellipse class="ink" cx="200" cy="258" rx="14" ry="18"/></g>' +
-      '<g class="mood nhe-nhom" style="display:none"><path class="ink-line" d="M170 208 q12 -10 24 0 M206 208 q12 -10 24 0"/><path class="ink-line" d="M178 248 q22 20 44 0"/></g>' +
-      '<g class="mood cuoi" style="display:none"><circle class="ink" cx="182" cy="205" r="7"/><circle class="ink" cx="218" cy="205" r="7"/><path class="ink" d="M174 240 q26 34 52 0 Z"/></g>';
-    var phone = opts.phone
-      ? '<g class="arm-phone"><path class="' + shirt + '" d="M300 470 C 340 420, 350 330, 330 280 L 296 290 C 300 350, 290 410, 262 450 Z"/><circle class="skin" cx="318" cy="268" r="26"/>' +
-        '<rect class="device" x="286" y="150" width="96" height="170" rx="16"/><rect class="screen" x="294" y="160" width="80" height="150" rx="10"/>' +
-        (opts.phoneOk ? '<circle class="ok" cx="334" cy="222" r="26"/><path class="ok-mark" d="M321 222 l9 9 l17 -18"/>' : "") + "</g>"
-      : "";
-    var svg =
-      '<svg viewBox="0 0 400 560" width="' + (opts.width || 400) + '" height="' + Math.round((opts.width || 400) * 1.4) + '">' +
-      hairBack +
-      '<path class="' + shirt + '" d="M60 560 C 60 420, 120 370, 200 370 C 280 370, 340 420, 340 560 Z"/>' +
-      '<rect class="shade" x="176" y="300" width="48" height="80" rx="20"/>' +
-      '<ellipse class="skin" cx="200" cy="210" rx="82" ry="100"/>' +
-      fringe + face + phone +
-      "</svg>";
-    var el = document.createElement("div");
-    el.className = "rs-person";
-    el.innerHTML = svg;
-    return el;
-  };
-
-  /** Đổi nét mặt nhân vật tại thời điểm `at`. */
-  RS.mood = function (tl, person, mood, at) {
-    person.querySelectorAll(".mood").forEach(function (g) {
-      tl.set(g, { display: g.classList.contains(mood) ? "inline" : "none" }, at);
-    });
-  };
-
   window.RS = RS;
 })();

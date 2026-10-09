@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import type { BuiltVideo } from './build-video.ts';
 import { REPO_ROOT, runFfprobe, runHyperframes, stripAnsi } from './hyperframes-env.ts';
 import { normalizeAudio, type Loudness } from './loudness.ts';
+import { motionPerSecond, stillRuns } from './video-liveliness.ts';
 
 export interface RenderResult {
   file: string;
@@ -13,6 +14,8 @@ export interface RenderResult {
   sizeMB: number;
   renderSec: number;
   loudness: Loudness;
+  /** Bản dựng riêng: các đoạn [giây đầu, giây cuối) gần như đứng hình. */
+  stills: Array<[number, number]>;
 }
 
 export const DURATION_TOLERANCE_SEC = 0.2;
@@ -68,5 +71,6 @@ function renderInner(built: BuiltVideo, opts: { briefDir?: string; quality?: 'dr
       JSON.stringify({ renderedAt: new Date().toISOString(), renderSec: Math.round(renderSec), music: built.script.music, durationSec, sizeMB: Math.round(sizeMB * 10) / 10 }, null, 2) + '\n',
     );
   }
-  return { file: finalFile, durationSec, sizeMB, renderSec, loudness };
+  const stills = built.script.build === 'custom' ? stillRuns(motionPerSecond(finalFile)) : [];
+  return { file: finalFile, durationSec, sizeMB, renderSec, loudness, stills };
 }

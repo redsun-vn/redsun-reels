@@ -73,6 +73,16 @@ describe('video dựng riêng', () => {
     for (const s of ['15s', 'music/bgm.mp3', 'mạng', 'Arial', 'khong-co.jpg']) expect(e).toContain(s);
   });
 
+  it('tiếng động phải có trong brand/sfx', () => {
+    expect(errors(page(OK_BODY + '<audio id="s1" src="sfx/pop.wav" data-start="1"></audio>'))).toEqual([]);
+    expect(errors(page(OK_BODY + '<audio id="s2" src="sfx/khong-co.wav" data-start="1"></audio>')).join('\n')).toContain('sfx/khong-co.wav');
+  });
+
+  it('nhân vật tạo lẻ (không qua dàn nhân vật) thì cảnh báo', () => {
+    const w = issues(page(OK_BODY, 'RS.person({ hair: "bun" });')).map((i) => i.message).join('\n');
+    expect(w).toContain('RS.cast');
+  });
+
   it('thiếu chữ kịch bản trên màn hình thì cảnh báo', () => {
     const w = issues(page(OK_BODY.replace('<i>kho</i>', ''))).map((i) => i.message).join('\n');
     expect(w).toContain('SIPOS lo kho');

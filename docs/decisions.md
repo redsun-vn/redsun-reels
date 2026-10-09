@@ -373,3 +373,15 @@ MKT: video từ mẫu có sẵn "quá tệ". Phép thử A/B trên SIPOS 20/10 (
 - **Lỗi vỡ chữ Việt phát hiện khi chạy render test** ("chá»§ quÃ¡n"): thuộc tính biến trên `<html>` dài vài KB đẩy `<meta charset>` ra khỏi 1024 byte đầu, Chrome phải đoán bảng mã. Sửa: bước dựng chèn `<meta charset="utf-8">` ngay sau doctype (BOM không dùng được: HyperFrames ghép HTML, BOM đẩy khung hình lệch). Composition dựng riêng bị validate bắt khai charset trong 1024 byte đầu.
 - Còn làm: làm lại Webino/BOS 20/10 và SIPOS Hotel OTA theo cách mới (plan `plans/261009-1701-dung-rieng/`).
 
+
+## 19. Nâng chất video dựng riêng: người Việt, cảm xúc, nền, chuyển động, tiếng động (2026-10-09)
+Nam xem bản đầu "Ảnh chuyển khoản giả": "sáng tạo hơn nhưng chưa đủ tốt"; góp ý thêm: hình con người chưa tốt; mỗi cảnh phải khác nền; nhân vật thân thiện với người Việt; nét mặt phải đúng cảm xúc; nhân vật nhất quán trong kịch bản. "Không có giới hạn, chỉ cần đảm bảo nội dung chính xác."
+Đo bản đầu: 16/31 giây gần như đứng hình (chuyển động trung bình < 0.45/255 mỗi giây), cảnh 3–5 cùng nền teal tối, nhân vật là tượng bán thân nhỏ, không có tiếng động.
+- **Nhân vật có khớp** (`templates/_rieng/nhan-vat.js`): nửa người SVG, tay hai đốt tự tính khớp theo vị trí bàn tay (14 tư thế), chớp mắt, thở, mấp máy miệng, liếc, nghiêng đầu, vẫy. Nét Việt: mắt hạnh nhân, tóc đen (mái bằng, búi, đuôi ngựa…), áo dài, áo bà ba, nón lá, tạp dề quán, hai màu da.
+- **Cảm xúc**: 10 nét mặt; lông mày là phần nói rõ nhất nên vẽ sau tóc mái. Bản đầu vẽ "nhíu mày" thành lông mày nhướng (ra vẻ lo) — sửa theo quy ước: đầu trong hạ = cau mày, đầu trong nhướng = lo/buồn. Skill có bảng khoảnh khắc → nét mặt, tự soát từng khoảnh khắc.
+- **Nhất quán**: `RS.cast` khai dàn nhân vật một lần; gọi lại đổi tóc/áo/da là lỗi; validate cảnh báo khi tạo người lẻ bằng `RS.person`.
+- **Mỗi cảnh một nền**: `./reel snap` so màu viền khung giữa các cảnh (khoảng cách màu < 70 là báo).
+- **Không đứng hình**: `./reel render` đo chuyển động từng giây của bản dựng riêng, báo đoạn ≥ 2 giây dưới ngưỡng.
+- **Tiếng động** `brand/sfx/*.wav` (15 âm: bụp, bấm, tích, vút, ting, xu, dập dấu, nhiễu, buzz sai, lấp lánh, dâng, ầm, thở phào…): **tự tổng hợp bằng ffmpeg** (`pnpm gen:sfx`), không phải âm của bên thứ ba nên được commit vào repo công khai. Stage copy thành `sfx/`; validate chặn file không có.
+- **Theo phách nhạc**: `./reel info nhip <id-nhạc>` dò BPM, phách, phách mạnh (onset + tự tương quan); điểm cắt/nhấn đặt trên phách.
+- Bản 2 "Ảnh chuyển khoản giả": 5 nền khác nhau, nối hình giữa các cảnh, 70 tiếng động, không còn đoạn đứng hình. Màn hình SIPOS mô phỏng bỏ nhãn "Chuyển khoản/Tiền mặt" (brief chưa xác nhận tính năng đối chiếu thanh toán).

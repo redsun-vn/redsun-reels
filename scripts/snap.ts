@@ -3,12 +3,13 @@
  * mặc định mỗi 1.25 giây một khung, kèm ảnh ghép contact-sheet*.jpg. Vẫn chụp khi `hyperframes check` còn lỗi
  * (in lỗi ra) để thấy chỗ sai.
  */
-import { readdirSync, rmSync } from 'node:fs';
+import { readdirSync, readFileSync, rmSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { buildVideo } from './lib/build-video.ts';
 import { parseCli, runCommand } from './lib/cli.ts';
 import { REPO_ROOT, runHyperframes, stripAnsi } from './lib/hyperframes-env.ts';
 import { formatIssues } from './lib/validate-video.ts';
+import { borderColor, compositionScenes, similarBackgrounds } from './lib/video-liveliness.ts';
 
 const atArg = process.argv.find((x) => x.startsWith('--at='));
 process.argv = process.argv.filter((x) => x !== atArg);
@@ -28,5 +29,19 @@ await runCommand(() => {
   if (r.status !== 0) throw new Error(`Chụp khung hình lỗi:\n${stripAnsi(r.stdout + r.stderr).slice(-1500)}`);
   const sheets = readdirSync(out).filter((f) => f.startsWith('contact-sheet'));
   console.log(`Khung hình (${at.split(',').length}): ${relative(REPO_ROOT, out)}/ · ảnh ghép: ${sheets.map((f) => relative(REPO_ROOT, join(out, f))).join(', ')}`);
+
+  // Mỗi cảnh một nền: lấy khung gần giữa cảnh nhất, so màu viền khung giữa các cảnh
+  if (built.script.build === 'custom' && !atArg) {
+    const frames = readdirSync(out).flatMap((f) => { const m = /^frame-\d+-at-([\d.]+)s\.png$/.exec(f); return m ? [{ f, t: Number(m[1]) }] : []; });
+    const scenes = compositionScenes(readFileSync(join(built.stageDir, 'index.html'), 'utf8')).flatMap((sc) => {
+      const mid = sc.start + sc.duration / 2;
+      const best = frames.filter((x) => x.t >= sc.start && x.t < sc.start + sc.duration).sort((a, b) => Math.abs(a.t - mid) - Math.abs(b.t - mid))[0];
+      return best ? [{ id: sc.id, color: borderColor(join(out, best.f)) }] : [];
+    });
+    const same = similarBackgrounds(scenes);
+    console.log(same.length
+      ? `! Cảnh có nền gần giống nhau: ${same.map(([a, b, d]) => `${a} ~ ${b} (${d})`).join(', ')}. Mỗi cảnh cần một nền khác (màu, ánh sáng, không gian).`
+      : `Nền ${scenes.length} cảnh khác nhau: đạt.`);
+  }
   if (check.status !== 0) process.exitCode = 1;
 });

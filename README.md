@@ -161,7 +161,7 @@ Không cần Node hệ thống: `./reel` tự dùng Node trong `~/.redsun-reels`
 | Lệnh | Việc làm |
 |---|---|
 | `bash ./scripts/cai-dat.sh` | Cài môi trường (Node tarball có kiểm SHA, thư viện, plugin HyperFrames, trình duyệt render, nhạc thử, render thử). Chạy lại được nhiều lần |
-| `pnpm info [loại-video]` | Loại video, phong cách đã dựng được, thứ tự cảnh; `info thoi-luong "<chữ>"` tính thời lượng tối thiểu; `info nhac <phong-cách>` liệt kê nhạc |
+| `pnpm info [loại-video]` | Loại video, phong cách đã dựng được, thứ tự cảnh; `info thoi-luong "<chữ>"` tính thời lượng tối thiểu; `info nhac <phong-cách>` liệt kê nhạc; `info nhip <id-nhạc>` dò nhịp (BPM, phách) để cắt cảnh trùng phách |
 | `pnpm post <slug>` | Soạn `briefs/<slug>/post.md`: caption, hashtag, credit nhạc |
 | `pnpm doctor` | Kiểm máy: Node, HyperFrames, FFmpeg, font, GSAP, nhạc, trình duyệt render |
 | `pnpm new <slug>` | Tạo `briefs/<slug>/brief.md` từ `briefs/_example` |
@@ -170,7 +170,7 @@ Không cần Node hệ thống: `./reel` tự dùng Node trong `~/.redsun-reels`
 | `pnpm preview [slug]` | Mở bản xem thử ở cổng 3002 (không có slug: composition trống). Tắt bằng `pnpm preview --stop` |
 | `pnpm render <slug>` | Xuất `out/<slug>.mp4`: chuẩn hóa −14 LUFS, kiểm output spec, ghi `cost.json` |
 | `pnpm make <slug>` | validate → build → render |
-| `pnpm snap <slug> [--at=…]` | Dựng + `hyperframes check` + chụp khung hình `out/snap/<slug>/` (soát video dựng riêng) |
+| `pnpm snap <slug> [--at=…]` | Dựng + `hyperframes check` + chụp khung hình `out/snap/<slug>/` + so nền các cảnh (soát video dựng riêng) |
 | `pnpm hinh <slug> [file…]` | Chép hình/clip MKT gửi vào `briefs/<slug>/hinh/`, đổi HEIC → JPG, tên không dấu; liệt kê hình/clip · dọc/ngang · số giây |
 | `pnpm lint:brand` | Chặn màu, font, cỡ chữ viết cứng trong `templates/` và `brand/styles/` |
 | `pnpm lint:music` | Kiểm thư viện nhạc: schema, file, license (cấm "NC") |
@@ -179,6 +179,7 @@ Không cần Node hệ thống: `./reel` tự dùng Node trong `~/.redsun-reels`
 | `pnpm test:render [--update] [--only=<chuỗi>]` | So khung hình 8 mẫu × 19 phong cách với ảnh chuẩn `tests/baseline/` (SSIM ≥ 0.97, ~45 phút) |
 | `pnpm test:e2e [--draft]` | Dựng + xuất 21 brief mẫu trong `tests/fixtures/briefs/` (20 loại video + test dấu) |
 | `pnpm gen:test-music` | Sinh lại track nhạc thử nghiệm |
+| `pnpm gen:sfx` | Sinh lại bộ tiếng động tự tổng hợp `brand/sfx/` |
 | `pnpm music:page` | Sinh `out/nghe-nhac.html`: nghe thử, lọc theo phong cách, đánh dấu Giữ/Bỏ/Dùng thật, copy kết quả |
 | `pnpm music:intro [--all]` | Đo và ghi `startSec` (bỏ đoạn dạo đầu nhỏ) cho bài chưa có |
 | `pnpm music:fetch` | Tải nhạc bên thứ ba theo `downloadUrl` trong manifest, kiểm SHA-256 |

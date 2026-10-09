@@ -20,6 +20,7 @@
     "make": "node scripts/make.ts",
     "render:blank": "node scripts/render-blank.ts",
     "gen:test-music": "node scripts/gen-test-music.ts",
+    "gen:sfx": "node scripts/gen-sfx.ts",
     "music:fetch": "node scripts/fetch-music.ts",
     "music:add": "node scripts/music-add.ts",
     "music:page": "node scripts/music-page.ts",

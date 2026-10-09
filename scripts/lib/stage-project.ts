@@ -57,6 +57,8 @@ export function stageProject(opts: StageOptions): StagedProject {
 
   cpSync(templateDir, dir, { recursive: true });
   cpSync(join(REPO_ROOT, 'templates', opts.customDir ? '_rieng' : '_shared'), join(dir, opts.customDir ? '_rieng' : '_shared'), { recursive: true });
+  // Bản dựng riêng: tiếng động tự tổng hợp (brand/sfx) nằm ở sfx/ trong stage
+  if (opts.customDir) cpSync(join(REPO_ROOT, 'brand', 'sfx'), join(dir, 'sfx'), { recursive: true });
   if (opts.mediaDir && existsSync(opts.mediaDir)) cpSync(opts.mediaDir, join(dir, 'hinh'), { recursive: true, filter: (src) => !src.includes('/.goc') });
   mkdirSync(join(dir, 'brand'), { recursive: true });
   for (const part of ['brand.css', 'fonts', 'logos']) {

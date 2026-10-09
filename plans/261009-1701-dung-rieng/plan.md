@@ -34,7 +34,7 @@ MKT đánh giá video từ mẫu có sẵn "quá tệ" (chữ trên nền, như 
 | 2 | Pipeline: schema `build`, stage/validate/build/render nhánh custom, `./reel snap` | xong |
 | 3 | Kiểm chữ chống bịa cho composition + test | xong |
 | 4 | Skill `dung-video`, sửa `tao-reel`, CLAUDE.md, settings | xong |
-| 5 | Làm lại 4 video + brief "Ảnh chuyển khoản giả" (Nam gửi), soát khung hình, xuất | SIPOS 20/10 + Ảnh chuyển khoản giả xong; còn Webino, BOS 20/10, OTA |
+| 5 | Làm lại 4 video + brief "Ảnh chuyển khoản giả" (Nam gửi), soát khung hình, xuất | SIPOS 20/10 + Ảnh chuyển khoản giả xong (bản 2 theo chuẩn §19: nhân vật Việt có khớp, cảm xúc, nền riêng, tiếng động, theo phách); còn Webino, BOS 20/10, OTA |
 | 6 | Docs, decisions §18, REQUIREMENTS §2.3, review, commit | |
 
 ## Rủi ro

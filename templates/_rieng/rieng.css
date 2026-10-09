@@ -75,16 +75,48 @@
 .rs-stamp { position: absolute; border-radius: 50%; background: var(--color-accent); color: var(--color-on-accent); display: flex; align-items: center; justify-content: center; font-weight: 900; letter-spacing: -0.04em; box-shadow: 0 40px 90px var(--prop-shadow), inset 0 0 0 14px color-mix(in srgb, var(--color-white) 18%, transparent); }
 .rs-ring { position: absolute; inset: -40px; border-radius: 50%; border: 6px solid var(--color-accent); }
 
-/* ---------- Nhân vật phẳng (SVG trong kit-people) dùng màu này ---------- */
-.rs-person { position: absolute; }
-.rs-person .skin { fill: var(--prop-skin); }
-.rs-person .shade { fill: var(--prop-skin-shade); }
-.rs-person .hair { fill: var(--prop-hair); }
-.rs-person .shirt-a { fill: var(--prop-shirt-a); }
-.rs-person .shirt-b { fill: var(--prop-shirt-b); }
-.rs-person .shirt-c { fill: var(--prop-shirt-c); }
-.rs-person .ink { fill: var(--prop-ink); }
-.rs-person .ink-line { fill: none; stroke: var(--prop-ink); stroke-width: 6; stroke-linecap: round; }
+/* ---------- Nhân vật có khớp (nhan-vat.js) ---------- */
+.rs-person { position: absolute; --shirt: var(--prop-shirt-a); --skin: var(--prop-skin); --skin-d: var(--prop-skin-shade); --hair: var(--prop-hair); }
+.rs-person svg { display: block; overflow: visible; }
+.rs-person.shirt-b { --shirt: var(--prop-shirt-b); }
+.rs-person.shirt-c { --shirt: var(--prop-shirt-c); }
+.rs-person.skin-2 { --skin: var(--prop-skin-2); --skin-d: var(--prop-skin-2-shade); }
+.rs-person.hair-2 { --hair: var(--prop-hair-2); }
+.rs-person .skin { fill: var(--skin); }
+.rs-person .skin-d { fill: var(--skin-d); }
+.rs-person .hair { fill: var(--hair); }
+.rs-person .hair-shine { fill: none; stroke: var(--prop-hair-shine); stroke-width: 12; stroke-linecap: round; }
+.rs-person .shirt { fill: var(--shirt); }
+.rs-person .shirt-d { fill: color-mix(in srgb, var(--shirt) 78%, var(--color-black)); }
+.rs-person .shirt-l { fill: color-mix(in srgb, var(--shirt) 70%, var(--color-white)); }
+.rs-person .apron { fill: var(--prop-apron); }
+.rs-person .apron-d { fill: color-mix(in srgb, var(--prop-apron) 82%, var(--color-black)); }
+.rs-person .apron-tie { fill: none; stroke: var(--prop-apron); stroke-width: 12; stroke-linecap: round; }
+.rs-person .eye { fill: var(--prop-eye); }
+.rs-person .iris-c { fill: var(--prop-iris); }
+.rs-person .pupil { fill: var(--color-black); }
+.rs-person .lash { fill: none; stroke: var(--prop-iris); stroke-width: 9; stroke-linecap: round; }
+.rs-person .lid-up { fill: none; stroke: var(--prop-iris); stroke-width: 6; stroke-linecap: round; }
+.rs-person .crease { fill: none; stroke: var(--skin-d); stroke-width: 3.5; stroke-linecap: round; opacity: 0.8; }
+.rs-person .nose-s { fill: none; stroke: var(--skin-d); stroke-width: 4; stroke-linecap: round; opacity: 0.7; }
+.rs-person .seam { fill: none; stroke: color-mix(in srgb, var(--shirt) 70%, var(--color-black)); stroke-width: 5; stroke-linecap: round; }
+.rs-person .sheen { fill: none; stroke: color-mix(in srgb, var(--shirt) 60%, var(--color-white)); stroke-width: 14; stroke-linecap: round; opacity: 0.5; }
+.rs-person .sweat { fill: color-mix(in srgb, var(--prop-shirt-a) 40%, var(--color-white)); stroke: var(--prop-shirt-a); stroke-width: 3; }
+.rs-person .strap { fill: none; stroke: var(--prop-hat-d); stroke-width: 4; }
+.rs-person .non-la { fill: var(--prop-hat); }
+.rs-person .non-la-d { fill: var(--prop-hat-d); }
+.rs-person .non-la-l { fill: none; stroke: var(--prop-hat-d); stroke-width: 3; opacity: 0.6; }
+.rs-person .lid { fill: none; stroke: var(--skin-d); stroke-width: 6; stroke-linecap: round; }
+.rs-person .lid-fill { fill: var(--skin); }
+.rs-person .line { fill: none; stroke: var(--prop-iris); stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
+.rs-person .brow { fill: none; stroke: var(--hair); stroke-width: 13; stroke-linecap: round; }
+.rs-person .nose { fill: none; stroke: var(--skin-d); stroke-width: 6; stroke-linecap: round; }
+.rs-person .blush { fill: var(--prop-blush); }
+.rs-person .knuckle { fill: none; stroke: var(--skin-d); stroke-width: 5; stroke-linecap: round; }
+.rs-person .mouth { fill: var(--prop-mouth); }
+.rs-person .teeth { fill: var(--prop-eye); }
+.rs-person .tongue { fill: var(--prop-tongue); }
+.rs-person .glasses { fill: color-mix(in srgb, var(--color-white) 12%, transparent); stroke: var(--prop-device); stroke-width: 7; }
 .rs-person .device { fill: var(--prop-device); }
 .rs-person .screen { fill: var(--prop-screen); }
 .rs-person .ok { fill: var(--prop-ok); }

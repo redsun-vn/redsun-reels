@@ -6,12 +6,14 @@
  * ./reel info video                    — các video MKT đã làm (briefs/, trừ _example): bước đang làm, đã xuất chưa
  * ./reel info gan-day [số]             — video làm gần đây (7 ngày) + chữ ký chuyển động, để video mới chọn khác
  * ./reel info nhac [phong-cách]         — bài nhạc hợp phong cách (bài dùng được cho video thật đứng trước)
+ * ./reel info nhip <id-nhạc> [giây]      — nhịp bài nhạc (BPM, giây từng phách, phách mạnh) để cắt cảnh trùng phách
  * Dùng cho skill tao-reel khi viết kịch bản.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { readBriefFile } from './lib/brief.ts';
 import { signatureOf } from './lib/motion-check.ts';
 import { recentVideos } from './lib/recent-videos.ts';
+import { beatsOfFile } from './lib/music-beats.ts';
 import { MusicManifestSchema, usableSec } from '../config/music-manifest.ts';
 import { join } from 'node:path';
 import { OCCASIONS } from '../config/occasions.ts';
@@ -98,6 +100,22 @@ await runCommand(() => {
       const use = t.allowedUse.includes('social-organic') ? 'đăng được' : 'chỉ xem thử';
       console.log(`  ${t.id.padEnd(34)} ${usableSec(t)}s  ${use.padEnd(12)} ${t.title} — ${t.author} — ${t.mood.join(', ')}`);
     }
+    return;
+  }
+
+  if (arg === 'nhip') {
+    const [id, secArg] = rest;
+    const manifest = MusicManifestSchema.parse(JSON.parse(readFileSync(join(REPO_ROOT, 'brand', 'music', 'manifest.json'), 'utf8')));
+    const t = manifest.tracks.find((x) => x.id === id);
+    if (!t) throw new Error(`Không có nhạc "${id}". Gõ "./reel info nhac" để xem danh sách.`);
+    const file = join(REPO_ROOT, 'brand', 'music', t.file);
+    if (!existsSync(file)) throw new Error(`Thiếu file nhạc brand/music/${t.file}. Chạy ./reel music:fetch.`);
+    const max = Number(secArg) || 45;
+    const b = beatsOfFile(file, t.startSec ?? 0, max);
+    const f = (xs: number[]) => xs.map((x) => x.toFixed(2)).join(' ');
+    console.log(`${t.id}: ~${b.bpm} BPM (mỗi phách ${(60 / b.bpm).toFixed(3)}s; giây tính từ đầu video)`);
+    console.log(`Phách mạnh (cắt cảnh ở đây): ${f(b.downbeats)}`);
+    console.log(`Mọi phách (điểm nhấn: chữ bật, dấu dập): ${f(b.beats)}`);
     return;
   }
 

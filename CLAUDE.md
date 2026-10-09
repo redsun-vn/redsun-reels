@@ -73,7 +73,8 @@ Kiểm kê skill đã cài (danh sách skill của runtime + `.claude/skills/` +
 | `./reel new <tên-video>` | Tạo brief mới |
 | `./reel hinh <tên-video> [file…]` | Nhận hình/clip MKT gửi (kéo vào chat hoặc bỏ vào `briefs/<tên-video>/hinh/`), đổi HEIC → JPG, liệt kê để xếp vào cảnh |
 | `./reel validate <tên-video>` | Kiểm brief + kịch bản (cả bản dựng riêng) |
-| `./reel snap <tên-video> [--at=1.2,3.4]` | Dựng + kiểm bố cục + chụp khung hình để tự soát (`out/snap/<tên>/`) |
+| `./reel snap <tên-video> [--at=1.2,3.4]` | Dựng + kiểm bố cục + so nền các cảnh + chụp khung hình để tự soát (`out/snap/<tên>/`) |
+| `./reel info nhip <id-nhạc>` | Nhịp bài nhạc (phách, phách mạnh) để cắt cảnh/nhấn trùng phách |
 | `./reel preview <tên-video>` / `--stop` | Mở/tắt bản xem thử (cổng 3002) |
 | `./reel render <tên-video>` | Xuất MP4 vào `out/` |
 | `./reel make <tên-video>` | validate + build + render |

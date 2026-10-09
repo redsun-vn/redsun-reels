@@ -113,6 +113,9 @@ export function customIssues(dir: string, script: Script, briefBody: string, tot
   if (!html.includes(`src="${CUSTOM_MUSIC_SRC}"`) || !/<audio\b[^>]*\bid="/.test(html)) err(`Bản dựng riêng cần <audio id="music" src="${CUSTOM_MUSIC_SRC}" …> (nhạc của kịch bản).`);
   if (!/__timelines\[["']main["']\]\s*=/.test(html)) err('Bản dựng riêng phải ghi window.__timelines["main"] = tl; (cuối hàm dựng).');
 
+  // Nhân vật nhất quán: khai dàn nhân vật một lần bằng RS.cast, không tạo người lẻ bằng RS.person
+  if (/RS\.person\(/.test(html)) warn('Tạo nhân vật qua dàn nhân vật RS.cast({ tên: { tóc, áo… } }) rồi gọi theo tên, để một người giữ nguyên tóc/áo ở mọi cảnh.');
+
   // Không tải gì từ mạng; font chỉ Montserrat
   const remote = html.match(/(?:src|href)\s*=\s*["'](?:https?:)?\/\/[^"']+|url\(\s*["']?(?:https?:)?\/\/[^)]+/gi);
   if (remote) err(`Bản dựng riêng tải tài nguyên từ mạng: ${remote.slice(0, 3).join(', ')}. Chỉ dùng file trong dự án.`);
@@ -121,10 +124,10 @@ export function customIssues(dir: string, script: Script, briefBody: string, tot
     if (!/^(var\(--font-(heading|body)\)|["']?Montserrat["']?(,\s*sans-serif)?)$/i.test(v)) err(`Font "${v}" không đúng brand: chỉ dùng Montserrat (var(--font-body)).`);
   }
 
-  // Hình/clip tham chiếu phải có thật
-  for (const ref of html.matchAll(/(?:src|href)\s*=\s*["']((?:hinh|assets)\/[^"']+)["']/g)) {
+  // Hình/clip/tiếng động tham chiếu phải có thật
+  for (const ref of html.matchAll(/(?:src|href)\s*=\s*["']((?:hinh|assets|sfx)\/[^"']+)["']/g)) {
     const rel = normalize(ref[1]);
-    const p = rel.startsWith('hinh/') ? join(dir, rel) : join(REPO_ROOT, rel);
+    const p = rel.startsWith('hinh/') ? join(dir, rel) : rel.startsWith('sfx/') ? join(REPO_ROOT, 'brand', rel) : join(REPO_ROOT, rel);
     if (rel.startsWith('..') || !existsSync(p)) err(`Bản dựng riêng dùng "${ref[1]}" nhưng không có file này.`);
   }
 
