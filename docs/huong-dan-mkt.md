@@ -68,7 +68,7 @@ Không chắc loại nào? Cứ kể việc muốn làm, Claude sẽ đề xuấ
 **Phong cách** (19 kiểu: tối giản, sang trọng, vui nhộn, lễ hội, điện ảnh, bí ẩn…): nói "dùng phong cách vui nhộn". Không nói thì Claude dùng kiểu hợp với loại video. Video theo dịp lễ (8/3, 20/10, Halloween, Tết…) tự chọn kiểu hợp dịp. Xem danh sách dịp: nói "có những dịp lễ nào".
 
 ## 6. Nhạc
-- Video **không có giọng đọc**, chỉ có nhạc nền. Thư viện có sẵn 24 bài Mixkit dùng để đăng được. Claude tự chọn bài hợp phong cách. Muốn đổi bài: nói "đổi nhạc khác vui hơn".
+- Video **không có giọng đọc**, chỉ có nhạc nền. Thư viện có sẵn khoảng 25 bài Mixkit dùng để đăng được. Claude tự chọn bài hợp phong cách. Muốn đổi bài: nói "đổi nhạc khác vui hơn".
 - Bài ghi **"chỉ xem thử"** không đăng được.
 - **Dùng nhạc bạn tự tìm:**
   1. Chỉ lấy từ [Pixabay Music](https://pixabay.com/music/) hoặc [Mixkit](https://mixkit.co/free-stock-music/), bài **không lời**. Không dùng nhạc YouTube, nhạc ca sĩ, nhạc thịnh hành trên TikTok.

@@ -403,133 +403,6 @@
       "notes": "recipes.pop(duration=60, drop=4, outro=57), export lufs=-14 tp=-1, mp3 192k. Chờ Nam nghe: dùng thật thì đổi allowedUse sang social-organic."
     },
     {
-      "id": "mixkit-relaxation-05-749",
-      "file": "mixkit-relaxation-05-749.mp3",
-      "title": "Relaxation 05",
-      "author": "Lily J",
-      "source": "mixkit",
-      "sourceUrl": "https://mixkit.co/free-stock-music/",
-      "license": "Mixkit Stock Music Free License",
-      "attributionRequired": false,
-      "attributionText": null,
-      "downloadedAt": "2026-10-09",
-      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
-      "mood": [
-        "thu-gian",
-        "sang-trong"
-      ],
-      "bpm": null,
-      "durationSec": 117,
-      "allowedUse": [
-        "social-organic"
-      ],
-      "downloadUrl": "https://assets.mixkit.co/music/749/749.mp3",
-      "sha256": "46330d05ad0c21d78c5767957fdd8212cee52ec549c3285a370de99311f8b4c6",
-      "notes": "Mixkit item 749; thẻ: Ambient, Atmospheric, Meditative, Flute, Harp. Ứng viên đợt 2 (2026-10-09), thay các bài Nam bỏ; chờ Nam nghe."
-    },
-    {
-      "id": "mixkit-chillax-655",
-      "file": "mixkit-chillax-655.mp3",
-      "title": "Chillax",
-      "author": "Francisco Alvear",
-      "source": "mixkit",
-      "sourceUrl": "https://mixkit.co/free-stock-music/",
-      "license": "Mixkit Stock Music Free License",
-      "attributionRequired": false,
-      "attributionText": null,
-      "downloadedAt": "2026-10-09",
-      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
-      "mood": [
-        "thu-gian",
-        "lang-man"
-      ],
-      "bpm": null,
-      "durationSec": 144,
-      "allowedUse": [
-        "social-organic"
-      ],
-      "downloadUrl": "https://assets.mixkit.co/music/655/655.mp3",
-      "sha256": "06afab7e30716dd5e73f9f5caa498c986b31e0e2bd618136372d6a7d8148b611",
-      "notes": "Mixkit item 655; thẻ: New Age, Meditative, Reflective, Acoustic Guitar, Relaxation. Ứng viên đợt 2 (2026-10-09), thay các bài Nam bỏ; chờ Nam nghe."
-    },
-    {
-      "id": "mixkit-finding-myself-993",
-      "file": "mixkit-finding-myself-993.mp3",
-      "title": "Finding Myself",
-      "author": "Michael Ramir C.",
-      "source": "mixkit",
-      "sourceUrl": "https://mixkit.co/free-stock-music/",
-      "license": "Mixkit Stock Music Free License",
-      "attributionRequired": false,
-      "attributionText": null,
-      "downloadedAt": "2026-10-09",
-      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
-      "mood": [
-        "thu-gian",
-        "tuong-lai"
-      ],
-      "bpm": null,
-      "durationSec": 134,
-      "allowedUse": [
-        "social-organic"
-      ],
-      "downloadUrl": "https://assets.mixkit.co/music/993/993.mp3",
-      "sha256": "e60f27845f7997177dcf80f81622f75c4bb7f990c57177dc78f190187c08e49c",
-      "notes": "Mixkit item 993; thẻ: Ambient, New Age, Atmospheric, Meditative, Synth. Ứng viên đợt 2 (2026-10-09), thay các bài Nam bỏ; chờ Nam nghe."
-    },
-    {
-      "id": "mixkit-stylz-102",
-      "file": "mixkit-stylz-102.mp3",
-      "title": "Stylz",
-      "author": "Ahjay Stelino",
-      "source": "mixkit",
-      "sourceUrl": "https://mixkit.co/free-stock-music/",
-      "license": "Mixkit Stock Music Free License",
-      "attributionRequired": false,
-      "attributionText": null,
-      "downloadedAt": "2026-10-09",
-      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
-      "mood": [
-        "tuong-lai",
-        "robot-cong-nghe",
-        "du-lieu"
-      ],
-      "bpm": null,
-      "durationSec": 99,
-      "allowedUse": [
-        "social-organic"
-      ],
-      "downloadUrl": "https://assets.mixkit.co/music/102/102.mp3",
-      "sha256": "a0307e929eb60ed10488eacfdf8b3fddc893cf9b8680f5a55b65fb51b7075fdc",
-      "notes": "Mixkit item 102; thẻ: Corporate Music, Atmospheric, Futuristic, Bass, Drums. Ứng viên đợt 2 (2026-10-09), thay các bài Nam bỏ; chờ Nam nghe."
-    },
-    {
-      "id": "mixkit-uplifting-bass-726",
-      "file": "mixkit-uplifting-bass-726.mp3",
-      "title": "Uplifting Bass",
-      "author": "Lily J",
-      "source": "mixkit",
-      "sourceUrl": "https://mixkit.co/free-stock-music/",
-      "license": "Mixkit Stock Music Free License",
-      "attributionRequired": false,
-      "attributionText": null,
-      "downloadedAt": "2026-10-09",
-      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
-      "mood": [
-        "tuong-lai",
-        "du-lieu",
-        "toi-gian"
-      ],
-      "bpm": null,
-      "durationSec": 95,
-      "allowedUse": [
-        "social-organic"
-      ],
-      "downloadUrl": "https://assets.mixkit.co/music/726/726.mp3",
-      "sha256": "6cdd3514fb6ce919f7b9e8984d9c11c3e2a7de9b39ec0e2658be0c64e69fd5e0",
-      "notes": "Mixkit item 726; thẻ: Ambient, Atmospheric, Positive, Bass, Drums. Ứng viên đợt 2 (2026-10-09), thay các bài Nam bỏ; chờ Nam nghe."
-    },
-    {
       "id": "mixkit-k-o-1068",
       "file": "mixkit-k-o-1068.mp3",
       "title": "K.O.",
@@ -552,7 +425,7 @@
       ],
       "downloadUrl": "https://assets.mixkit.co/music/1068/1068.mp3",
       "sha256": "ddebd9fdaca9c2f9a273ce704b6bd823166590ca624fe452a5416dfceaa4da5f",
-      "notes": "Mixkit item 1068; thẻ: Rock, Driving, Bass, Drums, Motivational. Ứng viên đợt 2 (2026-10-09), thay các bài Nam bỏ; chờ Nam nghe."
+      "notes": "Mixkit item 1068; thẻ: Rock, Driving, Bass, Drums, Motivational. Ứng viên đợt 2 (2026-10-09), thay các bài Nam bỏ; Nam nghe 2026-10-09: giữ."
     },
     {
       "id": "mixkit-sports-highlights-51",
@@ -577,57 +450,7 @@
       ],
       "downloadUrl": "https://assets.mixkit.co/music/51/51.mp3",
       "sha256": "165df8e17e9d23645f9dcd2ef4a8252b8f3c32e74bd5e7bc8f868be9f3044223",
-      "notes": "Mixkit item 51; thẻ: Rock, Hard Rock, Aggressive, Propulsive, Bass. Ứng viên đợt 2 (2026-10-09), thay các bài Nam bỏ; chờ Nam nghe."
-    },
-    {
-      "id": "mixkit-owies-ukulele-1072",
-      "file": "mixkit-owies-ukulele-1072.mp3",
-      "title": "Owies Ukulele",
-      "author": "Michael Ramir C.",
-      "source": "mixkit",
-      "sourceUrl": "https://mixkit.co/free-stock-music/",
-      "license": "Mixkit Stock Music Free License",
-      "attributionRequired": false,
-      "attributionText": null,
-      "downloadedAt": "2026-10-09",
-      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
-      "mood": [
-        "thu-cong",
-        "vui-nhon"
-      ],
-      "bpm": null,
-      "durationSec": 159,
-      "allowedUse": [
-        "social-organic"
-      ],
-      "downloadUrl": "https://assets.mixkit.co/music/1072/1072.mp3",
-      "sha256": "d16e2057fde4e093f1641d2d352b99e369eee71784c102fd248ee6170f395592",
-      "notes": "Mixkit item 1072; thẻ: Children, Folk Pop, Carefree, Acoustic Guitar, Drums. Ứng viên đợt 2 (2026-10-09), thay các bài Nam bỏ; chờ Nam nghe."
-    },
-    {
-      "id": "mixkit-little-bells-506",
-      "file": "mixkit-little-bells-506.mp3",
-      "title": "Little Bells",
-      "author": "Diego Nava",
-      "source": "mixkit",
-      "sourceUrl": "https://mixkit.co/free-stock-music/",
-      "license": "Mixkit Stock Music Free License",
-      "attributionRequired": false,
-      "attributionText": null,
-      "downloadedAt": "2026-10-09",
-      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
-      "mood": [
-        "thu-cong",
-        "vui-nhon"
-      ],
-      "bpm": null,
-      "durationSec": 102,
-      "allowedUse": [
-        "social-organic"
-      ],
-      "downloadUrl": "https://assets.mixkit.co/music/506/506.mp3",
-      "sha256": "f69583e38a066edec7221475d76f82b16e15a2416b1af88adf2679947623bec3",
-      "notes": "Mixkit item 506; thẻ: Minimalism, Playful, Quirky, Mallets, Strings. Ứng viên đợt 2 (2026-10-09), thay các bài Nam bỏ; chờ Nam nghe."
+      "notes": "Mixkit item 51; thẻ: Rock, Hard Rock, Aggressive, Propulsive, Bass. Ứng viên đợt 2 (2026-10-09), thay các bài Nam bỏ; Nam nghe 2026-10-09: giữ."
     },
     {
       "id": "mixkit-infected-mushroom-vibes-136",
@@ -652,7 +475,212 @@
       ],
       "downloadUrl": "https://assets.mixkit.co/music/136/136.mp3",
       "sha256": "bb63977d73d7f4ba277f506831e762afc4032b48a0f9e5e5f3b17d66e41519cf",
-      "notes": "Mixkit item 136; thẻ: EDM, Electronic, Dramatic, Propulsive, Bass. Ứng viên đợt 2 (2026-10-09), thay các bài Nam bỏ; chờ Nam nghe."
+      "notes": "Mixkit item 136; thẻ: EDM, Electronic, Dramatic, Propulsive, Bass. Ứng viên đợt 2 (2026-10-09), thay các bài Nam bỏ; Nam nghe 2026-10-09: giữ."
+    },
+    {
+      "id": "mixkit-sweet-september-282",
+      "file": "mixkit-sweet-september-282.mp3",
+      "title": "Sweet September",
+      "author": "Arulo",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "thu-gian",
+        "lang-man"
+      ],
+      "bpm": null,
+      "durationSec": 98,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/282/282.mp3",
+      "sha256": "6ad6db61c4c9018cb9dfc99ed5c3b72f3143d3a5db31920e4f1f6b01d2f1b4a1",
+      "notes": "Mixkit item 282; thẻ: Hip Hop, Chillout, Calm, Bass, Drums. Ứng viên đợt 3 (2026-10-09), chờ Nam nghe."
+    },
+    {
+      "id": "mixkit-smooth-jazz-640",
+      "file": "mixkit-smooth-jazz-640.mp3",
+      "title": "Smooth Jazz",
+      "author": "Francisco Alvear",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "thu-gian",
+        "sang-trong",
+        "retro"
+      ],
+      "bpm": null,
+      "durationSec": 142,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/640/640.mp3",
+      "sha256": "e960312dbd7daa0a9f6c3b8967f4350eb296cd0d454c12e4d23c2c661c469403",
+      "notes": "Mixkit item 640; thẻ: Downtempo, Chillout, Relaxed, Warm, Bass. Ứng viên đợt 3 (2026-10-09), chờ Nam nghe."
+    },
+    {
+      "id": "mixkit-day-dreamin-with-u-988",
+      "file": "mixkit-day-dreamin-with-u-988.mp3",
+      "title": "Day Dreamin' with U",
+      "author": "Michael Ramir C.",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "thu-gian",
+        "tin-cay"
+      ],
+      "bpm": null,
+      "durationSec": 118,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/988/988.mp3",
+      "sha256": "643509191c18481fea4a1ee620d4a02a5a7365d181d19fc7c48ab7ed219bab9c",
+      "notes": "Mixkit item 988; thẻ: Chillout, Downtempo, Uplifting, Hopeful, Drums. Ứng viên đợt 3 (2026-10-09), chờ Nam nghe."
+    },
+    {
+      "id": "mixkit-tech-house-vibes-130",
+      "file": "mixkit-tech-house-vibes-130.mp3",
+      "title": "Tech House vibes",
+      "author": "Alejandro Magaña (A. M.)",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "tuong-lai",
+        "robot-cong-nghe",
+        "du-lieu"
+      ],
+      "bpm": null,
+      "durationSec": 102,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/130/130.mp3",
+      "sha256": "95972c602ff0686e298792f45b384f0e15477f3cf983f05dd98fd5e5d965eed6",
+      "notes": "Mixkit item 130; thẻ: Electronica, Sexy, Bass, Drums, Background. Ứng viên đợt 3 (2026-10-09), chờ Nam nghe."
+    },
+    {
+      "id": "mixkit-cat-walk-371",
+      "file": "mixkit-cat-walk-371.mp3",
+      "title": "Cat Walk",
+      "author": "Arulo",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "tuong-lai",
+        "du-lieu",
+        "nang-dong"
+      ],
+      "bpm": null,
+      "durationSec": 124,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/371/371.mp3",
+      "sha256": "e241cba000ce12e52cadd4c9956274e391ef1f66d1e48a5dd40bfc21645aa489",
+      "notes": "Mixkit item 371; thẻ: House, EDM, Driving, Bass, Drums. Ứng viên đợt 3 (2026-10-09), chờ Nam nghe."
+    },
+    {
+      "id": "mixkit-pop-track-03-729",
+      "file": "mixkit-pop-track-03-729.mp3",
+      "title": "Pop Track 03",
+      "author": "Lily J",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "robot-cong-nghe",
+        "du-lieu",
+        "toi-gian"
+      ],
+      "bpm": null,
+      "durationSec": 96,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/729/729.mp3",
+      "sha256": "0bb90793c71a07e6d698afdd434b32ffb4fe93dbbdb0577d3e71a4de80b0337b",
+      "notes": "Mixkit item 729; thẻ: Electronic, Corporate Music, Playful, Bass, Drums. Ứng viên đợt 3 (2026-10-09), chờ Nam nghe."
+    },
+    {
+      "id": "mixkit-smile-1076",
+      "file": "mixkit-smile-1076.mp3",
+      "title": "Smile",
+      "author": "Michael Ramir C.",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "thu-cong",
+        "vui-nhon"
+      ],
+      "bpm": null,
+      "durationSec": 96,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/1076/1076.mp3",
+      "sha256": "0f582b05625f07762b551757097d0d15412bc2e9154781508b59060dea5a58a5",
+      "notes": "Mixkit item 1076; thẻ: Children, Folk Pop, Fun, Acoustic Guitar, Bass. Ứng viên đợt 3 (2026-10-09), chờ Nam nghe."
+    },
+    {
+      "id": "mixkit-summer-s-here-91",
+      "file": "mixkit-summer-s-here-91.mp3",
+      "title": "Summer's Here",
+      "author": "Ahjay Stelino",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "thu-cong",
+        "vui-nhon",
+        "le-hoi"
+      ],
+      "bpm": null,
+      "durationSec": 96,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/91/91.mp3",
+      "sha256": "d4569b922b63892bb8b32f07da650b6493ed1d3dce9401f13044003b0489d400",
+      "notes": "Mixkit item 91; thẻ: Children, Folk Pop, Happy, Carefree, Acoustic Guitar. Ứng viên đợt 3 (2026-10-09), chờ Nam nghe."
     }
   ]
 }

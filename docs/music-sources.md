@@ -79,9 +79,10 @@ Mỗi nhóm phong cách chính chọn 2–3 track, khoảng 20–30 track từ P
 
 ## 5. Thư viện hiện có (2026-10-09)
 - **Nghe và chọn**: `./reel music:page` rồi mở `out/nghe-nhac.html` (trình duyệt, chạy offline). Đánh dấu Giữ/Bỏ/Dùng thật, bấm "Copy kết quả" gửi dev cập nhật manifest.
-- **24 bài Mixkit** (`mixkit-*`), dùng được cho video thật. Mỗi phong cách có ít nhất 2 bài.
+- **25 bài Mixkit** (`mixkit-*`), dùng được cho video thật. Mỗi phong cách có ít nhất 2 bài.
   - Đợt 1 (20 bài): Nam nghe 2026-10-09, bỏ 6 bài (Curiosity, Digital Clouds, Motivating Mornings, Trap Electro Vibes, Serene View, Relax Beat), đã xoá khỏi manifest.
-  - Đợt 2 (10 bài, ghi chú "Ứng viên đợt 2"): thêm để bù phong cách thiếu (thư giãn còn 0 bài), chờ Nam nghe. Xem: `./reel info nhac <phong-cách>`.
+  - Đợt 2 (10 bài): Nam giữ 3 (K.O., Sports Highlights, Infected Mushroom Vibes), bỏ 7 bài ambient/thiền/acoustic nhẹ.
+  - Đợt 3 (8 bài, ghi chú "Ứng viên đợt 3"): đổi hướng theo gu đã thấy: thư giãn lấy lo-fi/jazz/downtempo có nhịp, công nghệ lấy tech house/electronic. Chờ Nam nghe. Xem: `./reel info nhac <phong-cách>`.
   - Claude chọn theo thẻ thể loại/tâm trạng trên Mixkit, bài không lời, dài ≥ 88 giây. **Chưa ai nghe**: MKT lead nghe lại, bỏ bài không hợp (đặt `"blocked": true`), và đăng thử riêng tư để kiểm Content ID.
   - License (bản gốc, render từ `mixkit.co/license/#musicFree` ngày 2026-10-09): dùng thương mại và phi thương mại; được dùng trên web, mạng xã hội, quảng cáo online, podcast. **Không** dùng cho CD/DVD, game, phát sóng TV/radio; không remix thành bài nhạc riêng, không nhận là của mình, **không đăng ký vào dịch vụ quản lý bản quyền** (Content ID). Bị claim thì gửi chi tiết tới team@mixkit.co.
   - Bằng chứng: `~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/` trên máy Nam (PDF + văn bản license, trang danh sách, mã SHA-256 từng bài). Nam chuyển lên Drive.
