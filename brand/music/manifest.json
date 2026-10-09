@@ -528,7 +528,8 @@
       "mood": [
         "tuong-lai",
         "robot-cong-nghe",
-        "du-lieu"
+        "du-lieu",
+        "thu-gian"
       ],
       "bpm": null,
       "durationSec": 102,
@@ -539,7 +540,7 @@
       "downloadUrl": "https://assets.mixkit.co/music/130/130.mp3",
       "sha256": "95972c602ff0686e298792f45b384f0e15477f3cf983f05dd98fd5e5d965eed6",
       "startSec": 0,
-      "notes": "Mixkit item 130; thẻ: Electronica, Sexy, Bass, Drums, Background. Ứng viên đợt 3 (2026-10-09), Nam nghe 2026-10-09: giữ."
+      "notes": "Mixkit item 130; thẻ: Electronica, Sexy, Bass, Drums, Background. Ứng viên đợt 3 (2026-10-09), Nam nghe 2026-10-09: giữ. Gắn thêm thu-gian (Mixkit xếp Relaxed) vì thư giãn thiếu bài."
     },
     {
       "id": "mixkit-cat-walk-371",
@@ -625,33 +626,6 @@
       "notes": "Mixkit item 91; thẻ: Children, Folk Pop, Happy, Carefree, Acoustic Guitar. Ứng viên đợt 3 (2026-10-09), Nam nghe 2026-10-09: giữ."
     },
     {
-      "id": "mixkit-hip-hop-02-738",
-      "file": "mixkit-hip-hop-02-738.mp3",
-      "title": "Hip Hop 02",
-      "author": "Lily J",
-      "source": "mixkit",
-      "sourceUrl": "https://mixkit.co/free-stock-music/",
-      "license": "Mixkit Stock Music Free License",
-      "attributionRequired": false,
-      "attributionText": null,
-      "downloadedAt": "2026-10-09",
-      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
-      "mood": [
-        "thu-gian",
-        "tin-cay"
-      ],
-      "bpm": null,
-      "durationSec": 115,
-      "allowedUse": [
-        "social-organic"
-      ],
-      "blocked": false,
-      "downloadUrl": "https://assets.mixkit.co/music/738/738.mp3",
-      "sha256": "4b7bc45aedd38bf43e67d550177aeaafa367ec32a3a6498f8ffd9ec5132e268e",
-      "startSec": 0,
-      "notes": "Mixkit item 738; thẻ: Hip Hop, Contemporary R&B, Positive, Bass, Drums. Ứng viên đợt 4 (2026-10-09, chill nhưng có groove), chờ Nam nghe."
-    },
-    {
       "id": "mixkit-funky-triplets-1141",
       "file": "mixkit-funky-triplets-1141.mp3",
       "title": "Funky Triplets",
@@ -677,62 +651,7 @@
       "downloadUrl": "https://assets.mixkit.co/music/1141/1141.mp3",
       "sha256": "9f99baed5d9069f9490367716a685581bc8396d7597b8de56e5f6e87855b7650",
       "startSec": 2,
-      "notes": "Mixkit item 1141; thẻ: Contemporary R&B, Relaxed, Positive, Bass, Drums. Ứng viên đợt 4 (2026-10-09, chill nhưng có groove), chờ Nam nghe."
-    },
-    {
-      "id": "mixkit-dry-gin-868",
-      "file": "mixkit-dry-gin-868.mp3",
-      "title": "Dry Gin",
-      "author": "Michael Ramir C.",
-      "source": "mixkit",
-      "sourceUrl": "https://mixkit.co/free-stock-music/",
-      "license": "Mixkit Stock Music Free License",
-      "attributionRequired": false,
-      "attributionText": null,
-      "downloadedAt": "2026-10-09",
-      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
-      "mood": [
-        "thu-gian",
-        "sang-trong"
-      ],
-      "bpm": null,
-      "durationSec": 108,
-      "allowedUse": [
-        "social-organic"
-      ],
-      "blocked": false,
-      "downloadUrl": "https://assets.mixkit.co/music/868/868.mp3",
-      "sha256": "eb0bbb8967dfe68641639ec596c5cd32d9e90a75b5ba09304a676d122975c718",
-      "startSec": 0,
-      "notes": "Mixkit item 868; thẻ: Acid Jazz, Relaxed, Positive, Bass, Drums. Ứng viên đợt 4 (2026-10-09, chill nhưng có groove), chờ Nam nghe."
-    },
-    {
-      "id": "mixkit-hazy-after-hours-132",
-      "file": "mixkit-hazy-after-hours-132.mp3",
-      "title": "Hazy After Hours",
-      "author": "Alejandro Magaña (A. M.)",
-      "source": "mixkit",
-      "sourceUrl": "https://mixkit.co/free-stock-music/",
-      "license": "Mixkit Stock Music Free License",
-      "attributionRequired": false,
-      "attributionText": null,
-      "downloadedAt": "2026-10-09",
-      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
-      "mood": [
-        "thu-gian",
-        "sang-trong",
-        "tuong-lai"
-      ],
-      "bpm": null,
-      "durationSec": 127,
-      "allowedUse": [
-        "social-organic"
-      ],
-      "blocked": false,
-      "downloadUrl": "https://assets.mixkit.co/music/132/132.mp3",
-      "sha256": "5a30d042dc51f517dc64b5d409e1ac0b9dba2a80241f8955f41257585e77890f",
-      "startSec": 0,
-      "notes": "Mixkit item 132; thẻ: Electronica, Sexy, Bass, Drums, Fashion. Ứng viên đợt 4 (2026-10-09, chill nhưng có groove), chờ Nam nghe."
+      "notes": "Mixkit item 1141; thẻ: Contemporary R&B, Relaxed, Positive, Bass, Drums. Ứng viên đợt 4 (2026-10-09, chill nhưng có groove), Nam nghe 2026-10-09: giữ."
     },
     {
       "id": "mixkit-it-s-love-834",
@@ -749,7 +668,8 @@
       "mood": [
         "lang-man",
         "tin-cay",
-        "toi-gian"
+        "toi-gian",
+        "thu-gian"
       ],
       "bpm": null,
       "durationSec": 96,
@@ -760,34 +680,7 @@
       "downloadUrl": "https://assets.mixkit.co/music/834/834.mp3",
       "sha256": "c69dc74479239f63442a369891a57c7f9a05236a7090e4b694057c13f3843cf9",
       "startSec": 3,
-      "notes": "Mixkit item 834; thẻ: Corporate Music, Electronica, Uplifting, Bass, Drums. Ứng viên đợt 4 (2026-10-09, chill nhưng có groove), chờ Nam nghe."
-    },
-    {
-      "id": "mixkit-latin-lovers-39",
-      "file": "mixkit-latin-lovers-39.mp3",
-      "title": "Latin Lovers",
-      "author": "Ahjay Stelino",
-      "source": "mixkit",
-      "sourceUrl": "https://mixkit.co/free-stock-music/",
-      "license": "Mixkit Stock Music Free License",
-      "attributionRequired": false,
-      "attributionText": null,
-      "downloadedAt": "2026-10-09",
-      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
-      "mood": [
-        "lang-man",
-        "sang-trong"
-      ],
-      "bpm": null,
-      "durationSec": 95,
-      "allowedUse": [
-        "social-organic"
-      ],
-      "blocked": false,
-      "downloadUrl": "https://assets.mixkit.co/music/39/39.mp3",
-      "sha256": "c04403664e842943ee10f38c70e428f4b662e379d55c49272ed39581c30528f2",
-      "startSec": 0,
-      "notes": "Mixkit item 39; thẻ: Jazz, Bossa Nova, Sensual, Brass, Double Bass. Ứng viên đợt 4 (2026-10-09, chill nhưng có groove), chờ Nam nghe."
+      "notes": "Mixkit item 834; thẻ: Corporate Music, Electronica, Uplifting, Bass, Drums. Ứng viên đợt 4 (2026-10-09, chill nhưng có groove), Nam nghe 2026-10-09: giữ. Gắn thêm thu-gian (Mixkit xếp Relaxed) vì thư giãn thiếu bài."
     }
   ]
 }
