@@ -21,6 +21,8 @@ const pixabay: MusicTrack = {
   durationSec: 60,
   allowedUse: ['social-organic'],
   blocked: false,
+  downloadUrl: 'https://cdn.example.com/upbeat-01.mp3',
+  sha256: 'a'.repeat(64),
 };
 
 describe('music manifest', () => {
@@ -46,6 +48,15 @@ describe('music manifest', () => {
   it('chặn track bị khóa và thiếu link nguồn', () => {
     expect(checkTrack({ ...pixabay, blocked: true }, 'production')).toHaveLength(1);
     expect(checkTrack({ ...pixabay, sourceUrl: 'pixabay' }, 'production').join(' ')).toMatch(/link nguồn/);
+  });
+
+  it('nhạc bên thứ ba phải có link tải + sha256 (không nằm trong repo); mọi bài trong manifest hợp lệ', () => {
+    expect(checkTrack({ ...pixabay, downloadUrl: undefined }, 'production').join(' ')).toMatch(/link tải/);
+    expect(checkTrack({ ...pixabay, sha256: undefined }, 'production').join(' ')).toMatch(/sha256/);
+    for (const t of manifest.tracks) expect(checkTrack(t, t.allowedUse.includes('social-organic') ? 'production' : 'test')).toEqual([]);
+    expect(manifest.tracks.filter((t) => t.source !== 'generated-in-repo' && !t.localOnly).every((t) => t.downloadUrl && t.sha256)).toBe(true);
+    // Bài MKT tự thêm (localOnly) chỉ có trên máy MKT, có ảnh bằng chứng; bản trong repo không có bài nào như vậy
+    expect(checkTrack({ ...pixabay, downloadUrl: undefined, localOnly: true }, 'production')).toEqual([]);
   });
 
   it('CC BY bắt buộc có dòng credit', () => {

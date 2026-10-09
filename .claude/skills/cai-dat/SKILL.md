@@ -21,7 +21,8 @@ Người dùng là nhân viên marketing, không biết kỹ thuật. Nói tiế
 3. Đọc kết quả:
    - Dòng cuối là `CÀI XONG.` → báo: "Cài xong rồi. Máy đã dựng thử được video. Muốn làm video, bạn chỉ cần nói ví dụ 'làm reel mẹo cho SIPOS về …'." Nếu bước 4 có in "mở lại Claude Code", nhắc họ đóng và mở lại Claude Code một lần.
    - Có dòng `LỖI:` → kể lại nội dung dòng `LỖI:` và `CÁCH XỬ LÝ:` bằng lời thường. Ví dụ lỗi mạng: "Máy đang không vào được Internet. Bạn kiểm tra wifi rồi nói 'cài lại' nhé." Lỗi cần dev: nói rõ file log cần gửi (đường dẫn trong dòng `LỖI:`).
-4. Muốn kiểm lại máy bất cứ lúc nào: `./reel doctor`. Kể lại các mục ✗ (nếu có) kèm hướng dẫn `→`.
+4. Muốn kiểm lại máy bất cứ lúc nào: `./reel doctor`. Mọi mục ✓ thì chỉ nói "Máy đã sẵn sàng làm video", không liệt kê tên phần mềm (Node.js, FFmpeg…). Có mục ✗ thì kể lại bằng lời thường kèm việc cần làm.
+5. Bước 6 của script tải thư viện nhạc (Mixkit, khoảng 70 MB) từ nguồn gốc về `brand/music/`; nhạc không nằm sẵn trong dự án. Chỉ thiếu nhạc (doctor báo thiếu file ở mục Thư viện nhạc) thì chạy `./reel music:fetch`, không cần cài lại cả máy.
 
 ## Không làm
 

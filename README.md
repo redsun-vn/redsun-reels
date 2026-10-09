@@ -16,11 +16,15 @@ Hệ thống làm video ngắn dọc (Reels, TikTok, Shorts) cho team Marketing 
 | M3 | 3 mẫu: BeforeAfter, Testimonial, Promo, 16 phong cách còn lại, lịch dịp lễ | ✅ Xong phần kỹ thuật. Chờ 10 video thử nghiệm của MKT (§14) |
 | M4 | 3 mẫu: EventRecap, Stats, TalkingHead (đủ 20 loại video), giữ tiếng gốc clip người nói + tự hạ nhạc | ✅ Xong phần kỹ thuật. Chờ clip quay thật của MKT để thử TalkingHead |
 
-Hiện **chưa có nhạc thật** trong thư viện. Repo chỉ có một track thử nghiệm tự sinh, và track này bị chặn khi xuất video thật. Muốn đăng thật thì Nam/MKT lead phải thêm nhạc theo [`docs/music-sources.md`](docs/music-sources.md).
+Thư viện nhạc có **20 bài Mixkit dùng được cho video thật** (máy tự tải khi cài, không nằm trong repo) và 5 bài tự sinh để nghe thử. MKT lead cần nghe lại các bài này trước khi đăng hàng loạt. Xem [`docs/music-sources.md`](docs/music-sources.md).
+
+**Thử nghiệm với MKT**: làm theo [`docs/huong-dan-thu-nghiem-mkt.md`](docs/huong-dan-thu-nghiem-mkt.md) (10 video, phiếu chấm, cách quay clip người nói).
 
 ---
 
 ## Dành cho team Marketing
+
+**Sổ tay đầy đủ: [`docs/huong-dan-mkt.md`](docs/huong-dan-mkt.md)**: chỗ để ảnh, clip, nhạc; chọn loại video; câu nói hay dùng; đăng bài; khi có lỗi.
 
 ### Cần chuẩn bị
 - MacBook chip Intel hoặc chip M.
@@ -62,7 +66,7 @@ Hiện **chưa có nhạc thật** trong thư viện. Repo chỉ có một track
    3. Cài thư viện của dự án.
    4. Cài plugin HyperFrames cho Claude Code. Bản desktop có thể báo bỏ qua bước này, không sao.
    5. Chuẩn bị trình duyệt để dựng video.
-   6. Chuẩn bị nhạc thử.
+   6. Tải thư viện nhạc (khoảng 70 MB) và chuẩn bị nhạc thử.
    7. Kiểm tra máy và dựng thử 1 video ngắn.
 
 **Bước 5. Kiểm tra đã xong**
@@ -85,9 +89,9 @@ Cài lại bao nhiêu lần cũng được.
 
 ### Cập nhật bản mới
 1. Tải ZIP mới như Bước 2, giải nén.
-2. Mở `briefs/` của bản cũ, copy các thư mục video của bạn (trừ `_example`) vào `briefs/` của bản mới. Video đã xuất nằm ở `out/` bản cũ: copy cả thư mục `out/` sang bản mới (bản mới chưa có thư mục này).
+2. Mở `briefs/` của bản cũ, copy các thư mục video của bạn (trừ `_example`) vào `briefs/` của bản mới. Video đã xuất nằm ở `out/` bản cũ: copy cả thư mục `out/` sang bản mới (bản mới chưa có thư mục này). Có nhạc tự tìm thì copy các file trong `nhac-tu-tim/` sang `nhac-tu-tim/` của bản mới.
 3. Xoá bản cũ, đặt bản mới đúng chỗ cũ, cùng tên.
-4. Mở trong Claude Code, gõ "cài lại".
+4. Mở trong Claude Code, gõ "cài lại". Có nhạc tự tìm thì gõ thêm "đăng ký lại nhạc tự tìm".
 
 ### Làm một video
 Nói với Claude, ví dụ:
@@ -105,6 +109,16 @@ Claude dẫn từng bước:
 Muốn đổi phong cách thì cứ nói, ví dụ "đổi sang phong cách vui nhộn". Mỗi loại video có sẵn phong cách mặc định.
 
 Claude chỉ sửa trong thư mục `briefs/` của video bạn đang làm. Muốn thêm mẫu video hay phong cách mới thì cần dev.
+
+### Dùng nhạc bạn tự tìm
+Thư viện có sẵn 20 bài. Muốn dùng bài khác:
+1. Chỉ lấy nhạc từ **[Pixabay Music](https://pixabay.com/music/)** hoặc **[Mixkit](https://mixkit.co/free-stock-music/)**, chọn bài **không lời**. Không dùng nhạc YouTube, nhạc ca sĩ, nhạc trong app TikTok.
+2. Tải file nhạc (mp3) về.
+3. Chụp màn hình trang bài nhạc, thấy được tên bài, tác giả và chữ license.
+4. Bỏ cả hai file vào thư mục **`nhac-tu-tim`** trong dự án, đặt **cùng tên**, ví dụ `nhac-vui.mp3` và `nhac-vui.png`.
+5. Nói với Claude: "thêm nhạc nhac-vui, link <dán link trang bài>, tác giả <tên>".
+
+Claude kiểm rồi thêm bài vào thư viện trên máy bạn, dùng được ngay. Sau đó báo Nam để Nam đưa bài vào thư viện chung của cả team. Khi cập nhật bản mới, nhớ chép cả thư mục `nhac-tu-tim` sang.
 
 ### Loại video và phong cách
 - **20 loại video**: ra mắt tính năng, demo, mẹo "Bạn có biết?", hướng dẫn nhiều bước, khuyến mãi, chúc mừng dịp lễ… Xem [`docs/video-type-guide.md`](docs/video-type-guide.md).
@@ -146,7 +160,7 @@ Không cần Node hệ thống: `./reel` tự dùng Node trong `~/.redsun-reels`
 | Lệnh | Việc làm |
 |---|---|
 | `bash ./scripts/cai-dat.sh` | Cài môi trường (Node tarball có kiểm SHA, thư viện, plugin HyperFrames, trình duyệt render, nhạc thử, render thử). Chạy lại được nhiều lần |
-| `pnpm info [loại-video]` | Loại video, phong cách đã dựng được, thứ tự cảnh; `info thoi-luong "<chữ>"` tính thời lượng tối thiểu |
+| `pnpm info [loại-video]` | Loại video, phong cách đã dựng được, thứ tự cảnh; `info thoi-luong "<chữ>"` tính thời lượng tối thiểu; `info nhac <phong-cách>` liệt kê nhạc |
 | `pnpm post <slug>` | Soạn `briefs/<slug>/post.md`: caption, hashtag, credit nhạc |
 | `pnpm doctor` | Kiểm máy: Node, HyperFrames, FFmpeg, font, GSAP, nhạc, trình duyệt render |
 | `pnpm new <slug>` | Tạo `briefs/<slug>/brief.md` từ `briefs/_example` |
@@ -162,13 +176,15 @@ Không cần Node hệ thống: `./reel` tự dùng Node trong `~/.redsun-reels`
 | `pnpm test:render [--update] [--only=<chuỗi>]` | So khung hình 8 mẫu × 19 phong cách với ảnh chuẩn `tests/baseline/` (SSIM ≥ 0.97, ~45 phút) |
 | `pnpm test:e2e [--draft]` | Dựng + xuất 21 brief mẫu trong `tests/fixtures/briefs/` (20 loại video + test dấu) |
 | `pnpm gen:test-music` | Sinh lại track nhạc thử nghiệm |
+| `pnpm music:fetch` | Tải nhạc bên thứ ba theo `downloadUrl` trong manifest, kiểm SHA-256 |
+| `pnpm music:add nhac-tu-tim/<file> --link= --tac-gia= --mood= [--ten=]` | Thêm nhạc MKT tự tải (Pixabay/Mixkit, cần ảnh chụp cùng tên) vào manifest trên máy đó (`localOnly`); `--lai` đăng ký lại |
 
 Cờ chung:
 - `--draft`: xuất nhanh, chất lượng thấp.
 - `--safe-zone`: hiện vùng an toàn khi xem thử.
 - `--test-music`: cho phép dùng nhạc thử nghiệm. Chỉ dùng khi dev kiểm template, không dùng cho video thật.
 
-Thử nhanh: `./reel make _example --test-music`. Lệnh này xuất video mẫu SIPOS 21 giây, mất khoảng 40 giây trên Mac Intel 2017.
+Thử nhanh: `./reel make _example`. Lệnh này xuất video mẫu SIPOS 21 giây với nhạc Mixkit, mất khoảng 40 giây trên Mac Intel 2017.
 
 ### Cấu trúc
 
@@ -183,6 +199,7 @@ templates/        _shared/ (kit-core, kit-motion, kit-blocks, scene-kit .js + ki
                   FeatureLaunch/, TipOfTheDay/, BeforeAfter/, Testimonial/, Promo/, EventRecap/, Stats/, TalkingHead/, _blank/
 scripts/          lệnh pnpm + lib/ (validate, build-props, stage-project, render-video, loudness, lint-brand…)
 runtime/gsap/     GSAP local
+nhac-tu-tim/      (gitignore) nhạc MKT tự tải + ảnh chụp license, dùng với pnpm music:add
 briefs/<slug>/    brief.md, concepts.md, script.json, props.json, review.md, cost.json, post.md
 tests/            unit test, fixtures/briefs/ (21 brief mẫu), baseline/ (ảnh chuẩn render test)
 docs/             decisions, spike-report, video-type-guide, video-style-catalog, music-sources
@@ -197,7 +214,7 @@ out/              (gitignore) video xuất ra + project tạm out/stage/
 4. `stage-project.ts` copy template, `_shared`, `brand`, `runtime`, hình và nhạc vào `out/stage/<slug>/`. Bước này cần vì HyperFrames không đọc file nằm ngoài thư mục project. Props được ghi thành giá trị mặc định của biến để `check` và Studio thấy đúng dữ liệu.
 5. `templates/_shared/scene-kit.js` đọc biến `props` và dựng mọi khối thành clip có timing: nền, logo, chữ từng từ (tự co cỡ khi dài), phone mockup + callout + zoom, ảnh hoặc video quay màn hình, nhãn, số bước, TRƯỚC/SAU + màn chia đôi, quote + lower third, badge/giá/hạn chót/đếm ngược, montage, số đếm lên + biểu đồ, clip người nói giữ tiếng, CTA. Chuyển cảnh, lớp phủ, nền và hiệu ứng chữ lấy theo preset phong cách (`kit-motion.js`, `kit-styles.css`).
 6. Clip giữ tiếng gốc: bước build ghi lane hạ nhạc (`data-automation`) vào `index.html` của bản stage (`scripts/lib/music-ducking.ts`).
-7. `hyperframes render --variables-file --strict-variables --strict`, sau đó ffmpeg `loudnorm` 2 lượt (−14 LUFS, TP ≤ −1 dBTP, fade 0.5 giây), copy luồng hình, rồi kiểm bằng ffprobe.
+7. `hyperframes render --variables-file --strict-variables --strict`, sau đó chuẩn hoá âm thanh (fade 0.5 giây, tăng/giảm âm lượng + limiter 192 kHz, đo lại tới khi −14 LUFS và đỉnh ≤ −1 dBTP), copy luồng hình, rồi kiểm bằng ffprobe.
 
 ### Quy tắc khi sửa template
 - Chỉ dùng biến trong `brand/brand.css`. `pnpm lint:brand` sẽ chặn nếu viết cứng.

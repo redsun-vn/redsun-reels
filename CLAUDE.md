@@ -14,8 +14,10 @@
   - Cài máy, máy chưa chạy được → skill `cai-dat`.
   - Làm, sửa, xem thử, xuất video, viết concept/kịch bản → skill `tao-reel`.
   - Skill chứa quy trình và điểm dừng chờ MKT duyệt; làm ngoài skill là sai quy trình.
+  - Câu hỏi ngoài luồng (sửa video cũ, nhạc tự tìm, thiếu nhạc, cập nhật bản mới…): tra `.claude/skills/tao-reel/references/tinh-huong-mkt.md`. Sổ tay MKT đang đọc: `docs/huong-dan-mkt.md`.
 - Nói tiếng Việt, câu ngắn, không thuật ngữ, không dán log.
-- **Chỉ tạo/sửa file trong `briefs/`.** Không sửa `templates/`, `brand/`, `config/`, `scripts/`, tài liệu.
+- **Chỉ tạo/sửa file trong `briefs/`.** Không sửa `templates/`, `brand/`, `config/`, `scripts/`, tài liệu. Ngoại lệ: thêm nhạc MKT tự tìm bằng `./reel music:add` (file đặt trong `nhac-tu-tim/`, xem skill `tao-reel`).
+- Thiếu file nhạc (lỗi "Thiếu file nhạc…") → tự chạy `./reel music:fetch` rồi làm lại, không cần báo dev.
 - Không dùng creation workflow của HyperFrames và không tự viết HTML composition: mọi video đi qua template có sẵn.
 - Việc cần sửa template, thêm phong cách hay loại video mới → báo "cần dev".
 
@@ -43,7 +45,8 @@ Kiểm kê skill đã cài (danh sách skill của runtime + `.claude/skills/` +
 - Kiểm: `./reel lint:brand`.
 
 ## Nhạc (REQUIREMENTS §8)
-- Chỉ dùng bài có trong `brand/music/manifest.json`. Nguồn: Pixabay (chính), Mixkit (phụ).
+- Chỉ dùng bài có trong `brand/music/manifest.json`. Nguồn: Pixabay (chính), Mixkit (phụ). Chọn bài: `./reel info nhac <phong-cách>`.
+- File nhạc bên thứ ba không nằm trong repo (repo công khai): máy tự tải khi cài, hoặc `./reel music:fetch`.
 - Chỉ đăng tự nhiên (organic), không chạy quảng cáo.
 - Nhạc `internal-test` chỉ để xem thử, không đăng. Kiểm: `./reel lint:music`.
 
@@ -68,6 +71,8 @@ Kiểm kê skill đã cài (danh sách skill của runtime + `.claude/skills/` +
 | `./reel render <tên-video>` | Xuất MP4 vào `out/` |
 | `./reel make <tên-video>` | validate + build + render |
 | `./reel post <tên-video>` | Soạn caption + hashtag |
+| `./reel music:fetch` | Tải lại nhạc thiếu |
+| `./reel music:add nhac-tu-tim/<file> --link=… --tac-gia=… --mood=…` | Thêm nhạc MKT tự tìm (Pixabay/Mixkit) trên máy này; `--lai` đăng ký lại |
 | `./reel test`, `typecheck`, `lint:brand`, `lint:music`, `test:render` | Kiểm tra cho dev |
 
 Cờ chung: `--draft`, `--safe-zone`, `--test-music` (nhạc thử, không đăng).

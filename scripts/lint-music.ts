@@ -4,7 +4,7 @@
  */
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { checkTrack, MusicManifestSchema } from '../config/music-manifest.ts';
+import { checkTrack, missingFileHint, MusicManifestSchema } from '../config/music-manifest.ts';
 import { REPO_ROOT } from './lib/hyperframes-env.ts';
 
 let problems = 0;
@@ -16,7 +16,7 @@ try {
     if (ids.has(t.id)) issues.push(`id "${t.id}" bị trùng.`);
     ids.add(t.id);
     if (!existsSync(join(REPO_ROOT, 'brand', 'music', t.file))) {
-      issues.push(`thiếu file brand/music/${t.file}${t.source === 'generated-in-repo' ? ' (chạy pnpm gen:test-music)' : ''}.`);
+      issues.push(`thiếu file brand/music/${t.file}.${missingFileHint(t)}`);
     }
     for (const i of issues) console.log(`✗ ${t.id}: ${i}`);
     problems += issues.length;

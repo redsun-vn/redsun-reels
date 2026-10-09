@@ -18,6 +18,8 @@
     "make": "node scripts/make.ts",
     "render:blank": "node scripts/render-blank.ts",
     "gen:test-music": "node scripts/gen-test-music.ts",
+    "music:fetch": "node scripts/fetch-music.ts",
+    "music:add": "node scripts/music-add.ts",
     "lint:brand": "node scripts/lint-brand.ts",
     "lint:music": "node scripts/lint-music.ts",
     "test": "vitest run",

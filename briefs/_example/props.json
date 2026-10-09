@@ -18,6 +18,9 @@
     },
     "kenBurns": 1.05,
     "accent": "underline",
+    "overlay": "none",
+    "background": "flat",
+    "textFx": "none",
     "ctaPulse": false,
     "musicMood": [
       "toi-gian",
@@ -75,5 +78,6 @@
     }
   ],
   "totalSec": 21,
-  "numberSteps": false
+  "numberSteps": false,
+  "voiceWindows": []
 }

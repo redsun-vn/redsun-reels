@@ -25,3 +25,12 @@ briefs/*/audio/
 
 # Nhạc test tự sinh (pnpm gen:test-music)
 brand/music/test-pad-01.mp3
+
+# Nhạc bên thứ ba (Pixabay, Mixkit…): không đưa lên repo công khai (license cấm phân phối lại track rời).
+# Máy tự tải từ downloadUrl trong manifest: ./reel music:fetch (cai-dat.sh bước 6)
+brand/music/pixabay-*.mp3
+brand/music/mixkit-*.mp3
+
+# Nhạc MKT tự tìm (./reel music:add): file nhạc + ảnh chụp license, chỉ ở máy MKT
+nhac-tu-tim/*
+!nhac-tu-tim/.gitkeep

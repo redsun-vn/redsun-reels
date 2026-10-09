@@ -95,14 +95,15 @@ step 5 "Chuẩn bị trình duyệt dựng video"
   fail "Không chuẩn bị được trình duyệt dựng video (chi tiết: $H/browser.log)." "Kiểm tra mạng rồi nói 'cài lại'."
 echo "    xong"
 
-# ---------------------------------------------------------------- 6. Nhạc thử
-step 6 "Chuẩn bị nhạc thử"
-if [ -f "$REPO/brand/music/test-pad-01.mp3" ]; then
-  echo "    đã có, bỏ qua"
-else
+# ---------------------------------------------------------------- 6. Nhạc
+step 6 "Chuẩn bị thư viện nhạc"
+if [ ! -f "$REPO/brand/music/test-pad-01.mp3" ]; then
   (cd "$REPO" && node scripts/gen-test-music.ts >/dev/null) || fail "Không tạo được nhạc thử." "Báo dev."
-  echo "    xong"
 fi
+# Nhạc Pixabay/Mixkit không nằm trong repo: tải từ link gốc, kiểm mã SHA-256
+(cd "$REPO" && node scripts/fetch-music.ts >"$H/music.log" 2>&1) ||
+  fail "Tải nhạc không thành công (chi tiết: $H/music.log)." "Kiểm tra mạng rồi nói 'cài lại'. Nếu vẫn lỗi, gửi file log cho dev."
+echo "    xong ($(tail -1 "$H/music.log"))"
 
 # ---------------------------------------------------------------- 7. Kiểm tra + dựng thử
 step 7 "Kiểm tra và dựng thử 1 video ngắn"

@@ -49,16 +49,29 @@ description: Dẫn nhân viên marketing làm một video Reel/TikTok/Shorts d�
 - **Số liệu**: cần con số thật kèm nguồn do MKT đưa (ghi vào brief, đúng cách viết: "1.200+", "98%"). Không có số thì không làm loại này.
 - **Có người nói trước camera**: cần clip MKT tự quay, dọc 9:16, có tiếng, nói rõ; tên + chức danh người nói. Claude không nghe được clip: nhờ MKT ghi lời nói và mốc giây chuyển ý (vd. "0–5s chào, 5–12s kể khó khăn") vào brief, rồi chia cảnh theo các mốc đó. Clip giữ tiếng gốc, nhạc nền tự hạ xuống.
 
+### Nhạc MKT tự tìm (khi MKT muốn dùng bài riêng)
+- Chỉ nhận **Pixabay** (pixabay.com/music) hoặc **Mixkit** (mixkit.co/free-stock-music): nhạc không lời, không có chữ "Content ID" trên trang bài. Nguồn khác (YouTube, nhạc ca sĩ, TikTok…): không dùng, báo MKT hỏi Nam.
+- Hướng dẫn MKT:
+  1. Tải file nhạc (mp3) từ trang bài.
+  2. Chụp màn hình trang bài, thấy tên bài, tác giả và chữ license.
+  3. Bỏ cả hai vào thư mục **`nhac-tu-tim`** trong dự án, **cùng tên**: vd. `nhac-vui.mp3` và `nhac-vui.png`.
+  4. Gửi Claude link trang bài và tên tác giả.
+- Claude chạy: `./reel music:add nhac-tu-tim/<file>.mp3 --link=<link> --tac-gia="<tác giả>" --mood=<phong-cách,…>` (mood chọn theo cảm giác bài, id trong `./reel info`). Lệnh báo lỗi gì thì kể lại cho MKT bằng lời thường.
+- Thêm xong, bài dùng được ngay trên máy đó. Nhắc MKT báo Nam để đưa bài vào thư viện chung của cả team.
+- Sau khi MKT cập nhật bản mới của dự án mà bài tự thêm bị mất: chép lại thư mục `nhac-tu-tim` từ bản cũ, chạy `./reel music:add --lai`.
+
 ### 5. Kịch bản — **DỪNG chờ MKT duyệt**
 - Viết `briefs/<tên-video>/script.json` theo [references/script-format.md](references/script-format.md).
 - Kiểm: `./reel validate <tên-video>`. Sửa đến khi không còn dòng lỗi ✗. Các dòng cảnh báo (bắt đầu bằng dấu chấm than) thì xử lý hoặc báo MKT.
 - Tự chấm theo thang trong script-format.md; ghi `selfScore`. Dưới 85 thì sửa (tối đa 3 vòng), không nâng điểm.
+- Chọn nhạc: `./reel info nhac <phong-cách>`. Brief để `music: auto` thì lấy bài **đăng được**, dài hơn video, hợp mood; mỗi video nên khác bài với video trước của cùng sản phẩm. Bài "chỉ xem thử" không đăng được.
 - Trình bày cho MKT bảng: **Cảnh · Vai trò · Hình ảnh · Chữ trên màn hình · Chuyển cảnh · Thời lượng**. Trên bảng ghi: loại video, phong cách, nhạc, tổng thời lượng, điểm tự chấm.
 - Phong cách `vui-nhon` hoặc câu có chơi chữ: nhắc MKT đọc lại câu chữ (hài kiểu Việt cần người Việt chỉnh).
 
 ### 6. Xem thử
 - MKT đồng ý → `./reel preview <tên-video>`. Bảo MKT mở `http://localhost:3002` để xem.
-- Chưa có nhạc thật trong thư viện (lỗi "chỉ để thử nghiệm") → giải thích: "Thư viện nhạc chưa có bài để đăng; mình dùng nhạc thử để bạn xem trước." Rồi chạy thêm `--test-music`.
+- MKT muốn xem vùng an toàn ("xem thử có vùng an toàn") → thêm `--safe-zone`: vùng tô đỏ là nơi chữ không được lấn vào (chỉ hiện khi xem thử, không có trong video xuất).
+- Lỗi "chỉ để thử nghiệm" → kịch bản đang dùng bài "chỉ xem thử". Đổi sang bài "đăng được" (`./reel info nhac <phong-cách>`), không cần hỏi MKT. Chỉ dùng `--test-music` khi MKT muốn xem nhanh với bài thử và đã biết bản đó không đăng được.
 
 ### 7. Sửa theo góp ý
 - Ghi góp ý vào `briefs/<tên-video>/review.md` (ngày, nội dung, đã sửa gì). Sửa đúng chỗ trong `script.json`, chạy lại `./reel validate`, rồi `./reel preview <tên-video>`.
@@ -77,9 +90,15 @@ description: Dẫn nhân viên marketing làm một video Reel/TikTok/Shorts d�
 
 ## Khi có lỗi
 - Lỗi từ `./reel validate`: mỗi dòng ✗ đã có câu giải thích; tự sửa kịch bản nếu là lỗi kịch bản, hỏi MKT nếu thiếu thông tin.
+- **Thiếu file nhạc** (lỗi "Thiếu file nhạc…", hoặc `./reel doctor` báo thiếu file ở mục Thư viện nhạc): tự chạy `./reel music:fetch`, không hỏi MKT, rồi chạy lại bước vừa lỗi. File nhạc Mixkit/Pixabay không nằm trong dự án mà được tải từ nguồn gốc về máy. Lệnh in "Nhạc: đủ … bài" là xong.
+  - Tải lỗi vì mạng: nhờ MKT kiểm tra wifi rồi chạy lại.
+  - Báo "file ở nguồn đã khác bản đã duyệt": không dùng bài đó, chọn bài khác cùng phong cách, báo dev để cập nhật thư viện.
+  - Sau khi MKT cập nhật bản mới của dự án (tải ZIP mới), nếu thiếu nhạc thì chạy `./reel music:fetch` một lần.
 - Lỗi khác: kể lại 1–2 câu đầu bằng lời thường kèm việc MKT cần làm. Nếu lỗi nhắc `out/last-error.log`, nói MKT gửi file đó cho dev. Không dán log.
 
 ## Tham khảo
+- [references/tinh-huong-mkt.md](references/tinh-huong-mkt.md): MKT nói gì → Claude làm gì (sửa video cũ, đổi nhạc, nhạc tự tìm, lỗi thiếu nhạc, cập nhật bản mới…). Đọc khi MKT hỏi ngoài luồng 8 bước.
+- Sổ tay phía MKT: `docs/huong-dan-mkt.md` (MKT đọc tài liệu này; trả lời khớp với nó).
 - Loại video, thứ tự cảnh, phong cách mặc định: `docs/video-type-guide.md`
 - Phong cách và dịp lễ: `docs/video-style-catalog.md`
 - Quy tắc kịch bản đầy đủ: `REQUIREMENTS.md` §6.2, §10.2

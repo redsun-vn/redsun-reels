@@ -12,12 +12,645 @@
       "attributionText": null,
       "downloadedAt": "2026-10-08",
       "evidence": "n/a",
-      "mood": ["toi-gian", "thu-gian"],
+      "mood": [
+        "toi-gian",
+        "thu-gian"
+      ],
       "bpm": null,
       "durationSec": 40,
-      "allowedUse": ["internal-test"],
+      "allowedUse": [
+        "internal-test"
+      ],
       "blocked": false,
       "notes": "Chỉ để preview/render thử ở M0.2. Nhạc thật do Nam chọn từ Pixabay Music + Mixkit (docs/music-sources.md)."
+    },
+    {
+      "id": "mixkit-close-up-1167",
+      "file": "mixkit-close-up-1167.mp3",
+      "title": "Close Up",
+      "author": "Michael Ramir C.",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "toi-gian",
+        "du-lieu",
+        "tuong-lai",
+        "robot-cong-nghe"
+      ],
+      "bpm": null,
+      "durationSec": 95,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/1167/1167.mp3",
+      "sha256": "a7f05a29d07a84d38072ccd2b35204bca812db86e75b2a837e71cc144d3e739b",
+      "notes": "Mixkit item 1167; thẻ: Corporate Music, Rhythmic Underscore, Futuristic, Bass, Drums. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-raising-me-higher-34",
+      "file": "mixkit-raising-me-higher-34.mp3",
+      "title": "Raising Me Higher",
+      "author": "Ahjay Stelino",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "tin-cay",
+        "toi-gian",
+        "tin-tuc"
+      ],
+      "bpm": null,
+      "durationSec": 97,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/34/34.mp3",
+      "sha256": "619b82cea299230cca5beac36d049291a1cb2be8ce0afdafda3e06fb30d06525",
+      "notes": "Mixkit item 34; thẻ: Corporate Music, Lighthearted, Bass, Drums, Intro. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-curiosity-480",
+      "file": "mixkit-curiosity-480.mp3",
+      "title": "Curiosity",
+      "author": "Diego Nava",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "toi-gian",
+        "thu-cong",
+        "tin-cay"
+      ],
+      "bpm": null,
+      "durationSec": 100,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/480/480.mp3",
+      "sha256": "181e91737f341ca61a1641b2955cc794fa6276ca0854d06266d55841d655a24b",
+      "notes": "Mixkit item 480; thẻ: Chillout, Corporate Music, Positive, Bass, Drums. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-digital-clouds-175",
+      "file": "mixkit-digital-clouds-175.mp3",
+      "title": "Digital Clouds",
+      "author": "Alejandro Magaña (A. M.)",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "tuong-lai",
+        "robot-cong-nghe",
+        "du-lieu"
+      ],
+      "bpm": null,
+      "durationSec": 101,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/175/175.mp3",
+      "sha256": "71cd4ea39edcc7532672bd97311abadfd318d00e7a828310a88b4f57fad9cd48",
+      "notes": "Mixkit item 175; thẻ: Chillout, Electronic, Futuristic, Bass, Drums. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-motivating-mornings-33",
+      "file": "mixkit-motivating-mornings-33.mp3",
+      "title": "Motivating Mornings",
+      "author": "Ahjay Stelino",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "tin-tuc",
+        "nang-dong"
+      ],
+      "bpm": null,
+      "durationSec": 96,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/33/33.mp3",
+      "sha256": "9b433f0fa9f16f1dbc0a5fb374945eeb858d9441087eeadb540636622f056e86",
+      "notes": "Mixkit item 33; thẻ: Corporate Music, Propulsive, Driving, Bass, Brass. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-feeling-happy-5",
+      "file": "mixkit-feeling-happy-5.mp3",
+      "title": "Feeling Happy",
+      "author": "Ahjay Stelino",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "vui-nhon",
+        "thu-cong"
+      ],
+      "bpm": null,
+      "durationSec": 147,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/5/5.mp3",
+      "sha256": "73f8fa95c7fa9f835fcc37afed86b5527341400574ddf721de362395ae280fcc",
+      "notes": "Mixkit item 5; thẻ: Children, Pop, Happy, Carefree, Acoustic Guitar. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-gimme-that-groove-872",
+      "file": "mixkit-gimme-that-groove-872.mp3",
+      "title": "Gimme that Groove!",
+      "author": "Michael Ramir C.",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "khuyen-mai",
+        "vui-nhon"
+      ],
+      "bpm": null,
+      "durationSec": 88,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/872/872.mp3",
+      "sha256": "702e5dffc429b991b31c24dc284d56253fa0993c34fca75c7f32de167e067cff",
+      "notes": "Mixkit item 872; thẻ: Funk, Insistent, Bass, Drums, Melodic. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-midnight-funk-1147",
+      "file": "mixkit-midnight-funk-1147.mp3",
+      "title": "Midnight Funk",
+      "author": "Michael Ramir C.",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "retro",
+        "khuyen-mai"
+      ],
+      "bpm": null,
+      "durationSec": 107,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/1147/1147.mp3",
+      "sha256": "9a3163a731f85037d0e75b07e90be42e8564efbb57e491586c5e522b02f22277",
+      "notes": "Mixkit item 1147; thẻ: Pop, Motivating, Positive, Bass, Drums. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-year-2001-860",
+      "file": "mixkit-year-2001-860.mp3",
+      "title": "Year 2001",
+      "author": "Michael Ramir C.",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "retro",
+        "nang-dong"
+      ],
+      "bpm": null,
+      "durationSec": 111,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/860/860.mp3",
+      "sha256": "2dc383991ca87f64bebd8d27478aaf7cde193f84570e0179aa118a4745b37a01",
+      "notes": "Mixkit item 860; thẻ: Funk, Funk Rock, Positive, Bass, Drums. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-sounds-good-1077",
+      "file": "mixkit-sounds-good-1077.mp3",
+      "title": "Sounds Good",
+      "author": "Michael Ramir C.",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "nang-dong",
+        "hanh-dong"
+      ],
+      "bpm": null,
+      "durationSec": 96,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/1077/1077.mp3",
+      "sha256": "de75bc9dcde30dc662258c6debaab219b0a17be323d0d8d0ea720b0e0189cc6c",
+      "notes": "Mixkit item 1077; thẻ: Funk, Funk Rock, Lively, Bass, Drums. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-trap-electro-vibes-126",
+      "file": "mixkit-trap-electro-vibes-126.mp3",
+      "title": "Trap Electro Vibes",
+      "author": "Alejandro Magaña (A. M.)",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "hanh-dong",
+        "glitch-cyberpunk"
+      ],
+      "bpm": null,
+      "durationSec": 115,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/126/126.mp3",
+      "sha256": "7c82480484f0e689bf7a3ef98c4eeef7e7502ef8bc3684363f2433a9b1c2e916",
+      "notes": "Mixkit item 126; thẻ: Electronic, Drum & Bass, Aggressive, Propulsive, Bass. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-cyberpunk-city-140",
+      "file": "mixkit-cyberpunk-city-140.mp3",
+      "title": "Cyberpunk City",
+      "author": "Alejandro Magaña (A. M.)",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "glitch-cyberpunk",
+        "bi-an"
+      ],
+      "bpm": null,
+      "durationSec": 99,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/140/140.mp3",
+      "sha256": "08e4b8058344db486580e409edfead2e72f0d1b4ad02d5ad1176caa71f2e011a",
+      "notes": "Mixkit item 140; thẻ: Ambient, Electronica, Eerie, Drums, Sound Effects. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-tapis-615",
+      "file": "mixkit-tapis-615.mp3",
+      "title": "Tapis",
+      "author": "Eugenio Mininni",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "bi-an",
+        "dien-anh"
+      ],
+      "bpm": null,
+      "durationSec": 163,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/615/615.mp3",
+      "sha256": "db34bc5dcfa5fdf237d334035e6933408aa07519032cb395daa791ce8d132884",
+      "notes": "Mixkit item 615; thẻ: Film Score, Atmospheric, Synth, Cinematic, Instrumental. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-driving-ambition-32",
+      "file": "mixkit-driving-ambition-32.mp3",
+      "title": "Driving Ambition",
+      "author": "Ahjay Stelino",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "dien-anh",
+        "tin-cay"
+      ],
+      "bpm": null,
+      "durationSec": 102,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/32/32.mp3",
+      "sha256": "e3c88488e65b8c87a6f06120983ce2cb12ea3aeba99f8cadb7ee5d6d284ef2c6",
+      "notes": "Mixkit item 32; thẻ: Film Score, Uplifting, Hopeful, Brass, Drums. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-classical-vibes-4-684",
+      "file": "mixkit-classical-vibes-4-684.mp3",
+      "title": "Classical vibes 4",
+      "author": "Grigoriy Nuzhny",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "sang-trong",
+        "dien-anh"
+      ],
+      "bpm": null,
+      "durationSec": 137,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/684/684.mp3",
+      "sha256": "45f5275e91f05dfa5bd8b7451955596566ef02419570b8888dda2ef20a401515",
+      "notes": "Mixkit item 684; thẻ: Film Score, Uplifting, Hopeful, Piano, Strings. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-romantic-659",
+      "file": "mixkit-romantic-659.mp3",
+      "title": "Romantic",
+      "author": "Francisco Alvear",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "lang-man",
+        "sang-trong"
+      ],
+      "bpm": null,
+      "durationSec": 158,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/659/659.mp3",
+      "sha256": "88a47f6415f95e3c758116584d88bf53935a03b593949a4ea4c4516c1182779f",
+      "notes": "Mixkit item 659; thẻ: Film Score, Reflective, Double Bass, Piano, Wedding. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-serene-view-443",
+      "file": "mixkit-serene-view-443.mp3",
+      "title": "Serene View",
+      "author": "Arulo",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "thu-gian",
+        "lang-man"
+      ],
+      "bpm": null,
+      "durationSec": 113,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/443/443.mp3",
+      "sha256": "556ae7a19c783bd666593e60fbba776bac7f9ff6c2173bebded0bc200cc82ec3",
+      "notes": "Mixkit item 443; thẻ: Chillout, Atmospheric, Bass, Drums, Background. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-relax-beat-292",
+      "file": "mixkit-relax-beat-292.mp3",
+      "title": "Relax Beat",
+      "author": "Arulo",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "thu-gian"
+      ],
+      "bpm": null,
+      "durationSec": 108,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/292/292.mp3",
+      "sha256": "7e160d5dc09f99b24a2f48c50aa1b2f78701fccdc3b7f5412368f4283df19375",
+      "notes": "Mixkit item 292; thẻ: Ambient, Atmospheric, Meditative, Synth, Relaxation. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-tinsel-and-mistletoe-93",
+      "file": "mixkit-tinsel-and-mistletoe-93.mp3",
+      "title": "Tinsel and Mistletoe",
+      "author": "Ahjay Stelino",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "le-hoi"
+      ],
+      "bpm": null,
+      "durationSec": 95,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/93/93.mp3",
+      "sha256": "37f65d723ffeab0ece9952c0eebc182f0a65a9c1655edc361eae16f13fbc9947",
+      "notes": "Mixkit item 93; thẻ: Corporate Music, Euphoric, Festive, Brass, Mallets. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-one-more-dance-288",
+      "file": "mixkit-one-more-dance-288.mp3",
+      "title": "One More Dance",
+      "author": "Arulo",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/ (chuyển lên Drive)",
+      "mood": [
+        "le-hoi",
+        "vui-nhon"
+      ],
+      "bpm": null,
+      "durationSec": 100,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "downloadUrl": "https://assets.mixkit.co/music/288/288.mp3",
+      "sha256": "ac06017260e10c2a7a0e75720ba08d3f051b03ed0a952c44aa8caf15d9b09c01",
+      "notes": "Mixkit item 288; thẻ: Pop, Dance-Pop, Carefree, Confident, Bass. Claude chọn 2026-10-09 theo thẻ, chưa nghe: MKT lead nghe lại, đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "gen-explainer-01",
+      "file": "gen-explainer-01.mp3",
+      "title": "mgaudio explainer 01 (tự sinh)",
+      "author": "redsun-reels (mgaudio)",
+      "source": "generated-in-repo",
+      "sourceUrl": "https://github.com/vincentwei1021/mg-styles-15/tree/49052d80bfaf9fa8412cc9710530e5e95a3b8d8c/lib/audio",
+      "license": "Tự sinh bằng mgaudio (code MIT, mẫu VCSL CC0); bản quyền bài thuộc Redsun",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "n/a (tự sinh)",
+      "mood": [
+        "toi-gian",
+        "du-lieu",
+        "tin-cay",
+        "thu-cong"
+      ],
+      "bpm": null,
+      "durationSec": 60,
+      "allowedUse": [
+        "internal-test"
+      ],
+      "notes": "recipes.explainer(duration=60, drop=4, outro=57), export lufs=-14 tp=-1, mp3 192k. Chờ Nam nghe: dùng thật thì đổi allowedUse sang social-organic."
+    },
+    {
+      "id": "gen-pop-01",
+      "file": "gen-pop-01.mp3",
+      "title": "mgaudio pop 01 (tự sinh)",
+      "author": "redsun-reels (mgaudio)",
+      "source": "generated-in-repo",
+      "sourceUrl": "https://github.com/vincentwei1021/mg-styles-15/tree/49052d80bfaf9fa8412cc9710530e5e95a3b8d8c/lib/audio",
+      "license": "Tự sinh bằng mgaudio (code MIT, mẫu VCSL CC0); bản quyền bài thuộc Redsun",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "n/a (tự sinh)",
+      "mood": [
+        "vui-nhon",
+        "khuyen-mai",
+        "nang-dong",
+        "le-hoi"
+      ],
+      "bpm": null,
+      "durationSec": 60,
+      "allowedUse": [
+        "internal-test"
+      ],
+      "notes": "recipes.pop(duration=60, drop=4, outro=57), export lufs=-14 tp=-1, mp3 192k. Chờ Nam nghe: dùng thật thì đổi allowedUse sang social-organic."
+    },
+    {
+      "id": "gen-synthwave-01",
+      "file": "gen-synthwave-01.mp3",
+      "title": "mgaudio synthwave 01 (tự sinh)",
+      "author": "redsun-reels (mgaudio)",
+      "source": "generated-in-repo",
+      "sourceUrl": "https://github.com/vincentwei1021/mg-styles-15/tree/49052d80bfaf9fa8412cc9710530e5e95a3b8d8c/lib/audio",
+      "license": "Tự sinh bằng mgaudio (code MIT, mẫu VCSL CC0); bản quyền bài thuộc Redsun",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "n/a (tự sinh)",
+      "mood": [
+        "retro",
+        "hanh-dong",
+        "bi-an",
+        "tin-tuc"
+      ],
+      "bpm": null,
+      "durationSec": 60,
+      "allowedUse": [
+        "internal-test"
+      ],
+      "notes": "recipes.synthwave(duration=60, drop=4, outro=57), export lufs=-14 tp=-1, mp3 192k. Chờ Nam nghe: dùng thật thì đổi allowedUse sang social-organic."
+    },
+    {
+      "id": "gen-ambient-01",
+      "file": "gen-ambient-01.mp3",
+      "title": "mgaudio ambient 01 (tự sinh)",
+      "author": "redsun-reels (mgaudio)",
+      "source": "generated-in-repo",
+      "sourceUrl": "https://github.com/vincentwei1021/mg-styles-15/tree/49052d80bfaf9fa8412cc9710530e5e95a3b8d8c/lib/audio",
+      "license": "Tự sinh bằng mgaudio (code MIT, mẫu VCSL CC0); bản quyền bài thuộc Redsun",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "n/a (tự sinh)",
+      "mood": [
+        "sang-trong",
+        "thu-gian",
+        "lang-man",
+        "dien-anh"
+      ],
+      "bpm": null,
+      "durationSec": 60,
+      "allowedUse": [
+        "internal-test"
+      ],
+      "notes": "recipes.ambient(duration=60, drop=4, outro=57, flavor='glass'), export lufs=-14 tp=-1, mp3 192k. Chờ Nam nghe: dùng thật thì đổi allowedUse sang social-organic."
+    },
+    {
+      "id": "gen-future-01",
+      "file": "gen-future-01.mp3",
+      "title": "mgaudio future_bass 01 (tự sinh)",
+      "author": "redsun-reels (mgaudio)",
+      "source": "generated-in-repo",
+      "sourceUrl": "https://github.com/vincentwei1021/mg-styles-15/tree/49052d80bfaf9fa8412cc9710530e5e95a3b8d8c/lib/audio",
+      "license": "Tự sinh bằng mgaudio (code MIT, mẫu VCSL CC0); bản quyền bài thuộc Redsun",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-09",
+      "evidence": "n/a (tự sinh)",
+      "mood": [
+        "tuong-lai",
+        "robot-cong-nghe",
+        "glitch-cyberpunk",
+        "nang-dong"
+      ],
+      "bpm": null,
+      "durationSec": 60,
+      "allowedUse": [
+        "internal-test"
+      ],
+      "notes": "recipes.future_bass(duration=60, drop=4, outro=57), export lufs=-14 tp=-1, mp3 192k. Chờ Nam nghe: dùng thật thì đổi allowedUse sang social-organic."
     }
   ]
 }

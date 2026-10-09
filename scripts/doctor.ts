@@ -57,7 +57,7 @@ try {
     name: 'Thư viện nhạc',
     ok: missing.length === 0,
     detail: `${manifest.tracks.length} bài (${real.length} bài dùng cho video thật)${missing.length ? `, thiếu file: ${missing.map((t) => t.file).join(', ')}` : ''}`,
-    fix: 'Nhạc test: chạy "pnpm gen:test-music". Nhạc thật: xem docs/music-sources.md.',
+    fix: 'Chạy "./reel music:fetch" để tải nhạc (Claude tự làm được). Thiếu nhạc thử: "./reel gen:test-music".',
   });
 } catch (err) {
   add({ name: 'Thư viện nhạc', ok: false, detail: `manifest.json không hợp lệ: ${(err as Error).message}` });

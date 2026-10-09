@@ -25,9 +25,25 @@ export const MusicTrackSchema = z.object({
   durationSec: z.number().positive(),
   allowedUse: z.array(z.enum(ALLOWED_USES)).min(1),
   blocked: z.boolean().default(false),
+  /**
+   * Nhạc của bên thứ ba (Pixabay, Mixkit…) KHÔNG nằm trong repo (repo công khai; license cấm phân phối lại track
+   * rời). Máy tự tải về từ link gốc khi cài (`./reel music:fetch`), kiểm SHA-256 để chắc đúng file đã duyệt.
+   */
+  downloadUrl: z.string().regex(/^https:\/\//).optional(),
+  sha256: z.string().regex(/^[0-9a-f]{64}$/).optional(),
+  /** Bài MKT tự tải và thêm trên máy mình (`./reel music:add`): chỉ có trên máy đó, chờ Nam đưa vào thư viện chung. */
+  localOnly: z.boolean().optional(),
   notes: z.string().optional(),
 });
 export type MusicTrack = z.infer<typeof MusicTrackSchema>;
+
+/** Gợi ý khi thiếu file nhạc trên máy. */
+export function missingFileHint(track: MusicTrack): string {
+  if (track.downloadUrl) return ' Chạy "./reel music:fetch" để tải về.';
+  if (track.localOnly) return ` Bài này MKT tự thêm: đặt lại file vào nhac-tu-tim/ rồi chạy "./reel music:add --lai".`;
+  if (track.id === 'test-pad-01') return ' Chạy "./reel gen:test-music" để tạo lại.';
+  return ' Báo dev.';
+}
 
 export const MusicManifestSchema = z.object({ tracks: z.array(MusicTrackSchema) });
 export type MusicManifest = z.infer<typeof MusicManifestSchema>;
@@ -41,6 +57,8 @@ export function checkTrack(track: MusicTrack, purpose: MusicPurpose): string[] {
     errors.push(`Nhạc "${track.title}" có license phi thương mại (${track.license}), không được dùng.`);
   }
   if (track.blocked) errors.push(`Nhạc "${track.title}" đã bị khóa (bị claim bản quyền hoặc license có vấn đề).`);
+  if (track.source !== 'generated-in-repo' && !track.localOnly && !track.downloadUrl) errors.push(`Nhạc "${track.title}" thiếu link tải (downloadUrl) và mã kiểm sha256.`);
+  if (track.downloadUrl && !track.sha256) errors.push(`Nhạc "${track.title}" thiếu mã kiểm sha256.`);
   if (track.source !== 'generated-in-repo' && !/^https?:\/\//.test(track.sourceUrl)) {
     errors.push(`Nhạc "${track.title}" thiếu link nguồn hợp lệ.`);
   }

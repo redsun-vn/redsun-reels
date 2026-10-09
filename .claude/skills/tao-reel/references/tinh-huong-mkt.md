@@ -1,0 +1,55 @@
+# Tình huống MKT hay gặp → Claude làm gì
+
+Bảng tra cho Claude ở chế độ MKT. Quy trình chính (8 bước, điểm dừng) vẫn theo `SKILL.md`. Sổ tay phía MKT: `docs/huong-dan-mkt.md`. MKT dùng sổ tay đó, nên câu trả lời phải khớp với nó.
+
+Nói với MKT bằng lời thường. Không nhắc tên lệnh, file JSON, log. Mọi lệnh chạy từ thư mục gốc dự án.
+
+## Làm và sửa video
+| MKT nói | Claude làm |
+|---|---|
+| "làm reel/video … về …" | Quy trình 8 bước. Hỏi tối đa 5 câu cho phần còn thiếu |
+| "chọn ý N" | Ghi lựa chọn vào cuối `concepts.md`, viết `script.json`, `./reel validate <tên>` |
+| "cảnh N đổi chữ…", "bỏ cảnh…", "ngắn lại…" | Sửa `script.json`; tính lại thời lượng bằng `./reel info thoi-luong "<chữ>"`; `./reel validate` |
+| "đổi phong cách sang …" | Sửa `style` ở cả brief và kịch bản; đổi nhạc nếu bài cũ không hợp mood (`./reel info nhac <phong-cách>`) |
+| "đổi nhạc", "nhạc vui hơn" | `./reel info nhac <phong-cách>`, chọn bài "đăng được" dài hơn video, sửa `music` ở kịch bản (và brief nếu brief không để `auto`) |
+| "xem thử" / "xem thử có vùng an toàn" | `./reel preview <tên>` / thêm `--safe-zone`. Mở `http://localhost:3002` |
+| "xuất" | `./reel render <tên>`, rồi `./reel post <tên>`. Báo đường dẫn `out/<tên>.mp4` và nội dung `post.md` |
+| "sửa video <tên>", "xuất lại video <tên>" | `./reel info video` để tìm, rồi mở `briefs/<tên>` (khớp gần đúng theo ngày, sản phẩm, chủ đề). Đọc lại brief và kịch bản, làm từ bước 7 hoặc 8 |
+| "các video tôi đã làm" | `./reel info video`, kể lại bằng lời thường (tên chủ đề, sản phẩm, đã xuất chưa). Chỉ tính video trong `briefs/`; file khác trong `out/` (vd. `e2e-*`, `blank*`) là file thử của dev, không kể |
+| "làm bản chỉ có chữ" | Mọi cảnh dùng `visual.type: "text"` (CTA dùng `logo`) |
+| "chưa có hình" | Viết `shotlist.md` theo `SKILL.md` bước 4, hoặc đề xuất bản chỉ có chữ |
+| "có những dịp lễ nào" | `./reel info dip-le`, kể lại tên dịp và ngày |
+
+## Hình ảnh, clip
+| Tình huống | Claude làm |
+|---|---|
+| MKT gửi ảnh/clip | Hỏi file đã nằm trong `assets/<sản-phẩm>/` chưa. Chưa thì hướng dẫn kéo file vào đó, đặt tên không dấu, không cách. Không tự tải ảnh trên mạng |
+| Clip quay ngang (validate cảnh báo) | Báo hai bên sẽ bị cắt; hỏi MKT quay lại dọc hay vẫn dùng |
+| Clip ngắn hơn kịch bản | Rút ngắn cảnh, đổi `clipStart`, hoặc nhờ MKT quay lại |
+| Video có người nói | Cần lời nói + mốc giây chuyển ý từ MKT (Claude không nghe được clip). Chia cảnh theo mốc, `attribution` = tên + chức danh |
+
+## Nhạc
+| Tình huống | Claude làm |
+|---|---|
+| Lỗi "Thiếu file nhạc…", doctor báo thiếu nhạc | Tự chạy `./reel music:fetch`, không hỏi MKT, rồi làm lại bước vừa lỗi |
+| `music:fetch` báo lỗi mạng | Nhờ MKT kiểm wifi, chạy lại |
+| `music:fetch` báo "file ở nguồn đã khác bản đã duyệt" | Chọn bài khác cùng phong cách; báo MKT nhắn Nam cập nhật thư viện |
+| Lỗi "chỉ để thử nghiệm" | Kịch bản đang dùng bài "chỉ xem thử": đổi sang bài "đăng được" |
+| "dùng nhạc tôi tự tìm", "thêm nhạc <tên>, link …, tác giả …" | Kiểm file `nhac-tu-tim/<tên>.mp3` + ảnh chụp cùng tên đã có chưa (thiếu thì hướng dẫn theo sổ tay mục 6). Chọn 1–3 phong cách hợp bài. Chạy `./reel music:add nhac-tu-tim/<tên>.mp3 --link=<link> --tac-gia="<tác giả>" --mood=<…>`. Thêm xong, nhắc MKT báo Nam |
+| Nhạc từ YouTube, TikTok, nhạc ca sĩ, nguồn khác | Từ chối nhẹ nhàng: chỉ Pixabay/Mixkit; nguồn khác phải hỏi Nam. Không chạy `music:add` |
+| "đăng ký lại nhạc tự tìm" (sau khi cập nhật bản mới) | `./reel music:add --lai` |
+| MKT muốn chạy quảng cáo trả tiền | Nói license nhạc chỉ cho đăng tự nhiên; báo Nam trước khi chạy ads |
+| Bị claim bản quyền nhạc | Nhờ MKT chụp thông báo gửi Nam; không tự kháng nghị |
+
+## Máy, cài đặt, cập nhật
+| Tình huống | Claude làm |
+|---|---|
+| "kiểm tra máy" | Skill `cai-dat`: `./reel doctor`. Đủ ✓ thì chỉ nói "máy sẵn sàng" |
+| "cài lại", lệnh báo máy chưa cài | Skill `cai-dat` |
+| MKT vừa tải bản mới (ZIP) | Nhắc chép `briefs/<video của mình>`, `out/`, `nhac-tu-tim/` từ bản cũ; "cài lại"; có nhạc tự tìm thì `./reel music:add --lai` |
+| Lỗi nhắc `out/last-error.log` | Kể 1–2 câu đầu bằng lời thường, nhờ MKT gửi file log cho Nam |
+
+## Ngoài phạm vi: báo "cần dev (Nam)"
+- Thêm mẫu video, phong cách, đổi màu, logo, font, câu CTA mặc định.
+- Sửa file ngoài `briefs/` (ngoại lệ duy nhất: `./reel music:add`).
+- Nâng version, cài thêm phần mềm.

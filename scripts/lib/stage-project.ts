@@ -6,7 +6,7 @@
  */
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
 import { dirname, extname, isAbsolute, join, normalize } from 'node:path';
-import { checkTrack, findTrack, MusicManifestSchema, type MusicPurpose } from '../../config/music-manifest.ts';
+import { checkTrack, findTrack, missingFileHint, MusicManifestSchema, type MusicPurpose } from '../../config/music-manifest.ts';
 import { REPO_ROOT, runFfmpeg } from './hyperframes-env.ts';
 
 export interface StageOptions {
@@ -44,8 +44,7 @@ export function stageProject(opts: StageOptions): StagedProject {
   if (problems.length) throw new Error(problems.join(' '));
   const trackPath = join(REPO_ROOT, 'brand', 'music', track.file);
   if (!existsSync(trackPath)) {
-    const hint = track.source === 'generated-in-repo' ? ' Chạy "pnpm gen:test-music" để tạo lại.' : '';
-    throw new Error(`Thiếu file nhạc brand/music/${track.file}.${hint}`);
+    throw new Error(`Thiếu file nhạc brand/music/${track.file}.${missingFileHint(track)}`);
   }
 
   const dir = join(REPO_ROOT, 'out', 'stage', opts.name ?? opts.template);
