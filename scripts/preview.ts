@@ -4,6 +4,7 @@
  * pnpm preview --stop                                 — tắt bản xem thử
  * Cổng cố định 3002. Trước khi mở bản mới, tắt bản xem thử cũ để không sinh tiến trình trùng.
  */
+import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { briefDir } from './lib/brief.ts';
@@ -28,7 +29,24 @@ function stopOurs(): number {
   }
   const ours = sessions.filter((x) => x.projectDir.startsWith(STAGE_ROOT));
   for (const x of ours) runHyperframes(['preview', x.projectDir, '--stop']);
-  return ours.length;
+  return ours.length + killLeftovers();
+}
+
+/**
+ * Dự phòng: `preview --stop` đôi khi không tắt được server (thấy 2026-10-09: session vẫn nghe cổng sau --stop).
+ * Chỉ dừng tiến trình `hyperframes … preview` đang nghe cổng xem thử MÀ thư mục project nằm trong out/stage/.
+ */
+function killLeftovers(): number {
+  const pids = spawnSync('lsof', ['-ti', `tcp:${PORT}`, '-sTCP:LISTEN'], { encoding: 'utf8' }).stdout.split(/\s+/).filter(Boolean);
+  let n = 0;
+  for (const pid of pids) {
+    const cmd = spawnSync('ps', ['-o', 'command=', '-p', pid], { encoding: 'utf8' }).stdout;
+    if (/hyperframes(\.mjs)? preview/.test(cmd) && cmd.includes(STAGE_ROOT)) {
+      process.kill(Number(pid), 'SIGTERM');
+      n++;
+    }
+  }
+  return n;
 }
 
 await runCommand(() => {

@@ -107,6 +107,7 @@
       if (mode === "marker") {
         var m = K.el("span", "kit-mark", null);
         g.insertBefore(m, g.firstChild);
+        g.classList.add("has-mark"); // khối màu nằm trong phần đệm của cụm, không lấn chữ bên cạnh
         tl.fromTo(m, { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power3.out" }, t0);
         tl.fromTo(g, { color: from }, { color: onAccent, duration: 0.15, ease: "none" }, t0 + 0.12);
       } else if (mode === "underline" || mode === "scribble") {
