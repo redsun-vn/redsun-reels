@@ -41,3 +41,26 @@ describe('buildPost', () => {
     expect(post).not.toContain('NHẠC THỬ');
   });
 });
+
+describe('caption bỏ dấu chữ nhấn và có ưu đãi', () => {
+  it('không còn [ ], có dòng ưu đãi đúng chữ trên video', async () => {
+    const { buildPost } = await import('../scripts/lib/post-caption.ts');
+    const post = buildPost({
+      hashtags: ['#SIPOS'],
+      script: {
+        concept: { title: 't', bigIdea: 't', hookAngle: 'thuong-hieu' },
+        videoType: 'chuc-mung-dip-le', style: 'lang-man', template: 'Promo', product: 'sipos',
+        hook: 'Chị chủ quán, lại ngồi [cộng sổ]?',
+        scenes: [
+          { id: 'a', role: 'hook', onScreenText: 'Chị chủ quán, lại ngồi [cộng sổ]?', visual: { type: 'text' }, durationSec: 4 },
+          { id: 'b', role: 'solution', onScreenText: 'SIPOS lo [kho]', visual: { type: 'text' }, durationSec: 5, promo: { badge: '-20%', deadline: 'Khi mua gói giải pháp' } },
+          { id: 'c', role: 'cta', onScreenText: 'Tìm hiểu thêm tại [sipos.vn]', visual: { type: 'logo' }, durationSec: 3 },
+        ],
+        cta: 'Tìm hiểu thêm tại [sipos.vn]', music: 'x',
+      },
+    });
+    expect(post).not.toMatch(/[[\]]/);
+    expect(post).toContain('🎁 -20% · Khi mua gói giải pháp');
+    expect(post).toContain('👉 Tìm hiểu thêm tại sipos.vn');
+  });
+});

@@ -24,19 +24,34 @@ const TOPIC_TAGS: Record<string, string[]> = {
   'khuyen-mai': ['#khuyenmai'],
 };
 
+/** Bỏ dấu [ ] đánh dấu chữ nhấn (chỉ dùng trong video). */
+const plain = (t: string) => t.replace(/[[\]]/g, '');
+
+/** Dòng ưu đãi trong caption, chép đúng chữ trên video (badge, giá, hạn chót/điều kiện). */
+function promoLine(p: NonNullable<Script['scenes'][number]['promo']>): string | null {
+  const parts = [p.badge, p.priceOld && p.priceNew ? `${p.priceOld} → ${p.priceNew}` : (p.priceNew ?? p.priceOld), p.deadline].filter(Boolean);
+  return parts.length ? `🎁 ${parts.join(' · ')}` : null;
+}
+
 export function buildPost({ script, hashtags, track }: PostInput): string {
-  const body = script.scenes.filter((s) => s.role !== 'hook' && s.role !== 'cta').map((s) => `• ${s.onScreenText}${s.subText ? ` — ${s.subText}` : ''}`);
+  const body = script.scenes
+    .filter((s) => s.role !== 'hook' && s.role !== 'cta')
+    .flatMap((s) => {
+      const line = `• ${plain(s.onScreenText)}${s.subText ? ` — ${s.subText}` : ''}`;
+      const promo = s.promo ? promoLine(s.promo) : null;
+      return promo ? [line, promo] : [line];
+    });
   const tags = [...new Set([...hashtags, ...(TOPIC_TAGS[script.videoType] ?? [])])].slice(0, MAX_HASHTAGS);
   const lines = [
     '# Nội dung đăng bài',
     '',
     '## Caption (copy nguyên phần dưới)',
     '',
-    script.hook.replace(/\n/g, ' '),
+    plain(script.hook.replace(/\n/g, ' ')),
     '',
     ...body,
     '',
-    `👉 ${script.cta}`,
+    `👉 ${plain(script.cta)}`,
     '',
     tags.join(' '),
   ];
