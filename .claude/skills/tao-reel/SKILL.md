@@ -1,6 +1,7 @@
 ---
 name: tao-reel
 description: Dẫn nhân viên marketing làm một video Reel/TikTok/Shorts dọc cho SIPOS, Redsun BOS, Webino hoặc Redsun, từ brief đến file MP4, bằng mẫu video có sẵn của dự án redsun-reels. Dùng khi người dùng gõ /tao-reel, nói "làm reel…", "làm video…", "tạo video TikTok…", hoặc muốn sửa, xem thử, xuất một video trong thư mục briefs/.
+model: claude-opus-5-5
 ---
 
 # Tạo reel
@@ -9,6 +10,12 @@ description: Dẫn nhân viên marketing làm một video Reel/TikTok/Shorts d�
 - Người dùng là nhân viên marketing, **không biết kỹ thuật**. Nói tiếng Việt, câu ngắn, thân thiện.
 - Không nói tên file kỹ thuật, JSON, lệnh, lỗi stack trace. Nói "kịch bản", "bản xem thử", "video".
 - Mỗi lần chỉ hỏi những gì thật sự cần. Hỏi tối đa 5 câu cho một brief.
+
+## Model
+- Skill này chạy bằng **Claude Opus 5.5** (`claude-opus-5-5`, Nam chốt 2026-10-09: model tốt nhất của Claude cho việc viết kịch bản và dựng video). Không tự đổi sang model nhỏ hơn để tiết kiệm.
+- Hai nơi cùng khai: frontmatter của skill này (lượt gọi skill), và `.claude/settings.json` `"model"` (mọi lượt sau trong dự án; khai trong skill chỉ có tác dụng một lượt).
+- MKT đổi model bằng `/model`, hoặc tài khoản báo lỗi model / hết hạn mức Opus: nói MKT "máy đang dùng model khác, video có thể kém hơn; nhắn Nam". Vẫn làm tiếp nếu MKT muốn.
+- Có model mới tốt hơn: chỉ Nam đổi (cả hai nơi), ghi vào `docs/decisions.md`.
 
 ## Phạm vi được làm (chế độ MKT)
 - Chỉ tạo/sửa file trong `briefs/<tên-video>/`. **Không** sửa `templates/`, `brand/`, `config/`, `scripts/`, `REQUIREMENTS.md`.

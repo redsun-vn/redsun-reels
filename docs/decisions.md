@@ -318,3 +318,13 @@ Nam: "làm tất cả trừ số 4" (nhạc thật, nhạc tự sinh, chuẩn b�
 - **Nhạc MKT tự tìm**: thư mục `nhac-tu-tim/` (ngoài git) + `./reel music:add` (`scripts/music-add.ts`): chỉ nhận link Pixabay/Mixkit, bắt buộc ảnh chụp trang bài cùng tên, thêm vào manifest trên máy đó với `localOnly`. Đây là ngoại lệ duy nhất của quy tắc "chế độ MKT chỉ sửa `briefs/`" (CLAUDE.md). Mỗi bài lưu kèm file `.json` trong `nhac-tu-tim/`, nên `--lai` đăng ký lại được sau khi cập nhật bản ZIP mới. Nam gom vào thư viện chung theo `music-sources.md` §5.
 - **Clip quay ngang**: validate cảnh báo (đọc cả cờ xoay của clip điện thoại).
 - **Thử nghiệm MKT**: [`huong-dan-thu-nghiem-mkt.md`](huong-dan-thu-nghiem-mkt.md): 10 tình huống (10 loại video, 8 phong cách), phiếu chấm theo §14, cách quay clip người nói cho TalkingHead. Skill hiểu câu "xem thử có vùng an toàn" (`--safe-zone`).
+
+## 14. Model Claude cho dự án (2026-10-09)
+Nam: "skill này có nên giao toàn bộ cho opus 5.5 dựng video không… hiện tại đây là model tốt nhất dựng video của claude".
+- Chốt **Claude Opus 5.5** (`claude-opus-5-5`, tên đầy đủ để khoá phiên bản; alias `opus` tự nhảy bản mới).
+- Khai ở hai nơi, vì `model` trong frontmatter skill **chỉ áp dụng cho lượt hiện tại**, sang tin nhắn sau phiên trở về model cũ (docs Claude Code, mục Skills, Frontmatter reference); mà `tao-reel` kéo dài nhiều lượt (concept → kịch bản → xem thử → xuất):
+  - `.claude/settings.json` `"model": "claude-opus-5-5"`: mặc định cho mọi phiên mở trong dự án. Người dùng vẫn đổi được bằng `/model` (ưu tiên cao hơn settings).
+  - `.claude/skills/tao-reel/SKILL.md` `model: claude-opus-5-5`: lượt gọi skill luôn chạy Opus kể cả khi phiên đang dùng model khác.
+- Lý do: phần khó của skill là viết chữ tiếng Việt, chống bịa, giữ đúng điểm dừng; dựng hình đi qua template nên tốn ít token.
+- **Cần Claude Code ≥ 2.1.280** cho `claude-opus-5-5`: bản 2.1.6 (npm global cũ ở `/usr/local/bin` trên máy Nam) báo `400 claude_code_version_too_old` ngay tin nhắn đầu; bản native 2.1.295 chạy đúng (`modelUsage: claude-opus-5-5`, thử 2026-10-09). `./reel doctor` cảnh báo khi `claude` trong Terminal cũ hơn; README có dòng xử lý lỗi.
+- Rủi ro chưa kiểm: tài khoản MKT không có quyền / hết hạn mức Opus. Docs không ghi rõ hành vi (có thể lỗi ở request đầu hoặc giữ model cũ). **Cần thử bằng tài khoản của một bạn MKT** trước khi giao.

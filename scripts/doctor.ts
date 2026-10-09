@@ -2,6 +2,7 @@
  * pnpm doctor — kiểm tra máy có đủ để làm video (REQUIREMENTS v0.4 §9).
  * In kết quả tiếng Việt; exit 1 nếu thiếu thứ bắt buộc.
  */
+import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { MusicManifestSchema } from '../config/music-manifest.ts';
@@ -73,6 +74,20 @@ add({
   fix: 'Chạy "corepack pnpm exec hyperframes browser ensure" để tải Chrome.',
 });
 
+/*
+ * Claude Code đủ mới cho model đã chốt (claude-opus-5-5 cần ≥ 2.1.280; bản cũ báo lỗi 400 ngay tin nhắn đầu).
+ * Chỉ kiểm bản "claude" trong Terminal; app desktop tự cập nhật. Chỉ cảnh báo, không chặn: video vẫn dựng được.
+ */
+const MIN_CLAUDE_CODE = [2, 1, 280];
+const cc = spawnSync('claude', ['--version'], { encoding: 'utf8' });
+const ccVer = /(\d+)\.(\d+)\.(\d+)/.exec(cc.stdout ?? '');
+let ccWarn = '';
+if (ccVer) {
+  const v = ccVer.slice(1, 4).map(Number);
+  const older = v[0] !== MIN_CLAUDE_CODE[0] ? v[0] < MIN_CLAUDE_CODE[0] : v[1] !== MIN_CLAUDE_CODE[1] ? v[1] < MIN_CLAUDE_CODE[1] : v[2] < MIN_CLAUDE_CODE[2];
+  if (older) ccWarn = `Claude Code trong Terminal là bản ${ccVer[0]}, cần ${MIN_CLAUDE_CODE.join('.')} trở lên để dùng Opus 5.5. Chạy "claude update" (hoặc cập nhật app Claude).`;
+}
+
 let failed = 0;
 for (const c of checks) {
   console.log(`${c.ok ? '✓' : '✗'} ${c.name}: ${c.detail}`);
@@ -81,5 +96,6 @@ for (const c of checks) {
     if (c.fix) console.log(`   → ${c.fix}`);
   }
 }
+if (ccWarn) console.log(`! ${ccWarn}`);
 console.log(failed ? `\nCòn ${failed} mục cần xử lý.` : '\nMáy đã sẵn sàng làm video.');
 process.exit(failed ? 1 : 0);

@@ -26,6 +26,9 @@
 - Dùng đủ skill HyperFrames. Tên skill có namespace, ví dụ `/hyperframes:hyperframes-core`, `/hyperframes:hyperframes-animation`.
 - Sau khi sửa template/preset: `./reel test:render`. Nếu thay đổi hình là cố ý, xem ảnh rồi `./reel test:render --update`.
 
+## Model
+- Dự án dùng **Claude Opus 5.5** (`claude-opus-5-5`) cho mọi phiên (`.claude/settings.json` `"model"`) và skill `tao-reel` (frontmatter `model`). Nam chốt 2026-10-09. Chỉ Nam đổi model, đổi cả hai nơi và ghi `docs/decisions.md`.
+
 ## Trước khi tạo skill mới
 Kiểm kê skill đã cài (danh sách skill của runtime + `.claude/skills/` + plugin HyperFrames). Chỉ tạo skill mới khi không skill nào làm được. Ghi lý do vào `docs/decisions.md` mục 6.
 

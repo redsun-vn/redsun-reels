@@ -36,7 +36,7 @@ Thư viện nhạc có **23 bài Mixkit dùng được cho video thật**, Nam �
 ### Cài đặt lần đầu (khoảng 15 phút)
 
 **Bước 1. Cài Claude Code**
-1. Vào [claude.ai/download](https://claude.ai/download), tải bản cho macOS, rồi kéo biểu tượng Claude vào thư mục **Applications**.
+1. Vào [claude.ai/download](https://claude.ai/download), tải bản cho macOS, rồi kéo biểu tượng Claude vào thư mục **Applications**. Đã có app rồi thì cập nhật bản mới nhất: dự án dùng model Claude Opus 5.5, cần Claude Code bản 2.1.280 trở lên.
 2. Mở Claude, đăng nhập bằng tài khoản công ty.
 3. Chuyển sang mục **Code** (Claude Code) trong ứng dụng.
 
@@ -83,6 +83,7 @@ Claude sẽ nói lỗi bằng tiếng Việt và cách xử lý. Các lỗi hay 
 | Ổ đĩa còn dưới 3 GB trống | Xoá bớt file (video cũ, thùng rác), rồi gõ "cài lại" |
 | Tải không thành công, lỗi mạng giữa chừng | Gõ "cài lại". Bước nào đã xong sẽ được bỏ qua, không phải làm lại từ đầu |
 | Máy chưa cài môi trường làm video | Bạn chưa cài hoặc đang mở nhầm thư mục. Mở đúng thư mục dự án, gõ "cài đặt giúp tôi" |
+| Báo lỗi "does not support this model… version 2.1.280 or newer is required" | Claude Code đã cũ. App Claude: mở menu **Claude → Check for Updates**, cập nhật rồi mở lại. Bản Terminal: chạy `claude update` |
 | Có nhắc tới một file log | Gửi file log đó cho Nam |
 
 Cài lại bao nhiêu lần cũng được.

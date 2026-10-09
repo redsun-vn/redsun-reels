@@ -100,6 +100,7 @@ Không chắc loại nào? Cứ kể việc muốn làm, Claude sẽ đề xuấ
 - Bị báo bản quyền nhạc (Content ID claim): chụp màn hình thông báo, gửi Nam. Không tự xoá hay kháng nghị.
 
 ## 9. Khi có lỗi
+- Dự án tự dùng model **Claude Opus 5.5** (tốt nhất cho việc làm video). Đừng đổi model bằng `/model`. Claude báo lỗi model hoặc hết lượt dùng: nhắn Nam.
 - Claude sẽ nói lỗi bằng lời thường và việc cần làm. Phần lớn lỗi Claude tự sửa được: kịch bản quá dài, thiếu nhạc trên máy…
 - Claude nhắc tới một file log (vd. `out/last-error.log`): gửi file đó cho Nam.
 - Máy báo chưa cài hoặc lỗi lạ: nói "kiểm tra máy", rồi "cài lại".
