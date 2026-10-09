@@ -13,6 +13,7 @@ import { MusicManifestSchema, type MusicTrack } from '../config/music-manifest.t
 import { STYLE_IDS } from '../config/styles.ts';
 import { runCommand } from './lib/cli.ts';
 import { REPO_ROOT, runFfmpeg, runFfprobe } from './lib/hyperframes-env.ts';
+import { introSkipSec } from './lib/music-intro.ts';
 
 const INBOX = join(REPO_ROOT, 'nhac-tu-tim');
 const MUSIC = join(REPO_ROOT, 'brand', 'music');
@@ -88,6 +89,7 @@ function register(info: Info): MusicTrack {
     allowedUse: ['social-organic'],
     blocked: false,
     sha256: createHash('sha256').update(readFileSync(dest)).digest('hex'),
+    startSec: introSkipSec(dest),
     localOnly: true,
     notes: `MKT tự thêm ${info.addedAt} trên máy này. Báo Nam đưa vào thư viện chung (gửi file + ảnh chụp trong nhac-tu-tim/).`,
   };

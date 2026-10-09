@@ -31,11 +31,18 @@ export const MusicTrackSchema = z.object({
    */
   downloadUrl: z.string().regex(/^https:\/\//).optional(),
   sha256: z.string().regex(/^[0-9a-f]{64}$/).optional(),
+  /** Giây bắt đầu dùng trong bài: bỏ đoạn dạo đầu nhỏ để nhạc vào nhịp ngay (reel phải bắt tai từ giây đầu). */
+  startSec: z.number().min(0).optional(),
   /** Bài MKT tự tải và thêm trên máy mình (`./reel music:add`): chỉ có trên máy đó, chờ Nam đưa vào thư viện chung. */
   localOnly: z.boolean().optional(),
   notes: z.string().optional(),
 });
 export type MusicTrack = z.infer<typeof MusicTrackSchema>;
+
+/** Thời lượng dùng được của bài (đã trừ đoạn dạo đầu bỏ qua). */
+export function usableSec(track: MusicTrack): number {
+  return track.durationSec - (track.startSec ?? 0);
+}
 
 /** Gợi ý khi thiếu file nhạc trên máy. */
 export function missingFileHint(track: MusicTrack): string {

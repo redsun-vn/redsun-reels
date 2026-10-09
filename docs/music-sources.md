@@ -78,11 +78,15 @@ Thư viện thuê bao có license business và cam kết Content ID, như Epidem
 Mỗi nhóm phong cách chính chọn 2–3 track, khoảng 20–30 track từ Pixabay Music + Mixkit. Ví dụ: tối giản / công nghệ, vui nhộn / khuyến mãi, lãng mạn / thư giãn, hành động / năng động, lễ hội / Tết, điện ảnh / kể chuyện. Spike chưa tải track nào, việc này để MKT lead chọn ở M0.2.
 
 ## 5. Thư viện hiện có (2026-10-09)
+**Tiêu chí chọn bài (Nam, 2026-10-09: "reel cần thu hút, nên nhạc cần hấp dẫn hơn")**: bắt tai, có nhịp/hook ngay 3 giây đầu, tempo vừa–nhanh. Phong cách nhẹ (thư giãn, lãng mạn, sang trọng) cũng chọn bài có beat: lo-fi, R&B, acid jazz, bossa nova, electronica. Không chọn ambient, thiền, harp/flute, acoustic trẻ con, corporate nhạt: Nam đã bỏ hầu hết các bài kiểu này qua 3 lượt nghe.
+- **Bỏ đoạn dạo đầu**: trường `startSec` (đo tự động: `./reel music:intro`; `music:add` tự đo). Video phát nhạc từ chỗ vào nhịp thay vì từ giây 0.
+
 - **Nghe và chọn**: `./reel music:page` rồi mở `out/nghe-nhac.html` (trình duyệt, chạy offline). Đánh dấu Giữ/Bỏ/Dùng thật, bấm "Copy kết quả" gửi dev cập nhật manifest.
-- **25 bài Mixkit** (`mixkit-*`), dùng được cho video thật. Mỗi phong cách có ít nhất 2 bài.
+- **27 bài Mixkit** (`mixkit-*`), dùng được cho video thật. Mỗi phong cách có ít nhất 2 bài.
   - Đợt 1 (20 bài): Nam nghe 2026-10-09, bỏ 6 bài (Curiosity, Digital Clouds, Motivating Mornings, Trap Electro Vibes, Serene View, Relax Beat), đã xoá khỏi manifest.
   - Đợt 2 (10 bài): Nam giữ 3 (K.O., Sports Highlights, Infected Mushroom Vibes), bỏ 7 bài ambient/thiền/acoustic nhẹ.
-  - Đợt 3 (8 bài, ghi chú "Ứng viên đợt 3"): đổi hướng theo gu đã thấy: thư giãn lấy lo-fi/jazz/downtempo có nhịp, công nghệ lấy tech house/electronic. Chờ Nam nghe. Xem: `./reel info nhac <phong-cách>`.
+  - Đợt 3 (8 bài): Nam giữ 4 (Tech House Vibes, Cat Walk, Smile, Summer's Here), bỏ 4 bài chill nhẹ.
+  - Đợt 4 (6 bài, ghi chú "Ứng viên đợt 4"): chill nhưng có groove cho thư giãn, lãng mạn (Hip Hop 02, Funky Triplets, Dry Gin, Hazy After Hours, It's Love, Latin Lovers). Chờ Nam nghe. Xem: `./reel info nhac <phong-cách>`.
   - Claude chọn theo thẻ thể loại/tâm trạng trên Mixkit, bài không lời, dài ≥ 88 giây. **Chưa ai nghe**: MKT lead nghe lại, bỏ bài không hợp (đặt `"blocked": true`), và đăng thử riêng tư để kiểm Content ID.
   - License (bản gốc, render từ `mixkit.co/license/#musicFree` ngày 2026-10-09): dùng thương mại và phi thương mại; được dùng trên web, mạng xã hội, quảng cáo online, podcast. **Không** dùng cho CD/DVD, game, phát sóng TV/radio; không remix thành bài nhạc riêng, không nhận là của mình, **không đăng ký vào dịch vụ quản lý bản quyền** (Content ID). Bị claim thì gửi chi tiết tới team@mixkit.co.
   - Bằng chứng: `~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-09/` trên máy Nam (PDF + văn bản license, trang danh sách, mã SHA-256 từng bài). Nam chuyển lên Drive.

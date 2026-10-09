@@ -21,6 +21,7 @@
     "music:fetch": "node scripts/fetch-music.ts",
     "music:add": "node scripts/music-add.ts",
     "music:page": "node scripts/music-page.ts",
+    "music:intro": "node scripts/music-intro.ts",
     "lint:brand": "node scripts/lint-brand.ts",
     "lint:music": "node scripts/lint-music.ts",
     "test": "vitest run",

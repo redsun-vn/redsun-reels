@@ -16,7 +16,7 @@ Hệ thống làm video ngắn dọc (Reels, TikTok, Shorts) cho team Marketing 
 | M3 | 3 mẫu: BeforeAfter, Testimonial, Promo, 16 phong cách còn lại, lịch dịp lễ | ✅ Xong phần kỹ thuật. Chờ 10 video thử nghiệm của MKT (§14) |
 | M4 | 3 mẫu: EventRecap, Stats, TalkingHead (đủ 20 loại video), giữ tiếng gốc clip người nói + tự hạ nhạc | ✅ Xong phần kỹ thuật. Chờ clip quay thật của MKT để thử TalkingHead |
 
-Thư viện nhạc có **25 bài Mixkit dùng được cho video thật** (máy tự tải khi cài, không nằm trong repo) và 1 bài tự sinh để nghe thử. 17 bài Nam đã nghe và giữ; 8 bài đợt 3 chờ nghe: `./reel music:page`. Xem [`docs/music-sources.md`](docs/music-sources.md).
+Thư viện nhạc có **27 bài Mixkit dùng được cho video thật** (máy tự tải khi cài, không nằm trong repo) và 1 bài tự sinh để nghe thử. 21 bài Nam đã nghe và giữ; 6 bài đợt 4 chờ nghe: `./reel music:page`. Nhạc tự bỏ đoạn dạo đầu để vào nhịp ngay. Xem [`docs/music-sources.md`](docs/music-sources.md).
 
 **Thử nghiệm với MKT**: làm theo [`docs/huong-dan-thu-nghiem-mkt.md`](docs/huong-dan-thu-nghiem-mkt.md) (10 video, phiếu chấm, cách quay clip người nói).
 
@@ -177,6 +177,7 @@ Không cần Node hệ thống: `./reel` tự dùng Node trong `~/.redsun-reels`
 | `pnpm test:e2e [--draft]` | Dựng + xuất 21 brief mẫu trong `tests/fixtures/briefs/` (20 loại video + test dấu) |
 | `pnpm gen:test-music` | Sinh lại track nhạc thử nghiệm |
 | `pnpm music:page` | Sinh `out/nghe-nhac.html`: nghe thử, lọc theo phong cách, đánh dấu Giữ/Bỏ/Dùng thật, copy kết quả |
+| `pnpm music:intro [--all]` | Đo và ghi `startSec` (bỏ đoạn dạo đầu nhỏ) cho bài chưa có |
 | `pnpm music:fetch` | Tải nhạc bên thứ ba theo `downloadUrl` trong manifest, kiểm SHA-256 |
 | `pnpm music:add nhac-tu-tim/<file> --link= --tac-gia= --mood= [--ten=]` | Thêm nhạc MKT tự tải (Pixabay/Mixkit, cần ảnh chụp cùng tên) vào manifest trên máy đó (`localOnly`); `--lai` đăng ký lại |
 

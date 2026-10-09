@@ -9,7 +9,7 @@
  */
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { readBriefFile } from './lib/brief.ts';
-import { MusicManifestSchema } from '../config/music-manifest.ts';
+import { MusicManifestSchema, usableSec } from '../config/music-manifest.ts';
 import { join } from 'node:path';
 import { OCCASIONS } from '../config/occasions.ts';
 import { availableStylePresets } from '../config/style-preset.schema.ts';
@@ -78,7 +78,7 @@ await runCommand(() => {
     console.log(`NHẠC${style ? ` cho phong cách ${style}` : ''} (ghi id vào script.json "music"; chọn bài dài hơn video):`);
     for (const t of tracks) {
       const use = t.allowedUse.includes('social-organic') ? 'đăng được' : 'chỉ xem thử';
-      console.log(`  ${t.id.padEnd(34)} ${t.durationSec}s  ${use.padEnd(12)} ${t.title} — ${t.author} — ${t.mood.join(', ')}`);
+      console.log(`  ${t.id.padEnd(34)} ${usableSec(t)}s  ${use.padEnd(12)} ${t.title} — ${t.author} — ${t.mood.join(', ')}`);
     }
     return;
   }

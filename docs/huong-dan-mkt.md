@@ -71,7 +71,7 @@ Không chắc loại nào? Cứ kể việc muốn làm, Claude sẽ đề xuấ
 - Video **không có giọng đọc**, chỉ có nhạc nền. Thư viện có sẵn khoảng 25 bài Mixkit dùng để đăng được. Claude tự chọn bài hợp phong cách. Muốn đổi bài: nói "đổi nhạc khác vui hơn".
 - Bài ghi **"chỉ xem thử"** không đăng được.
 - **Dùng nhạc bạn tự tìm:**
-  1. Chỉ lấy từ [Pixabay Music](https://pixabay.com/music/) hoặc [Mixkit](https://mixkit.co/free-stock-music/), bài **không lời**. Không dùng nhạc YouTube, nhạc ca sĩ, nhạc thịnh hành trên TikTok.
+  1. Chỉ lấy từ [Pixabay Music](https://pixabay.com/music/) hoặc [Mixkit](https://mixkit.co/free-stock-music/), bài **không lời**, **bắt tai** (có nhịp ngay mấy giây đầu; reel cần giữ người xem). Không dùng nhạc YouTube, nhạc ca sĩ, nhạc thịnh hành trên TikTok.
   2. Tải file mp3 về.
   3. Chụp màn hình trang bài nhạc, thấy tên bài, tác giả và chữ license.
   4. Bỏ cả hai vào thư mục `nhac-tu-tim`, **cùng tên**: `nhac-vui.mp3` và `nhac-vui.png`.

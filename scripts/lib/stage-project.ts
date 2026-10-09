@@ -70,9 +70,11 @@ export function stageProject(opts: StageOptions): StagedProject {
   // Nhạc luôn nằm ở music/bgm.mp3 trong stage (template trỏ cố định tới đây)
   mkdirSync(join(dir, 'music'), { recursive: true });
   const musicFile = 'music/bgm.mp3';
-  if (extname(track.file).toLowerCase() === '.mp3') cpSync(trackPath, join(dir, musicFile));
+  // Bỏ đoạn dạo đầu (startSec): cắt lại file thay vì data-media-start, để nhạc khớp mọi template/preview như cũ
+  if (extname(track.file).toLowerCase() === '.mp3' && !track.startSec) cpSync(trackPath, join(dir, musicFile));
   else {
-    const r = runFfmpeg(['-v', 'error', '-y', '-i', trackPath, '-ar', '48000', '-b:a', '192k', join(dir, musicFile)]);
+    const seek = track.startSec ? ['-ss', String(track.startSec)] : [];
+    const r = runFfmpeg(['-v', 'error', '-y', ...seek, '-i', trackPath, '-ar', '48000', '-b:a', '192k', join(dir, musicFile)]);
     if (r.status !== 0) throw new Error(`Không đổi được file nhạc "${track.file}" sang mp3: ${r.stderr}`);
   }
 

@@ -18,6 +18,7 @@ const tracks = manifest.tracks.filter((t) => t.id !== 'test-pad-01').map((t) => 
   author: t.author,
   source: t.source,
   sec: t.durationSec,
+  start: t.startSec ?? 0,
   mood: t.mood,
   real: t.allowedUse.includes('social-organic'),
   blocked: t.blocked,
@@ -154,7 +155,7 @@ function render() {
 function toggle(i) {
   if (i === current) { player.paused ? player.play() : player.pause(); return; }
   current = i;
-  player.src = DATA.tracks[i].src;
+  player.src = DATA.tracks[i].src + (DATA.tracks[i].start ? '#t=' + DATA.tracks[i].start : '');
   document.getElementById('nowName').textContent = DATA.tracks[i].title;
   player.play().catch(() => {});
 }

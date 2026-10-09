@@ -64,7 +64,7 @@ description: Dẫn nhân viên marketing làm một video Reel/TikTok/Shorts d�
 - Viết `briefs/<tên-video>/script.json` theo [references/script-format.md](references/script-format.md).
 - Kiểm: `./reel validate <tên-video>`. Sửa đến khi không còn dòng lỗi ✗. Các dòng cảnh báo (bắt đầu bằng dấu chấm than) thì xử lý hoặc báo MKT.
 - Tự chấm theo thang trong script-format.md; ghi `selfScore`. Dưới 85 thì sửa (tối đa 3 vòng), không nâng điểm.
-- Chọn nhạc: `./reel info nhac <phong-cách>`. Brief để `music: auto` thì lấy bài **đăng được**, dài hơn video, hợp mood; mỗi video nên khác bài với video trước của cùng sản phẩm. Bài "chỉ xem thử" không đăng được.
+- Chọn nhạc: `./reel info nhac <phong-cách>`. Reel cần bắt tai: ưu tiên bài có nhịp rõ, năng lượng hợp phong cách; MKT thấy nhạc nhạt thì đổi bài khác cùng phong cách. Brief để `music: auto` thì lấy bài **đăng được**, dài hơn video, hợp mood; mỗi video nên khác bài với video trước của cùng sản phẩm. Bài "chỉ xem thử" không đăng được.
 - Trình bày cho MKT bảng: **Cảnh · Vai trò · Hình ảnh · Chữ trên màn hình · Chuyển cảnh · Thời lượng**. Trên bảng ghi: loại video, phong cách, nhạc, tổng thời lượng, điểm tự chấm.
 - Phong cách `vui-nhon` hoặc câu có chơi chữ: nhắc MKT đọc lại câu chữ (hài kiểu Việt cần người Việt chỉnh).
 

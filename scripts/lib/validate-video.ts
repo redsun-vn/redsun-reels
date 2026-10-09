@@ -6,7 +6,7 @@ import { existsSync, readFileSync, statSync } from 'node:fs';
 import { extname, isAbsolute, join, normalize } from 'node:path';
 import type { z } from 'zod';
 import { BriefSchema, type Brief } from '../../config/brief.schema.ts';
-import { checkTrack, findTrack, MusicManifestSchema, type MusicPurpose } from '../../config/music-manifest.ts';
+import { checkTrack, findTrack, MusicManifestSchema, type MusicPurpose, usableSec } from '../../config/music-manifest.ts';
 import { countWords, sceneDurationSec } from '../../config/scene-timing.ts';
 import { availableStylePresets, hasStylePreset } from '../../config/style-preset.schema.ts';
 import { resolveStyle } from './resolve-style.ts';
@@ -208,7 +208,7 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose } 
     if (!track) issues.push(err(`Không có nhạc "${script.music}" trong thư viện (brand/music/manifest.json).`));
     else {
       issues.push(...checkTrack(track, opts.musicPurpose).map(err));
-      if (track.durationSec + 1e-9 < total) issues.push(err(`Nhạc "${track.title}" dài ${track.durationSec}s, ngắn hơn video ${total.toFixed(1)}s.`));
+      if (usableSec(track) + 1e-9 < total) issues.push(err(`Nhạc "${track.title}" dùng được ${usableSec(track)}s, ngắn hơn video ${total.toFixed(1)}s.`));
     }
   } catch (e) {
     issues.push(err(`Thư viện nhạc lỗi: ${(e as Error).message}`));

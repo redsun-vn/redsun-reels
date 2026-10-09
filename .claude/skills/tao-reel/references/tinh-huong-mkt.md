@@ -35,6 +35,7 @@ Nói với MKT bằng lời thường. Không nhắc tên lệnh, file JSON, log
 | `music:fetch` báo lỗi mạng | Nhờ MKT kiểm wifi, chạy lại |
 | `music:fetch` báo "file ở nguồn đã khác bản đã duyệt" | Chọn bài khác cùng phong cách; báo MKT nhắn Nam cập nhật thư viện |
 | Lỗi "chỉ để thử nghiệm" | Kịch bản đang dùng bài "chỉ xem thử": đổi sang bài "đăng được" |
+| MKT tự tìm nhạc, hỏi chọn bài nào | Gợi ý bài **bắt tai**: có nhịp ngay vài giây đầu, không chọn nhạc thiền/ambient/dạo đầu dài |
 | "dùng nhạc tôi tự tìm", "thêm nhạc <tên>, link …, tác giả …" | Kiểm file `nhac-tu-tim/<tên>.mp3` + ảnh chụp cùng tên đã có chưa (thiếu thì hướng dẫn theo sổ tay mục 6). Chọn 1–3 phong cách hợp bài. Chạy `./reel music:add nhac-tu-tim/<tên>.mp3 --link=<link> --tac-gia="<tác giả>" --mood=<…>`. Thêm xong, nhắc MKT báo Nam |
 | Nhạc từ YouTube, TikTok, nhạc ca sĩ, nguồn khác | Từ chối nhẹ nhàng: chỉ Pixabay/Mixkit; nguồn khác phải hỏi Nam. Không chạy `music:add` |
 | "đăng ký lại nhạc tự tìm" (sau khi cập nhật bản mới) | `./reel music:add --lai` |
