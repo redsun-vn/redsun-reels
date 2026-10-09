@@ -78,6 +78,7 @@ Thư viện thuê bao có license business và cam kết Content ID, như Epidem
 Mỗi nhóm phong cách chính chọn 2–3 track, khoảng 20–30 track từ Pixabay Music + Mixkit. Ví dụ: tối giản / công nghệ, vui nhộn / khuyến mãi, lãng mạn / thư giãn, hành động / năng động, lễ hội / Tết, điện ảnh / kể chuyện. Spike chưa tải track nào, việc này để MKT lead chọn ở M0.2.
 
 ## 5. Thư viện hiện có (2026-10-09)
+- **Nghe và chọn**: `./reel music:page` rồi mở `out/nghe-nhac.html` (trình duyệt, chạy offline). Đánh dấu Giữ/Bỏ/Dùng thật, bấm "Copy kết quả" gửi dev cập nhật manifest.
 - **20 bài Mixkit** (`mixkit-*`), dùng được cho video thật. Mỗi phong cách có ít nhất 2 bài. Xem: `./reel info nhac <phong-cách>`.
   - Claude chọn theo thẻ thể loại/tâm trạng trên Mixkit, bài không lời, dài ≥ 88 giây. **Chưa ai nghe**: MKT lead nghe lại, bỏ bài không hợp (đặt `"blocked": true`), và đăng thử riêng tư để kiểm Content ID.
   - License (bản gốc, render từ `mixkit.co/license/#musicFree` ngày 2026-10-09): dùng thương mại và phi thương mại; được dùng trên web, mạng xã hội, quảng cáo online, podcast. **Không** dùng cho CD/DVD, game, phát sóng TV/radio; không remix thành bài nhạc riêng, không nhận là của mình, **không đăng ký vào dịch vụ quản lý bản quyền** (Content ID). Bị claim thì gửi chi tiết tới team@mixkit.co.

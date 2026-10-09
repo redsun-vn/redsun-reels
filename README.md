@@ -176,6 +176,7 @@ Không cần Node hệ thống: `./reel` tự dùng Node trong `~/.redsun-reels`
 | `pnpm test:render [--update] [--only=<chuỗi>]` | So khung hình 8 mẫu × 19 phong cách với ảnh chuẩn `tests/baseline/` (SSIM ≥ 0.97, ~45 phút) |
 | `pnpm test:e2e [--draft]` | Dựng + xuất 21 brief mẫu trong `tests/fixtures/briefs/` (20 loại video + test dấu) |
 | `pnpm gen:test-music` | Sinh lại track nhạc thử nghiệm |
+| `pnpm music:page` | Sinh `out/nghe-nhac.html`: nghe thử, lọc theo phong cách, đánh dấu Giữ/Bỏ/Dùng thật, copy kết quả |
 | `pnpm music:fetch` | Tải nhạc bên thứ ba theo `downloadUrl` trong manifest, kiểm SHA-256 |
 | `pnpm music:add nhac-tu-tim/<file> --link= --tac-gia= --mood= [--ten=]` | Thêm nhạc MKT tự tải (Pixabay/Mixkit, cần ảnh chụp cùng tên) vào manifest trên máy đó (`localOnly`); `--lai` đăng ký lại |
 
