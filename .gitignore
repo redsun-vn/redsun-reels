@@ -20,6 +20,8 @@ docs/spike-audio/**/*.wav
 
 # Video thật của từng brief
 briefs/*/audio/
+# Hình/clip MKT gửi cho từng video (có thể có mặt khách, nhân viên): chỉ ở máy MKT, không lên repo công khai
+briefs/*/hinh/
 
 .DS_Store
 

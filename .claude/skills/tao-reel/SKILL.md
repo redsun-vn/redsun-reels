@@ -28,7 +28,7 @@ Nam chốt 2026-10-09: "MKT chỉ cần đưa brief, sau đó đợi output vide
 
 1. **Brief** (bước 1): tạo `./reel new <tên-video>`, điền từ lời MKT. Phần MKT không nói thì tự đặt mặc định hợp lý: thời lượng = giữa khoảng của loại video, người xem theo sản phẩm, CTA = `defaultCta`, nhạc `auto`.
    - **Chỉ hỏi** khi thiếu thông tin mà tự đặt sẽ là **bịa**: con số, giá, ưu đãi, hạn chót, lời khách, tên người, tính năng chưa có trong brief/profile. Gom vào **một lần hỏi** (tối đa 5 câu), có lựa chọn sẵn.
-   - Thiếu ảnh/clip: tự chuyển sang bản chỉ có chữ (cảnh `text`) nếu loại video cho phép; loại bắt buộc ảnh/clip thật (khách hàng nói, tổng kết sự kiện, người nói trước camera, trước/sau có ảnh) thì hỏi.
+   - Hình ảnh: chạy `./reel hinh <tên-video>`. MKT có kéo hình/clip vào thư mục `hinh` của video thì xem từng hình và xếp vào cảnh (bước 4). Không có thì làm bản chỉ có chữ (cảnh `text`), không hỏi. Riêng loại bắt buộc ảnh/clip thật (khách hàng nói, tổng kết sự kiện, người nói trước camera, trước/sau có ảnh) thì hỏi.
 2. **Loại video + phong cách** (bước 2): tự chọn. Chạy `./reel info gan-day` trước: **video mới phải khác** các video gần đây cùng dịp hoặc cùng sản phẩm — đổi phong cách (dịp lễ: xoay vòng theo `./reel info dip-le`), đổi loại video nếu hợp. Ghi phong cách đã chọn vào `style` của brief.
 3. **Concept** (bước 3): viết 3 concept vào `concepts.md`, **tự chọn** concept tốt nhất theo thang tự chấm, ghi lý do ở mục `## Lựa chọn`.
 4. **Kịch bản** (bước 5): viết, `./reel validate`, tự chấm ≥ 85.
@@ -62,10 +62,29 @@ Làm nhiều video một lúc (vd. "làm 3 video 20/10 cho SIPOS, Webino, BOS"):
 - Góc "con số" chỉ dùng khi brief có con số thật do MKT đưa. Không có thì chọn góc khác, hoặc hỏi MKT có số liệu không. Không tự nghĩ ra "3 ngày", "50%", "1000 cửa hàng"…
 - Trình bày 3 concept ngắn gọn, hỏi MKT chọn số mấy. Ghi lựa chọn vào cuối `concepts.md`.
 
-### 4. Hình ảnh cần có
-- Cảnh kiểu `phone` hoặc `asset` cần ảnh/clip thật trong `assets/<sản-phẩm>/` (ảnh chụp màn hình, quay màn hình, ảnh quán…).
-- Thiếu → viết `briefs/<tên-video>/shotlist.md`: số shot, cảnh, địa điểm, mô tả, đạo cụ, ánh sáng, thời lượng. Quay/chụp **dọc 9:16**, chừa trên 220px, dưới 420px, phải 160px không có chữ quan trọng. Nhóm theo địa điểm. **DỪNG** chờ MKT gửi file, hoặc đề xuất làm bản chỉ có chữ (cảnh `text`) nếu MKT muốn làm ngay.
-- Không dùng ảnh không rõ nguồn, không lấy ảnh trên mạng.
+### 4. Hình ảnh
+Nam chốt 2026-10-09: hình minh hoạ, yếu tố con người lấy từ hình/clip **MKT kéo vào thư mục `hinh` của video** (`briefs/<tên-video>/hinh/`, `./reel new` tạo sẵn). Có thì dùng, không có thì làm bản chỉ có chữ — không dừng chờ, không nhắc đi nhắc lại.
+
+1. `./reel hinh <tên-video>`: tự đổi ảnh iPhone (HEIC) sang JPG, đổi tên file không dấu, liệt kê từng file (hình/clip · dọc/ngang · số giây). MKT **kéo hình vào khung chat** (tin nhắn có đường dẫn file ảnh/clip): `./reel hinh <tên-video> "<đường dẫn 1>" "<đường dẫn 2>"…` để chép vào `hinh/` (tạo video bằng `./reel new` trước).
+2. **Mở xem từng hình** (đọc file ảnh) để biết trong hình có gì: ai, đang làm gì, cảm xúc, có chữ/màn hình phần mềm không, sáng hay tối. Clip: brief không ghi clip quay gì thì hỏi MKT 1 câu.
+3. Xếp hình vào cảnh **theo nghĩa của cảnh**:
+
+| Trong hình | Đặt vào cảnh | `visual.type` |
+|---|---|---|
+| Người đang vất vả, bối rối (ghi sổ, đếm hàng, tính tiền) | `hook` hoặc cảnh nỗi đau | `asset` |
+| Người vui, quán đông, nhân viên làm việc gọn | cảnh lợi ích / kết quả | `asset` |
+| Quán, sản phẩm, không gian | `hook` hoặc cảnh bối cảnh | `asset` |
+| Ảnh chụp / quay màn hình phần mềm | cảnh tính năng, lợi ích | `phone` (ghi `focus` vào chỗ cần nhấn). **Không** để `asset` kín khung: chữ trong ảnh đè chữ video, rất rối |
+| 2–6 ảnh sự kiện, đội ngũ | một cảnh | `montage` |
+| Cặp ảnh trước / sau | cảnh so sánh | `split` |
+
+   - Ghi đường dẫn `briefs/<tên-video>/hinh/<file>` vào `visual.src` và vào `assets` của brief.
+   - Cảnh có khối ưu đãi (`promo`) chỉ nhận `text` hoặc `asset` (ảnh người/quán, không phải ảnh màn hình). Cảnh `cta` giữ `logo`.
+   - Không bắt buộc dùng hết: hình mờ, tối, lệch chủ đề thì bỏ và báo MKT 1 câu. Validate báo "hình chưa dùng" là lưu ý, không phải lỗi.
+   - Hình ngang bị cắt hai bên trong video dọc: chỉ dùng khi chủ thể ở giữa, xem kỹ bản xem thử.
+4. **Không bịa theo hình**: không gọi người trong hình là khách hàng, không đặt tên, không gán lời nói, trừ khi brief ghi rõ. Không tự lấy ảnh trên mạng, không tạo ảnh bằng AI (ngoài phạm vi, REQUIREMENTS §2.3).
+- Hình trong `hinh/` chỉ nằm trên máy MKT, không lên repo (có thể có mặt khách). `assets/<sản-phẩm>/` là ảnh dùng chung do dev đưa vào.
+- MKT hỏi nên chụp gì: gợi ý ngắn theo kịch bản (chụp/quay **dọc**, người thật đang làm việc, chừa trên và dưới khung không có chi tiết quan trọng). Loại bắt buộc ảnh/clip thật mà thiếu → viết `briefs/<tên-video>/shotlist.md` (shot, địa điểm, mô tả, thời lượng) và chờ MKT gửi.
 - **Khách hàng nói**: cần lời khách thật, tên + cửa hàng, và khách đã đồng ý xuất hiện. MKT chưa đưa thì hỏi, không tự viết lời khách.
 - **Khuyến mãi / sự kiện**: cần mức giảm, giá, hạn chót, giờ… do MKT đưa (ghi vào brief). Không tự đặt.
 - **Trước / sau**: cần ảnh/clip TRƯỚC và SAU thật (hoặc làm bản chỉ có chữ).

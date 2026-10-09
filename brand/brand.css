@@ -72,6 +72,46 @@
   --color-gray: #58595B;
   --color-debug-unsafe: rgba(255, 0, 80, 0.28); /* chỉ dùng cho lớp debug safe zone */
 
+  /*
+   * Màu đạo cụ cho video dựng riêng (templates/_rieng/): giấy, giấy nhớ, hoá đơn, điện thoại, nhân vật, cánh hoa…
+   * Là màu vật thể minh hoạ, không thay màu brand; nền và chữ chính vẫn theo màu sản phẩm.
+   */
+  --prop-paper: #F5EEDF;
+  --prop-paper-line: #C9DCE0;
+  --prop-paper-margin: #E8A0A0;
+  --prop-ink: #1E3A40;
+  --prop-note-yellow: #FFE27A;
+  --prop-note-yellow-ink: #3B2A00;
+  --prop-note-pink: #FFB8C9;
+  --prop-note-pink-ink: #5A0F24;
+  --prop-note-mint: #BFF0D8;
+  --prop-note-mint-ink: #0E3B2A;
+  --prop-receipt: #FFFFFF;
+  --prop-receipt-ink: #222222;
+  --prop-device: #0A1416;
+  --prop-device-edge: #2B3C3F;
+  --prop-screen: #F4F8F8;
+  --prop-card: #FFFFFF;
+  --prop-card-ink: #10343A;
+  --prop-card-muted: #4A6A70;
+  --prop-ok: #1DB36B;
+  --prop-ok-ink: #0E7A45; /* chữ xanh "đã nhận" trên nền trắng, ≥ 3:1 */
+  --prop-warn: #FFE9E9;
+  --prop-petal: #F28AA6;
+  --prop-petal-deep: #E8577D;
+  --prop-pollen: #FFC94A;
+  --prop-gold: #F4B400;
+  --prop-skin: #F2C6A0;
+  --prop-skin-shade: #D9A27A;
+  --prop-hair: #2B1D16;
+  --prop-shirt-a: #3A7CA5;
+  --prop-shirt-b: #E07A5F;
+  --prop-shirt-c: #81B29A;
+  --prop-bubble: #FFFFFF;
+  --prop-bubble-ink: #10232A;
+  --prop-shadow: rgba(0, 0, 0, 0.45);
+  --prop-shadow-soft: rgba(11, 75, 84, 0.12);
+
   /* Mặc định = Redsun (công ty) */
   --color-primary: #BA0000;
   --color-secondary: #58595B;
@@ -132,6 +172,8 @@
  * Khai ở [data-product] (không ở :root) để color-mix lấy đúng --color-accent của từng sản phẩm.
  */
 [data-product] { --color-accent-text: color-mix(in srgb, var(--color-accent) 50%, var(--color-white)); }
+/* Màu nhấn đậm hơn --color-accent-text, vẫn ≥ 3:1 trên nền tối sản phẩm (dấu "?", dấu chấm tên miền…). */
+[data-product] { --color-accent-glow: color-mix(in srgb, var(--color-accent) 55%, var(--color-white)); }
 [data-product="redsun"] { --color-accent-text: color-mix(in srgb, var(--color-primary) 85%, var(--color-black)); }
 
 /*

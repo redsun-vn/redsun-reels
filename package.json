@@ -11,6 +11,8 @@
   "scripts": {
     "doctor": "node scripts/doctor.ts",
     "new": "node scripts/new.ts",
+    "hinh": "node scripts/hinh.ts",
+    "snap": "node scripts/snap.ts",
     "validate": "node scripts/validate.ts",
     "build": "node scripts/build.ts",
     "preview": "node scripts/preview.ts",

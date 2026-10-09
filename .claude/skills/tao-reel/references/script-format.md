@@ -58,7 +58,7 @@ Mỗi cảnh:
 
 Quy tắc chung:
 - Cảnh đầu là `hook`, có `onScreenText` = `hook` (bỏ `\n`).
-- Ảnh/clip đặt trong `assets/…`. Đuôi hỗ trợ: png, jpg, webp, svg, mp4, mov, webm.
+- Ảnh/clip MKT gửi nằm trong `briefs/<tên-video>/hinh/` (chạy `./reel hinh <tên-video>` trước); ảnh dùng chung trong `assets/…`. Đuôi hỗ trợ: png, jpg, webp, svg, mp4, mov, webm (ảnh iPhone HEIC: `./reel hinh` tự đổi sang JPG).
 - Clip phải đủ dài cho đoạn dùng (`clipStart` + thời lượng các cảnh nối tiếp); validate đo bằng ffprobe.
 
 ## Thời lượng mỗi cảnh

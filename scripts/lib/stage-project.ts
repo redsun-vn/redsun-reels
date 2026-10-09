@@ -19,6 +19,10 @@ export interface StageOptions {
   purpose: MusicPurpose;
   /** Hình/clip dùng trong video, đường dẫn tương đối theo repo (vd. assets/sipos/x.png). Copy giữ nguyên đường dẫn. */
   assets?: string[];
+  /** Video dựng riêng: thư mục composition (briefs/<tên>/dung-rieng) thay cho templates/<template>; kèm bộ dụng cụ _rieng/. */
+  customDir?: string;
+  /** Thư mục hình MKT gửi (briefs/<tên>/hinh), copy thành hinh/ trong stage. */
+  mediaDir?: string;
 }
 
 export interface StagedProject {
@@ -32,9 +36,9 @@ export function stageProject(opts: StageOptions): StagedProject {
   for (const n of [opts.template, opts.name ?? opts.template]) {
     if (!SAFE_NAME.test(n)) throw new Error(`Tên "${n}" không hợp lệ (chỉ chữ, số, "-", "_").`);
   }
-  const templateDir = join(REPO_ROOT, 'templates', opts.template);
+  const templateDir = opts.customDir ?? join(REPO_ROOT, 'templates', opts.template);
   if (!existsSync(join(templateDir, 'index.html'))) {
-    throw new Error(`Không tìm thấy template "${opts.template}" (thiếu templates/${opts.template}/index.html).`);
+    throw new Error(opts.customDir ? `Chưa có bản dựng riêng (thiếu ${templateDir}/index.html).` : `Không tìm thấy template "${opts.template}" (thiếu templates/${opts.template}/index.html).`);
   }
 
   const manifest = MusicManifestSchema.parse(JSON.parse(readFileSync(join(REPO_ROOT, 'brand', 'music', 'manifest.json'), 'utf8')));
@@ -52,7 +56,8 @@ export function stageProject(opts: StageOptions): StagedProject {
   mkdirSync(dir, { recursive: true });
 
   cpSync(templateDir, dir, { recursive: true });
-  cpSync(join(REPO_ROOT, 'templates', '_shared'), join(dir, '_shared'), { recursive: true });
+  cpSync(join(REPO_ROOT, 'templates', opts.customDir ? '_rieng' : '_shared'), join(dir, opts.customDir ? '_rieng' : '_shared'), { recursive: true });
+  if (opts.mediaDir && existsSync(opts.mediaDir)) cpSync(opts.mediaDir, join(dir, 'hinh'), { recursive: true, filter: (src) => !src.includes('/.goc') });
   mkdirSync(join(dir, 'brand'), { recursive: true });
   for (const part of ['brand.css', 'fonts', 'logos']) {
     cpSync(join(REPO_ROOT, 'brand', part), join(dir, 'brand', part), { recursive: true });

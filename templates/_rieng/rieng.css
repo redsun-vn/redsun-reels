@@ -1,0 +1,107 @@
+/*
+ * Bộ dụng cụ cho video dựng riêng (briefs/<tên>/dung-rieng/index.html, docs/decisions.md §18).
+ * Chỉ là "đạo cụ" dùng lại: khung điện thoại, màn hình app, giấy, giấy nhớ, hoá đơn, con dấu, bong bóng thoại,
+ * phụ đề, nhân vật, hạt trang trí. Bố cục, nhịp, chuyển động do từng composition tự thiết kế.
+ * Màu/font/cỡ chữ chỉ qua biến trong brand/brand.css (pnpm lint:brand).
+ */
+
+/* ---------- Gốc ---------- */
+.rs-root { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--color-background); color: var(--color-text); font-family: var(--font-body); }
+.rs-scene { position: absolute; inset: 0; overflow: hidden; }
+.rs-fill { position: absolute; inset: 0; }
+/* Vùng chữ an toàn: trái 80, phải 160, trên 220, dưới 420 (REQUIREMENTS §5.4) */
+.rs-safe { position: absolute; left: var(--safe-left); right: var(--safe-right); top: var(--safe-top); bottom: var(--safe-bottom); }
+
+/* ---------- Nền ---------- */
+.rs-bg-brand { background: radial-gradient(110% 70% at 50% 18%, color-mix(in srgb, var(--color-background) 80%, var(--color-white)) 0%, var(--color-background) 52%, color-mix(in srgb, var(--color-background) 65%, var(--color-black)) 100%); }
+.rs-bg-night { background: radial-gradient(120% 80% at 50% 8%, color-mix(in srgb, var(--color-background) 85%, var(--color-white)) 0%, color-mix(in srgb, var(--color-background) 60%, var(--color-black)) 55%, color-mix(in srgb, var(--color-background) 40%, var(--color-black)) 100%); }
+.rs-bg-paper { background: var(--prop-paper); }
+.rs-bg-theme { background: radial-gradient(110% 70% at 50% 20%, color-mix(in srgb, var(--color-theme, var(--prop-petal)) 8%, var(--color-white)) 0%, color-mix(in srgb, var(--color-theme, var(--prop-petal)) 18%, var(--color-white)) 50%, color-mix(in srgb, var(--color-theme, var(--prop-petal)) 34%, var(--color-white)) 100%); }
+.rs-glow { position: absolute; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--rs-glow, var(--color-accent)) 34%, transparent) 0%, transparent 65%); }
+.rs-grid { position: absolute; inset: -120px 0; opacity: 0.16; background-image: linear-gradient(var(--color-white) 2px, transparent 2px), linear-gradient(90deg, var(--color-white) 2px, transparent 2px); background-size: 120px 120px; }
+
+/* ---------- Chữ ---------- */
+.rs-hero { font-weight: 900; font-size: calc(var(--type-hero) * 1.4); line-height: 1.08; letter-spacing: -0.03em; }
+.rs-h1 { font-weight: 800; font-size: var(--type-h1); line-height: var(--line-tight); }
+.rs-h2 { font-weight: 700; font-size: var(--type-h2); line-height: var(--line-tight); }
+.rs-body { font-weight: 600; font-size: var(--type-body); line-height: 1.3; }
+.rs-nowrap { white-space: nowrap; }
+.rs-accent { color: var(--color-accent-glow); }
+.rs-w { display: inline-block; }
+.rs-chip { display: inline-flex; align-items: center; padding: 0.12em 0.4em; border-radius: 0.28em; background: var(--color-accent); color: var(--color-on-accent); font-weight: 900; white-space: nowrap; box-shadow: 0 26px 60px var(--prop-shadow); }
+.rs-pill { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.5em 1em; border-radius: 999px; font-weight: 800; font-size: var(--type-caption); background: var(--color-primary); color: var(--color-text-inverse); }
+
+/* Phụ đề lời thoại (video không lồng tiếng: lời nói thành chữ) */
+.rs-sub { position: absolute; left: var(--safe-left); right: var(--safe-right); bottom: calc(var(--safe-bottom) + 20px); display: flex; justify-content: center; }
+.rs-sub span { padding: 0.35em 0.7em; border-radius: 0.4em; background: color-mix(in srgb, var(--color-black) 72%, transparent); color: var(--color-white); font-weight: 700; font-size: var(--type-caption); line-height: 1.3; text-align: center; }
+
+/* Bong bóng thoại: .left / .right là phía đuôi */
+.rs-bubble { position: absolute; padding: 28px 36px; border-radius: 40px; background: var(--prop-bubble); color: var(--prop-bubble-ink); font-weight: 800; font-size: var(--type-h3); line-height: 1.2; box-shadow: 0 24px 50px var(--prop-shadow); white-space: nowrap; }
+.rs-bubble::after { content: ""; position: absolute; bottom: -26px; width: 0; height: 0; border-top: 34px solid var(--prop-bubble); }
+.rs-bubble.left::after { left: 56px; border-right: 34px solid transparent; }
+.rs-bubble.right::after { right: 56px; border-left: 34px solid transparent; }
+
+/* ---------- Điện thoại + màn hình app ---------- */
+.rs-phone { position: absolute; width: 540px; height: 1080px; border-radius: 74px; background: var(--prop-device); box-shadow: 0 60px 120px var(--prop-shadow), inset 0 0 0 3px var(--prop-device-edge); }
+.rs-screen { position: absolute; inset: 22px; border-radius: 54px; background: var(--prop-screen); overflow: hidden; }
+.rs-notch { position: absolute; left: 50%; top: 40px; width: 150px; height: 40px; margin-left: -75px; border-radius: 20px; background: var(--prop-device); z-index: 5; }
+.rs-appbar { position: absolute; left: 0; right: 0; top: 0; height: 200px; padding: 104px 40px 0; background: var(--color-primary); color: var(--color-white); font-weight: 800; font-size: calc(var(--type-small) * 1.25); }
+.rs-appbar small { display: block; margin-top: 4px; font-weight: 600; font-size: calc(var(--type-small) * 0.75); opacity: 0.8; }
+.rs-pane { position: absolute; left: 0; right: 0; top: 200px; bottom: 0; padding: 30px; }
+.rs-row { display: flex; align-items: center; justify-content: space-between; height: 104px; padding: 0 26px; margin-bottom: 18px; border-radius: 22px; background: var(--prop-card); color: var(--prop-card-ink); font-weight: 700; font-size: calc(var(--type-small) * 0.95); box-shadow: 0 6px 16px var(--prop-shadow-soft); }
+.rs-row b { font-weight: 800; color: var(--color-primary); }
+.rs-row b.bad { color: var(--color-accent); }
+.rs-card { border-radius: 24px; padding: 26px; background: var(--prop-card); color: var(--prop-card-ink); box-shadow: 0 6px 16px var(--prop-shadow-soft); }
+.rs-card small { display: block; font-weight: 600; font-size: calc(var(--type-small) * 0.75); color: var(--prop-card-muted); }
+.rs-card b { display: block; margin-top: 6px; font-weight: 800; font-size: calc(var(--type-small) * 1.25); color: var(--color-primary); }
+.rs-bars { display: flex; align-items: flex-end; gap: 16px; height: 300px; }
+.rs-bars i { flex: 1; border-radius: 12px 12px 4px 4px; background: var(--color-primary); transform-origin: bottom center; }
+.rs-bars i:nth-child(2n) { background: color-mix(in srgb, var(--color-accent) 55%, var(--color-white)); }
+.rs-alert { border-radius: 22px; padding: 22px 26px; background: var(--prop-warn); border: 3px solid var(--color-accent); color: var(--color-accent); font-weight: 800; font-size: calc(var(--type-small) * 0.9); }
+.rs-tick { display: inline-flex; align-items: center; justify-content: center; width: 72px; height: 72px; border-radius: 50%; background: var(--prop-ok); }
+.rs-tick::after { content: ""; width: 30px; height: 16px; border-left: 7px solid var(--color-white); border-bottom: 7px solid var(--color-white); transform: translateY(-4px) rotate(-45deg); }
+
+/* ---------- Giấy, giấy nhớ, hoá đơn ---------- */
+.rs-paper { position: absolute; border-radius: 26px; background-color: var(--prop-paper); background-image: repeating-linear-gradient(180deg, transparent 0 74px, var(--prop-paper-line) 74px 77px); background-position: 0 40px; box-shadow: 0 40px 90px var(--prop-shadow); color: var(--prop-ink); }
+.rs-paper::before { content: ""; position: absolute; left: 112px; top: 0; bottom: 0; width: 4px; background: var(--prop-paper-margin); }
+.rs-hand { font-style: italic; font-weight: 600; font-size: calc(var(--type-small) * 1.35); color: var(--prop-ink); }
+.rs-note { position: absolute; padding: 26px 30px; border-radius: 10px; background: var(--prop-note-yellow); color: var(--prop-note-yellow-ink); font-weight: 700; font-size: calc(var(--type-small) * 1.2); line-height: 1.2; box-shadow: 0 18px 40px var(--prop-shadow); }
+.rs-note.pink { background: var(--prop-note-pink); color: var(--prop-note-pink-ink); }
+.rs-note.mint { background: var(--prop-note-mint); color: var(--prop-note-mint-ink); }
+.rs-receipt { position: absolute; width: 260px; padding: 26px 24px 34px; border-radius: 6px 6px 0 0; background: var(--prop-receipt); color: var(--prop-receipt-ink); font-weight: 600; font-size: calc(var(--type-small) * 0.88); line-height: 1.5; box-shadow: 0 18px 40px var(--prop-shadow);
+  -webkit-mask: linear-gradient(var(--color-black) 0 0) top/100% calc(100% - 16px) no-repeat, radial-gradient(12px at 50% 100%, transparent 98%, var(--color-black)) bottom/24px 17px repeat-x; }
+
+/* ---------- Con dấu ưu đãi ---------- */
+.rs-stamp { position: absolute; border-radius: 50%; background: var(--color-accent); color: var(--color-on-accent); display: flex; align-items: center; justify-content: center; font-weight: 900; letter-spacing: -0.04em; box-shadow: 0 40px 90px var(--prop-shadow), inset 0 0 0 14px color-mix(in srgb, var(--color-white) 18%, transparent); }
+.rs-ring { position: absolute; inset: -40px; border-radius: 50%; border: 6px solid var(--color-accent); }
+
+/* ---------- Nhân vật phẳng (SVG trong kit-people) dùng màu này ---------- */
+.rs-person { position: absolute; }
+.rs-person .skin { fill: var(--prop-skin); }
+.rs-person .shade { fill: var(--prop-skin-shade); }
+.rs-person .hair { fill: var(--prop-hair); }
+.rs-person .shirt-a { fill: var(--prop-shirt-a); }
+.rs-person .shirt-b { fill: var(--prop-shirt-b); }
+.rs-person .shirt-c { fill: var(--prop-shirt-c); }
+.rs-person .ink { fill: var(--prop-ink); }
+.rs-person .ink-line { fill: none; stroke: var(--prop-ink); stroke-width: 6; stroke-linecap: round; }
+.rs-person .device { fill: var(--prop-device); }
+.rs-person .screen { fill: var(--prop-screen); }
+.rs-person .ok { fill: var(--prop-ok); }
+.rs-person .ok-mark { fill: none; stroke: var(--color-white); stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- Hạt trang trí (RS.burst) ---------- */
+.rs-p { position: absolute; width: 44px; height: 44px; }
+.rs-p.petal { border-radius: 60% 0 60% 0; background: var(--prop-petal); }
+.rs-p.confetti { width: 22px; height: 40px; border-radius: 4px; background: var(--prop-gold); }
+.rs-p.confetti:nth-child(3n) { background: var(--color-accent); }
+.rs-p.confetti:nth-child(3n + 1) { background: var(--color-white); }
+.rs-p.coin { border-radius: 50%; background: radial-gradient(circle at 35% 35%, var(--color-white) 0 10%, var(--prop-gold) 30% 100%); }
+.rs-p.heart { background: var(--color-accent); clip-path: polygon(50% 100%, 0 40%, 10% 10%, 30% 0, 50% 18%, 70% 0, 90% 10%, 100% 40%); }
+.rs-p.star { background: var(--prop-gold); clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+.rs-flower { position: absolute; width: 150px; height: 150px; }
+.rs-flower i { position: absolute; left: 50%; top: 50%; width: 64px; height: 64px; margin: -64px 0 0 -32px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: var(--prop-petal); transform-origin: 50% 100%; }
+.rs-flower u { position: absolute; left: 50%; top: 50%; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; background: var(--prop-pollen); }
+
+/* Chớp sáng giữa hai cảnh */
+.rs-flash { position: absolute; inset: 0; background: var(--color-white); opacity: 0; pointer-events: none; }

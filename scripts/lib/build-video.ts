@@ -11,6 +11,8 @@ import { dropSilentClipAudio } from './clip-check.ts';
 import { REPO_ROOT, runHyperframes, stripAnsi } from './hyperframes-env.ts';
 import { injectMusicDucking } from './music-ducking.ts';
 import { stageProject } from './stage-project.ts';
+import { CUSTOM_DIR } from './custom-video.ts';
+import { mediaDir } from './brief-media.ts';
 import { formatIssues, hasErrors, type Issue, validateVideo } from './validate-video.ts';
 
 export interface BuiltVideo {
@@ -18,7 +20,8 @@ export interface BuiltVideo {
   script: Script;
   props: TemplateProps;
   stageDir: string;
-  varsFile: string;
+  /** Không có với video dựng riêng. */
+  varsFile?: string;
   warnings: Issue[];
 }
 
@@ -33,15 +36,28 @@ export function buildVideo(opts: { dir: string; name: string; musicPurpose: Musi
   props.voiceWindows = voiceWindowsOf(props.scenes);
   if (opts.writeProps !== false) writeFileSync(join(opts.dir, 'props.json'), JSON.stringify(props, null, 2) + '\n');
 
-  const { dir: stageDir } = stageProject({ template: script.template, name: opts.name, musicId: script.music, purpose: opts.musicPurpose, assets: assetPaths(script) });
-  const vars = variablesFile(props, opts.debugSafeZone ?? false);
-  const varsFile = join(stageDir, 'variables.json');
-  writeFileSync(varsFile, JSON.stringify(vars));
-  injectDefaults(join(stageDir, 'index.html'), vars);
-  injectMusicDucking(join(stageDir, 'index.html'), props.voiceWindows, props.totalSec);
+  const custom = script.build === 'custom';
+  const { dir: stageDir } = stageProject({
+    template: script.template,
+    name: opts.name,
+    musicId: script.music,
+    purpose: opts.musicPurpose,
+    assets: assetPaths(script),
+    customDir: custom ? join(opts.dir, CUSTOM_DIR) : undefined,
+    mediaDir: custom ? mediaDir(opts.dir) : undefined,
+  });
+  // Dựng riêng: composition tự chứa dữ liệu, không có biến; template: dữ liệu video truyền qua variables.json
+  let varsFile: string | undefined;
+  if (!custom) {
+    const vars = variablesFile(props, opts.debugSafeZone ?? false);
+    varsFile = join(stageDir, 'variables.json');
+    writeFileSync(varsFile, JSON.stringify(vars));
+    injectDefaults(join(stageDir, 'index.html'), vars);
+    injectMusicDucking(join(stageDir, 'index.html'), props.voiceWindows, props.totalSec);
+  }
 
   const lint = runHyperframes(['lint', stageDir]);
-  if (lint.status !== 0) throw new BuildError(`Template ${script.template} còn lỗi (hyperframes lint):\n${stripAnsi(lint.stdout + lint.stderr)}`);
+  if (lint.status !== 0) throw new BuildError(`${custom ? 'Bản dựng riêng' : `Template ${script.template}`} còn lỗi (hyperframes lint):\n${stripAnsi(lint.stdout + lint.stderr)}`);
   if (opts.check !== false) {
     const check = runHyperframes(['check', stageDir]);
     if (check.status !== 0) throw new BuildError(`Kiểm tra bố cục (hyperframes check) chưa đạt:\n${stripAnsi(check.stdout + check.stderr)}`);

@@ -1,0 +1,70 @@
+{
+  "concept": {
+    "title": "Ảnh chuyển khoản giả",
+    "bigIdea": "Bán cả ngày, tối kiểm tiền mới thấy thiếu: khoản 'đã chuyển' hoá ra là ảnh giả; SIPOS gom đơn hàng và doanh thu theo ca trên một màn hình để kiểm nhanh.",
+    "hookAngle": "truoc-sau"
+  },
+  "videoType": "so-sanh",
+  "style": "vui-nhon",
+  "template": "BeforeAfter",
+  "build": "custom",
+  "product": "sipos",
+  "hook": "Em chuyển rồi nha",
+  "scenes": [
+    {
+      "id": "c0-quay",
+      "role": "hook",
+      "onScreenText": "Em chuyển rồi nha",
+      "subText": "Dạ vâng ạ.",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 3.4
+    },
+    {
+      "id": "c1-toi-kiem",
+      "role": "problem",
+      "onScreenText": "Tối kiểm tiền: không thấy đâu",
+      "subText": "Tối kiểm tài khoản, đếm đi đếm lại vẫn thiếu một khoản.",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 7.7
+    },
+    {
+      "id": "c2-anh-gia",
+      "role": "problem",
+      "onScreenText": "Hóa ra là ảnh giả",
+      "subText": "Ảnh chuyển khoản mà không phải chuyển khoản thật.",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 6.2
+    },
+    {
+      "id": "c3-sipos",
+      "role": "solution",
+      "onScreenText": "Đơn hàng và doanh thu tự tổng hợp theo ca, trên một màn hình",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 6.1
+    },
+    {
+      "id": "c4-cta",
+      "role": "cta",
+      "onScreenText": "Nhắn tin để được tư vấn",
+      "subText": "SIPOS, giải pháp quản lý bán hàng trong thời đại AI.",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 7.6
+    }
+  ],
+  "cta": "Nhắn tin để được tư vấn",
+  "music": "mixkit-smile-1076",
+  "selfScore": {
+    "total": 90,
+    "notes": "Hook 22/25 (tình huống quầy quen thuộc, lời khách thật đời thường). Thông điệp 18/20 (một nỗi đau, một giải pháp đúng phạm vi brief: chỉ đơn hàng + doanh thu theo ca, không hứa chống gian lận). Đọc kịp 18/20 (31s thay 30s để lời thoại kịp đọc). Đúng brand/sự thật 19/20 (ảnh chuyển khoản mô phỏng, không tên ngân hàng). CTA 13/15."
+  }
+}

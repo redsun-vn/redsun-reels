@@ -13,6 +13,8 @@ import { resolveStyle } from './resolve-style.ts';
 import { factIssues } from './fact-check.ts';
 import { assetPaths } from './build-props.ts';
 import { clipIssues } from './clip-check.ts';
+import { mediaWarnings } from './brief-media.ts';
+import { customIssues } from './custom-video.ts';
 import { motionIssues, repetitionIssues } from './motion-check.ts';
 import { recentForBrief } from './recent-videos.ts';
 import { getOccasion, OCCASIONS } from '../../config/occasions.ts';
@@ -113,7 +115,8 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose } 
   issues.push(...hookIssues(script.hook));
   const roles = script.scenes.map((s) => s.role);
   if (!rolesMatch(roles, type.roles, type.repeatRole)) {
-    issues.push(err(`Thứ tự cảnh ${roles.join(' → ')} chưa đúng mẫu của "${type.name}": ${type.roles.join(' → ')}${type.repeatRole ? ` (được lặp "${type.repeatRole}")` : ''}.`));
+    // Dựng riêng tự kể chuyện theo cảnh của brief: thứ tự mẫu chỉ là gợi ý
+    issues.push((script.build === 'custom' ? warn : err)(`Thứ tự cảnh ${roles.join(' → ')} chưa đúng mẫu của "${type.name}": ${type.roles.join(' → ')}${type.repeatRole ? ` (được lặp "${type.repeatRole}")` : ''}.`));
   }
   if (script.scenes[0].onScreenText !== script.hook.replace(/\n/g, ' ')) {
     issues.push(err('Chữ của cảnh đầu (hook) phải trùng với trường "hook" (xuống dòng thay bằng dấu cách).'));
@@ -177,9 +180,16 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose } 
   if (texts.some((t) => t !== t.normalize('NFC'))) issues.push(err('Có chữ chưa ở dạng Unicode NFC (dấu tiếng Việt bị tách). Gõ lại hoặc chuẩn hóa NFC.'));
 
   // Chống bịa: số, giá, tên khách, quote phải có trong brief
-  issues.push(...factIssues(script, readBriefFile(dir).body));
-  issues.push(...motionIssues(script));
-  issues.push(...repetitionIssues(script, recentForBrief(dir)));
+  const briefBody = readBriefFile(dir).body;
+  issues.push(...factIssues(script, briefBody));
+  if (script.build === 'custom') {
+    // Dựng riêng: bố cục/chuyển động do composition quyết định; kiểm composition (cấu trúc, nhạc, chống bịa chữ)
+    const totalSec = script.scenes.reduce((sum, s) => sum + s.durationSec, 0);
+    issues.push(...customIssues(dir, script, briefBody, Math.round(totalSec * 1000) / 1000));
+  } else {
+    issues.push(...motionIssues(script));
+    issues.push(...repetitionIssues(script, recentForBrief(dir)));
+  }
   if (brief.occasion && !getOccasion(brief.occasion)) {
     issues.push(warn(`Dịp lễ "${brief.occasion}" chưa có trong lịch, nên không tự chọn phong cách theo dịp. Có: ${OCCASIONS.map((o) => o.id).join(', ')}.`));
   }
@@ -204,6 +214,7 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose } 
   }
   // Độ dài / tiếng của clip: chỉ khi mọi file đã có
   if (issues.length === assetCountBefore) issues.push(...clipIssues(script));
+  issues.push(...mediaWarnings(dir, script, ASSET_EXTENSIONS).map(warn));
 
   // Nhạc
   try {

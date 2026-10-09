@@ -170,6 +170,8 @@ Không cần Node hệ thống: `./reel` tự dùng Node trong `~/.redsun-reels`
 | `pnpm preview [slug]` | Mở bản xem thử ở cổng 3002 (không có slug: composition trống). Tắt bằng `pnpm preview --stop` |
 | `pnpm render <slug>` | Xuất `out/<slug>.mp4`: chuẩn hóa −14 LUFS, kiểm output spec, ghi `cost.json` |
 | `pnpm make <slug>` | validate → build → render |
+| `pnpm snap <slug> [--at=…]` | Dựng + `hyperframes check` + chụp khung hình `out/snap/<slug>/` (soát video dựng riêng) |
+| `pnpm hinh <slug> [file…]` | Chép hình/clip MKT gửi vào `briefs/<slug>/hinh/`, đổi HEIC → JPG, tên không dấu; liệt kê hình/clip · dọc/ngang · số giây |
 | `pnpm lint:brand` | Chặn màu, font, cỡ chữ viết cứng trong `templates/` và `brand/styles/` |
 | `pnpm lint:music` | Kiểm thư viện nhạc: schema, file, license (cấm "NC") |
 | `pnpm test` | Unit test (Vitest) |
@@ -204,6 +206,7 @@ scripts/          lệnh pnpm + lib/ (validate, build-props, stage-project, rend
 runtime/gsap/     GSAP local
 nhac-tu-tim/      (gitignore) nhạc MKT tự tải + ảnh chụp license, dùng với pnpm music:add
 briefs/<slug>/    brief.md, concepts.md, script.json, props.json, review.md, cost.json, post.md
+                  hinh/ (gitignore) hình/clip MKT gửi cho video đó
 tests/            unit test, fixtures/briefs/ (21 brief mẫu), baseline/ (ảnh chuẩn render test)
 docs/             decisions, spike-report, video-type-guide, video-style-catalog, music-sources
 plans/            plan theo milestone, báo cáo, journal

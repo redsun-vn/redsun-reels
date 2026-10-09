@@ -7,6 +7,7 @@
   "videoType": "chuc-mung-dip-le",
   "style": "lang-man",
   "template": "Promo",
+  "build": "custom",
   "product": "sipos",
   "hook": "Chị chủ quán, tối nay\nlại ngồi [cộng sổ]?",
   "scenes": [

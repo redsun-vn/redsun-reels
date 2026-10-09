@@ -86,6 +86,12 @@ export const ScriptSchema = z.object({
   videoType: z.string().min(1),
   style: z.enum(STYLE_IDS),
   template: z.enum(TEMPLATE_IDS),
+  /**
+   * Cách dựng: "custom" = Claude viết composition riêng ở briefs/<tên>/dung-rieng/index.html (mặc định cho video mới,
+   * docs/decisions.md §18); "template" = mẫu có sẵn trong templates/<template>/ (dự phòng). `template` vẫn quy định
+   * thứ tự cảnh theo loại video. Bỏ trống = "template".
+   */
+  build: z.enum(['template', 'custom']).optional(),
   product: z.enum(PRODUCT_IDS),
   /** Chữ hook 3 giây đầu. Xuống dòng bằng "\n" (tối đa 2 dòng, ≤ 40 ký tự mỗi dòng). */
   hook: z.string().min(1),

@@ -225,7 +225,8 @@ body {
 .kit-dim {
   position: absolute;
   inset: 0;
-  background: color-mix(in srgb, var(--color-background) 55%, transparent);
+  /* 70%: ảnh MKT gửi thường sáng (ảnh chụp màn hình, ảnh ban ngày); 55% làm chữ trắng/màu nhấn dưới 3:1 */
+  background: color-mix(in srgb, var(--color-background) 70%, transparent);
 }
 
 /* Phone mockup (FeatureLaunch) */

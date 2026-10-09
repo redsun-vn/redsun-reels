@@ -18,9 +18,9 @@ Một video từ lúc có nội dung tới lúc có file MP4 mất khoảng 10�
 ## 2. Thư mục bạn cần biết
 | Thư mục | Để làm gì |
 |---|---|
-| `assets/sipos`, `assets/bos`, `assets/webino`, `assets/redsun` | **Bạn bỏ ảnh, clip** của từng sản phẩm vào đây |
 | `nhac-tu-tim` | **Bạn bỏ nhạc tự tìm** + ảnh chụp license vào đây ([mục 6](#6-nhạc)) |
-| `briefs/<tên-video>` | Claude lưu brief, ý tưởng, kịch bản của từng video. Không cần mở |
+| `briefs/<tên-video>/hinh` | **Bạn bỏ ảnh, clip** cho video đó vào đây ([mục 4](#4-chuẩn-bị-hình-ảnh-clip)) |
+| `briefs/<tên-video>` | Claude lưu brief, ý tưởng, kịch bản của từng video. Ngoài thư mục `hinh`, không cần mở |
 | `out` | **Video đã xuất** (`<tên-video>.mp4`) |
 
 Các thư mục khác là của dev, đừng sửa hay xoá.
@@ -34,15 +34,31 @@ Claude **không tự nghĩ ra** con số, giá, ưu đãi, tính năng hay lời
 - Khách hàng, người nói trong clip: tên, cửa hàng hoặc chức danh, và **đã đồng ý** xuất hiện.
 
 ## 4. Chuẩn bị hình ảnh, clip
-- Bỏ vào `assets/<sản-phẩm>/`, vd. `assets/sipos/kiem-kho-1.png`. Tên file **không dấu, không cách**: dùng chữ thường và dấu gạch ngang.
-- Ảnh: png hoặc jpg. Clip: mp4 hoặc mov.
-- **Quay, chụp dọc** (9:16). Chừa trống mép trên, mép dưới và mép phải: logo, chữ, nút của app sẽ đè lên đó. Clip quay ngang sẽ bị cắt hai bên (Claude sẽ cảnh báo).
-- Quay màn hình điện thoại: dùng tính năng ghi màn hình có sẵn của máy, thao tác chậm.
+Video có hình người thật, quán, màn hình phần mềm sẽ sống động hơn hẳn video chỉ có chữ. Có hình thì gửi, Claude tự xem từng hình và đặt vào cảnh hợp nghĩa (người đang vất vả ở câu mở đầu, người vui ở cảnh lợi ích, ảnh màn hình trong khung điện thoại…). Không có hình thì Claude làm bản chỉ có chữ.
+
+**Cách gửi** (chọn một):
+- **Kéo ảnh, clip thẳng vào khung chat** với Claude khi nhờ làm video. Claude tự chép vào đúng chỗ.
+- Hoặc bỏ vào thư mục `briefs/<tên-video>/hinh/` (Claude báo tên video khi tạo), rồi nói "mình đã bỏ hình vào, làm lại video".
+
+Tên file gì cũng được, ảnh iPhone (HEIC) cũng được: máy tự đổi.
+
+**Nên chụp, quay gì**
+- Người thật đang làm việc: chủ quán ghi sổ, nhân viên tính tiền, khách đang chọn hàng. Nhân viên công ty đóng vai cũng được.
+- Ảnh chụp / quay màn hình phần mềm đúng tính năng video nói tới.
+- Quán, sản phẩm, không gian cửa hàng.
+
+**Cách chụp, quay**
+- **Dọc** (9:16). Chừa trống mép trên, mép dưới và mép phải: logo, chữ, nút của app sẽ đè lên đó. Hình ngang sẽ bị cắt hai bên (Claude sẽ cảnh báo).
+- Đủ sáng, không rung. Quay màn hình điện thoại: dùng tính năng ghi màn hình có sẵn của máy, thao tác chậm.
 - Chuyển file từ điện thoại qua **AirDrop** hoặc cáp. Đừng gửi qua Zalo, Messenger: các app này nén làm mờ hình.
-- Chỉ dùng ảnh, clip của công ty hoặc tự chụp. Không lấy ảnh trên mạng.
+
+**Quy định**
+- Chỉ dùng ảnh, clip của công ty hoặc tự chụp. Không lấy ảnh trên mạng, không dùng ảnh tạo bằng AI.
+- Người trong hình (khách, nhân viên) phải **đồng ý** xuất hiện. Muốn ghi là khách hàng, ghi tên, lời khách: phải nói rõ với Claude, Claude không tự gán.
+- Hình chỉ nằm trên máy bạn, không đưa lên kho mã chung.
 - Clip người nói trước camera: cách quay ở [hướng dẫn thử nghiệm, mục 4](huong-dan-thu-nghiem-mkt.md#4-quay-clip-người-nói-cho-tình-huống-7).
 
-Chưa có hình? Nói "làm bản chỉ có chữ". Claude cũng có thể viết **danh sách cảnh cần quay** cho bạn.
+Muốn biết nên chụp gì cho đúng kịch bản: nói "gợi ý cảnh cần chụp", Claude viết **danh sách cảnh cần quay**.
 
 ## 5. Chọn loại video và phong cách
 Không chắc loại nào? Cứ kể việc muốn làm, Claude sẽ đề xuất.

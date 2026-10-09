@@ -349,3 +349,25 @@ Nam: "khi làm cùng 1 loại nội dung 20/10, 3 video… phong cách, animatio
   4. Dịp lễ có `alts` (phong cách xoay vòng, `config/occasions.ts`, `./reel info dip-le`); skill chọn khác video gần đây cùng dịp / cùng sản phẩm.
 - Kết quả trên 3 video 20/10: SIPOS lãng mạn (căn trái, gạch xoá, khoanh tròn, hoa), Webino vui nhộn (hook chữ khổng lồ, nhãn dán, lấp lánh, đẩy nảy), REDSUN BOS sang trọng (căn giữa, giãn → khít, sáng rực, qua màn đen).
 - **Còn giới hạn**: cảnh ưu đãi của mẫu Promo vẫn chung khuôn (chữ trên, huy hiệu giữa). Cần thêm biến thể bố cục khối ưu đãi (huy hiệu góc, giá cạnh chữ…).
+
+## 17. Hình minh hoạ, yếu tố con người: lấy từ hình MKT gửi (2026-10-09)
+MKT góp ý sau khi thử: "video xuất ra từ script vẫn còn đơn điệu, chưa có hình ảnh minh họa cụ thể với chưa có yếu tố con người". Đã đưa 4 hướng (thư viện hình nội bộ, nhân viên đóng vai theo danh sách cảnh, ảnh/clip Pexels/Pixabay qua API, ảnh AI). Nam chọn: **hình nội bộ — "nếu MKT kéo hình vào brief thì nhận từ đó, không thì thôi"**.
+- **Chỗ để**: `briefs/<tên-video>/hinh/` (`./reel new` tạo sẵn). MKT kéo hình vào khung chat thì Claude chạy `./reel hinh <tên-video> <file…>` để chép vào.
+- **`./reel hinh`**: đổi ảnh iPhone HEIC → JPG bằng `sips` (có sẵn trên macOS; bản gốc giữ ở `hinh/.goc/`), đổi tên file không dấu, liệt kê hình/clip · dọc/ngang · số giây.
+- **Claude xếp hình theo nghĩa cảnh** (skill `tao-reel` bước 4): mở xem từng hình; người vất vả → hook/nỗi đau, người vui → lợi ích; ảnh màn hình phần mềm → khung `phone`, **không** để kín khung (thử thật: chữ trong ảnh đè chữ video, rất rối); 2–6 ảnh sự kiện → `montage`. Không có hình → bản chỉ có chữ, không hỏi.
+- **Validate** thêm cảnh báo: hình đã gửi chưa dùng, hình ngang ở cảnh kín khung (bị cắt hai bên), file không đọc được (HEIC chưa đổi, PDF…).
+- **Lớp tối dưới chữ** (`.kit-dim`) 55% → 70% màu nền: thử với ảnh chụp màn hình sáng, chữ trắng và chữ màu nhấn chỉ 2.81–2.88:1 (cần 3:1), check chặn xuất video.
+- **Riêng tư**: `briefs/*/hinh/` trong `.gitignore` (repo công khai, hình có thể có mặt khách, nhân viên). Không gọi người trong hình là khách hàng, không đặt tên, không gán lời nói nếu brief không ghi.
+- **Không làm**: ảnh stock qua API, ảnh AI (giữ REQUIREMENTS §2.3). Có thể mở lại nếu hình nội bộ không đủ.
+
+## 18. Dựng riêng mỗi video (2026-10-09)
+MKT: video từ mẫu có sẵn "quá tệ". Phép thử A/B trên SIPOS 20/10 (`out/so-sanh-sipos-20-10.mp4`: bản hiện tại · A nhịp chữ theo khuôn · B dựng riêng). Nam chọn **B**: "để video có thể thoải mái sáng tạo"; "token không phải vấn đề, chất lượng là ưu tiên".
+- **Cách dựng mới**: `script.json` `"build": "custom"` → Claude (Opus 5.5) viết composition HyperFrames riêng ở `briefs/<tên>/dung-rieng/index.html`. Build/preview/render/snap dùng composition này; kiểm output như cũ (1080×1920, 30fps, −14 LUFS). Bỏ trống `build` = mẫu cũ (dự phòng).
+- **Bộ dụng cụ** `templates/_rieng/` (`rieng.css`, `rieng.js` = `RS`): khung điện thoại, màn hình app, giấy, giấy nhớ, hoá đơn, con dấu, bong bóng thoại, phụ đề, nhân vật phẳng SVG (đổi nét mặt), hạt trang trí, hàm fit chữ, đánh máy, vẽ nét, đếm số. Màu đạo cụ thêm vào `brand/brand.css` (`--prop-*`, `--color-accent-glow`).
+- **Chống bịa trong composition** (`scripts/lib/custom-video.ts`, chạy trong validate): chữ hiển thị viết tĩnh trong HTML; số trên màn hình không có trong brief/kịch bản là lỗi, trừ đạo cụ minh hoạ `data-minh-hoa` (số mẫu, có cảnh báo); dòng JS gán chữ phải ghi `// minh-hoa`; mọi câu kịch bản phải có trên màn hình; cấm tải mạng, font ngoài Montserrat, sai thời lượng, sai nhạc.
+- **Tự soát bằng mắt**: `./reel snap <tên>` dựng + `hyperframes check` + chụp khung hình (`out/snap/<tên>/contact-sheet*.jpg`).
+- Thứ tự cảnh theo loại video chỉ còn là cảnh báo với video dựng riêng (kể chuyện theo cảnh của brief).
+- **Lệch REQUIREMENTS §2.3** ("chế độ sáng tạo tự do" để phase sau): Nam quyết định 2026-10-09. Vẫn không dùng creation workflow của HyperFrames (chúng tự tạo project/BRIEF.md riêng); dùng các skill kỹ thuật hyperframes-core/animation/creative để viết composition.
+- Video đầu tiên theo cách mới: SIPOS 20/10 (bản B), SIPOS "Ảnh chuyển khoản giả" (brief IDEA 2 của Nam, 31s thay 30s để lời thoại kịp đọc).
+- Còn làm: skill `dung-video` cho Claude trên máy MKT, cập nhật luồng tự động `tao-reel`, làm lại Webino/BOS 20/10 và SIPOS Hotel OTA (plan `plans/261009-1701-dung-rieng/`).
+

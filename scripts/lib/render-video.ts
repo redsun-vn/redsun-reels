@@ -34,7 +34,8 @@ export function renderVideo(built: BuiltVideo, opts: { briefDir?: string; qualit
 function renderInner(built: BuiltVideo, opts: { briefDir?: string; quality?: 'draft' | 'standard' }, finalFile: string, rawFile: string, tmpFile: string): RenderResult {
 
   const t0 = Date.now();
-  const r = runHyperframes(['render', built.stageDir, '--variables-file', built.varsFile, '--strict-variables', '--strict', '-o', rawFile, '--quality', opts.quality ?? 'standard']);
+  const vars = built.varsFile ? ['--variables-file', built.varsFile, '--strict-variables'] : [];
+  const r = runHyperframes(['render', built.stageDir, ...vars, '--strict', '-o', rawFile, '--quality', opts.quality ?? 'standard']);
   const renderSec = (Date.now() - t0) / 1000;
   const log = stripAnsi(r.stdout + r.stderr);
   if (r.status !== 0 || !existsSync(rawFile)) throw new Error(`Render lỗi:\n${log.slice(-3000)}`);
