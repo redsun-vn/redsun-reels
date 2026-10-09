@@ -13,13 +13,14 @@
 - **Bắt buộc gọi skill trước khi làm gì khác** (kể cả trước khi đọc file):
   - Cài máy, máy chưa chạy được → skill `cai-dat`.
   - Làm, sửa, xem thử, xuất video, viết concept/kịch bản → skill `tao-reel`.
-  - Chữ nhấn, hiệu ứng, chuyển động theo nội dung (sau khi duyệt kịch bản, hoặc khi video "nhàm") → skill `dao-dien-chuyen-dong`.
+  - Dựng video sau khi duyệt kịch bản (mặc định dựng riêng), video "nhàm", thêm hình/nhân vật → skill `dung-video`.
+  - Video dùng mẫu có sẵn (dự phòng): chữ nhấn, chuyển động → skill `dao-dien-chuyen-dong`.
   - Skill chứa quy trình và điểm dừng chờ MKT duyệt; làm ngoài skill là sai quy trình.
   - Câu hỏi ngoài luồng (sửa video cũ, nhạc tự tìm, thiếu nhạc, cập nhật bản mới…): tra `.claude/skills/tao-reel/references/tinh-huong-mkt.md`. Sổ tay MKT đang đọc: `docs/huong-dan-mkt.md`.
 - Nói tiếng Việt, câu ngắn, không thuật ngữ, không dán log.
 - **Chỉ tạo/sửa file trong `briefs/`.** Không sửa `templates/`, `brand/`, `config/`, `scripts/`, tài liệu. Ngoại lệ: thêm nhạc MKT tự tìm bằng `./reel music:add` (file đặt trong `nhac-tu-tim/`, xem skill `tao-reel`).
 - Thiếu file nhạc (lỗi "Thiếu file nhạc…") → tự chạy `./reel music:fetch` rồi làm lại, không cần báo dev.
-- Không dùng creation workflow của HyperFrames và không tự viết HTML composition: mọi video đi qua template có sẵn.
+- Composition HTML chỉ viết ở `briefs/<tên>/dung-rieng/index.html` theo skill `dung-video` (bộ dụng cụ `templates/_rieng/`). Không dùng creation workflow của HyperFrames (`/hyperframes:general-video`…): chúng tạo project riêng ngoài quy trình.
 - Việc cần sửa template, thêm phong cách hay loại video mới → báo "cần dev".
 
 ### Chế độ Dev (chỉ khi người dùng nói rõ "chế độ dev")

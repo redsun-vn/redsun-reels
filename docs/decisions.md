@@ -369,5 +369,7 @@ MKT: video từ mẫu có sẵn "quá tệ". Phép thử A/B trên SIPOS 20/10 (
 - Thứ tự cảnh theo loại video chỉ còn là cảnh báo với video dựng riêng (kể chuyện theo cảnh của brief).
 - **Lệch REQUIREMENTS §2.3** ("chế độ sáng tạo tự do" để phase sau): Nam quyết định 2026-10-09. Vẫn không dùng creation workflow của HyperFrames (chúng tự tạo project/BRIEF.md riêng); dùng các skill kỹ thuật hyperframes-core/animation/creative để viết composition.
 - Video đầu tiên theo cách mới: SIPOS 20/10 (bản B), SIPOS "Ảnh chuyển khoản giả" (brief IDEA 2 của Nam, 31s thay 30s để lời thoại kịp đọc).
-- Còn làm: skill `dung-video` cho Claude trên máy MKT, cập nhật luồng tự động `tao-reel`, làm lại Webino/BOS 20/10 và SIPOS Hotel OTA (plan `plans/261009-1701-dung-rieng/`).
+- Skill `dung-video` (Opus 5.5): quy trình storyboard → composition → `./reel snap` tự soát → xuất; luồng tự động `tao-reel` gọi skill này mặc định, mẫu cũ + `dao-dien-chuyen-dong` là dự phòng.
+- **Lỗi vỡ chữ Việt phát hiện khi chạy render test** ("chá»§ quÃ¡n"): thuộc tính biến trên `<html>` dài vài KB đẩy `<meta charset>` ra khỏi 1024 byte đầu, Chrome phải đoán bảng mã. Sửa: bước dựng chèn `<meta charset="utf-8">` ngay sau doctype (BOM không dùng được: HyperFrames ghép HTML, BOM đẩy khung hình lệch). Composition dựng riêng bị validate bắt khai charset trong 1024 byte đầu.
+- Còn làm: làm lại Webino/BOS 20/10 và SIPOS Hotel OTA theo cách mới (plan `plans/261009-1701-dung-rieng/`).
 

@@ -1,6 +1,6 @@
 ---
 name: tao-reel
-description: Dẫn nhân viên marketing làm một video Reel/TikTok/Shorts dọc cho SIPOS, Redsun BOS, Webino hoặc Redsun, từ brief đến file MP4, bằng mẫu video có sẵn của dự án redsun-reels. Dùng khi người dùng gõ /tao-reel, nói "làm reel…", "làm video…", "tạo video TikTok…", hoặc muốn sửa, xem thử, xuất một video trong thư mục briefs/.
+description: Dẫn nhân viên marketing làm một video Reel/TikTok/Shorts dọc cho SIPOS, Redsun BOS, Webino hoặc Redsun, từ brief đến file MP4 (mặc định dựng riêng từng video qua skill dung-video, mẫu có sẵn là dự phòng). Dùng khi người dùng gõ /tao-reel, nói "làm reel…", "làm video…", "tạo video TikTok…", hoặc muốn sửa, xem thử, xuất một video trong thư mục briefs/.
 model: claude-opus-5-5
 ---
 
@@ -32,7 +32,7 @@ Nam chốt 2026-10-09: "MKT chỉ cần đưa brief, sau đó đợi output vide
 2. **Loại video + phong cách** (bước 2): tự chọn. Chạy `./reel info gan-day` trước: **video mới phải khác** các video gần đây cùng dịp hoặc cùng sản phẩm — đổi phong cách (dịp lễ: xoay vòng theo `./reel info dip-le`), đổi loại video nếu hợp. Ghi phong cách đã chọn vào `style` của brief.
 3. **Concept** (bước 3): viết 3 concept vào `concepts.md`, **tự chọn** concept tốt nhất theo thang tự chấm, ghi lý do ở mục `## Lựa chọn`.
 4. **Kịch bản** (bước 5): viết, `./reel validate`, tự chấm ≥ 85.
-5. **Đạo diễn chuyển động**: gọi skill `dao-dien-chuyen-dong` (chạy tự động, không chờ MKT). Validate không còn cảnh báo trùng với video gần đây.
+5. **Dựng video**: mặc định **dựng riêng** — ghi `"build": "custom"` vào `script.json` rồi gọi skill `dung-video` (thiết kế + viết composition riêng, tự soát khung hình bằng `./reel snap`). Nam chốt 2026-10-09 (decisions §18). Chỉ dùng mẫu có sẵn (bỏ `build`, gọi `dao-dien-chuyen-dong`) khi MKT cần gấp hoặc dựng riêng lỗi mãi không qua.
 6. **Xuất** (bước 8): `./reel render <tên-video>` rồi `./reel post <tên-video>`. Lỗi kịch bản/nhạc thì tự sửa và xuất lại; lỗi máy thì theo mục "Khi có lỗi".
 7. **Báo MKT**: đường dẫn video `out/<tên-video>.mp4`, thời lượng; bảng ngắn **Cảnh · Chữ trên màn hình** + concept đã chọn, phong cách, nhạc; caption trong `post.md`. Hỏi: "Bạn xem video, muốn sửa gì cứ nói." Sửa theo góp ý (bước 7) rồi xuất lại.
 
@@ -111,9 +111,10 @@ Nam chốt 2026-10-09: hình minh hoạ, yếu tố con người lấy từ hìn
 - Trình bày cho MKT bảng: **Cảnh · Vai trò · Hình ảnh · Chữ trên màn hình · Chuyển cảnh · Thời lượng**. Trên bảng ghi: loại video, phong cách, nhạc, tổng thời lượng, điểm tự chấm.
 - Phong cách `vui-nhon` hoặc câu có chơi chữ: nhắc MKT đọc lại câu chữ (hài kiểu Việt cần người Việt chỉnh).
 
-### 5b. Đạo diễn chuyển động — **gọi skill `dao-dien-chuyen-dong`**
-- MKT duyệt bảng kịch bản xong → gọi skill `dao-dien-chuyen-dong`: đánh dấu chữ cần nhấn bằng `[ ]` và chọn chuyển động theo nghĩa từng cảnh (`motion`). Không bỏ bước này: thiếu nó video đều đều, nhàm.
-- MKT xem thử thấy nhàm, hiệu ứng không hợp chủ đề, muốn nhấn chỗ khác → gọi lại skill này.
+### 5b. Dựng video — **gọi skill `dung-video`** (mặc định)
+- Kịch bản duyệt xong → `"build": "custom"` trong `script.json`, gọi skill `dung-video`: thiết kế từng cảnh như một thế giới (người, vật, động tác hợp nghĩa câu), viết `briefs/<tên>/dung-rieng/index.html`, `./reel snap` tự soát đến khi đạt.
+- Brief kiểu kịch bản chi tiết (cảnh, hình, chữ, lời nói, thời gian): giữ đúng cảnh và chữ; lời nói thành bong bóng thoại/phụ đề; nếu thời gian brief không đủ để đọc (validate báo), kéo dài tối thiểu và báo MKT.
+- **Dự phòng — mẫu có sẵn**: bỏ `build`, gọi skill `dao-dien-chuyen-dong` (chữ nhấn `[ ]` + `motion`).
 
 ### 6. Xem thử
 - MKT đồng ý → `./reel preview <tên-video>`. Bảo MKT mở `http://localhost:3002` để xem.

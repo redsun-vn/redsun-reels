@@ -9,7 +9,8 @@ Schema chuẩn: `config/script.schema.ts`. `./reel validate <tên-video>` kiểm
 | `concept` | `{ title, bigIdea, hookAngle }`. `hookAngle` là một trong: `con-so`, `lat-nguoc`, `truoc-sau`, `thuong-hieu`, `sap-thay-doi`, `cau-hoi-noi-dau`, `quote` |
 | `videoType` | id loại video (`./reel info`) |
 | `style` | id phong cách đã dựng được (`./reel info`) |
-| `template` | Template của loại video (`./reel info <loại>`) |
+| `template` | Template của loại video (`./reel info <loại>`); với dựng riêng chỉ để quy định thứ tự cảnh gợi ý |
+| `build` | `"custom"` = dựng riêng (mặc định cho video mới, composition ở `dung-rieng/index.html`, skill `dung-video`); bỏ trống = mẫu có sẵn |
 | `product` | `sipos` \| `bos` \| `webino` \| `redsun` |
 | `hook` | Chữ hook, xuống dòng bằng `\n`: tối đa 2 dòng, mỗi dòng ≤ 40 ký tự |
 | `scenes[]` | Danh sách cảnh, 2–12 cảnh |
