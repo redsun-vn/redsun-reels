@@ -1,0 +1,69 @@
+{
+  "concept": {
+    "title": "Hết thức khuya chốt sổ",
+    "bigIdea": "Kho, thu chi, khách quen gọn trong một app, chị không phải ngồi cộng sổ.",
+    "hookAngle": "cau-hoi-noi-dau"
+  },
+  "videoType": "chuc-mung-dip-le",
+  "style": "lang-man",
+  "template": "Promo",
+  "product": "sipos",
+  "hook": "Chị chủ quán, tối nay\nlại ngồi [cộng sổ]?",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Chị chủ quán, tối nay lại ngồi [cộng sổ]?",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 4.2,
+      "motion": {
+        "enter": "type",
+        "emphasis": "strike",
+        "why": "Nỗi đau ghi sổ: chữ đánh máy như đang ghi, rồi gạch xoá \"cộng sổ\" (việc SIPOS bỏ đi)."
+      }
+    },
+    {
+      "id": "c1-loi-ich",
+      "role": "solution",
+      "onScreenText": "SIPOS lo [kho], [thu chi], [khách quen]",
+      "subText": "Mừng 20/10, chị có thêm thời gian cho mình",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 6.9,
+      "promo": {
+        "badge": "-20%",
+        "deadline": "Khi mua gói giải pháp"
+      },
+      "motion": {
+        "enter": "rise",
+        "emphasis": "circle",
+        "decor": "flowers",
+        "transition": "zoom-through",
+        "why": "Khoanh tròn 3 việc SIPOS lo như bút đỏ đánh dấu; hoa 20/10 bung khi ưu đãi hiện."
+      }
+    },
+    {
+      "id": "c2-cta",
+      "role": "cta",
+      "onScreenText": "Tìm hiểu thêm tại [sipos.vn]",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 3.9,
+      "motion": {
+        "emphasis": "marker",
+        "transition": "blur-crossfade",
+        "why": "Bút dạ quét tên miền để người xem nhớ địa chỉ."
+      }
+    }
+  ],
+  "cta": "Tìm hiểu thêm tại [sipos.vn]",
+  "music": "mixkit-it-s-love-834",
+  "selfScore": {
+    "total": 93,
+    "notes": "Hook 22/25 (câu hỏi nỗi đau đúng chị chủ quán, 2 dòng ≤ 40 ký tự). Thông điệp 18/20 (một ý: SIPOS lo sổ sách; lời chúc 20/10 ở dòng phụ). Đọc kịp 19/20 (đủ công thức; cảnh 2 có chữ chính + dòng phụ + badge nên hơi nhiều chữ). Đúng brand/sự thật 20/20 (kho, thu chi, khách quen lấy từ profile SIPOS; ưu đãi đúng lời Nam). CTA 14/15 (CTA mặc định sipos.vn)."
+  }
+}

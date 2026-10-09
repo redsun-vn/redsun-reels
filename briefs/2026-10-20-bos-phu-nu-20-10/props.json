@@ -1,0 +1,91 @@
+{
+  "template": "Promo",
+  "product": "bos",
+  "logoOnDark": "brand/logos/bos/bos-logo-nen-toi.png",
+  "logoOnLight": "brand/logos/bos/bos-logo-nen-sang.png",
+  "style": {
+    "id": "sang-trong",
+    "transition": {
+      "type": "blur-crossfade",
+      "duration": 0.7,
+      "ease": "sine.inOut"
+    },
+    "text": {
+      "enter": "track",
+      "duration": 0.8,
+      "ease": "power2.out",
+      "wordStagger": 0.06
+    },
+    "kenBurns": 1.04,
+    "accent": "underline",
+    "overlay": "vignette",
+    "background": "gradient",
+    "textFx": "none",
+    "ctaPulse": false,
+    "musicMood": [
+      "sang-trong",
+      "dien-anh"
+    ]
+  },
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "text": "20/10 gửi [nữ thủ lĩnh]: cả công ty trong một chỗ",
+      "visual": {
+        "type": "text"
+      },
+      "motion": {
+        "layout": "center",
+        "enter": "track",
+        "emphasis": "glow",
+        "decor": "flowers",
+        "why": "Lời chúc trang trọng: chữ giãn rồi khít lại, \"nữ thủ lĩnh\" sáng rực, hoa 20/10."
+      },
+      "start": 0,
+      "duration": 5
+    },
+    {
+      "id": "c1-loi-ich",
+      "role": "solution",
+      "text": "Bán hàng, kho, tài chính, nhân sự [một chỗ]",
+      "sub": "REDSUN BOS: không còn sự rời rạc",
+      "visual": {
+        "type": "text"
+      },
+      "promo": {
+        "badge": "-20%",
+        "deadline": "Khi mua gói giải pháp"
+      },
+      "motion": {
+        "layout": "left",
+        "enter": "blur",
+        "emphasis": "underline",
+        "transition": "dip-black",
+        "why": "Cả công ty về một nơi: gạch chân \"một chỗ\", nhịp chậm sang trọng."
+      },
+      "start": 5,
+      "duration": 6.9
+    },
+    {
+      "id": "c2-cta",
+      "role": "cta",
+      "text": "Yêu cầu tư vấn tại [redsun.vn]",
+      "visual": {
+        "type": "logo"
+      },
+      "motion": {
+        "emphasis": "marker",
+        "transition": "blur-crossfade",
+        "why": "Bút dạ quét tên miền."
+      },
+      "start": 11.9,
+      "duration": 3.1
+    }
+  ],
+  "totalSec": 15,
+  "seed": 175,
+  "occasion": "20-10",
+  "numberSteps": false,
+  "voiceWindows": []
+}

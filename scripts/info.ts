@@ -4,11 +4,14 @@
  * ./reel info thoi-luong "<chữ>" ["<dòng phụ>"]  — thời lượng tối thiểu của một cảnh
  * ./reel info dip-le                   — lịch dịp lễ → phong cách mặc định
  * ./reel info video                    — các video MKT đã làm (briefs/, trừ _example): bước đang làm, đã xuất chưa
+ * ./reel info gan-day [số]             — video làm gần đây (7 ngày) + chữ ký chuyển động, để video mới chọn khác
  * ./reel info nhac [phong-cách]         — bài nhạc hợp phong cách (bài dùng được cho video thật đứng trước)
  * Dùng cho skill tao-reel khi viết kịch bản.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { readBriefFile } from './lib/brief.ts';
+import { signatureOf } from './lib/motion-check.ts';
+import { recentVideos } from './lib/recent-videos.ts';
 import { MusicManifestSchema, usableSec } from '../config/music-manifest.ts';
 import { join } from 'node:path';
 import { OCCASIONS } from '../config/occasions.ts';
@@ -40,7 +43,22 @@ await runCommand(() => {
 
   if (arg === 'dip-le') {
     console.log('DỊP LỄ (ghi vào brief: occasion: <mã>) — nên đăng trước 5–10 ngày và đúng ngày:');
-    for (const o of OCCASIONS) console.log(`  ${o.id.padEnd(18)} ${o.name} — ${o.date} — phong cách ${o.style}`);
+    for (const o of OCCASIONS) console.log(`  ${o.id.padEnd(18)} ${o.name} — ${o.date} — phong cách ${o.style} (xoay vòng: ${o.alts.join(', ')})`);
+    return;
+  }
+
+  if (arg === 'gan-day') {
+    const list = recentVideos(join(REPO_ROOT, 'briefs'), { limit: Number(rest[0]) || 10 });
+    if (!list.length) {
+      console.log('Chưa có video nào trong 7 ngày qua.');
+      return;
+    }
+    console.log('VIDEO GẦN ĐÂY (mới nhất trước) — video mới nên KHÁC phong cách / bố cục / kiểu nhấn với các video cùng dịp, cùng sản phẩm:');
+    for (const v of list) {
+      const sig = signatureOf(v.script);
+      console.log(`  ${v.name}: ${v.script.product} · ${v.script.videoType} · ${sig.template} · ${sig.style}`);
+      console.log(`      cảnh (bố cục/hiện chữ/nhấn/hoạt cảnh/chuyển cảnh): ${sig.scenes.join(' | ')}`);
+    }
     return;
   }
 

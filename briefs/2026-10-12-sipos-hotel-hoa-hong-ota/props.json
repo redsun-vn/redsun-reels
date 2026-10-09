@@ -1,0 +1,103 @@
+{
+  "template": "FeatureLaunch",
+  "product": "sipos",
+  "logoOnDark": "brand/logos/sipos/sipos-logo-trang.png",
+  "logoOnLight": "brand/logos/sipos/sipos-logo-chuan.svg",
+  "style": {
+    "id": "toi-gian",
+    "transition": {
+      "type": "vertical-push",
+      "duration": 0.45,
+      "ease": "power3.inOut"
+    },
+    "text": {
+      "enter": "rise",
+      "duration": 0.5,
+      "ease": "power3.out",
+      "wordStagger": 0.04
+    },
+    "kenBurns": 1.05,
+    "accent": "underline",
+    "overlay": "none",
+    "background": "flat",
+    "textFx": "none",
+    "ctaPulse": false,
+    "musicMood": [
+      "toi-gian",
+      "robot-cong-nghe",
+      "tin-cay"
+    ]
+  },
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "text": "Mỗi đêm phòng qua OTA, khách sạn trả lại bao nhiêu [phần trăm]?",
+      "visual": {
+        "type": "text"
+      },
+      "motion": {
+        "enter": "type",
+        "emphasis": "underline",
+        "why": "Câu hỏi gây tò mò: chữ đánh máy, gạch chân \"phần trăm\" như đang đặt câu hỏi."
+      },
+      "start": 0,
+      "duration": 5.7
+    },
+    {
+      "id": "c1-ota-giu-lai",
+      "role": "problem",
+      "text": "OTA mang khách đến, nhưng [giữ lại] doanh thu",
+      "sub": "Một phần doanh thu, mỗi lần có đơn",
+      "visual": {
+        "type": "text"
+      },
+      "motion": {
+        "enter": "rise",
+        "emphasis": "punch",
+        "decor": "coins",
+        "transition": "vertical-push",
+        "why": "Nỗi đau mất tiền: \"giữ lại\" dập mạnh, đồng xu rơi đi."
+      },
+      "start": 5.7,
+      "duration": 7.3
+    },
+    {
+      "id": "c2-dat-truc-tiep",
+      "role": "solution",
+      "text": "SIPOS Hotel: khách [đặt trực tiếp]",
+      "sub": "Không mất hoa hồng cho đơn đặt trực tiếp",
+      "visual": {
+        "type": "text"
+      },
+      "motion": {
+        "enter": "pop",
+        "emphasis": "marker",
+        "decor": "checks",
+        "transition": "zoom-through",
+        "why": "Bước ngoặt sang giải pháp: bút dạ quét \"đặt trực tiếp\", dấu tick bung như đơn về gọn."
+      },
+      "start": 13,
+      "duration": 6.5
+    },
+    {
+      "id": "c3-cta",
+      "role": "cta",
+      "text": "Nhắn tin để xem demo [SIPOS Hotel] hoặc vào sipos.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "motion": {
+        "emphasis": "circle",
+        "transition": "blur-crossfade",
+        "why": "Khoanh tên sản phẩm để người xem nhắn đúng SIPOS Hotel."
+      },
+      "start": 19.5,
+      "duration": 4.5
+    }
+  ],
+  "totalSec": 24,
+  "seed": 753,
+  "numberSteps": false,
+  "voiceWindows": []
+}

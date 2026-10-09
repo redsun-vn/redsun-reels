@@ -23,7 +23,24 @@ model: claude-opus-5-5
 - Mọi lệnh chạy bằng `./reel <lệnh>` từ thư mục gốc dự án. Nếu `./reel` báo máy chưa cài → dùng skill `cai-dat`.
 - Yêu cầu cần sửa mẫu video, thêm phong cách hoặc loại video chưa có → nói rõ "việc này cần dev", ghi vào `briefs/<tên-video>/review.md` mục `## Cần dev`.
 
-## Quy trình 8 bước
+## Luồng mặc định: TỰ ĐỘNG từ brief đến video
+Nam chốt 2026-10-09: "MKT chỉ cần đưa brief, sau đó đợi output video". MKT nói/dán brief (một câu cũng được) → Claude làm hết rồi đưa video. **Không dừng chờ chọn concept, duyệt kịch bản, xem thử** như luồng từng bước.
+
+1. **Brief** (bước 1): tạo `./reel new <tên-video>`, điền từ lời MKT. Phần MKT không nói thì tự đặt mặc định hợp lý: thời lượng = giữa khoảng của loại video, người xem theo sản phẩm, CTA = `defaultCta`, nhạc `auto`.
+   - **Chỉ hỏi** khi thiếu thông tin mà tự đặt sẽ là **bịa**: con số, giá, ưu đãi, hạn chót, lời khách, tên người, tính năng chưa có trong brief/profile. Gom vào **một lần hỏi** (tối đa 5 câu), có lựa chọn sẵn.
+   - Thiếu ảnh/clip: tự chuyển sang bản chỉ có chữ (cảnh `text`) nếu loại video cho phép; loại bắt buộc ảnh/clip thật (khách hàng nói, tổng kết sự kiện, người nói trước camera, trước/sau có ảnh) thì hỏi.
+2. **Loại video + phong cách** (bước 2): tự chọn. Chạy `./reel info gan-day` trước: **video mới phải khác** các video gần đây cùng dịp hoặc cùng sản phẩm — đổi phong cách (dịp lễ: xoay vòng theo `./reel info dip-le`), đổi loại video nếu hợp. Ghi phong cách đã chọn vào `style` của brief.
+3. **Concept** (bước 3): viết 3 concept vào `concepts.md`, **tự chọn** concept tốt nhất theo thang tự chấm, ghi lý do ở mục `## Lựa chọn`.
+4. **Kịch bản** (bước 5): viết, `./reel validate`, tự chấm ≥ 85.
+5. **Đạo diễn chuyển động**: gọi skill `dao-dien-chuyen-dong` (chạy tự động, không chờ MKT). Validate không còn cảnh báo trùng với video gần đây.
+6. **Xuất** (bước 8): `./reel render <tên-video>` rồi `./reel post <tên-video>`. Lỗi kịch bản/nhạc thì tự sửa và xuất lại; lỗi máy thì theo mục "Khi có lỗi".
+7. **Báo MKT**: đường dẫn video `out/<tên-video>.mp4`, thời lượng; bảng ngắn **Cảnh · Chữ trên màn hình** + concept đã chọn, phong cách, nhạc; caption trong `post.md`. Hỏi: "Bạn xem video, muốn sửa gì cứ nói." Sửa theo góp ý (bước 7) rồi xuất lại.
+
+**Luồng từng bước** (dừng chờ chọn concept, duyệt kịch bản, xem thử): chỉ dùng khi MKT nói "làm từng bước", "cho tôi chọn ý tưởng", "cho xem kịch bản trước", hoặc brief là chiến dịch lớn MKT muốn duyệt kỹ. Khi đó theo đủ các điểm DỪNG bên dưới.
+
+Làm nhiều video một lúc (vd. "làm 3 video 20/10 cho SIPOS, Webino, BOS"): mỗi video một thư mục; làm lần lượt, video sau chạy `./reel info gan-day` để khác video trước (phong cách, bố cục, kiểu nhấn, loại video).
+
+## Chi tiết từng bước (dùng cho cả hai luồng)
 
 ### 1. Brief
 - Đọc brief có sẵn, hoặc tạo mới: `./reel new <tên-video>`. Tên dạng `YYYY-MM-DD-<sản-phẩm>-<chủ-đề>`, chữ thường không dấu, ví dụ `2026-10-20-sipos-canh-bao-ton-kho`.
@@ -74,6 +91,10 @@ model: claude-opus-5-5
 - Chọn nhạc: `./reel info nhac <phong-cách>`. Reel cần bắt tai: ưu tiên bài có nhịp rõ, năng lượng hợp phong cách; MKT thấy nhạc nhạt thì đổi bài khác cùng phong cách. Brief để `music: auto` thì lấy bài **đăng được**, dài hơn video, hợp mood; mỗi video nên khác bài với video trước của cùng sản phẩm. Bài "chỉ xem thử" không đăng được.
 - Trình bày cho MKT bảng: **Cảnh · Vai trò · Hình ảnh · Chữ trên màn hình · Chuyển cảnh · Thời lượng**. Trên bảng ghi: loại video, phong cách, nhạc, tổng thời lượng, điểm tự chấm.
 - Phong cách `vui-nhon` hoặc câu có chơi chữ: nhắc MKT đọc lại câu chữ (hài kiểu Việt cần người Việt chỉnh).
+
+### 5b. Đạo diễn chuyển động — **gọi skill `dao-dien-chuyen-dong`**
+- MKT duyệt bảng kịch bản xong → gọi skill `dao-dien-chuyen-dong`: đánh dấu chữ cần nhấn bằng `[ ]` và chọn chuyển động theo nghĩa từng cảnh (`motion`). Không bỏ bước này: thiếu nó video đều đều, nhàm.
+- MKT xem thử thấy nhàm, hiệu ứng không hợp chủ đề, muốn nhấn chỗ khác → gọi lại skill này.
 
 ### 6. Xem thử
 - MKT đồng ý → `./reel preview <tên-video>`. Bảo MKT mở `http://localhost:3002` để xem.

@@ -41,6 +41,8 @@
   --type-body: 52px;
   --type-caption: 44px;
   --type-small: 32px;
+  --type-accent: calc(1em * 1.12); /* cụm nhấn to hơn chữ cùng dòng (em tính theo chỗ dùng) */
+  --type-accent-hero: calc(1em * 1.5); /* cụm nhấn của hook trên dòng riêng */
   --line-tight: 1.25; /* tiếng Việt có dấu chồng (Ứ, ặ, ễ): dưới 1.2 là dấu chạm dòng trên */
   --line-normal: 1.45;
 
@@ -97,9 +99,9 @@
   --color-secondary: #3D0023;
   --color-accent: #EAAE2D;
   --color-highlight: #44649B;
-  --color-background: #0C4559;
+  --color-background: #3D0023; /* mận đậm của logo BOS (trước là teal #0C4559, trùng cảm giác SIPOS; Nam 2026-10-09) */
   --color-text: #FFFFFF;
-  --color-text-inverse: #0C4559;
+  --color-text-inverse: #3D0023;
   --color-on-accent: #3D0023;
 }
 
@@ -124,3 +126,33 @@
   --color-text-inverse: #FFFFFF;
   --color-on-accent: #111111;
 }
+
+/*
+ * Màu chữ nhấn: màu nhấn pha sáng để đủ tương phản trên nền tối của sản phẩm (đỏ SIPOS nguyên chất trên teal chỉ 1.99:1).
+ * Khai ở [data-product] (không ở :root) để color-mix lấy đúng --color-accent của từng sản phẩm.
+ */
+[data-product] { --color-accent-text: color-mix(in srgb, var(--color-accent) 50%, var(--color-white)); }
+[data-product="redsun"] { --color-accent-text: color-mix(in srgb, var(--color-primary) 85%, var(--color-black)); }
+
+/*
+ * Màu theo dịp lễ (config/occasions.ts): chỉ phủ ánh màu lên nền (.kit-bg::after trong kit-styles.css),
+ * không thay màu brand ("màu lễ hội chỉ làm điểm nhấn", docs/video-style-catalog.md §5). Nam 2026-10-09:
+ * nền phải linh hoạt theo chủ đề. --color-theme: ánh chính (góc dưới), --color-theme-2: ánh phụ (góc trên).
+ */
+[data-occasion="20-10"],
+[data-occasion="8-3"] { --color-theme: #E8467C; --color-theme-2: #F7A1C4; }
+[data-occasion="14-2"] { --color-theme: #E0245E; --color-theme-2: #FF7A9A; }
+[data-occasion="tet"],
+[data-occasion="tet-duong-lich"] { --color-theme: #D7261E; --color-theme-2: #F4B400; }
+[data-occasion="trung-thu"] { --color-theme: #F29F05; --color-theme-2: #F25C05; }
+[data-occasion="halloween"] { --color-theme: #F2711C; --color-theme-2: #6A1B9A; }
+[data-occasion="giang-sinh"] { --color-theme: #C8102E; --color-theme-2: #1E7B3A; }
+[data-occasion="1-6"] { --color-theme: #FFB703; --color-theme-2: #2A9DF4; }
+[data-occasion="tuu-truong"] { --color-theme: #2A9DF4; --color-theme-2: #FFB703; }
+[data-occasion="30-4"] { --color-theme: #DA251D; --color-theme-2: #FFCD00; }
+[data-occasion="20-11"] { --color-theme: #2E86AB; --color-theme-2: #F6C85F; }
+[data-occasion="11-11"],
+[data-occasion="black-friday"] { --color-theme: #FF4D6D; --color-theme-2: #FFD60A; }
+[data-occasion="khai-truong"] { --color-theme: #E63946; --color-theme-2: #F4B400; }
+[data-occasion="sinh-nhat-cong-ty"] { --color-theme: #F4A261; --color-theme-2: #E76F51; }
+[data-occasion="the-thao"] { --color-theme: #2ECC71; --color-theme-2: #F1C40F; }

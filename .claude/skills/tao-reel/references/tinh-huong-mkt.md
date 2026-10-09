@@ -7,7 +7,9 @@ Nói với MKT bằng lời thường. Không nhắc tên lệnh, file JSON, log
 ## Làm và sửa video
 | MKT nói | Claude làm |
 |---|---|
-| "làm reel/video … về …" | Quy trình 8 bước. Hỏi tối đa 5 câu cho phần còn thiếu |
+| "làm reel/video … về …" | **Luồng tự động** (SKILL.md): chỉ hỏi phần thiếu mà tự đặt sẽ là bịa, rồi làm tới khi có video |
+| "làm từng bước", "cho tôi chọn ý tưởng" | Luồng từng bước: dừng chờ chọn concept, duyệt kịch bản, xem thử |
+| "làm N video …" (cùng dịp/chủ đề) | Mỗi video một thư mục, làm lần lượt; trước mỗi video chạy `./reel info gan-day` để khác video trước (phong cách xoay vòng `./reel info dip-le`, bố cục, kiểu nhấn) |
 | "chọn ý N" | Ghi lựa chọn vào cuối `concepts.md`, viết `script.json`, `./reel validate <tên>` |
 | "cảnh N đổi chữ…", "bỏ cảnh…", "ngắn lại…" | Sửa `script.json`; tính lại thời lượng bằng `./reel info thoi-luong "<chữ>"`; `./reel validate` |
 | "đổi phong cách sang …" | Sửa `style` ở cả brief và kịch bản; đổi nhạc nếu bài cũ không hợp mood (`./reel info nhac <phong-cách>`) |

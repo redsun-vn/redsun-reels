@@ -73,7 +73,12 @@
     var t = at;
     if (pr.badge) {
       var badge = K.el("div", "kit-badge" + (pr.badge.length > 8 ? " xs" : pr.badge.length > 5 ? " sm" : ""), box);
-      badge.textContent = pr.badge;
+      // Chữ trong thẻ riêng: hyperframes check đo nền theo khung chữ; khung vuông của vòng tròn lấn ra nền cảnh ở 4 góc
+      K.el("span", "kit-badge-text", badge).textContent = pr.badge;
+      // Vòng sáng lan ra một lần khi badge bật vào
+      var ring = K.el("div", "kit-badge-ring", badge);
+      ring.setAttribute("aria-hidden", "true");
+      tl.fromTo(ring, { scale: 1, opacity: 0.9 }, { scale: 1.8, opacity: 0, duration: 0.9, ease: "power2.out" }, t + 0.3);
       tl.fromTo(badge, { scale: 0, rotation: -40 }, { scale: 1.12, rotation: -8, duration: 0.4, ease: "back.out(2.4)" }, t);
       tl.to(badge, { scale: 1, duration: 0.2, ease: "sine.out" }, t + 0.4);
       if (style.ctaPulse) tl.fromTo(badge, { scale: 1 }, { scale: 1.08, duration: 0.3, ease: "sine.inOut", repeat: 3, yoyo: true }, t + 0.8);

@@ -3,11 +3,35 @@
  */
 import { z } from 'zod';
 import { STYLE_IDS } from './styles.ts';
+import { TEXT_ENTERS, TRANSITIONS } from './style-preset.schema.ts';
 import { HOOK_ANGLES, PRODUCT_IDS, SCENE_ROLES, TEMPLATE_IDS } from './video-types.ts';
 
 export const VISUAL_TYPES = ['asset', 'text', 'phone', 'split', 'logo', 'montage'] as const;
 
 /** Một chỉ số của Stats, vd. { value: "1.200+", label: "cửa hàng dùng SIPOS" }. `value` phải có nguyên văn trong brief. */
+/** Kiểu nhấn cụm [nhấn] (kit-emphasis.js). */
+export const EMPHASES = ['marker', 'underline', 'scribble', 'circle', 'strike', 'punch', 'glow'] as const;
+/** Hoạt cảnh trang trí bung ra trong cảnh (kit-emphasis.js decor). */
+/** Bố cục khối chữ của cảnh (kit: scene-kit.js textBlock). */
+export const LAYOUTS = ['left', 'center', 'giant', 'stack', 'bottom'] as const;
+export const DECORS = ['none', 'hearts', 'flowers', 'sparkles', 'confetti', 'coins', 'checks', 'stars'] as const;
+
+/**
+ * Chỉ đạo chuyển động cho một cảnh (skill dao-dien-chuyen-dong viết, theo NGHĨA của cảnh): ghi đè mặc định của
+ * phong cách. Bỏ trống trường nào thì dùng mặc định của phong cách.
+ */
+export const MotionSchema = z.object({
+  /** Bố cục chữ: left căn trái · center căn giữa · giant chữ khổng lồ · stack mỗi dòng một từ · bottom chữ dưới đáy. */
+  layout: z.enum(LAYOUTS).optional(),
+  enter: z.enum(TEXT_ENTERS).optional(),
+  emphasis: z.enum(EMPHASES).optional(),
+  decor: z.enum(DECORS).optional(),
+  /** Chuyển cảnh VÀO cảnh này. */
+  transition: z.enum(TRANSITIONS).optional(),
+  /** Lý do chọn (1 câu, để MKT/dev hiểu). */
+  why: z.string().max(160).optional(),
+});
+
 export const StatSchema = z.object({
   value: z.string().min(1).max(12).regex(/\d/, 'value phải có chữ số'),
   label: z.string().min(1).max(40),
@@ -32,7 +56,9 @@ export const SceneSchema = z.object({
     /** Tắt tiếng clip này dù loại video giữ âm thanh gốc. */
     mute: z.boolean().optional(),
   }),
+  /** (Cũ, không dùng) — chuyển cảnh nay ghi ở motion.transition. */
   transition: z.string().optional(),
+  motion: MotionSchema.optional(),
   durationSec: z.number().positive(),
   /** Stats: 1–3 chỉ số đếm lên. */
   stats: z.array(StatSchema).min(1).max(3).optional(),

@@ -30,9 +30,16 @@
     return e;
   }
 
-  /* Số giả ngẫu nhiên xác định theo chỉ số (dùng cho confetti, hạt…): cùng i luôn ra cùng giá trị. */
+  /*
+   * Số giả ngẫu nhiên xác định theo chỉ số (confetti, hạt, vị trí trang trí…): cùng i + cùng hạt giống của video
+   * luôn ra cùng giá trị. Hạt giống (props.seed, tính từ nội dung kịch bản) làm mỗi video một bố trí khác nhau.
+   */
+  var seed = 0;
+  function setSeed(s) {
+    seed = Number(s) || 0;
+  }
   function hash01(i) {
-    var x = Math.sin(i * 127.1 + 311.7) * 43758.5453;
+    var x = Math.sin((i + seed * 0.618) * 127.1 + 311.7 + seed * 12.9898) * 43758.5453;
     return x - Math.floor(x);
   }
 
@@ -96,6 +103,13 @@
    * rise (trồi lên), slam (dập), pop (bật vượt cỡ 0 → 1.15 → 1, kiểu hanazi), blur (mờ → nét, chậm),
    * type (đánh máy: từng từ hiện tức thì theo nhịp), track (giãn chữ → khít).
    */
+  /* Thời gian hiệu ứng vào của một khối chữ (khớp textEnter). */
+  function textEnterSec(count, style) {
+    var t = style.text;
+    var stagger = Math.min(t.wordStagger, 0.5 / Math.max(count, 1));
+    return Math.max(0, count - 1) * stagger + t.duration;
+  }
+
   function textEnter(tl, spans, style, at) {
     var t = style.text;
     var stagger = Math.min(t.wordStagger, 0.5 / Math.max(spans.length, 1));
@@ -184,10 +198,13 @@
     clip: clip,
     round: round,
     hash01: hash01,
+    setSeed: setSeed,
     cssPx: cssPx,
     fitSizes: fitSizes,
     words: words,
     textEnter: textEnter,
+    textEnterSec: textEnterSec,
+    ACCENT_RE: ACCENT_RE,
     image: image,
     videoClip: videoClip,
     clipAudio: clipAudio,

@@ -25,10 +25,10 @@ export interface BuiltVideo {
 export class BuildError extends Error {}
 
 export function buildVideo(opts: { dir: string; name: string; musicPurpose: MusicPurpose; debugSafeZone?: boolean; check?: boolean; writeProps?: boolean }): BuiltVideo {
-  const { script, issues } = validateVideo(opts.dir, { musicPurpose: opts.musicPurpose });
+  const { script, brief, issues } = validateVideo(opts.dir, { musicPurpose: opts.musicPurpose });
   if (hasErrors(issues) || !script) throw new BuildError(`Kịch bản chưa dựng được:\n${formatIssues(issues)}`);
 
-  const props = buildProps(REPO_ROOT, script);
+  const props = buildProps(REPO_ROOT, script, brief?.occasion ?? undefined);
   dropSilentClipAudio(props.scenes);
   props.voiceWindows = voiceWindowsOf(props.scenes);
   if (opts.writeProps !== false) writeFileSync(join(opts.dir, 'props.json'), JSON.stringify(props, null, 2) + '\n');

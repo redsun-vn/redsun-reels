@@ -6,6 +6,7 @@
   "permissions": {
     "allow": [
       "Skill(tao-reel)",
+      "Skill(dao-dien-chuyen-dong)",
       "Skill(cai-dat)",
       "Bash(./reel:*)",
       "Bash(bash ./scripts/cai-dat.sh)",

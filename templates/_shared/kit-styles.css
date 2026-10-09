@@ -12,6 +12,17 @@
   background: linear-gradient(170deg, var(--color-background) 35%, color-mix(in srgb, var(--color-background) 72%, var(--color-black)));
 }
 
+/* Dịp lễ: ánh màu của dịp phủ lên nền brand (2 vầng sáng mờ ở góc), màu brand vẫn là nền chính */
+.kit-bg { overflow: hidden; }
+[data-occasion] .kit-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 55% at var(--glow-a-x, 85%) var(--glow-a-y, 95%), color-mix(in srgb, var(--color-theme) 55%, transparent), transparent 70%),
+    radial-gradient(ellipse 70% 45% at var(--glow-b-x, 10%) var(--glow-b-y, 5%), color-mix(in srgb, var(--color-theme-2, var(--color-theme)) 40%, transparent), transparent 70%);
+}
+
 /* Aurora: đốm màu brand lớn, mờ, trôi chậm (thay vì palette của block) */
 .kit-aurora {
   position: absolute;
@@ -304,9 +315,4 @@
   position: absolute;
 }
 
-/* Nhấn từ khóa: gạch chân lượn như vẽ tay. Chữ giữ màu chữ (màu nhấn trên nền có thể dưới 3:1, xem accent-underline) */
-.accent-scribble .kit-accent {
-  text-decoration: underline wavy var(--color-accent);
-  text-decoration-thickness: 6px;
-  text-underline-offset: 14px;
-}
+/* Nhấn từ khóa kiểu gạch chân lượn (scribble): xem .kit-line.wavy trong kit.css */

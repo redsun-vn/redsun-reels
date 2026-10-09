@@ -13,6 +13,7 @@
 - **Bắt buộc gọi skill trước khi làm gì khác** (kể cả trước khi đọc file):
   - Cài máy, máy chưa chạy được → skill `cai-dat`.
   - Làm, sửa, xem thử, xuất video, viết concept/kịch bản → skill `tao-reel`.
+  - Chữ nhấn, hiệu ứng, chuyển động theo nội dung (sau khi duyệt kịch bản, hoặc khi video "nhàm") → skill `dao-dien-chuyen-dong`.
   - Skill chứa quy trình và điểm dừng chờ MKT duyệt; làm ngoài skill là sai quy trình.
   - Câu hỏi ngoài luồng (sửa video cũ, nhạc tự tìm, thiếu nhạc, cập nhật bản mới…): tra `.claude/skills/tao-reel/references/tinh-huong-mkt.md`. Sổ tay MKT đang đọc: `docs/huong-dan-mkt.md`.
 - Nói tiếng Việt, câu ngắn, không thuật ngữ, không dán log.

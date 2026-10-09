@@ -13,6 +13,8 @@ import { resolveStyle } from './resolve-style.ts';
 import { factIssues } from './fact-check.ts';
 import { assetPaths } from './build-props.ts';
 import { clipIssues } from './clip-check.ts';
+import { motionIssues, repetitionIssues } from './motion-check.ts';
+import { recentForBrief } from './recent-videos.ts';
 import { getOccasion, OCCASIONS } from '../../config/occasions.ts';
 import { ScriptSchema, type Script } from '../../config/script.schema.ts';
 import { getVideoType, type SceneRole, type VideoType } from '../../config/video-types.ts';
@@ -176,6 +178,8 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose } 
 
   // Chống bịa: số, giá, tên khách, quote phải có trong brief
   issues.push(...factIssues(script, readBriefFile(dir).body));
+  issues.push(...motionIssues(script));
+  issues.push(...repetitionIssues(script, recentForBrief(dir)));
   if (brief.occasion && !getOccasion(brief.occasion)) {
     issues.push(warn(`Dịp lễ "${brief.occasion}" chưa có trong lịch, nên không tự chọn phong cách theo dịp. Có: ${OCCASIONS.map((o) => o.id).join(', ')}.`));
   }

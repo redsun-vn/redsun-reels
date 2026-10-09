@@ -1,0 +1,71 @@
+{
+  "concept": {
+    "title": "Không cần biết code",
+    "bigIdea": "Kéo thả là có web bán hàng, xuất bản trong vài phút.",
+    "hookAngle": "lat-nguoc"
+  },
+  "videoType": "chuc-mung-dip-le",
+  "style": "vui-nhon",
+  "template": "Promo",
+  "product": "webino",
+  "hook": "Làm website bán hàng\nkhông cần biết [code]",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Làm website bán hàng không cần biết [code]",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 3.8,
+      "motion": {
+        "layout": "giant",
+        "enter": "slam",
+        "emphasis": "strike",
+        "why": "Lật ngược định kiến: câu khổng lồ dập vào, \"code\" bị gạch xoá."
+      }
+    },
+    {
+      "id": "c1-loi-ich",
+      "role": "solution",
+      "onScreenText": "[Kéo thả] là có web, xuất bản [vài phút]",
+      "subText": "Mừng 20/10, chị em tự làm chủ thương hiệu",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 7.7,
+      "promo": {
+        "badge": "-20%",
+        "deadline": "Khi mua gói giải pháp"
+      },
+      "motion": {
+        "layout": "center",
+        "enter": "pop",
+        "emphasis": "punch",
+        "decor": "sparkles",
+        "transition": "elastic-push",
+        "why": "Hai lợi ích bật nảy, lấp lánh như web vừa xuất bản xong."
+      }
+    },
+    {
+      "id": "c2-cta",
+      "role": "cta",
+      "onScreenText": "Tạo website tại [webino.vn]",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 3.5,
+      "motion": {
+        "emphasis": "marker",
+        "transition": "whip",
+        "why": "Bút dạ quét tên miền."
+      }
+    }
+  ],
+  "cta": "Tạo website tại [webino.vn]",
+  "music": "mixkit-gimme-that-groove-872",
+  "selfScore": {
+    "total": 92,
+    "notes": "Hook 21/25 (lật ngược định kiến làm web phải biết code; 2 dòng). Thông điệp 18/20 (một ý: tự làm web nhanh; lời chúc ở dòng phụ). Đọc kịp 19/20 (đủ công thức; cảnh 2 nhiều chữ). Đúng brand/sự thật 20/20 (No-Code kéo thả, xuất bản trong vài phút từ profile Webino; ưu đãi đúng lời Nam). CTA 14/15 (CTA mặc định webino.vn)."
+  }
+}

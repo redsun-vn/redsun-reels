@@ -6,6 +6,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { loadStylePreset, type StylePreset } from '../../config/style-preset.schema.ts';
 import type { Script } from '../../config/script.schema.ts';
+import { getOccasion } from '../../config/occasions.ts';
 import { getVideoType, type ProductId } from '../../config/video-types.ts';
 
 export interface PropsScene {
@@ -17,6 +18,7 @@ export interface PropsScene {
   attribution?: string;
   promo?: Script['scenes'][number]['promo'];
   stats?: Script['scenes'][number]['stats'];
+  motion?: Script['scenes'][number]['motion'];
   chart?: 'bar';
   start: number;
   duration: number;
@@ -37,6 +39,10 @@ export interface TemplateProps {
   style: StylePreset;
   scenes: PropsScene[];
   totalSec: number;
+  /** Hạt giống bố trí trang trí (kit-core hash01), lấy từ nội dung kịch bản: mỗi video một bố trí khác. */
+  seed: number;
+  /** Dịp lễ (config/occasions.ts): nền phủ ánh màu của dịp (brand/brand.css [data-occasion]). */
+  occasion?: string;
   /** Nhãn trên hook theo loại video (TipOfTheDay). */
   hookTag?: string;
   /** Đánh số bước khi có từ 2 cảnh solution trở lên. */
@@ -49,7 +55,7 @@ interface ProductsFile {
   products: Record<ProductId, { logos: { onDark: string; onLight: string } }>;
 }
 
-export function buildProps(repoRoot: string, script: Script): TemplateProps {
+export function buildProps(repoRoot: string, script: Script, occasion?: string): TemplateProps {
   const products = JSON.parse(readFileSync(join(repoRoot, 'brand', 'products.json'), 'utf8')) as ProductsFile;
   const logos = products.products[script.product].logos;
   const style = loadStylePreset(repoRoot, script.style);
@@ -65,6 +71,8 @@ export function buildProps(repoRoot: string, script: Script): TemplateProps {
     scenes,
     totalSec,
     hookTag: getVideoType(script.videoType)?.hookTag,
+    seed: seedOf(`${script.product}|${script.hook}|${script.cta}`),
+    occasion: occasion && getOccasion(occasion) ? occasion : undefined,
     numberSteps: script.scenes.filter((s) => s.role === 'solution').length >= 2,
     voiceWindows,
   };
@@ -74,12 +82,22 @@ export function buildProps(repoRoot: string, script: Script): TemplateProps {
 export function timedScenes(script: Script): { scenes: PropsScene[]; totalSec: number; voiceWindows: Array<{ start: number; end: number }> } {
   let t = 0;
   const scenes = script.scenes.map((s) => {
-    const scene: PropsScene = { id: s.id, role: s.role, text: s.onScreenText, sub: s.subText, visual: s.visual, attribution: s.attribution, promo: s.promo, stats: s.stats, chart: s.chart, start: round(t), duration: s.durationSec };
+    const scene: PropsScene = { id: s.id, role: s.role, text: s.onScreenText, sub: s.subText, visual: s.visual, attribution: s.attribution, promo: s.promo, stats: s.stats, chart: s.chart, motion: s.motion, start: round(t), duration: s.durationSec };
     t += s.durationSec;
     return scene;
   });
   const voiceWindows = assignShots(scenes, getVideoType(script.videoType)?.keepClipAudio ?? false);
   return { scenes, totalSec: round(t), voiceWindows };
+}
+
+/** FNV-1a 32 bit → 0..999: cùng nội dung luôn ra cùng số (render xác định). */
+export function seedOf(text: string): number {
+  let h = 0x811c9dc5;
+  for (const ch of text) {
+    h ^= ch.codePointAt(0) ?? 0;
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h % 1000;
 }
 
 const VIDEO_RE = /\.(mp4|mov|webm)$/i;

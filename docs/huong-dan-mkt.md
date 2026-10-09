@@ -6,7 +6,12 @@ Sổ tay này dành cho người làm video, không cần biết lập trình. M
 1. Mở Claude Code, mở thư mục dự án (`Documents/redsun-reels`).
 2. Nói việc bạn muốn làm, ví dụ:
    > làm reel mẹo cho SIPOS về cảnh báo tồn kho thấp, khoảng 20 giây, cho chủ tiệm tạp hoá
-3. Trả lời câu hỏi của Claude, chọn ý tưởng, duyệt kịch bản, xem thử, rồi nói **"xuất"**.
+3. Claude tự làm hết: chọn ý tưởng, viết kịch bản, chọn hiệu ứng, xuất video. Claude chỉ hỏi khi thiếu thông tin thật (số liệu, ưu đãi, lời khách, ảnh). Xong, Claude gửi đường dẫn video và caption.
+4. Xem video, muốn sửa gì cứ nói: "đổi câu mở đầu thành…", "nhạc vui hơn", "hiệu ứng mạnh hơn"…
+
+Muốn tự chọn ý tưởng và duyệt kịch bản trước khi xuất: nói **"làm từng bước"**.
+
+Làm nhiều video một lúc (vd. "làm 3 video 20/10 cho SIPOS, Webino, REDSUN BOS") thì Claude tự làm mỗi video một kiểu khác nhau: phong cách, bố cục, hiệu ứng, để các video không trùng nhau.
 
 Một video từ lúc có nội dung tới lúc có file MP4 mất khoảng 10–15 phút.
 

@@ -73,7 +73,7 @@
   z-index: 5;
   left: var(--safe-left);
   right: var(--safe-right);
-  top: 720px;
+  top: 880px;
   bottom: var(--safe-bottom);
   display: flex;
   flex-direction: column;
@@ -94,6 +94,16 @@
   font-weight: var(--weight-hero);
   font-size: var(--type-h2);
   box-shadow: 0 0 0 14px color-mix(in srgb, var(--color-accent) 30%, transparent);
+}
+.kit-badge {
+  position: relative;
+}
+.kit-badge-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 8px solid var(--color-accent);
+  pointer-events: none;
 }
 .kit-badge.sm {
   font-size: var(--type-h3);

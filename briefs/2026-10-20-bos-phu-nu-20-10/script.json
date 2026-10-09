@@ -1,0 +1,71 @@
+{
+  "concept": {
+    "title": "Gửi nữ thủ lĩnh",
+    "bigIdea": "20/10 gửi nữ chủ doanh nghiệp: cả công ty gom về một nơi.",
+    "hookAngle": "thuong-hieu"
+  },
+  "videoType": "chuc-mung-dip-le",
+  "style": "sang-trong",
+  "template": "Promo",
+  "product": "bos",
+  "hook": "20/10 gửi [nữ thủ lĩnh]:\ncả công ty trong một chỗ",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "20/10 gửi [nữ thủ lĩnh]: cả công ty trong một chỗ",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 5.0,
+      "motion": {
+        "layout": "center",
+        "enter": "track",
+        "emphasis": "glow",
+        "decor": "flowers",
+        "why": "Lời chúc trang trọng: chữ giãn rồi khít lại, \"nữ thủ lĩnh\" sáng rực, hoa 20/10."
+      }
+    },
+    {
+      "id": "c1-loi-ich",
+      "role": "solution",
+      "onScreenText": "Bán hàng, kho, tài chính, nhân sự [một chỗ]",
+      "subText": "REDSUN BOS: không còn sự rời rạc",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 6.9,
+      "promo": {
+        "badge": "-20%",
+        "deadline": "Khi mua gói giải pháp"
+      },
+      "motion": {
+        "layout": "left",
+        "enter": "blur",
+        "emphasis": "underline",
+        "transition": "dip-black",
+        "why": "Cả công ty về một nơi: gạch chân \"một chỗ\", nhịp chậm sang trọng."
+      }
+    },
+    {
+      "id": "c2-cta",
+      "role": "cta",
+      "onScreenText": "Yêu cầu tư vấn tại [redsun.vn]",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 3.1,
+      "motion": {
+        "emphasis": "marker",
+        "transition": "blur-crossfade",
+        "why": "Bút dạ quét tên miền."
+      }
+    }
+  ],
+  "cta": "Yêu cầu tư vấn tại [redsun.vn]",
+  "music": "mixkit-classical-vibes-4-684",
+  "selfScore": {
+    "total": 92,
+    "notes": "Hook 20/25 (chào 20/10 + lợi ích ngay câu đầu; hook 11 từ hơi dài). Thông điệp 19/20 (một ý: gom cả công ty về một nơi). Đọc kịp 19/20 (đủ công thức; cảnh 2 nhiều chữ). Đúng brand/sự thật 20/20 (bán hàng, kho, tài chính, nhân sự, \"không còn sự rời rạc\" từ trang REDSUN BOS; không gọi ERP; ưu đãi đúng lời Nam). CTA 14/15 (CTA mặc định redsun.vn)."
+  }
+}

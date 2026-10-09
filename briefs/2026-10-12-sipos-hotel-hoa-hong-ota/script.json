@@ -1,0 +1,82 @@
+{
+  "concept": {
+    "title": "OTA giữ lại bao nhiêu?",
+    "bigIdea": "OTA mang khách nhưng giữ lại một phần doanh thu; SIPOS Hotel cho khách đặt trực tiếp.",
+    "hookAngle": "cau-hoi-noi-dau"
+  },
+  "videoType": "ra-mat-tinh-nang",
+  "style": "toi-gian",
+  "template": "FeatureLaunch",
+  "product": "sipos",
+  "hook": "Mỗi đêm phòng qua OTA, khách sạn\ntrả lại bao nhiêu [phần trăm]?",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Mỗi đêm phòng qua OTA, khách sạn trả lại bao nhiêu [phần trăm]?",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 5.7,
+      "motion": {
+        "enter": "type",
+        "emphasis": "underline",
+        "why": "Câu hỏi gây tò mò: chữ đánh máy, gạch chân \"phần trăm\" như đang đặt câu hỏi."
+      }
+    },
+    {
+      "id": "c1-ota-giu-lai",
+      "role": "problem",
+      "onScreenText": "OTA mang khách đến, nhưng [giữ lại] doanh thu",
+      "subText": "Một phần doanh thu, mỗi lần có đơn",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 7.3,
+      "motion": {
+        "enter": "rise",
+        "emphasis": "punch",
+        "decor": "coins",
+        "transition": "vertical-push",
+        "why": "Nỗi đau mất tiền: \"giữ lại\" dập mạnh, đồng xu rơi đi."
+      }
+    },
+    {
+      "id": "c2-dat-truc-tiep",
+      "role": "solution",
+      "onScreenText": "SIPOS Hotel: khách [đặt trực tiếp]",
+      "subText": "Không mất hoa hồng cho đơn đặt trực tiếp",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 6.5,
+      "motion": {
+        "enter": "pop",
+        "emphasis": "marker",
+        "decor": "checks",
+        "transition": "zoom-through",
+        "why": "Bước ngoặt sang giải pháp: bút dạ quét \"đặt trực tiếp\", dấu tick bung như đơn về gọn."
+      }
+    },
+    {
+      "id": "c3-cta",
+      "role": "cta",
+      "onScreenText": "Nhắn tin để xem demo [SIPOS Hotel] hoặc vào sipos.vn",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 4.5,
+      "motion": {
+        "emphasis": "circle",
+        "transition": "blur-crossfade",
+        "why": "Khoanh tên sản phẩm để người xem nhắn đúng SIPOS Hotel."
+      }
+    }
+  ],
+  "cta": "Nhắn tin để xem demo [SIPOS Hotel] hoặc vào sipos.vn",
+  "music": "mixkit-close-up-1167",
+  "selfScore": {
+    "total": 88,
+    "notes": "Hook 22/25 (câu hỏi đúng nỗi đau chủ khách sạn, giữ sát lời Nam; 2 dòng ≤ 40 ký tự). Thông điệp 18/20 (một ý: OTA giữ lại doanh thu → đặt trực tiếp). Đọc kịp 18/20 (đủ công thức; cảnh 2–3 có dòng phụ). Đúng sự thật 19/20 (giải pháp đúng lựa chọn của Nam; không nêu % hoa hồng vì chưa có số). CTA 11/15 (đúng lời Nam, nhưng hai việc trong một câu: nhắn tin + vào web)."
+  }
+}

@@ -99,7 +99,7 @@ Nói với Claude, ví dụ:
 
 > làm reel mẹo cho SIPOS về cảnh báo tồn kho thấp, khoảng 20 giây, cho chủ tiệm tạp hoá
 
-Claude dẫn từng bước:
+Claude tự làm hết rồi gửi video (chỉ hỏi khi thiếu số liệu, ưu đãi, ảnh thật). Muốn duyệt từng bước thì nói "làm từng bước". Các bước bên trong:
 
 1. **Viết brief.** Claude tạo thư mục `briefs/<tên-video>/brief.md` và hỏi bạn tối đa 5 câu: sản phẩm, loại video, mục tiêu, thời lượng, lời kêu gọi.
 2. **Chọn concept.** Claude đưa 3 hướng ý tưởng, mỗi hướng một kiểu câu mở đầu. Bạn chọn 1.

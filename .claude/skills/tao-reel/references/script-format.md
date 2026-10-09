@@ -20,7 +20,8 @@ Schema chuẩn: `config/script.schema.ts`. `./reel validate <tên-video>` kiểm
 Mỗi cảnh:
 - `id`: chữ thường không dấu, không trùng.
 - `role`: `hook` / `problem` / `solution` / `proof` / `cta`, theo đúng thứ tự `./reel info <loại>`.
-- `onScreenText`: chữ chính, ≤ 80 ký tự, nên ≤ 10 từ.
+- `onScreenText`: chữ chính, ≤ 80 ký tự, nên ≤ 10 từ. Chữ cần nhấn đặt trong `[ngoặc vuông]` (1–2 cụm, liệt kê tối đa 3, mỗi cụm ≤ 16 ký tự); `hook`/`cta` phải giống hệt kể cả `[ ]`. Không đánh dấu thì máy tự nhấn số, %, tên sản phẩm.
+- `motion` (skill `dao-dien-chuyen-dong` viết): `{ enter?, emphasis?, decor?, transition?, why? }` — chuyển động theo nghĩa của cảnh, ghi đè mặc định của phong cách. Giá trị: xem `.claude/skills/dao-dien-chuyen-dong/SKILL.md`.
 - `subText` (tuỳ chọn): dòng phụ, ≤ 120 ký tự.
 - `visual`: `{ type, src?, focus?, srcs?, clipStart?, mute? }`:
   - `text`: chỉ có chữ.

@@ -50,7 +50,7 @@ export function normalizeText(text: string): string {
   let t = normalizeNumbers(text.normalize('NFC').toLowerCase());
   for (const [re, to] of TONE_PLACEMENT) t = t.replace(re, to);
   return t
-    .replace(/[“”"'‘’«».,!?:;…()\-–—·]/g, ' ')
+    .replace(/[“”"'‘’«».,!?:;…()[\]\-–—·]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 }
