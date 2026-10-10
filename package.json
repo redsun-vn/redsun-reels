@@ -1,6 +1,6 @@
 {
   "name": "redsun-reels",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "Hệ thống sản xuất video Reel/TikTok/Shorts nội bộ cho team Marketing Redsun (Claude Code + HyperFrames).",
   "type": "module",

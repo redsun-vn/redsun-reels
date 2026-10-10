@@ -88,6 +88,9 @@ if (ccVer) {
   if (older) ccWarn = `Claude Code trong Terminal là bản ${ccVer[0]}, cần ${MIN_CLAUDE_CODE.join('.')} trở lên để dùng Opus 5.5. Chạy "claude update" (hoặc cập nhật app Claude).`;
 }
 
+const projectVersion = JSON.parse(readFileSync(join(REPO_ROOT, 'package.json'), 'utf8')).version as string;
+console.log(`Bản dự án: ${projectVersion} (nhật ký thay đổi: docs/changelog.md)`);
+
 let failed = 0;
 for (const c of checks) {
   console.log(`${c.ok ? '✓' : '✗'} ${c.name}: ${c.detail}`);

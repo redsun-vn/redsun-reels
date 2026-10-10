@@ -89,7 +89,9 @@ Claude sẽ nói lỗi bằng tiếng Việt và cách xử lý. Các lỗi hay 
 Cài lại bao nhiêu lần cũng được.
 
 ### Cập nhật bản mới
-1. Tải ZIP mới như Bước 2, giải nén.
+Bản đang dùng: dòng đầu của `./reel doctor` (hoặc nói Claude "kiểm tra máy"). Các bản đã đánh dấu và điểm mới của từng bản: [trang Releases](https://github.com/redsun-vn/redsun-reels/releases), [docs/changelog.md](docs/changelog.md).
+
+1. Tải ZIP mới như Bước 2 (bản mới nhất), hoặc tải **Source code (zip)** của một bản ở trang Releases. Giải nén.
 2. Mở `briefs/` của bản cũ, copy các thư mục video của bạn (trừ `_example`) vào `briefs/` của bản mới. Video đã xuất nằm ở `out/` bản cũ: copy cả thư mục `out/` sang bản mới (bản mới chưa có thư mục này). Có nhạc tự tìm thì copy các file trong `nhac-tu-tim/` sang `nhac-tu-tim/` của bản mới.
 3. Xoá bản cũ, đặt bản mới đúng chỗ cũ, cùng tên.
 4. Mở trong Claude Code, gõ "cài lại". Có nhạc tự tìm thì gõ thêm "đăng ký lại nhạc tự tìm".
