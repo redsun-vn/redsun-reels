@@ -1,0 +1,70 @@
+{
+  "concept": {
+    "title": "Cùng một quầy",
+    "bigIdea": "Cùng một quầy tiệm tạp hoá: chiều đông khách nhận ảnh chuyển khoản, tối vắng kiểm tiền mới thấy thiếu vì ảnh giả; sáng hôm sau đơn hàng và doanh thu theo ca nằm trên một màn hình SIPOS.",
+    "hookAngle": "cau-hoi-noi-dau"
+  },
+  "videoType": "so-sanh",
+  "style": "vui-nhon",
+  "template": "BeforeAfter",
+  "build": "custom",
+  "product": "sipos",
+  "hook": "Em chuyển rồi nha",
+  "scenes": [
+    {
+      "id": "c0-quay-chieu",
+      "role": "hook",
+      "onScreenText": "Em chuyển rồi nha",
+      "subText": "Dạ vâng ạ.",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 3.34
+    },
+    {
+      "id": "c1-toi-kiem",
+      "role": "problem",
+      "onScreenText": "Tối kiểm tiền: không thấy đâu",
+      "subText": "Tối kiểm tài khoản, đếm đi đếm lại vẫn thiếu một khoản.",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 8.06
+    },
+    {
+      "id": "c2-anh-gia",
+      "role": "problem",
+      "onScreenText": "Hóa ra là ảnh giả",
+      "subText": "Ảnh chuyển khoản mà không phải chuyển khoản thật.",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 6.37
+    },
+    {
+      "id": "c3-sipos",
+      "role": "solution",
+      "onScreenText": "Đơn hàng và doanh thu tự tổng hợp theo ca, trên một màn hình",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 6.4
+    },
+    {
+      "id": "c4-cta",
+      "role": "cta",
+      "onScreenText": "Nhắn tin để được tư vấn",
+      "subText": "SIPOS, giải pháp quản lý bán hàng trong thời đại AI.",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 7.33
+    }
+  ],
+  "cta": "Nhắn tin để được tư vấn",
+  "music": "mixkit-gimme-that-groove-872",
+  "selfScore": {
+    "total": 88,
+    "notes": "Hook 22/25 (lời khách đời thường, tình huống quầy quen). Thông điệp 18/20 (một nỗi đau, giải pháp đúng phạm vi brief: chỉ đơn hàng + doanh thu theo ca, không hứa chống gian lận). Đọc kịp 17/20 (31.5s thay 30s để lời thoại kịp đọc; cảnh SIPOS 14 từ do brief). Đúng brand/sự thật 19/20 (ảnh chuyển khoản mô phỏng, không tên ngân hàng). CTA 12/15."
+  }
+}

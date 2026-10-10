@@ -1,0 +1,65 @@
+# Tiếng động: giây  tên (brand/sfx)  âm-lượng   # ghi chú. Nhấn trên phách (112.5 BPM, phách 0.533s).
+# A tiệm chiều
+0.05 ding 0.3            # dấu tick trên điện thoại
+0.17 pop 0.5             # bong bóng "Em chuyển rồi nha"
+1.24 whoosh 0.3          # lùi máy ra quầy
+1.72 pop 0.45            # "Dạ vâng ạ."
+2.30 pop 0.2             # vẫy tay
+2.83 whoosh-nhanh 0.3    # khách đi
+# B cùng quầy, đêm
+3.34 thump 0.45          # cắt sang đêm
+3.60 dap-dau 0.4         # "không thấy đâu" dập
+4.43 whoosh-nhanh 0.25   # phụ đề
+6.01 whoosh 0.35         # chèn sổ tiền vào
+6.55 coin 0.25
+7.08 coin 0.25
+7.61 coin 0.25
+8.15 sai 0.45            # "Không thấy"
+8.42 tick 0.4
+8.60 tick 0.4
+8.77 tick 0.4
+8.95 tick 0.4
+9.29 tick 0.4
+9.38 tick 0.4
+9.47 tick 0.4
+9.78 whoosh 0.3          # sổ rơi đi
+10.31 pop 0.4            # dấu hỏi
+10.49 pop 0.4
+10.67 pop 0.4
+10.20 riser 0.3
+10.87 whoosh 0.45        # lao vào điện thoại
+# C lật tẩy
+11.40 thump 0.45
+11.50 whoosh-nhanh 0.25  # kính lúp
+12.45 glitch 0.5         # "Ảnh · Thư viện"
+12.60 whoosh 0.3         # nhân viên bật lên
+12.98 pop 0.4
+12.98 riser 0.25
+lang 13.98 14.58         # lặng trước khi lật tẩy
+14.58 boom 0.6           # "ảnh giả" + dấu GIẢ
+14.58 dap-dau 0.5
+16.21 thump 0.35         # vò ảnh
+16.74 whoosh 0.4         # ảnh rơi
+17.27 sparkle 0.4        # mở tròn sang sáng
+# D SIPOS
+18.34 whoosh 0.35        # chủ tiệm + điện thoại vào
+18.88 whoosh-nhanh 0.3
+19.37 whoosh-nhanh 0.3
+19.90 whoosh-nhanh 0.3
+20.43 tap 0.55           # đổi ca chiều
+20.97 hoi-tho 0.5        # thở phào
+21.48 tap 0.55           # đổi ca tối
+22.04 pop 0.3            # đơn mới
+22.52 sparkle 0.45       # tự tin
+23.10 pop 0.3
+23.67 whoosh 0.35        # mở tròn teal
+# E CTA
+24.17 sparkle 0.4        # logo
+25.23 whoosh-nhanh 0.25
+24.70 whoosh 0.3         # hai người bật lên
+25.77 pop 0.4            # nút
+27.33 tap 0.55
+28.40 pop 0.3
+29.47 tap 0.55
+29.47 pop 0.45           # pháo giấy
+30.53 tap 0.55
