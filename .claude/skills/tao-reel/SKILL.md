@@ -65,7 +65,7 @@ Nam: "nếu đánh giá kịch bản chưa đủ thông tin, chưa đủ yêu c�
 |---|---|---|
 | Điểm hấp dẫn cho 3 giây đầu (LUẬT SỐ 1) | Không ứng viên nào ≥ 20/25 | "Khoảnh khắc nào khiến chủ quán giật mình nhất?", "Có chuyện thật / con số thật nào không?" |
 | Nỗi đau cụ thể của khách (LUẬT SỐ 2) | Chung chung ("quản lý khó"), không thấy hậu quả | "Khách mất gì: tiền, giờ, khách hàng?", "Chuyện xảy ra lúc nào, ở đâu?" |
-| Sản phẩm giải quyết thế nào (LUẬT SỐ 2) | Brief chỉ nêu tên sản phẩm, tính năng chưa xác nhận, hoặc brief ghi "cần team xác nhận" | "Tính năng nào gỡ đúng việc này, tên gọi trên phần mềm là gì?", "Có ảnh/quay màn hình tính năng không?" |
+| Sản phẩm giải quyết thế nào (LUẬT SỐ 2) — tra `brand/products.json` mục `tinhNang` trước (vd. "Tự động xác nhận thanh toán QR" của SIPOS, Webino, REDSUN BOS) | Brief chỉ nêu tên sản phẩm, tính năng chưa xác nhận, hoặc brief ghi "cần team xác nhận" | "Tính năng nào gỡ đúng việc này, tên gọi trên phần mềm là gì?", "Có ảnh/quay màn hình tính năng không?" |
 | Người xem, kênh, lời kêu gọi | Không ghi, hoặc CTA hứa ưu đãi chưa có | "Video cho ai xem?", "Muốn người xem làm gì: nhắn tin, vào web, gọi?" |
 | Số, giá, ưu đãi, lời khách, tên người | Có trong ý nhưng thiếu số liệu/nguồn/đồng ý | Hỏi đúng số và nguồn; không có thì bỏ ý đó |
 | Thời lượng 15–30 giây | Brief dài hơn 30 giây hoặc quá nhiều ý | "Giữ ý nào làm chính? Ý còn lại tách thành video khác?" |

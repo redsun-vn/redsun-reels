@@ -12,6 +12,9 @@
       },
       "defaultCta": "Tìm hiểu thêm tại sipos.vn",
       "hashtags": ["#SIPOS", "#phanmemquanlybanhang", "#Redsun"],
+      "tinhNang": [
+        { "ten": "Tự động xác nhận thanh toán QR", "moTa": "Mỗi đơn hàng sinh một mã QR thanh toán riêng; khách quét mã trả tiền, phần mềm tự động xác nhận thanh toán (không cần nhìn ảnh chụp chuyển khoản).", "nguon": "Nam (CTO) xác nhận 2026-10-10" }
+      ],
       "reviewed": false
     },
     "bos": {
@@ -24,6 +27,9 @@
       },
       "defaultCta": "Yêu cầu tư vấn tại redsun.vn",
       "hashtags": ["#RedsunBOS", "#quantridoanhnghiep", "#Redsun"],
+      "tinhNang": [
+        { "ten": "Tự động xác nhận thanh toán QR", "moTa": "Mỗi đơn hàng sinh một mã QR thanh toán riêng; khách quét mã trả tiền, phần mềm tự động xác nhận thanh toán (không cần nhìn ảnh chụp chuyển khoản).", "nguon": "Nam (CTO) xác nhận 2026-10-10" }
+      ],
       "reviewed": false
     },
     "webino": {
@@ -38,6 +44,9 @@
       },
       "defaultCta": "Tạo website tại webino.vn",
       "hashtags": ["#Webino", "#AIwebsitebuilder", "#Redsun"],
+      "tinhNang": [
+        { "ten": "Tự động xác nhận thanh toán QR", "moTa": "Mỗi đơn hàng sinh một mã QR thanh toán riêng; khách quét mã trả tiền, phần mềm tự động xác nhận thanh toán (không cần nhìn ảnh chụp chuyển khoản).", "nguon": "Nam (CTO) xác nhận 2026-10-10" }
+      ],
       "reviewed": false
     },
     "redsun": {

@@ -5,5 +5,5 @@
 - Nam: "duyệt cả 2".
 - Nam đồng ý: cảnh giải pháp còn yếu vì brief chưa xác nhận SIPOS có đối chiếu chuyển khoản/QR. Team xác nhận tính năng (tên + cách dùng) thì làm lại cảnh giải pháp cho đúng nỗi đau "ảnh giả".
 
-## Cần team xác nhận
-- SIPOS có giúp đối chiếu thanh toán chuyển khoản hay QR không, tên tính năng là gì.
+## Đã xác nhận
+- Nam 2026-10-10: SIPOS, Webino, REDSUN BOS đều có chức năng tự động xác nhận thanh toán khi khách quét mã QR sinh ra cho mỗi đơn hàng (ghi ở `brand/products.json`, mục `tinhNang`). Nam: "không làm lại video" — video này giữ nguyên bản đã duyệt; video sau dùng tính năng này cho cảnh giải pháp.
