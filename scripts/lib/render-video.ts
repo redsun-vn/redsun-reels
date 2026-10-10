@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import type { BuiltVideo } from './build-video.ts';
 import { REPO_ROOT, runFfprobe, runHyperframes, stripAnsi } from './hyperframes-env.ts';
 import { normalizeAudio, type Loudness } from './loudness.ts';
+import { AI_VIDEO } from '../../config/ai-video.ts';
 import { CUSTOM_DIR } from './custom-video.ts';
 import { BEAT_WINDOW_SEC, beatsOfFile } from './music-beats.ts';
 import { CUE_FILE, parseCues } from './sfx-cues.ts';
@@ -51,10 +52,11 @@ function renderInner(built: BuiltVideo, opts: { briefDir?: string; quality?: 'dr
   const remote = log.split('\n').filter((l) => /Fetched .* from Google Fonts|cdn\.jsdelivr|HTTP404|REQUESTFAILED|Asset load failure: .*(HTTP\d{3}|net::)/.test(l));
   if (remote.length) throw new Error(`Render tải tài nguyên từ mạng hoặc thiếu file:\n${remote.join('\n')}`);
 
-  const loudness = normalizeAudio(rawFile, tmpFile, built.props.totalSec);
+  // Video có người thật do AI tạo: ghi dấu AI máy đọc được vào siêu dữ liệu (REQUIREMENTS §7.4)
+  const loudness = normalizeAudio(rawFile, tmpFile, built.props.totalSec, built.aiContent ? { comment: AI_VIDEO.metadataComment, description: AI_VIDEO.label } : {});
 
-  const probe = runFfprobe(['-v', 'error', '-show_entries', 'stream=codec_type,codec_name,width,height,r_frame_rate,pix_fmt,sample_rate:format=duration', '-of', 'json', tmpFile]);
-  const info = JSON.parse(probe.stdout) as { streams: Array<Record<string, string | number>>; format: { duration: string } };
+  const probe = runFfprobe(['-v', 'error', '-show_entries', 'stream=codec_type,codec_name,width,height,r_frame_rate,pix_fmt,sample_rate:format=duration:format_tags=comment', '-of', 'json', tmpFile]);
+  const info = JSON.parse(probe.stdout) as { streams: Array<Record<string, string | number>>; format: { duration: string; tags?: { comment?: string } } };
   const v = info.streams.find((s) => s.codec_type === 'video');
   const a = info.streams.find((s) => s.codec_type === 'audio');
   const durationSec = Number(info.format.duration);
@@ -68,6 +70,7 @@ function renderInner(built: BuiltVideo, opts: { briefDir?: string; quality?: 'dr
   if (Math.abs(loudness.integrated - -14) > 1) problems.push(`độ to ${loudness.integrated} LUFS (cần −14 ±1)`);
   if (loudness.truePeak > -1) problems.push(`đỉnh âm ${loudness.truePeak} dBTP (cần ≤ −1)`);
   if (sizeMB > (50 * durationSec) / 60 + 1) problems.push(`dung lượng ${sizeMB.toFixed(1)} MB vượt mục tiêu 50 MB/60 giây`);
+  if (built.aiContent && info.format.tags?.comment !== AI_VIDEO.metadataComment) problems.push('thiếu dấu nội dung AI trong siêu dữ liệu file');
   if (problems.length) throw new Error(`Video ra chưa đúng chuẩn: ${problems.join('; ')}.`);
   renameSync(tmpFile, finalFile); // chỉ thay file cuối khi đã đạt chuẩn
 

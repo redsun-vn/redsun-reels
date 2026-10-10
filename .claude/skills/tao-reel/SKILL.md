@@ -26,7 +26,7 @@ model: claude-opus-5-5
 ## Luồng mặc định: TỰ ĐỘNG từ brief đến video
 Nam chốt 2026-10-09: "MKT chỉ cần đưa brief, sau đó đợi output video". MKT nói/dán brief (một câu cũng được) → Claude làm hết rồi đưa video. **Không dừng chờ chọn concept, duyệt kịch bản, xem thử** như luồng từng bước.
 
-1. **Brief** (bước 1): tạo `./reel new <tên-video>`, điền từ lời MKT. Phần MKT không nói thì tự đặt mặc định hợp lý: thời lượng = giữa khoảng của loại video, người xem theo sản phẩm, CTA = `defaultCta`, nhạc `auto`.
+1. **Brief** (bước 1): tạo `./reel new <tên-video>`, điền từ lời MKT. **Gọi skill `chon-kieu-hinh` ngay sau đó** để MKT chọn minh hoạ hay người thật do AI tạo (câu hỏi bắt buộc, kể cả luồng tự động; không tự chọn). Phần MKT không nói thì tự đặt mặc định hợp lý: thời lượng = giữa khoảng của loại video, người xem theo sản phẩm, CTA = `defaultCta`, nhạc `auto`.
    - **Chỉ hỏi** khi thiếu thông tin mà tự đặt sẽ là **bịa**: con số, giá, ưu đãi, hạn chót, lời khách, tên người, tính năng chưa có trong brief/profile. Gom vào **một lần hỏi** (tối đa 5 câu), có lựa chọn sẵn.
    - Hình ảnh: chạy `./reel hinh <tên-video>`. MKT có kéo hình/clip vào thư mục `hinh` của video thì xem từng hình và xếp vào cảnh (bước 4). Không có thì làm bản chỉ có chữ (cảnh `text`), không hỏi. Riêng loại bắt buộc ảnh/clip thật (khách hàng nói, tổng kết sự kiện, người nói trước camera, trước/sau có ảnh) thì hỏi.
 2. **Loại video + phong cách** (bước 2): tự chọn. Chạy `./reel info gan-day` trước: **video mới phải khác** các video gần đây cùng dịp hoặc cùng sản phẩm — đổi phong cách (dịp lễ: xoay vòng theo `./reel info dip-le`), đổi loại video nếu hợp. Ghi phong cách đã chọn vào `style` của brief.
@@ -43,7 +43,7 @@ Làm nhiều video một lúc (vd. "làm 3 video 20/10 cho SIPOS, Webino, BOS"):
 ## Chi tiết từng bước (dùng cho cả hai luồng)
 
 ### 1. Brief
-- Đọc brief có sẵn, hoặc tạo mới: `./reel new <tên-video>`. Tên dạng `YYYY-MM-DD-<sản-phẩm>-<chủ-đề>`, chữ thường không dấu, ví dụ `2026-10-20-sipos-canh-bao-ton-kho`.
+- Đọc brief có sẵn, hoặc tạo mới: `./reel new <tên-video>`. Brief mới chưa có `kieuHinh`: gọi skill `chon-kieu-hinh` (luật cứng về người thật do AI tạo và nhãn AI nằm ở skill đó). Tên dạng `YYYY-MM-DD-<sản-phẩm>-<chủ-đề>`, chữ thường không dấu, ví dụ `2026-10-20-sipos-canh-bao-ton-kho`.
 - Điền frontmatter `brief.md`: product, videoType (hoặc `auto`), style (để trống nếu MKT không chọn), occasion (dịp lễ nếu có), goal, audience, duration, tone, cta, music (`auto`), assets.
 - Chỉ hỏi những gì MKT chưa nói (tối đa 5 câu): sản phẩm, muốn nói điều gì, cho ai xem, dài bao nhiêu giây, muốn người xem làm gì sau đó.
 - Brief chỉ ghi điều MKT đã nói. Không tự thêm độ tuổi, con số, ưu đãi.
@@ -82,7 +82,7 @@ Nam chốt 2026-10-09: hình minh hoạ, yếu tố con người lấy từ hìn
    - Cảnh có khối ưu đãi (`promo`) chỉ nhận `text` hoặc `asset` (ảnh người/quán, không phải ảnh màn hình). Cảnh `cta` giữ `logo`.
    - Không bắt buộc dùng hết: hình mờ, tối, lệch chủ đề thì bỏ và báo MKT 1 câu. Validate báo "hình chưa dùng" là lưu ý, không phải lỗi.
    - Hình ngang bị cắt hai bên trong video dọc: chỉ dùng khi chủ thể ở giữa, xem kỹ bản xem thử.
-4. **Không bịa theo hình**: không gọi người trong hình là khách hàng, không đặt tên, không gán lời nói, trừ khi brief ghi rõ. Không tự lấy ảnh trên mạng, không tạo ảnh bằng AI (ngoài phạm vi, REQUIREMENTS §2.3).
+4. **Không bịa theo hình**: không gọi người trong hình là khách hàng, không đặt tên, không gán lời nói, trừ khi brief ghi rõ. Không tự lấy ảnh trên mạng. Người thật do AI tạo chỉ làm qua quy trình riêng của dự án, luôn gắn nhãn AI (REQUIREMENTS §7.4, đang làm ở M5, chưa dùng được); không dùng ảnh/clip AI MKT tạo ở nơi khác. Kiểu hình `nguoi-that-quay-san`: clip Pexels/Pixabay nhận bằng `./reel quay-san` (skill `chon-kieu-hinh` luật 11–12), không bỏ vào `hinh/`.
 - Hình trong `hinh/` chỉ nằm trên máy MKT, không lên repo (có thể có mặt khách). `assets/<sản-phẩm>/` là ảnh dùng chung do dev đưa vào.
 - MKT hỏi nên chụp gì: gợi ý ngắn theo kịch bản (chụp/quay **dọc**, người thật đang làm việc, chừa trên và dưới khung không có chi tiết quan trọng). Loại bắt buộc ảnh/clip thật mà thiếu → viết `briefs/<tên-video>/shotlist.md` (shot, địa điểm, mô tả, thời lượng) và chờ MKT gửi.
 - **Khách hàng nói**: cần lời khách thật, tên + cửa hàng, và khách đã đồng ý xuất hiện. MKT chưa đưa thì hỏi, không tự viết lời khách.

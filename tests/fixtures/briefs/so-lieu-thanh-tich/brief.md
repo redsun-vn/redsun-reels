@@ -1,5 +1,6 @@
 ---
 product: sipos
+kieuHinh: minh-hoa
 videoType: so-lieu-thanh-tich
 style: du-lieu
 occasion:

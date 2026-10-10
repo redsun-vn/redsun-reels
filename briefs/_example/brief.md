@@ -1,5 +1,6 @@
 ---
 product: sipos                 # sipos | bos | webino | redsun
+kieuHinh:                      # minh-hoa | nguoi-that-quay-san (Pexels/Pixabay) | nguoi-that-ai (có nhãn AI) — Claude hỏi MKT, không tự chọn
 videoType: ra-mat-tinh-nang    # id trong config/video-types.ts, hoặc "auto" để Claude đề xuất
 style:                         # bỏ trống = mặc định của loại video; "auto" = Claude đề xuất
 occasion:                      # dịp lễ (tet, 14-2, 8-3, 20-10…), bỏ trống nếu không có

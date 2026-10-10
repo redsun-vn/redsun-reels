@@ -137,3 +137,7 @@
 
 /* Chớp sáng giữa hai cảnh */
 .rs-flash { position: absolute; inset: 0; background: var(--color-white); opacity: 0; pointer-events: none; }
+
+/* Nhãn nội dung AI (REQUIREMENTS §7.4, Nghị định 142/2026/NĐ-CP Điều 18): con trực tiếp của gốc composition,
+   hiện từ khung đầu đến hết, trên mọi lớp. Vị trí/cỡ/màu cố định ở đây; validate cấm video tự đổi. */
+.rs-nhan-ai { position: absolute; left: var(--safe-left); top: calc(var(--safe-top) + 8px); z-index: 1000; padding: 10px 22px; border-radius: 999px; background: color-mix(in srgb, var(--color-black) 78%, transparent); color: var(--color-white); font-weight: 800; font-size: var(--type-caption); line-height: 1.2; white-space: nowrap; pointer-events: none; }

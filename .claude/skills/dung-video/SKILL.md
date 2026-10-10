@@ -19,6 +19,7 @@ Nói với MKT tiếng Việt, câu ngắn, không thuật ngữ. Chỉ ghi file
 
 ## Đầu vào
 - `briefs/<tên>/brief.md` (đọc kỹ phần "Không được", người xem, giọng điệu) và `script.json` **đã duyệt**: đây là nguồn chữ duy nhất.
+- **Kiểu hình** `kieuHinh` trong brief (skill `chon-kieu-hinh`): `minh-hoa` → dựng như dưới đây. `nguoi-that-quay-san` → ghép clip trong `quay-san/` (nhận qua `./reel quay-san`, đặt `src="quay-san/<file>"`) như clip MKT gửi, theo luật 11–12 và mục "dựng vai và cảm xúc" của `chon-kieu-hinh` (đủ vai theo brief, một vai một người, đúng cảm xúc từng khung, vai xấu không lộ mặt, không khen sản phẩm). Clip video đặt ở gốc composition (không nằm trong `.clip` có `data-start`), lớp bọc không hẹn giờ để cắt khung/đẩy máy; clip cần nằm trên nền cảnh thì đặt sau cảnh đó trong HTML. `nguoi-that-ai` → theo REQUIREMENTS §7.4 và **mọi luật cứng của skill `chon-kieu-hinh`** (nhãn `<div class="rs-nhan-ai" data-nhan-ai>…</div>` là con trực tiếp của gốc, không chạm vào nhãn, cảnh AI chỉ từ `ai/` có nhật ký). Quy trình chưa bật thì dừng, báo MKT. Thiếu `kieuHinh` thì gọi `chon-kieu-hinh` trước.
 - `script.json` phải có `"build": "custom"`.
 - Hình MKT gửi: `./reel hinh <tên>` → mở xem từng hình. Có hình người/quán/màn hình thật thì **ưu tiên dùng** (đặt `src="hinh/<file>"`); chưa có thì dùng nhân vật phẳng `RS.person` và màn hình app mô phỏng.
 

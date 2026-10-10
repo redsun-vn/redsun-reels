@@ -1,5 +1,6 @@
 ---
 product: sipos
+kieuHinh: minh-hoa
 videoType: chuc-mung-dip-le
 style:
 occasion: 20-10

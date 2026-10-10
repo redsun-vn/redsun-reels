@@ -10,6 +10,7 @@ import { hasErrors, hookIssues, rolesMatch, validateVideo } from '../scripts/lib
 
 const BRIEF = `---
 product: sipos
+kieuHinh: minh-hoa
 videoType: ra-mat-tinh-nang
 template: FeatureLaunch
 goal: "Giới thiệu tính năng kiểm kho bằng điện thoại"

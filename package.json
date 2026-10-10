@@ -14,6 +14,7 @@
     "hinh": "node scripts/hinh.ts",
     "snap": "node scripts/snap.ts",
     "bang": "node scripts/bang-canh.ts",
+    "quay-san": "node scripts/quay-san.ts",
     "validate": "node scripts/validate.ts",
     "build": "node scripts/build.ts",
     "preview": "node scripts/preview.ts",

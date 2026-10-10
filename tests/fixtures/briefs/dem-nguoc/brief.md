@@ -1,5 +1,6 @@
 ---
 product: webino
+kieuHinh: minh-hoa
 videoType: dem-nguoc
 style: bi-an
 occasion:

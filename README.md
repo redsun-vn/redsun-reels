@@ -173,6 +173,7 @@ Không cần Node hệ thống: `./reel` tự dùng Node trong `~/.redsun-reels`
 | `pnpm render <slug>` | Xuất `out/<slug>.mp4`: chuẩn hóa −14 LUFS, kiểm output spec, ghi `cost.json` |
 | `pnpm make <slug>` | validate → build → render |
 | `pnpm snap <slug> [--at=…]` | Dựng + `hyperframes check` + chụp khung hình `out/snap/<slug>/` + so nền các cảnh (soát video dựng riêng) |
+| `pnpm quay-san <slug> [file --link=… --tac-gia=… --khong-phai-ai]` | Nhận clip người thật quay sẵn Pexels/Pixabay vào `briefs/<slug>/quay-san/` + sổ nguồn (kiểu hình `nguoi-that-quay-san`) |
 | `pnpm bang <slug>` | Bảng khung chính của video dựng riêng (`dung-rieng/bang-canh.txt` → `out/snap/<slug>/bang/bang-canh.png`) cho MKT duyệt theo số khung |
 | `pnpm hinh <slug> [file…]` | Chép hình/clip MKT gửi vào `briefs/<slug>/hinh/`, đổi HEIC → JPG, tên không dấu; liệt kê hình/clip · dọc/ngang · số giây |
 | `pnpm lint:brand` | Chặn màu, font, cỡ chữ viết cứng trong `templates/` và `brand/styles/` |

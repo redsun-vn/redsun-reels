@@ -1,5 +1,6 @@
 ---
 product: bos
+kieuHinh: minh-hoa
 videoType: su-kien-webinar
 style: tin-tuc
 occasion:

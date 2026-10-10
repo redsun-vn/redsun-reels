@@ -1,5 +1,6 @@
 ---
 product: redsun
+kieuHinh: minh-hoa
 videoType: tuyen-dung
 style: nang-dong
 occasion:

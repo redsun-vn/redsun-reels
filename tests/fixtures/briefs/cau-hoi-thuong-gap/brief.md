@@ -1,5 +1,6 @@
 ---
 product: bos
+kieuHinh: minh-hoa
 videoType: cau-hoi-thuong-gap
 style: toi-gian
 template: TipOfTheDay

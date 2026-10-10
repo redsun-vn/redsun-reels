@@ -106,6 +106,7 @@ Kiểm kê lần đầu (plugin HyperFrames 0.8.141, 21 skill) cho 2 skill dự 
 |---|---|---|---|
 | `cai-dat` (M2) | `/hyperframes:hyperframes-cli` (doctor, browser, init, render…) | Cách dùng CLI, chẩn đoán | Không có skill nào cài Node/pnpm/plugin theo nguyên tắc "không sudo, không Homebrew, đúng tag". `doctor` còn gợi ý `brew install whisper-cpp`. `cai-dat` gọi lệnh CLI theo `hyperframes-cli`, chỉ thêm phần bootstrap |
 | `tao-reel` (M2) | `/hyperframes:hyperframes` (router), `-core`, `-audio`, `-creative`, `-registry`, `media-use`, `embedded-captions`, `product-launch-video` | Viết composition, mix audio, caption, block | Các creation workflow (`product-launch-video`, `general-video`…) tự viết composition mới, trái nguyên tắc template-first (§10). `tao-reel` giữ quy trình brief → script → duyệt → tts → build → render và trỏ sang `-core` / `-audio` khi dev sửa template |
+| `chon-kieu-hinh` (2026-10-10) | `/hyperframes:media-use` (nguồn media, ảnh tạo), `tao-reel`, `dung-video` | `media-use` lo lấy/tạo media nói chung; `tao-reel` điều phối | Không skill nào hỏi MKT kiểu hình và giữ luật cứng pháp lý về nhãn AI (Luật AI 2025, NĐ 142/2026). Tách riêng để luật nằm một chỗ, `tao-reel`/`dung-video` chỉ trỏ tới; luật được kiểm bằng code (`scripts/lib/kieu-hinh-rules.ts`) |
 
 ## 7. REQUIREMENTS v0.4 (2026-10-08)
 
@@ -400,3 +401,40 @@ Nam hỏi học được gì từ repo này; đồng ý 3 việc (repo dựng b�
 - **Chuyển hình trên phách**: sau khi xuất, tìm các cụm khung đổi mạnh (cắt, mở tròn, chớp, lao máy) và so với phách của bài nhạc; báo khi dưới 70% cú chuyển bắt đầu hoặc dừng đúng phách (±0.07 giây).
 - **Luật kể chuyện** trong skill `dung-video`: quá trình thật, một thứ để mắt bám, một màu một nghĩa, lặng trước vỡ lẽ, kết gọi lại mở đầu, mỗi chuyển cảnh nói được lý do (bảng kiểu chuyển cảnh), diễn ý bằng hình, có cận cực sát, ≥ 3 chi tiết sống mỗi khung, danh sách kiểu "nhìn là biết máy làm" cần tránh.
 - "Ảnh chuyển khoản giả": thêm lặng 13.55–14.09 trước dấu GIẢ (bỏ tiếng vút 13.69), đo: thấp hơn 27.4 dB, tiếng to nhất ở 14.2s; 7/9 cú chuyển trên phách; bảng 12 khung.
+
+## 22. Cho phép video người thật do AI tạo, bắt buộc gắn nhãn (2026-10-10)
+Nam: "tiếp theo để nâng cao, cần sản xuất video hoàn toàn dùng người thật do AI sản xuất, có gán nhãn nội dung AI" → "cho phép đổi REQUIREMENTS".
+- REQUIREMENTS lên **v0.5** (bản v0.4 lưu ở `docs/requirements-history/REQUIREMENTS-v0.4.md`): mục 7.4 mới (nguồn tạo, dàn diễn viên AI có ảnh tham chiếu, điều cấm, 4 lớp nhãn, kiểm chất lượng, lưu trữ), M5, API key cloud chỉ cho việc tạo cảnh AI. Vẫn ngoài phạm vi: lồng tiếng, nhạc AI, người giống người thật có danh tính, màn hình sản phẩm/logo/chữ do AI vẽ.
+- Cơ sở pháp lý: Luật Trí tuệ nhân tạo 2025 (hiệu lực 01/3/2026, Điều 11) và Nghị định 142/2026/NĐ-CP (hiệu lực 01/5/2026, Điều 18): nội dung AI mô phỏng người thật phải gắn nhãn rõ, trước hoặc khi người xem tiếp cận; bên đăng (Redsun) gắn nhãn. Nền tảng: YouTube tự gắn nhãn đè lên Shorts khi phát hiện AI chưa khai (từ 05/2026); TikTok đọc C2PA. Chưa đọc được toàn văn nghị định: kiểm lại với văn bản chính thức (mẫu nhãn tham chiếu của Bộ KH&CN) trước khi phát hành.
+- `briefs/*/ai/` vào `.gitignore` (cảnh AI và ảnh tham chiếu không lên repo công khai). Skill và sổ tay MKT: chưa dùng được đến khi xong M5; không nhận ảnh/clip AI MKT tự tạo ở nơi khác.
+- Chờ Nam chốt: tài khoản/API key (Gemini API hay fal.ai, đặt trên máy nào), mức chi mỗi video, câu chữ nhãn, có cho nhân vật AI nói tiếng Việt không.
+
+## 23. Skill `chon-kieu-hinh` và luật cứng cho người thật do AI tạo (2026-10-10)
+Nam: "tạo skill để hỏi tạo dạng minh họa là version hiện tại hay người thật, phải có những luật cứng không cho vượt qua". Kiểm kê skill ở §6.
+- `brief.md` có trường bắt buộc **`kieuHinh: minh-hoa | nguoi-that-ai`**; thiếu hay sai là lỗi. 27 brief cũ và mẫu test được ghi `minh-hoa`; `briefs/_example` để trống nên `./reel new` buộc phải hỏi. Skill `chon-kieu-hinh` hỏi MKT (bắt buộc kể cả luồng tự động), `tao-reel`/`dung-video`/`CLAUDE.md` trỏ tới.
+- **Luật cứng bằng code**, không có cờ bỏ qua (`config/ai-video.ts`, `scripts/lib/kieu-hinh-rules.ts`, gọi trong validate):
+  - minh hoạ không dùng file trong `ai/`;
+  - người thật AI: chặn khi quy trình chưa bật (`enabled: false` đến hết M5); cấm 5 loại video cần người/sự kiện thật; bắt buộc dựng riêng;
+  - nhãn trên hình `.rs-nhan-ai[data-nhan-ai]` đúng chữ, con trực tiếp của gốc (hiện suốt video), không style riêng, CSS/JS của video không được chạm;
+  - mọi cảnh AI có trong `ai/nhat-ky.json` (model, mô tả tạo);
+  - caption mở đầu bằng nhãn (`./reel post` tự chèn + nhắc khai báo AI của nền tảng);
+  - `./reel render` ghi dấu AI vào siêu dữ liệu MP4 và kiểm lại, thiếu thì không ra file.
+- Luật Claude soát bằng mắt (máy chưa kiểm được): người có danh tính, AI vẽ màn hình/chữ, nhân vật nói.
+- Nhãn mặc định "Video có hình ảnh do AI tạo" (đề xuất, chờ Nam chốt câu chữ). Stage copy `ai/` (bỏ nhật ký) vào bản dựng; composition được tham chiếu `ai/…`.
+
+## 24. Kiểu hình thứ ba: người thật quay sẵn từ Pexels/Pixabay (2026-10-10)
+Nam xem MoneyPrinterTurbo (MIT, kéo clip stock Pexels/Pixabay theo kịch bản) và đồng ý thêm lựa chọn "người thật quay sẵn": có người thật mà không phải AI, không tốn phí, không cần nhãn AI.
+- `kieuHinh: nguoi-that-quay-san` (REQUIREMENTS v0.5 §7.5). Skill `chon-kieu-hinh` hỏi 3 lựa chọn, thêm luật cứng 11–12.
+- Giấy phép (đọc 2026-10-10): Pexels — thương mại/quảng cáo được, không cần ghi nguồn, **cấm** để người trong hình xuất hiện xấu/xúc phạm và **cấm ngụ ý họ ủng hộ sản phẩm**; Pixabay — cấm dùng gây hiểu nhầm, cấm dùng người nhận ra được theo cách trái đạo đức/pháp luật, cấm nội dung có thương hiệu khác; Pixabay có cả nội dung do AI tạo nên phải kiểm từng clip. Hệ quả: người trong clip không đóng vai xấu (vd. khách gửi ảnh chuyển khoản giả), không gán lời khen, không làm khách/nhân viên/đội ngũ.
+- `./reel quay-san` (`scripts/quay-san.ts`, `scripts/lib/stock-footage.ts`, `config/stock-footage.ts`): chỉ nhận link trang một clip trên pexels.com/pixabay.com, bắt buộc tác giả và cờ `--khong-phai-ai` (Claude đã mở trang kiểm), chép vào `briefs/<tên>/quay-san/` (không commit: giấy phép cấm phát tán lại), ghi `nguon.json`.
+- Validate (`scripts/lib/kieu-hinh-rules.ts`): clip dùng phải có trong sổ và hợp lệ; minh hoạ không dùng `quay-san/`; quay sẵn không trộn cảnh AI; cấm 5 loại video như §23. `./reel post` ghi nguồn từng clip. Module luật đổi tên `ai-content-rules.ts` → `kieu-hinh-rules.ts` (gom luật cả ba kiểu hình).
+- Nam đồng ý đưa vào M5 (REQUIREMENTS §7.4): lớp gọi chung nhiều nhà cung cấp video AI (mỗi model khai giới hạn), an toàn khi tạo cảnh tốn tiền (việc chưa xác nhận được kết quả thì dừng cả lượt, không tự gửi lại; lỗi tải chỉ tải lại; che key trong lỗi), sổ nguồn gốc rút gọn (chỉ trường cho phép, không đường dẫn máy, không key), cảnh theo thứ tự khung chính.
+- Key cho M5: `GEMINI_API_KEY` (Veo 3.1 + ảnh tham chiếu; Veo không có gói miễn phí), `FAL_KEY` tuỳ chọn để so Kling. Đặt cảnh báo ngân sách ở Google Cloud Billing, giới hạn key chỉ gọi Generative Language API.
+
+## 25. Người thật quay sẵn: dựng vai và cảm xúc là luật (2026-10-10)
+Nam xem bản người thật đầu (một người mẫu Mizuno K đóng cả chủ quán lẫn nhân viên, ảnh dừng mặt bình thường thay "sững lại"): "nhân vật chưa đủ, cảm xúc chưa đúng, không quan trọng bối cảnh nước ngoài… tập trung vào nhân vật, cảm xúc" và "phải yêu cầu rõ trong skill, để tất cả video sau này đều làm được".
+- Skill `chon-kieu-hinh` thêm mục "dựng vai và cảm xúc": đủ vai theo brief (không gộp), một vai một người (chọn loạt clip cùng buổi quay), vai xấu không lộ mặt, tìm theo cảm xúc (bảng từ khoá), xem dải khung trước khi chọn, cảm xúc khai đúng cái thấy trên mặt, cấm giả cảm xúc bằng ảnh dừng; ưu tiên người → cảm xúc → mặt to → bối cảnh.
+- Code: `./reel quay-san` bắt buộc `--vai`, `--nguoi`, `--cam-xuc` (danh sách `CAM_XUC` trong `config/stock-footage.ts`, cùng bộ với nét mặt nhân vật minh hoạ + `khong-mat`); validate chặn clip thiếu ba trường này và một vai do nhiều người mẫu đóng.
+
+## 26. Không giới hạn chi cho video AI; key Gemini (2026-10-10)
+Nam: "không có mục tối đa cho video, chỉ quan tâm đến chất lượng video". REQUIREMENTS §7.4/M5: bỏ mức chi tối đa mỗi video, tạo lại đến khi cảnh đạt; vẫn ghi chi phí từng cảnh vào `ai/nhat-ky.json`. Nam cấp Gemini API key (key đầu bị Google khoá; key thứ hai dùng được: có `veo-3.1-generate-preview`, `veo-3.1-fast-generate-preview`, `veo-3.1-lite-generate-preview` và model ảnh Gemini), nằm trong `.env` máy Nam, không commit.

@@ -1,5 +1,6 @@
 ---
 product: sipos
+kieuHinh: minh-hoa
 videoType: so-sanh
 style: vui-nhon
 occasion:

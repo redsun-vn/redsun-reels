@@ -53,7 +53,9 @@ Tên file gì cũng được, ảnh iPhone (HEIC) cũng được: máy tự đ�
 - Chuyển file từ điện thoại qua **AirDrop** hoặc cáp. Đừng gửi qua Zalo, Messenger: các app này nén làm mờ hình.
 
 **Quy định**
-- Chỉ dùng ảnh, clip của công ty hoặc tự chụp. Không lấy ảnh trên mạng, không dùng ảnh tạo bằng AI.
+- Mỗi video mới, Claude hỏi một câu: làm **minh hoạ** (nhân vật vẽ, như hiện nay), **người thật quay sẵn** (clip miễn phí từ pexels.com, pixabay.com) hay **người thật do AI tạo** (luôn có dòng "Video có hình ảnh do AI tạo" trên video và đầu caption; phần này đang làm, chưa dùng được).
+- Người thật quay sẵn: vào pexels.com hoặc pixabay.com, tìm clip (gõ tiếng Anh, vd. "shop owner", "cashier"), nên chọn clip **dọc**, bấm tải về. Kéo file vào khung chat **kèm link trang clip**. Người trong clip là người lạ: không làm vai xấu, không làm khách hàng hay người khen sản phẩm.
+- Chỉ dùng ảnh, clip của công ty hoặc tự chụp. Không lấy ảnh trên mạng, không gửi ảnh/clip tự tạo bằng AI ở nơi khác. Video có người thật do AI tạo sẽ làm qua quy trình riêng của dự án, luôn có nhãn "nội dung AI" (đang làm, chưa dùng được).
 - Người trong hình (khách, nhân viên) phải **đồng ý** xuất hiện. Muốn ghi là khách hàng, ghi tên, lời khách: phải nói rõ với Claude, Claude không tự gán.
 - Hình chỉ nằm trên máy bạn, không đưa lên kho mã chung.
 - Clip người nói trước camera: cách quay ở [hướng dẫn thử nghiệm, mục 4](huong-dan-thu-nghiem-mkt.md#4-quay-clip-người-nói-cho-tình-huống-7).

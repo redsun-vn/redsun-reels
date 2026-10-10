@@ -1,5 +1,6 @@
 ---
 product: redsun
+kieuHinh: minh-hoa
 videoType: gioi-thieu-cong-ty
 style: dien-anh
 occasion:

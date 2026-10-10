@@ -22,6 +22,10 @@ docs/spike-audio/**/*.wav
 briefs/*/audio/
 # Hình/clip MKT gửi cho từng video (có thể có mặt khách, nhân viên): chỉ ở máy MKT, không lên repo công khai
 briefs/*/hinh/
+# Cảnh và ảnh tham chiếu do AI tạo (REQUIREMENTS §7.4): giữ trên máy, không đưa lên repo công khai
+briefs/*/ai/
+# Clip người thật quay sẵn (Pexels/Pixabay, REQUIREMENTS §7.5): giấy phép cấm phát tán lại, không đưa lên repo công khai
+briefs/*/quay-san/
 
 .DS_Store
 

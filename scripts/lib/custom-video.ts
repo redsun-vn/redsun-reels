@@ -9,7 +9,7 @@ import { join, normalize } from 'node:path';
 import type { Script } from '../../config/script.schema.ts';
 import { normalizeText, numberTokens } from './fact-check.ts';
 import { REPO_ROOT } from './hyperframes-env.ts';
-import { CUE_FILE, CUE_MARKER, cueIssues, parseCues } from './sfx-cues.ts';
+import { CUE_FILE, CUE_MARKER, cueIssues, parseCues, SFX_TRACK_START } from './sfx-cues.ts';
 import { BOARD_FILE, boardIssues, parseBoard } from './storyboard-board.ts';
 
 export const CUSTOM_DIR = 'dung-rieng';
@@ -145,6 +145,8 @@ export function customIssues(dir: string, script: Script, briefBody: string, tot
     for (const e of [...errors, ...(Number.isFinite(d) ? cueIssues(cues, d, undefined, silence) : [])]) err(e);
     if (!silence && cues.length) warn(`${CUE_FILE} chưa khai khoảng lặng trước khoảnh khắc vỡ lẽ ("lang <từ> <đến>"): lặng 0.5–2 giây rồi tiếng nhấn to nhất ngay ở <đến>.`);
     if (!html.includes(CUE_MARKER)) err(`Có ${CUE_FILE} nhưng index.html thiếu dòng đánh dấu ${CUE_MARKER} (đặt sau thẻ nhạc, trong gốc composition).`);
+    const taken = [...html.matchAll(/data-track-index="(\d+)"/g)].map((m) => Number(m[1])).filter((t) => t >= SFX_TRACK_START);
+    if (taken.length) err(`Track ${[...new Set(taken)].join(', ')} đang dùng trong index.html, nhưng track từ ${SFX_TRACK_START} trở lên dành cho tiếng động tự sinh từ ${CUE_FILE}. Đổi sang track nhỏ hơn ${SFX_TRACK_START}.`);
     if (manualSfx) warn(`Tiếng động khai ở cả ${CUE_FILE} và thẻ <audio src="sfx/…"> trong index.html: chỉ giữ một nơi (${CUE_FILE}).`);
     if (!cues.length) warn(`${CUE_FILE} chưa có tiếng động nào.`);
   } else if (!manualSfx) warn(`Chưa có tiếng động: khai trong ${CUSTOM_DIR}/${CUE_FILE} (mỗi dòng "giây tên âm-lượng"), đặt ${CUE_MARKER} trong index.html.`);
@@ -158,9 +160,9 @@ export function customIssues(dir: string, script: Script, briefBody: string, tot
   }
 
   // Hình/clip/tiếng động tham chiếu phải có thật
-  for (const ref of html.matchAll(/(?:src|href)\s*=\s*["']((?:hinh|assets|sfx)\/[^"']+)["']/g)) {
+  for (const ref of html.matchAll(/(?:src|href)\s*=\s*["']((?:hinh|ai|quay-san|assets|sfx)\/[^"']+)["']/g)) {
     const rel = normalize(ref[1]);
-    const p = rel.startsWith('hinh/') ? join(dir, rel) : rel.startsWith('sfx/') ? join(REPO_ROOT, 'brand', rel) : join(REPO_ROOT, rel);
+    const p = rel.startsWith('hinh/') || rel.startsWith('ai/') || rel.startsWith('quay-san/') ? join(dir, rel) : rel.startsWith('sfx/') ? join(REPO_ROOT, 'brand', rel) : join(REPO_ROOT, rel);
     if (rel.startsWith('..') || !existsSync(p)) err(`Bản dựng riêng dùng "${ref[1]}" nhưng không có file này.`);
   }
 

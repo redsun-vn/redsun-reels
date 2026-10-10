@@ -6,6 +6,7 @@ import { existsSync, readFileSync, statSync } from 'node:fs';
 import { extname, isAbsolute, join, normalize } from 'node:path';
 import type { z } from 'zod';
 import { BriefSchema, type Brief } from '../../config/brief.schema.ts';
+import { aiRuleIssues, kieuHinhIssue } from './kieu-hinh-rules.ts';
 import { checkTrack, findTrack, MusicManifestSchema, type MusicPurpose, usableSec } from '../../config/music-manifest.ts';
 import { countWords, sceneDurationSec } from '../../config/scene-timing.ts';
 import { availableStylePresets, hasStylePreset } from '../../config/style-preset.schema.ts';
@@ -14,7 +15,7 @@ import { factIssues } from './fact-check.ts';
 import { assetPaths } from './build-props.ts';
 import { clipIssues } from './clip-check.ts';
 import { mediaWarnings } from './brief-media.ts';
-import { customIssues } from './custom-video.ts';
+import { compositionPath, customIssues } from './custom-video.ts';
 import { motionIssues, repetitionIssues } from './motion-check.ts';
 import { recentForBrief } from './recent-videos.ts';
 import { getOccasion, OCCASIONS } from '../../config/occasions.ts';
@@ -75,9 +76,12 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose } 
 
   let brief: Brief | undefined;
   try {
-    const parsed = BriefSchema.safeParse(readBriefFile(dir).frontmatter);
+    const fm = readBriefFile(dir).frontmatter;
+    const kh = kieuHinhIssue((fm as Record<string, unknown>).kieuHinh);
+    if (kh) issues.push(kh);
+    const parsed = BriefSchema.safeParse(fm);
     if (parsed.success) brief = parsed.data;
-    else issues.push(...zodIssues('brief.md', parsed.error));
+    else issues.push(...zodIssues('brief.md', parsed.error).filter((i) => !(kh && i.message.includes('"kieuHinh"'))));
   } catch (e) {
     issues.push(err((e as Error).message));
   }
@@ -190,6 +194,9 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose } 
     issues.push(...motionIssues(script));
     issues.push(...repetitionIssues(script, recentForBrief(dir)));
   }
+  // Kiểu hình: luật cứng minh hoạ / người thật do AI tạo (không có cờ bỏ qua)
+  const customHtml = script.build === 'custom' && existsSync(compositionPath(dir)) ? readFileSync(compositionPath(dir), 'utf8') : '';
+  issues.push(...aiRuleIssues({ dir, kieuHinh: brief.kieuHinh, script, html: customHtml }));
   if (brief.occasion && !getOccasion(brief.occasion)) {
     issues.push(warn(`Dịp lễ "${brief.occasion}" chưa có trong lịch, nên không tự chọn phong cách theo dịp. Có: ${OCCASIONS.map((o) => o.id).join(', ')}.`));
   }

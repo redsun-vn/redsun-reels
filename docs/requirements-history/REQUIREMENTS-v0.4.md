@@ -1,7 +1,7 @@
 # REQUIREMENTS — redsun-reels
 
 > Hệ thống sản xuất video Reel/TikTok/Shorts nội bộ cho team Marketing Redsun, vận hành bằng Claude Code + HyperFrames.
-> Phiên bản: 0.5 — Owner: Vũ Đức Nam (CTO) — Trạng thái: Draft
+> Phiên bản: 0.4 — Owner: Vũ Đức Nam (CTO) — Trạng thái: Draft
 > 0.2: đổi nền tảng render từ Remotion sang HyperFrames (Apache 2.0), thêm Spike M0.
 > 0.3: danh sách provider TTS giọng nữ tiếng Việt (mục 8.2), quy trình nghe mù chọn giọng trong Spike S3.
 > 0.4 (2026-10-08, sau Spike M0.1, xem `docs/spike-report.md` và `docs/decisions.md`):
@@ -19,7 +19,6 @@
 >   - Caption + hashtag khi xuất.
 >   - Tham khảo bài claude.vn "Claude viết kịch bản video và quảng cáo" và repo charlie947/social-media-skills (MIT): `reels-scripting`, `hook-generator`.
 > - Bản v0.3 lưu tại `docs/requirements-history/REQUIREMENTS-v0.3.md`.
-> 0.5 (2026-10-10, Nam cho phép): **video có người thật do AI tạo**, bắt buộc gắn nhãn nội dung AI theo Luật Trí tuệ nhân tạo 2025 và Nghị định 142/2026/NĐ-CP (mục 7.4). Cho phép API key cloud cho riêng việc tạo cảnh AI (mục 3). Thêm kiểu hình **người thật quay sẵn** từ Pexels/Pixabay (mục 7.5). MKT chọn kiểu hình cho từng video (skill `chon-kieu-hinh`). Vẫn không lồng tiếng, không nhạc AI. Bản v0.4 lưu tại `docs/requirements-history/REQUIREMENTS-v0.4.md`.
 
 ---
 
@@ -85,13 +84,11 @@ Team MKT cần sản xuất đều đặn video ngắn dọc 9:16 cho Facebook R
 - Clip quay thật có tiếng người (khách hàng, người nói trước camera) được giữ âm thanh gốc. Đây không phải lồng tiếng.
 - Preview trên trình duyệt (`hyperframes preview`), render local ra MP4.
 - Skill Claude Code `cai-dat` (cài môi trường cho MKT) và `tao-reel` (dẫn MKT qua toàn bộ quy trình).
-- **Kiểu hình** của mỗi video do MKT chọn (`kieuHinh` trong brief, skill `chon-kieu-hinh`): `minh-hoa` (nhân vật, bối cảnh vẽ), `nguoi-that-ai` (cảnh người thật do AI tạo, luôn gắn nhãn AI, mục 7.4), `nguoi-that-quay-san` (clip người thật quay sẵn từ Pexels/Pixabay, mục 7.5).
 
 ### 2.3 Ngoài phạm vi (MVP)
 - **Lồng tiếng: TTS, giọng AI, giọng clone, thu âm voice-over.** (Bỏ ở v0.4; kết quả Spike S3 giữ làm tham khảo.)
 - Tự đăng bài lên mạng xã hội. Chạy quảng cáo trả tiền.
-- Nhạc tạo bằng AI (MusicGen, Suno…). Nhạc vẫn chỉ lấy từ thư viện có license (mục 8).
-- Tạo bằng AI: người giống người thật có danh tính (người nổi tiếng, nhân viên, khách hàng), màn hình sản phẩm, logo (mục 7.4).
+- Sinh ảnh/video/nhạc bằng AI (Veo, Kling, Seedance, MusicGen…).
 - Chế độ "sáng tạo tự do" dùng các creation workflow của HyperFrames (`/hyperframes:general-video`, `/hyperframes:faceless-explainer`…) cho MKT. → Phase sau, sau khi template ổn định.
 - Web UI riêng cho MKT.
 - Render trên cloud (HeyGen cloud render, AWS Lambda).
@@ -120,7 +117,7 @@ Team MKT cần sản xuất đều đặn video ngắn dọc 9:16 cho Facebook R
 Ràng buộc:
 - Chạy được trên **macOS Intel và Apple Silicon** (máy team MKT). Đã kiểm trên Intel; Apple Silicon `[VERIFY]` khi có máy.
 - Không yêu cầu GPU.
-- API key cloud chỉ dùng cho việc tạo cảnh AI (mục 7.4). Key nằm trong `.env` (trong `.gitignore`), `.env.example` chỉ có tên biến; không in key ra log, không commit. Nam quản lý key và mức chi. Mọi phần khác (dựng, render, kiểm) vẫn chạy local, không cần key.
+- Không dùng API key cloud nào ở MVP. `.env.example` chỉ chứa biến cấu hình; `.env` nằm trong `.gitignore`.
 - Cài đặt máy MKT: không sudo, không Homebrew, không trình cài GUI, không cần tài khoản (mục 10.1).
 - Không bật auto-update plugin HyperFrames trên máy MKT. Marketplace local cố định theo tag. Chỉ Nam được nâng version, sau khi chạy lại render test.
 
@@ -392,55 +389,6 @@ Quy tắc chọn:
 - Cả 19 phong cách đều được dùng (Nam duyệt 2026-10-08), kể cả `bi-an`, `glitch-cyberpunk`, `thu-cong`. Ba phong cách này áp guardrail ở `docs/video-style-catalog.md` §5: bí ẩn nhẹ, không máu me; giữ màu brand làm nhấn; giới hạn nhấp nháy; `thu-cong` không thêm font thứ 3.
 - Thứ tự triển khai: M1 có `toi-gian`, `khuyen-mai`, `vui-nhon`; M3 có các phong cách còn lại.
 
-### 7.4 Video người thật do AI tạo
-Nam cho phép 2026-10-10. Cảnh AI là **một nguồn hình** như clip MKT gửi; kịch bản, chữ, nhạc, tiếng động, logo, CTA vẫn dựng bằng HyperFrames như mục 6–9.
-
-**Nguồn tạo**
-- Model tạo video có người trông như thật, qua API, chọn sau khi chạy thử (ứng viên: Google Veo 3.1, Kling 3.0/O3). Lớp gọi model tách riêng để đổi model mà không sửa quy trình (model hay bị ngừng, vd. Sora 2).
-- Dọc 9:16, mỗi cảnh 4–8 giây, tắt tiếng của model hoặc chỉ giữ tiếng không khí (không lời nói).
-- **Không giới hạn chi mỗi video** (Nam chốt 2026-10-10: "chỉ quan tâm đến chất lượng video"): tạo lại đến khi cảnh đạt chất lượng; vẫn ghi chi phí từng cảnh vào sổ nguồn gốc để Nam theo dõi.
-- **Lớp gọi chung cho nhiều nhà cung cấp** (học từ MoneyPrinterTurbo, MIT): mỗi nhà cung cấp một bộ chuyển đổi cùng giao diện "gửi việc → hỏi kết quả → tải file"; mỗi model khai giới hạn của nó (thời lượng tối thiểu/tối đa, tỉ lệ khung, độ phân giải) để không gửi yêu cầu chắc chắn lỗi.
-- **An toàn khi tạo cảnh tốn tiền**:
-  - việc đã gửi mà không xác nhận được kết quả (mất mạng, hết thời gian chờ) → **dừng cả lượt tạo, không tự gửi lại** (có thể đã bị tính tiền), lưu mã việc để tìm lại;
-  - lỗi tải file về (việc đã xong) chỉ thử tải lại, không tạo lại;
-  - chỉ thử lại tự động khi nhà cung cấp báo lỗi tạm (429, 5xx) lúc hỏi kết quả;
-  - mọi thông báo lỗi che API key.
-- **Theo thứ tự kịch bản**: mỗi khung chính trong `bang-canh.txt` cần cảnh người thật sinh một yêu cầu tạo cảnh; cảnh xếp đúng thứ tự khung, không dồn nhiều cảnh vào một ý.
-
-**Dàn diễn viên AI**
-- Mỗi vai (chủ tiệm, nhân viên, khách…) có một bộ ảnh tham chiếu tạo một lần, MKT duyệt, lưu trong thư mục video. Mọi cảnh của vai đó tạo từ ảnh tham chiếu để giữ cùng khuôn mặt, tóc, trang phục.
-- Người Việt, bối cảnh Việt, trang phục và cử chỉ đời thường; nét mặt đúng cảm xúc của cảnh.
-
-**Không được**
-- Tạo người giống người thật có danh tính: người nổi tiếng, nhân viên, khách hàng, người trong ảnh MKT gửi (trừ khi có đồng ý bằng văn bản, ghi vào brief).
-- Giới thiệu nhân vật AI là khách hàng, nhân viên thật; dùng AI cho loại video `khach-hang-noi` (lời khách thật).
-- Để AI vẽ màn hình sản phẩm, logo, chữ, số: màn hình SIPOS/Webino/REDSUN BOS là ảnh chụp thật hoặc lớp mô phỏng ghép bằng HyperFrames.
-- Nhân vật AI nói, hát, mấp máy lời thoại (vẫn không lồng tiếng): lời thoại thể hiện bằng chữ, bong bóng thoại, phụ đề.
-- Cảnh gây hiểu nhầm là sự kiện có thật (tin tức, thiên tai, cơ quan nhà nước…).
-
-**Gắn nhãn nội dung AI (bắt buộc)** — Luật Trí tuệ nhân tạo 2025 (Điều 11) và Nghị định 142/2026/NĐ-CP (Điều 18, hiệu lực 01/5/2026): nội dung AI mô phỏng người thật phải có nhãn rõ ràng, dễ nhận biết, hiển thị trước hoặc ngay khi người xem tiếp cận; bên đăng ra công cộng (Redsun) chịu trách nhiệm. Video có cảnh AI có đủ:
-1. **Nhãn trên hình** từ khung đầu đến hết video, trong vùng an toàn, đủ tương phản, không bị chữ/hình khác che.
-2. **Dòng nhãn trong caption** (`post.md`) ngay câu đầu.
-3. **Nhắc bật khai báo AI của nền tảng** khi đăng (TikTok, YouTube, Facebook/Instagram) trong `post.md`.
-4. **Dấu máy đọc được**: giữ hoặc ghi lại siêu dữ liệu đánh dấu nội dung AI trong file MP4 xuất (C2PA hoặc metadata).
-Câu chữ nhãn do Nam chốt. Validate **chặn xuất** khi video có cảnh AI mà thiếu nhãn trên hình hoặc nhãn trong caption.
-
-**Kiểm chất lượng**: Claude xem từng cảnh AI trước khi ghép (tay, mặt, răng, mắt, chữ rác, vật biến dạng, người không giống ảnh tham chiếu); cảnh lỗi tạo lại trong mức chi. Bảng khung chính ghi rõ khung nào là cảnh AI.
-
-**Lưu trữ**: ảnh tham chiếu và cảnh AI nằm trong `briefs/<tên>/ai/`, không commit lên repo công khai (như `hinh/`). **Sổ nguồn gốc** `briefs/<tên>/ai/nhat-ky.json`, mỗi cảnh một mục, chỉ ghi các trường cho phép: tên file (không ghi đường dẫn trên máy), nhà cung cấp, model và phiên bản, mô tả tạo (prompt), ảnh tham chiếu đã dùng, seed, mã việc, thời lượng, chi phí, thời điểm. Không ghi key hay thông tin tài khoản. Ghi sổ lỗi thì báo, không làm hỏng lượt tạo đã trả tiền.
-
-### 7.5 Người thật quay sẵn (Pexels, Pixabay)
-Nam cho phép 2026-10-10 (học từ MoneyPrinterTurbo). Clip/ảnh người thật **quay thật** từ kho miễn phí, dùng như clip MKT gửi; không phải AI nên không gắn nhãn AI.
-- **Nguồn**: chỉ Pexels (Pexels License) và Pixabay (Pixabay Content License), link trang của đúng một clip. Nguồn khác (YouTube, TikTok, Google…) không dùng.
-- **Nhận clip**: MKT tải clip (ưu tiên dọc 9:16), Claude mở trang clip kiểm clip không bị đánh dấu do AI tạo, rồi `./reel quay-san <tên> <file> --link=… --tac-gia=… --khong-phai-ai`. Lệnh chép vào `briefs/<tên>/quay-san/` và ghi sổ `nguon.json` (nguồn, link, tác giả, giấy phép, đã kiểm không phải AI). Thư mục này không commit (giấy phép cấm phát tán lại).
-- **Theo giấy phép** (đọc 2026-10-10):
-  - không để người trong clip xuất hiện xấu, xúc phạm, đóng vai kẻ gian/lừa đảo/phạm pháp;
-  - không ngụ ý họ ủng hộ sản phẩm (không gán lời khen, lời giới thiệu, không đặt như người đại diện cạnh logo);
-  - không dùng gây hiểu nhầm (không gọi là khách hàng, nhân viên, đội ngũ, sự kiện của mình);
-  - không dùng clip có logo/thương hiệu khác rõ ràng.
-- **Cấm** các loại video cần người, lời nói, sự kiện, đội ngũ thật (cùng danh sách mục 7.4). Không trộn với cảnh AI (muốn dùng cảnh AI thì chọn kiểu `nguoi-that-ai`).
-- Validate chặn: clip không có trong sổ, nguồn/link sai, thiếu tác giả, chưa kiểm hoặc là AI, video minh hoạ dùng clip quay sẵn. Caption ghi nguồn từng clip (`post.md`).
-
 ---
 
 ## 8. Âm thanh: nhạc nền (không lồng tiếng)
@@ -649,16 +597,10 @@ Ràng buộc skill:
 
 ### Phase sau (không làm trong MVP)
 - Chế độ "sáng tạo tự do" cho MKT dùng creation workflow của HyperFrames, có kiểm soát brand bằng `frame.md`.
-- Clone cấu trúc từ link Reel mẫu.
+- Sinh ảnh/video AI, clone cấu trúc từ link Reel mẫu.
 - Lồng tiếng (nếu sau này cần lại: xem kết quả Spike S3 và bản v0.3).
 - Render AWS Lambda tự host, web UI duyệt video, tự đăng bài.
 - Tái dùng tầng render cho tool video BĐS.
-
-### M5 — Video người thật do AI tạo (mục 7.4)
-- Chạy thử 1–2 ngày: 3–4 cảnh người thật của brief "Chuyển khoản giả mạo" trên 2 model, so độ thật, độ giữ khuôn mặt, chi phí; ghép thành một video có nhãn để Nam xem, chọn model.
-- Lệnh tạo dàn diễn viên và cảnh AI theo thứ tự khung chính: lớp gọi chung nhiều nhà cung cấp (Gemini API/Veo 3.1 trước, fal.ai/Kling khi so sánh), ghi chi phí (không giới hạn), an toàn khi tạo cảnh tốn tiền, sổ nguồn gốc. Ghép cảnh AI vào bản dựng riêng; nhãn AI (đã có: validate, caption, metadata — `scripts/lib/kieu-hinh-rules.ts`); skill `dung-video`/`tao-reel` cập nhật.
-- Key: `GEMINI_API_KEY` (bắt buộc), `FAL_KEY` (chỉ khi so sánh model) trong `.env`; chạy thử chỉ trên máy Nam.
-- **Done khi:** một video từ brief có người thật do AI tạo, đủ 4 lớp nhãn, đạt mục 9.1, chất lượng Nam duyệt (không giới hạn chi).
 
 ---
 
@@ -673,10 +615,4 @@ Ràng buộc skill:
 - Làm 3 template M4 cho 5 loại video còn lại (7.1, 15).
 - **Nam** là dev maintainer, người duy nhất được nâng version HyperFrames, người giữ bằng chứng license nhạc, và người lo MacBook Apple Silicon để hoàn tất S1/S6.
 
-Câu hỏi mở cho mục 7.4 (video người thật do AI tạo, 2026-10-10):
-- ~~API key~~: Nam cấp Gemini API key (2026-10-10), đặt trong `.env` máy Nam; có Veo 3.1 và model ảnh Gemini.
-- ~~Mức chi tối đa~~: không giới hạn, ưu tiên chất lượng (Nam 2026-10-10).
-- Câu chữ nhãn AI trên hình và trong caption.
-- Có cho nhân vật AI nói tiếng Việt không (hiện: không, thoại bằng chữ).
-
-Các mục khác không còn câu hỏi mở. Safe zone dùng mức chung ở 5.4; nơi lưu bằng chứng license nhạc do Nam tự quản (bỏ qua trong tài liệu).
+Không còn câu hỏi mở. Safe zone dùng mức chung ở 5.4; nơi lưu bằng chứng license nhạc do Nam tự quản (bỏ qua trong tài liệu).

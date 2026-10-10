@@ -1,5 +1,6 @@
 ---
 product: bos
+kieuHinh: minh-hoa
 videoType: chuc-mung-dip-le
 style: sang-trong
 occasion: 20-10

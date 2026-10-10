@@ -1,5 +1,6 @@
 ---
 product: bos
+kieuHinh: minh-hoa
 videoType: demo-san-pham
 style: khuyen-mai
 template: FeatureLaunch

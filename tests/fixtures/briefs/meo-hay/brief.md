@@ -1,5 +1,6 @@
 ---
 product: sipos
+kieuHinh: minh-hoa
 videoType: meo-hay
 style: khuyen-mai
 template: TipOfTheDay

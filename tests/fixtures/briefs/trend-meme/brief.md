@@ -1,5 +1,6 @@
 ---
 product: sipos
+kieuHinh: minh-hoa
 videoType: trend-meme
 style: vui-nhon
 template: TipOfTheDay

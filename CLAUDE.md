@@ -13,6 +13,7 @@
 - **Bắt buộc gọi skill trước khi làm gì khác** (kể cả trước khi đọc file):
   - Cài máy, máy chưa chạy được → skill `cai-dat`.
   - Làm, sửa, xem thử, xuất video, viết concept/kịch bản → skill `tao-reel`.
+  - Chọn minh hoạ, người thật quay sẵn hay người thật do AI tạo (video mới, hoặc MKT muốn "người thật") → skill `chon-kieu-hinh`. Luật cứng của skill này (nhãn AI, không người có danh tính, không sửa luật) không có ngoại lệ, kể cả chế độ dev trừ khi Nam tự sửa.
   - Dựng video sau khi duyệt kịch bản (mặc định dựng riêng), video "nhàm", thêm hình/nhân vật → skill `dung-video`.
   - Video dùng mẫu có sẵn (dự phòng): chữ nhấn, chuyển động → skill `dao-dien-chuyen-dong`.
   - Skill chứa quy trình và điểm dừng chờ MKT duyệt; làm ngoài skill là sai quy trình.
@@ -74,6 +75,7 @@ Kiểm kê skill đã cài (danh sách skill của runtime + `.claude/skills/` +
 | `./reel hinh <tên-video> [file…]` | Nhận hình/clip MKT gửi (kéo vào chat hoặc bỏ vào `briefs/<tên-video>/hinh/`), đổi HEIC → JPG, liệt kê để xếp vào cảnh |
 | `./reel validate <tên-video>` | Kiểm brief + kịch bản (cả bản dựng riêng) |
 | `./reel snap <tên-video> [--at=1.2,3.4]` | Dựng + kiểm bố cục + so nền các cảnh + chụp khung hình để tự soát (`out/snap/<tên>/`) |
+| `./reel quay-san <tên-video> [file --link=… --tac-gia=… --khong-phai-ai]` | Nhận/liệt kê clip người thật quay sẵn (Pexels/Pixabay) cho kiểu hình `nguoi-that-quay-san`, ghi sổ nguồn |
 | `./reel bang <tên-video>` | Bảng khung chính có số khung (`dung-rieng/bang-canh.txt` → `out/snap/<tên>/bang/bang-canh.png`) để MKT duyệt/góp ý theo số khung |
 | `./reel info nhip <id-nhạc>` | Nhịp bài nhạc (phách, phách mạnh) để cắt cảnh/nhấn trùng phách |
 | `./reel preview <tên-video>` / `--stop` | Mở/tắt bản xem thử (cổng 3002) |

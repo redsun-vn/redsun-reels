@@ -1,5 +1,6 @@
 ---
 product: webino
+kieuHinh: minh-hoa
 videoType: thong-bao
 style: toi-gian
 template: TipOfTheDay

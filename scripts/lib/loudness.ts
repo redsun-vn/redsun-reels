@@ -32,7 +32,8 @@ export function measureLoudness(file: string): Loudness {
  * Cách làm: tăng/giảm âm lượng → limiter ở tần số mẫu 192 kHz (bắt cả đỉnh giữa hai mẫu) → AAC, đo lại, chỉnh
  * độ lợi và trần limiter cho tới khi độ to lệch đích ≤ 0.3 LU và đỉnh ≤ −1.2 dBTP (tối đa 6 lượt). Limiter làm mất một phần độ to nên phải đo lại.
  */
-export function normalizeAudio(input: string, output: string, durationSec: number): Loudness {
+export function normalizeAudio(input: string, output: string, durationSec: number, metadata: Record<string, string> = {}): Loudness {
+  const meta = Object.entries(metadata).flatMap(([k, v]) => ['-metadata', `${k}=${v}`]);
   const fade = `afade=t=in:st=0:d=${FADE_SEC},afade=t=out:st=${Math.max(0, durationSec - FADE_SEC).toFixed(3)}:d=${FADE_SEC}`;
   let gain = TARGET_LUFS - measureLoudness(input).integrated;
   let ceilingDb = LIMIT_START_DB;
@@ -40,7 +41,7 @@ export function normalizeAudio(input: string, output: string, durationSec: numbe
   for (let pass = 0; pass < 6; pass++) {
     const limit = Math.pow(10, ceilingDb / 20).toFixed(4);
     const chain = `${fade},volume=${gain.toFixed(2)}dB,aresample=192000,alimiter=limit=${limit}:attack=1:release=60:level=0:asc=1,aresample=48000`;
-    const r = runFfmpeg(['-v', 'error', '-y', '-i', input, '-map', '0:v:0', '-map', '0:a:0', '-c:v', 'copy', '-af', chain, '-c:a', 'aac', '-ar', '48000', '-b:a', '192k', '-movflags', '+faststart', output]);
+    const r = runFfmpeg(['-v', 'error', '-y', '-i', input, '-map', '0:v:0', '-map', '0:a:0', '-c:v', 'copy', '-af', chain, '-c:a', 'aac', '-ar', '48000', '-b:a', '192k', ...meta, '-movflags', '+faststart', output]);
     if (r.status !== 0) throw new Error(`Chuẩn hóa âm thanh lỗi: ${r.stderr.slice(-500)}`);
     result = measureLoudness(output);
     const miss = TARGET_LUFS - result.integrated;

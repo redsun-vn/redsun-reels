@@ -1,5 +1,6 @@
 ---
 product: bos
+kieuHinh: minh-hoa
 videoType: so-sanh
 style: du-lieu
 occasion:

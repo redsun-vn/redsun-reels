@@ -1,5 +1,6 @@
 ---
 product: sipos
+kieuHinh: minh-hoa
 videoType: khuyen-mai
 style: khuyen-mai
 occasion:

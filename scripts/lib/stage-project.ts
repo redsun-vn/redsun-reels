@@ -24,6 +24,10 @@ export interface StageOptions {
   customDir?: string;
   /** Thư mục hình MKT gửi (briefs/<tên>/hinh), copy thành hinh/ trong stage. */
   mediaDir?: string;
+  /** Thư mục cảnh AI (briefs/<tên>/ai, REQUIREMENTS §7.4), copy thành ai/ trong stage (bỏ nhật ký). */
+  aiDir?: string;
+  /** Thư mục clip người thật quay sẵn (briefs/<tên>/quay-san, REQUIREMENTS §7.5), copy thành quay-san/ trong stage. */
+  stockDir?: string;
 }
 
 export interface StagedProject {
@@ -62,6 +66,8 @@ export function stageProject(opts: StageOptions): StagedProject {
   if (opts.customDir) cpSync(join(REPO_ROOT, 'brand', 'sfx'), join(dir, 'sfx'), { recursive: true });
   if (opts.customDir && existsSync(join(dir, CUE_FILE))) stageCues(dir);
   if (opts.mediaDir && existsSync(opts.mediaDir)) cpSync(opts.mediaDir, join(dir, 'hinh'), { recursive: true, filter: (src) => !src.includes('/.goc') });
+  if (opts.aiDir && existsSync(opts.aiDir)) cpSync(opts.aiDir, join(dir, 'ai'), { recursive: true, filter: (src) => !src.endsWith('.json') });
+  if (opts.stockDir && existsSync(opts.stockDir)) cpSync(opts.stockDir, join(dir, 'quay-san'), { recursive: true, filter: (src) => !src.endsWith('.json') });
   mkdirSync(join(dir, 'brand'), { recursive: true });
   for (const part of ['brand.css', 'fonts', 'logos']) {
     cpSync(join(REPO_ROOT, 'brand', part), join(dir, 'brand', part), { recursive: true });

@@ -1,5 +1,6 @@
 ---
 product: webino
+kieuHinh: minh-hoa
 videoType: chuc-mung-dip-le
 style: vui-nhon
 occasion: 20-10

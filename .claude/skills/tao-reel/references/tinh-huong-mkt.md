@@ -25,7 +25,7 @@ Nói với MKT bằng lời thường. Không nhắc tên lệnh, file JSON, log
 ## Hình ảnh, clip
 | Tình huống | Claude làm |
 |---|---|
-| MKT gửi ảnh/clip, muốn video có hình/người | Hướng dẫn kéo file vào thư mục `hinh` trong thư mục video (`briefs/<tên-video>/hinh/`), tên gì cũng được, ảnh iPhone cũng được. Chạy `./reel hinh <tên-video>`, xem từng hình, xếp vào cảnh (skill `tao-reel` bước 4) rồi xuất lại. Không tự tải ảnh trên mạng, không tạo ảnh AI |
+| MKT gửi ảnh/clip, muốn video có hình/người | Hướng dẫn kéo file vào thư mục `hinh` trong thư mục video (`briefs/<tên-video>/hinh/`), tên gì cũng được, ảnh iPhone cũng được. Chạy `./reel hinh <tên-video>`, xem từng hình, xếp vào cảnh (skill `tao-reel` bước 4) rồi xuất lại. Không tự tải ảnh trên mạng; không dùng ảnh/clip AI MKT tạo ở nơi khác (người thật do AI tạo: quy trình riêng có nhãn AI, REQUIREMENTS §7.4, chưa dùng được) |
 | "Video chỉ có chữ, đơn điệu" | Hỏi MKT có ảnh/clip người thật, quán, màn hình phần mềm không; có thì làm như dòng trên. Không có thì đổi kiểu nhấn/chuyển động (skill `dao-dien-chuyen-dong`) |
 | Clip quay ngang (validate cảnh báo) | Báo hai bên sẽ bị cắt; hỏi MKT quay lại dọc hay vẫn dùng |
 | Clip ngắn hơn kịch bản | Rút ngắn cảnh, đổi `clipStart`, hoặc nhờ MKT quay lại |

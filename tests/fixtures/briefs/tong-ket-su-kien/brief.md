@@ -1,5 +1,6 @@
 ---
 product: sipos
+kieuHinh: minh-hoa
 videoType: tong-ket-su-kien
 style: nang-dong
 occasion:

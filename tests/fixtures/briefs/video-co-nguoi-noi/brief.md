@@ -1,5 +1,6 @@
 ---
 product: sipos
+kieuHinh: minh-hoa
 videoType: video-co-nguoi-noi
 style: tin-cay
 occasion:

@@ -86,6 +86,7 @@ describe('video dựng riêng', () => {
     for (const s of ['khong-co', 'giây 13', 'âm lượng 2', 'dòng 5']) expect(e).toContain(s);
     expect(issues(page(OK_BODY).replace('<!-- TIENG-DONG -->', '')).map((i) => i.message).join('\n')).toContain('TIENG-DONG');
     expect(issues(page(OK_BODY), null).map((i) => i.message).join('\n')).toContain('Chưa có tiếng động');
+    expect(errors(page(OK_BODY + '<video id="v" src="hinh/a.mp4" muted data-start="0" data-track-index="20"></video>')).join('\n')).toContain('dành cho tiếng động');
   });
 
   it('bối cảnh RS.set: phải nạp bộ bối cảnh, tên phải có', () => {

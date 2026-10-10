@@ -1,5 +1,6 @@
 ---
 product: sipos
+kieuHinh: minh-hoa
 videoType: thu-gian-asmr
 style: thu-gian
 occasion:
