@@ -2,7 +2,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
 import type { Script } from '../config/script.schema.ts';
-import { customIssues, extractScreenText, unmarkedScriptText } from '../scripts/lib/custom-video.ts';
+import { backdropNames, customIssues, extractScreenText, unmarkedScriptText } from '../scripts/lib/custom-video.ts';
 import { REPO_ROOT } from '../scripts/lib/hyperframes-env.ts';
 
 const tmpRoot = join(REPO_ROOT, 'out', 'test-custom-video');
@@ -23,17 +23,19 @@ const brief = 'Ưu đãi: giảm 20% khi mua gói giải pháp.';
 function page(body: string, js = ''): string {
   return `<!doctype html><html lang="vi"><head><meta charset="utf-8" /><style>.a{font-family: var(--font-body)}</style></head><body>
 <div id="root" data-composition-id="main" data-duration="12" data-width="1080" data-height="1920">${body}
-<audio id="music" src="music/bgm.mp3" data-start="0"></audio></div>
+<audio id="music" src="music/bgm.mp3" data-start="0"></audio>
+<!-- TIENG-DONG --></div>
 <script>const tl = gsap.timeline({ paused: true });${js}
 window.__timelines["main"] = tl;</script></body></html>`;
 }
 const OK_BODY = '<h1>Chị chủ quán, <em>tối nay</em> lại ngồi cộng sổ?</h1><img alt="SIPOS" src="brand/logos/sipos/x.png" /><b>lo</b><i>kho</i><div class="stamp">-20%</div><p>Tìm hiểu thêm tại sipos<span>.</span>vn</p>';
 
-function issues(html: string) {
+function issues(html: string, cues: string | null = '1.00 pop 0.5\n') {
   mkdirSync(tmpRoot, { recursive: true });
   const dir = mkdtempSync(join(tmpRoot, 'b-'));
   mkdirSync(join(dir, 'dung-rieng'));
   writeFileSync(join(dir, 'dung-rieng', 'index.html'), html);
+  if (cues !== null) writeFileSync(join(dir, 'dung-rieng', 'tieng-dong.txt'), cues);
   return customIssues(dir, script, brief, 12);
 }
 const errors = (html: string) => issues(html).filter((i) => i.level === 'error').map((i) => i.message);
@@ -76,6 +78,21 @@ describe('video dựng riêng', () => {
   it('tiếng động phải có trong brand/sfx', () => {
     expect(errors(page(OK_BODY + '<audio id="s1" src="sfx/pop.wav" data-start="1"></audio>'))).toEqual([]);
     expect(errors(page(OK_BODY + '<audio id="s2" src="sfx/khong-co.wav" data-start="1"></audio>')).join('\n')).toContain('sfx/khong-co.wav');
+  });
+
+  it('tiếng động khai trong tieng-dong.txt: tên, giây, âm lượng, chỗ đánh dấu', () => {
+    const e = issues(page(OK_BODY), '1 pop 0.5\n2 khong-co 0.5\n13 tap 0.5\n3 tick 2\nsai dong\n').filter((i) => i.level === 'error').map((i) => i.message).join('\n');
+    for (const s of ['khong-co', 'giây 13', 'âm lượng 2', 'dòng 5']) expect(e).toContain(s);
+    expect(issues(page(OK_BODY).replace('<!-- TIENG-DONG -->', '')).map((i) => i.message).join('\n')).toContain('TIENG-DONG');
+    expect(issues(page(OK_BODY), null).map((i) => i.message).join('\n')).toContain('Chưa có tiếng động');
+  });
+
+  it('bối cảnh RS.set: phải nạp bộ bối cảnh, tên phải có', () => {
+    expect(backdropNames()).toEqual(expect.arrayContaining(['quan', 'nha', 'cua-hang', 'van-phong', 'kho', 'pho', 'livestream', 'bao-dong', 'sang', 'thuong-hieu']));
+    const head = '<link rel="stylesheet" href="_rieng/boi-canh.css" /><script src="_rieng/boi-canh.js"></script>';
+    expect(errors(page(OK_BODY + head, 'RS.set(document.body, "quan", {});'))).toEqual([]);
+    expect(errors(page(OK_BODY, 'RS.set(document.body, "quan");')).join('\n')).toContain('boi-canh.js');
+    expect(errors(page(OK_BODY + head, 'RS.set(document.body, "san-bay");')).join('\n')).toContain('"san-bay"');
   });
 
   it('nhân vật tạo lẻ (không qua dàn nhân vật) thì cảnh báo', () => {

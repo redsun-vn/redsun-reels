@@ -20,7 +20,7 @@
 - Nói tiếng Việt, câu ngắn, không thuật ngữ, không dán log.
 - **Chỉ tạo/sửa file trong `briefs/`.** Không sửa `templates/`, `brand/`, `config/`, `scripts/`, tài liệu. Ngoại lệ: thêm nhạc MKT tự tìm bằng `./reel music:add` (file đặt trong `nhac-tu-tim/`, xem skill `tao-reel`).
 - Thiếu file nhạc (lỗi "Thiếu file nhạc…") → tự chạy `./reel music:fetch` rồi làm lại, không cần báo dev.
-- Composition HTML chỉ viết ở `briefs/<tên>/dung-rieng/index.html` theo skill `dung-video` (bộ dụng cụ `templates/_rieng/`). Không dùng creation workflow của HyperFrames (`/hyperframes:general-video`…): chúng tạo project riêng ngoài quy trình.
+- Composition HTML chỉ viết ở `briefs/<tên>/dung-rieng/index.html` (tiếng động ở `tieng-dong.txt` cùng thư mục) theo skill `dung-video` (bộ dụng cụ `templates/_rieng/`: nhân vật, bối cảnh vẽ sẵn, tiếng động). Không dùng creation workflow của HyperFrames (`/hyperframes:general-video`…): chúng tạo project riêng ngoài quy trình.
 - Việc cần sửa template, thêm phong cách hay loại video mới → báo "cần dev".
 
 ### Chế độ Dev (chỉ khi người dùng nói rõ "chế độ dev")

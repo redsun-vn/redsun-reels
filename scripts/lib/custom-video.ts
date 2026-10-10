@@ -9,6 +9,7 @@ import { join, normalize } from 'node:path';
 import type { Script } from '../../config/script.schema.ts';
 import { normalizeText, numberTokens } from './fact-check.ts';
 import { REPO_ROOT } from './hyperframes-env.ts';
+import { CUE_FILE, CUE_MARKER, cueIssues, parseCues } from './sfx-cues.ts';
 
 export const CUSTOM_DIR = 'dung-rieng';
 /** Đường dẫn cố định trong stage (scripts/lib/stage-project.ts `stageCustom`). */
@@ -89,6 +90,11 @@ function scriptCopy(script: Script): string[] {
     .map(strip);
 }
 
+/** Tên bối cảnh vẽ sẵn trong templates/_rieng/boi-canh.js. */
+export function backdropNames(): string[] {
+  return [...readFileSync(join(REPO_ROOT, 'templates', '_rieng', 'boi-canh.js'), 'utf8').matchAll(/SETS\["([a-z-]+)"\]\s*=/g)].map((m) => m[1]);
+}
+
 export function customIssues(dir: string, script: Script, briefBody: string, totalSec: number): CustomIssue[] {
   const out: CustomIssue[] = [];
   const err = (message: string) => out.push({ level: 'error', message });
@@ -115,6 +121,24 @@ export function customIssues(dir: string, script: Script, briefBody: string, tot
 
   // Nhân vật nhất quán: khai dàn nhân vật một lần bằng RS.cast, không tạo người lẻ bằng RS.person
   if (/RS\.person\(/.test(html)) warn('Tạo nhân vật qua dàn nhân vật RS.cast({ tên: { tóc, áo… } }) rồi gọi theo tên, để một người giữ nguyên tóc/áo ở mọi cảnh.');
+
+  // Bối cảnh vẽ sẵn: nạp đủ bộ, tên bối cảnh phải có
+  if (/RS\.set\(/.test(html)) {
+    if (!html.includes('src="_rieng/boi-canh.js"') || !html.includes('href="_rieng/boi-canh.css"')) err('Dùng bối cảnh RS.set thì nạp <link rel="stylesheet" href="_rieng/boi-canh.css" /> và <script src="_rieng/boi-canh.js"></script> (sau nhan-vat.js).');
+    const known = backdropNames();
+    for (const m of html.matchAll(/RS\.set\([^,]+,\s*["']([^"']+)["']/g)) if (!known.includes(m[1])) err(`Không có bối cảnh "${m[1]}". Có: ${known.join(', ')}.`);
+  }
+
+  // Tiếng động: khai trong tieng-dong.txt, bước dựng tự sinh thẻ <audio> vào chỗ đánh dấu
+  const cueFile = join(dir, CUSTOM_DIR, CUE_FILE);
+  const manualSfx = /src=["']sfx\//.test(html);
+  if (existsSync(cueFile)) {
+    const { cues, errors } = parseCues(readFileSync(cueFile, 'utf8'));
+    for (const e of [...errors, ...(Number.isFinite(d) ? cueIssues(cues, d) : [])]) err(e);
+    if (!html.includes(CUE_MARKER)) err(`Có ${CUE_FILE} nhưng index.html thiếu dòng đánh dấu ${CUE_MARKER} (đặt sau thẻ nhạc, trong gốc composition).`);
+    if (manualSfx) warn(`Tiếng động khai ở cả ${CUE_FILE} và thẻ <audio src="sfx/…"> trong index.html: chỉ giữ một nơi (${CUE_FILE}).`);
+    if (!cues.length) warn(`${CUE_FILE} chưa có tiếng động nào.`);
+  } else if (!manualSfx) warn(`Chưa có tiếng động: khai trong ${CUSTOM_DIR}/${CUE_FILE} (mỗi dòng "giây tên âm-lượng"), đặt ${CUE_MARKER} trong index.html.`);
 
   // Không tải gì từ mạng; font chỉ Montserrat
   const remote = html.match(/(?:src|href)\s*=\s*["'](?:https?:)?\/\/[^"']+|url\(\s*["']?(?:https?:)?\/\/[^)]+/gi);

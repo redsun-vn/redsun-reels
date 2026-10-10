@@ -4,10 +4,11 @@
  * font trả 404), nên template tham chiếu `brand/…`, `runtime/…`, `_shared/…`, `music/…` như thể nằm trong project,
  * và bước này copy chúng vào. Font, GSAP, nhạc đều local, nên render không tải gì từ mạng.
  */
-import { cpSync, existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, extname, isAbsolute, join, normalize } from 'node:path';
 import { checkTrack, findTrack, missingFileHint, MusicManifestSchema, type MusicPurpose } from '../../config/music-manifest.ts';
 import { REPO_ROOT, runFfmpeg } from './hyperframes-env.ts';
+import { CUE_FILE, cueIssues, cueTags, injectCues, parseCues, rootDuration } from './sfx-cues.ts';
 
 export interface StageOptions {
   /** Tên thư mục trong templates/ (vd. `_blank`, `FeatureLaunch`). */
@@ -59,6 +60,7 @@ export function stageProject(opts: StageOptions): StagedProject {
   cpSync(join(REPO_ROOT, 'templates', opts.customDir ? '_rieng' : '_shared'), join(dir, opts.customDir ? '_rieng' : '_shared'), { recursive: true });
   // Bản dựng riêng: tiếng động tự tổng hợp (brand/sfx) nằm ở sfx/ trong stage
   if (opts.customDir) cpSync(join(REPO_ROOT, 'brand', 'sfx'), join(dir, 'sfx'), { recursive: true });
+  if (opts.customDir && existsSync(join(dir, CUE_FILE))) stageCues(dir);
   if (opts.mediaDir && existsSync(opts.mediaDir)) cpSync(opts.mediaDir, join(dir, 'hinh'), { recursive: true, filter: (src) => !src.includes('/.goc') });
   mkdirSync(join(dir, 'brand'), { recursive: true });
   for (const part of ['brand.css', 'fonts', 'logos']) {
@@ -86,4 +88,16 @@ export function stageProject(opts: StageOptions): StagedProject {
   }
 
   return { dir, musicFile };
+}
+
+/** Bản dựng riêng có tieng-dong.txt: sinh thẻ <audio> vào chỗ đánh dấu của index.html trong stage. */
+function stageCues(dir: string): void {
+  const htmlFile = join(dir, 'index.html');
+  const html = readFileSync(htmlFile, 'utf8');
+  const total = rootDuration(html);
+  const { cues, errors } = parseCues(readFileSync(join(dir, CUE_FILE), 'utf8'));
+  const problems = [...errors, ...cueIssues(cues, total)];
+  if (problems.length) throw new Error(problems.join(' '));
+  writeFileSync(htmlFile, injectCues(html, cueTags(cues, total)));
+  rmSync(join(dir, CUE_FILE));
 }

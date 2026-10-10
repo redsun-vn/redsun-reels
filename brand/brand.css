@@ -133,6 +133,47 @@
   --prop-shadow: rgba(0, 0, 0, 0.45);
   --prop-shadow-soft: rgba(11, 75, 84, 0.12);
 
+  /*
+   * Màu bối cảnh vẽ sẵn (templates/_rieng/boi-canh.js): tường theo tông, trời, cây, kho, phố.
+   * Ánh sáng chiều/đêm pha các màu này về --set-tint-chieu / --prop-night trong boi-canh.css.
+   */
+  --set-tint-chieu: #FF8A3D;
+  --set-wall-hong: #F9D7DA;
+  --set-wall-mint: #D4EDE3;
+  --set-wall-xanh: #CFE0F2;
+  --set-wall-vang: #FBE7A8;
+  --set-wall-xam: #E4E7EA;
+  --set-sky: #8FD0F2;
+  --set-sky-2: #E3F5FC;
+  --set-plant: #3E9B5F;
+  --set-plant-d: #2A6E43;
+  --set-pot: #C8643B;
+  --set-metal: #9AA7B1;
+  --set-metal-d: #5B6872;
+  --set-rack: #E07A2E;
+  --set-rack-b: #2F6FB0;
+  --set-carton: #C99A62;
+  --set-carton-d: #A57A45;
+  --set-tape: #E8D3A8;
+  --set-glass: rgba(200, 235, 250, 0.45);
+  --set-facade-a: #F2C57C;
+  --set-facade-b: #E9A3A3;
+  --set-facade-c: #A9D3C4;
+  --set-facade-d: #F5F0E1;
+  --set-facade-e: #B9C7E8;
+  --set-shutter: #2F8F83;
+  --set-road: #4A4F57;
+  --set-curb: #B5B9BF;
+  --set-sidewalk: #D9D3C7;
+  --set-wire: #2A2A2A;
+  --set-curtain: #E9B6C0;
+  --set-curtain-d: #D693A1;
+  --set-ring: #FFF6E0;
+  --set-bulb: #FFE7A0;
+  --set-concrete: #C9CCCF;
+  --set-concrete-d: #9EA3A8;
+  --set-desk: #F1EEE8;
+
   /* Mặc định = Redsun (công ty) */
   --color-primary: #BA0000;
   --color-secondary: #58595B;

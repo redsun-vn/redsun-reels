@@ -1,0 +1,108 @@
+/*
+ * Bối cảnh vẽ sẵn cho video dựng riêng (boi-canh.js, RS.set). Mỗi vật có lớp màu k-*; màu pha về màu ánh sáng:
+ * ngày 0%, chiều (cam) 22%, đêm (chàm) 62%. Vật tự phát sáng (đèn, trăng, cửa sổ sáng đèn) dùng lớp l-*, không pha.
+ * Tông tường: bc-tone-kem | hong | mint | xanh | vang | xam.
+ */
+.bc { position: absolute; inset: 0; pointer-events: none; --bc-wall: var(--prop-wall); --bc-mix: var(--prop-night); --bc-amt: 0%; }
+.bc-layer { position: absolute; left: -60px; top: -60px; width: 1200px; height: 2040px; overflow: visible; }
+.bc-div { position: absolute; }
+.bc-tone-kem { --bc-wall: var(--prop-wall); }
+.bc-tone-hong { --bc-wall: var(--set-wall-hong); }
+.bc-tone-mint { --bc-wall: var(--set-wall-mint); }
+.bc-tone-xanh { --bc-wall: var(--set-wall-xanh); }
+.bc-tone-vang { --bc-wall: var(--set-wall-vang); }
+.bc-tone-xam { --bc-wall: var(--set-wall-xam); }
+.bc-chieu { --bc-mix: var(--set-tint-chieu); --bc-amt: 22%; }
+.bc-dem { --bc-amt: 62%; }
+.bc-ngay .bc-chi-dem, .bc-chieu .bc-chi-dem { display: none; }
+.bc-dem .bc-chi-ngay { display: none; }
+
+/* Vật thường: pha theo ánh sáng */
+.bc .k-wall { fill: color-mix(in srgb, var(--bc-wall), var(--bc-mix) var(--bc-amt)); }
+.bc .k-wall-d { fill: color-mix(in srgb, color-mix(in srgb, var(--bc-wall) 80%, var(--prop-wood)), var(--bc-mix) var(--bc-amt)); }
+.bc .k-wood { fill: color-mix(in srgb, var(--prop-wood), var(--bc-mix) var(--bc-amt)); }
+.bc .k-wood-d { fill: color-mix(in srgb, var(--prop-wood-d), var(--bc-mix) var(--bc-amt)); }
+.bc .k-counter { fill: color-mix(in srgb, color-mix(in srgb, var(--prop-wood) 85%, var(--bc-wall)), var(--bc-mix) var(--bc-amt)); }
+.bc .k-board { fill: color-mix(in srgb, var(--prop-board), var(--bc-mix) var(--bc-amt)); }
+.bc .k-chalk { fill: color-mix(in srgb, color-mix(in srgb, var(--color-white) 55%, transparent), var(--bc-mix) var(--bc-amt)); }
+.bc .k-card { fill: color-mix(in srgb, var(--prop-card), var(--bc-mix) var(--bc-amt)); }
+.bc .k-paper { fill: color-mix(in srgb, var(--prop-paper), var(--bc-mix) var(--bc-amt)); }
+.bc .k-ink { fill: color-mix(in srgb, var(--prop-ink), var(--bc-mix) var(--bc-amt)); }
+.bc .k-gold { fill: color-mix(in srgb, var(--prop-gold), var(--bc-mix) var(--bc-amt)); }
+.bc .k-plant { fill: color-mix(in srgb, var(--set-plant), var(--bc-mix) var(--bc-amt)); }
+.bc .k-plant-d { fill: color-mix(in srgb, var(--set-plant-d), var(--bc-mix) var(--bc-amt)); }
+.bc .k-pot { fill: color-mix(in srgb, var(--set-pot), var(--bc-mix) var(--bc-amt)); }
+.bc .k-metal { fill: color-mix(in srgb, var(--set-metal), var(--bc-mix) var(--bc-amt)); }
+.bc .k-metal-d { fill: color-mix(in srgb, var(--set-metal-d), var(--bc-mix) var(--bc-amt)); }
+.bc .k-rack { fill: color-mix(in srgb, var(--set-rack), var(--bc-mix) var(--bc-amt)); }
+.bc .k-rack-b { fill: color-mix(in srgb, var(--set-rack-b), var(--bc-mix) var(--bc-amt)); }
+.bc .k-carton { fill: color-mix(in srgb, var(--set-carton), var(--bc-mix) var(--bc-amt)); }
+.bc .k-carton-d { fill: color-mix(in srgb, var(--set-carton-d), var(--bc-mix) var(--bc-amt)); }
+.bc .k-tape { fill: color-mix(in srgb, var(--set-tape), var(--bc-mix) var(--bc-amt)); }
+.bc .k-glass { fill: color-mix(in srgb, var(--set-glass), var(--bc-mix) var(--bc-amt)); }
+.bc .k-fa { fill: color-mix(in srgb, var(--set-facade-a), var(--bc-mix) var(--bc-amt)); }
+.bc .k-fb { fill: color-mix(in srgb, var(--set-facade-b), var(--bc-mix) var(--bc-amt)); }
+.bc .k-fc { fill: color-mix(in srgb, var(--set-facade-c), var(--bc-mix) var(--bc-amt)); }
+.bc .k-fd { fill: color-mix(in srgb, var(--set-facade-d), var(--bc-mix) var(--bc-amt)); }
+.bc .k-fe { fill: color-mix(in srgb, var(--set-facade-e), var(--bc-mix) var(--bc-amt)); }
+.bc .k-shutter { fill: color-mix(in srgb, var(--set-shutter), var(--bc-mix) var(--bc-amt)); }
+.bc .k-road { fill: color-mix(in srgb, var(--set-road), var(--bc-mix) var(--bc-amt)); }
+.bc .k-curb { fill: color-mix(in srgb, var(--set-curb), var(--bc-mix) var(--bc-amt)); }
+.bc .k-sidewalk { fill: color-mix(in srgb, var(--set-sidewalk), var(--bc-mix) var(--bc-amt)); }
+.bc .k-curtain { fill: color-mix(in srgb, var(--set-curtain), var(--bc-mix) var(--bc-amt)); }
+.bc .k-curtain-d { fill: color-mix(in srgb, var(--set-curtain-d), var(--bc-mix) var(--bc-amt)); }
+.bc .k-desk { fill: color-mix(in srgb, var(--set-desk), var(--bc-mix) var(--bc-amt)); }
+.bc .k-concrete { fill: color-mix(in srgb, var(--set-concrete), var(--bc-mix) var(--bc-amt)); }
+.bc .k-concrete-d { fill: color-mix(in srgb, var(--set-concrete-d), var(--bc-mix) var(--bc-amt)); }
+.bc .k-sky { fill: color-mix(in srgb, var(--set-sky), var(--bc-mix) var(--bc-amt)); }
+.bc .k-cloud { fill: color-mix(in srgb, var(--color-white), var(--bc-mix) var(--bc-amt)); }
+.bc .k-sun { fill: color-mix(in srgb, var(--prop-pollen), var(--bc-mix) var(--bc-amt)); }
+.bc .k-a { fill: color-mix(in srgb, var(--prop-shirt-a), var(--bc-mix) var(--bc-amt)); }
+.bc .k-b { fill: color-mix(in srgb, var(--prop-shirt-b), var(--bc-mix) var(--bc-amt)); }
+.bc .k-c { fill: color-mix(in srgb, var(--prop-shirt-c), var(--bc-mix) var(--bc-amt)); }
+.bc .k-petal { fill: color-mix(in srgb, var(--prop-petal), var(--bc-mix) var(--bc-amt)); }
+.bc .k-red { fill: color-mix(in srgb, var(--prop-petal-deep), var(--bc-mix) var(--bc-amt)); }
+.bc .k-pollen { fill: color-mix(in srgb, var(--prop-pollen), var(--bc-mix) var(--bc-amt)); }
+.bc .k-ok { fill: color-mix(in srgb, var(--prop-ok), var(--bc-mix) var(--bc-amt)); }
+.bc .k-white { fill: color-mix(in srgb, var(--color-white), var(--bc-mix) var(--bc-amt)); }
+.bc .k-device { fill: var(--prop-device); }
+.bc .k-shade { fill: var(--prop-shadow-soft); }
+.bc .k-city { fill: color-mix(in srgb, var(--prop-night) 70%, var(--color-black)); }
+.bc .k-night { fill: color-mix(in srgb, var(--prop-night) 80%, var(--color-black)); }
+.bc .s-wire { fill: none; stroke: color-mix(in srgb, var(--set-wire), var(--bc-mix) var(--bc-amt)); stroke-width: 4; stroke-linecap: round; }
+.bc .s-wood { fill: none; stroke: color-mix(in srgb, var(--prop-wood-d), var(--bc-mix) var(--bc-amt)); stroke-linecap: round; }
+.bc .s-metal { fill: none; stroke: color-mix(in srgb, var(--set-metal-d), var(--bc-mix) var(--bc-amt)); stroke-linecap: round; }
+.bc .s-steam { fill: none; stroke: color-mix(in srgb, var(--color-white) 60%, transparent); stroke-width: 8; stroke-linecap: round; }
+.bc .s-plant { fill: none; stroke: color-mix(in srgb, var(--set-plant-d), var(--bc-mix) var(--bc-amt)); stroke-linecap: round; }
+
+/* Vật tự phát sáng: không pha */
+.bc .l-gold { fill: var(--prop-gold); }
+.bc .l-bulb { fill: var(--set-bulb); }
+.bc .l-moon { fill: var(--prop-pollen); }
+.bc .l-lit { fill: var(--prop-pollen); opacity: 0.85; }
+.bc .l-ring { fill: none; stroke: var(--set-ring); }
+.bc .l-screen { fill: var(--prop-screen); }
+.bc .l-star { fill: var(--prop-pollen); }
+
+/* Điểm màu của gradient */
+.bc .g-wall { stop-color: color-mix(in srgb, color-mix(in srgb, var(--bc-wall) 92%, var(--color-white)), var(--bc-mix) var(--bc-amt)); }
+.bc .g-wall-d { stop-color: color-mix(in srgb, color-mix(in srgb, var(--bc-wall) 84%, var(--prop-wood)), var(--bc-mix) var(--bc-amt)); }
+.bc .g-sky { stop-color: color-mix(in srgb, var(--set-sky), var(--bc-mix) var(--bc-amt)); }
+.bc .g-sky-2 { stop-color: color-mix(in srgb, var(--set-sky-2), var(--bc-mix) var(--bc-amt)); }
+.bc-chieu .g-sky-2 { stop-color: color-mix(in srgb, var(--set-tint-chieu) 45%, var(--set-sky-2)); }
+.bc-dem .g-sky { stop-color: color-mix(in srgb, var(--prop-night) 80%, var(--color-black)); }
+.bc-dem .g-sky-2 { stop-color: var(--prop-night-2); }
+.bc .g-glow { stop-color: var(--prop-gold); stop-opacity: 0.42; }
+.bc .g-glow-0 { stop-color: var(--prop-gold); stop-opacity: 0; }
+.bc .g-ring { stop-color: var(--set-ring); stop-opacity: 0.5; }
+.bc .g-ring-0 { stop-color: var(--set-ring); stop-opacity: 0; }
+
+/* Nền trừu tượng (không phải nơi chốn) */
+.bc-alarm { inset: 0; background: radial-gradient(90% 60% at 60% 45%, color-mix(in srgb, var(--prop-alarm) 70%, var(--color-accent)) 0%, var(--prop-alarm) 48%, color-mix(in srgb, var(--prop-alarm) 50%, var(--color-black)) 100%); }
+.bc-beam { left: -460px; top: -40px; width: 2000px; height: 2000px; background: conic-gradient(from 0deg at 50% 50%, color-mix(in srgb, var(--color-accent) 22%, transparent) 0 8%, transparent 8% 25%, color-mix(in srgb, var(--color-accent) 22%, transparent) 25% 33%, transparent 33% 50%, color-mix(in srgb, var(--color-accent) 22%, transparent) 50% 58%, transparent 58% 75%, color-mix(in srgb, var(--color-accent) 22%, transparent) 75% 83%, transparent 83%); }
+.bc-scan { inset: 0; background: repeating-linear-gradient(180deg, color-mix(in srgb, var(--color-white) 5%, transparent) 0 3px, transparent 3px 9px); }
+.bc-day { inset: 0; background: radial-gradient(120% 70% at 70% 30%, var(--color-white) 0%, var(--prop-day) 55%, color-mix(in srgb, var(--prop-day) 80%, var(--color-primary)) 100%); }
+.bc-blob { border-radius: 50%; }
+.bc-brand { inset: 0; background: radial-gradient(110% 70% at 50% 18%, color-mix(in srgb, var(--color-background) 80%, var(--color-white)) 0%, var(--color-background) 52%, color-mix(in srgb, var(--color-background) 65%, var(--color-black)) 100%); }
+.bc-rays { left: -460px; top: -540px; width: 2000px; height: 2000px; background: repeating-conic-gradient(from 0deg at 50% 50%, color-mix(in srgb, var(--color-white) 7%, transparent) 0 6deg, transparent 6deg 18deg); }
+.bc-floor { left: -40px; right: -40px; top: 1440px; height: 520px; background: color-mix(in srgb, var(--color-background) 70%, var(--color-black)); border-top: 10px solid color-mix(in srgb, var(--color-background) 80%, var(--color-white)); }

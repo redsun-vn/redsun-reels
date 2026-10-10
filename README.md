@@ -179,7 +179,7 @@ Không cần Node hệ thống: `./reel` tự dùng Node trong `~/.redsun-reels`
 | `pnpm test:render [--update] [--only=<chuỗi>]` | So khung hình 8 mẫu × 19 phong cách với ảnh chuẩn `tests/baseline/` (SSIM ≥ 0.97, ~45 phút) |
 | `pnpm test:e2e [--draft]` | Dựng + xuất 21 brief mẫu trong `tests/fixtures/briefs/` (20 loại video + test dấu) |
 | `pnpm gen:test-music` | Sinh lại track nhạc thử nghiệm |
-| `pnpm gen:sfx` | Sinh lại bộ tiếng động tự tổng hợp `brand/sfx/` |
+| `pnpm gen:sfx` | Sinh lại bộ tiếng động tự tổng hợp `brand/sfx/` (video dựng riêng khai tiếng động theo giây trong `dung-rieng/tieng-dong.txt`) |
 | `pnpm music:page` | Sinh `out/nghe-nhac.html`: nghe thử, lọc theo phong cách, đánh dấu Giữ/Bỏ/Dùng thật, copy kết quả |
 | `pnpm music:intro [--all]` | Đo và ghi `startSec` (bỏ đoạn dạo đầu nhỏ) cho bài chưa có |
 | `pnpm music:fetch` | Tải nhạc bên thứ ba theo `downloadUrl` trong manifest, kiểm SHA-256 |

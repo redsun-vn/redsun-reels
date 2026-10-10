@@ -5,13 +5,15 @@
 <meta name="viewport" content="width=1080, height=1920" />
 <link rel="stylesheet" href="brand/brand.css" />
 <link rel="stylesheet" href="_rieng/rieng.css" />
+<link rel="stylesheet" href="_rieng/boi-canh.css" />
 <script src="runtime/gsap/gsap.min.js"></script>
 <script src="_rieng/rieng.js"></script>
 <script src="_rieng/nhan-vat.js"></script>
+<script src="_rieng/boi-canh.js"></script>
 <!--
   Ảnh chuyển khoản giả — SIPOS, 31s. Nhạc mixkit-smile-1076 ~150 BPM: phách mạnh 1.30 2.89 4.48 6.09 7.69 9.29 10.89 12.49
   14.09 15.67 17.30 18.89 20.49 22.09 23.68 25.29 26.89 28.49 30.09 → điểm nhấn/cắt đặt trên phách.
-  Mỗi cảnh một nền: A quán ban ngày (kem ấm) · B đêm ở nhà (chàm tím) · C lật tẩy (đỏ mận, đèn báo) · D SIPOS (sáng, bạc hà) · E CTA (teal SIPOS, tia sáng).
+  Mỗi cảnh một nền (bối cảnh RS.set): A "quan" ban ngày · B "nha" ban đêm · C "bao-dong" · D "sang" · E "thuong-hieu".
   Chuyển cảnh nối hình: đồng hồ quán → đồng hồ đêm; điện thoại chủ quán → ảnh chuyển khoản; ảnh xé đôi → mở tròn sáng; điện thoại SIPOS → mở tròn teal.
   Mọi số trên màn hình là số mẫu trong đạo cụ minh hoạ (data-minh-hoa). Không tên ngân hàng, không ảnh thật.
 -->
@@ -19,28 +21,7 @@
   html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: var(--color-background); }
   .cam { position: absolute; inset: 0; }
 
-  /* ===== Đạo cụ chung ===== */
-  .clock { position: absolute; width: 190px; height: 190px; border-radius: 50%; background: var(--prop-card); box-shadow: inset 0 0 0 14px var(--prop-wood-d), 0 16px 30px var(--prop-shadow-soft); }
-  .clock i { position: absolute; left: 50%; bottom: 50%; width: 12px; margin-left: -6px; border-radius: 6px; background: var(--prop-ink); transform-origin: 50% 100%; }
-  .clock i.h { height: 50px; }
-  .clock i.m { height: 70px; width: 8px; margin-left: -4px; }
-  .clock u { position: absolute; left: 50%; top: 50%; width: 18px; height: 18px; margin: -9px; border-radius: 50%; background: var(--color-accent); }
-  .clock b { position: absolute; left: 50%; top: 22px; width: 6px; height: 16px; margin-left: -3px; border-radius: 3px; background: var(--prop-card-muted); transform-origin: 50% 73px; }
-
   /* ===== A. Quán ban ngày ===== */
-  .wallA { background: linear-gradient(180deg, var(--prop-wall) 0%, color-mix(in srgb, var(--prop-wall) 82%, var(--prop-wood)) 100%); }
-  .board { position: absolute; left: 600px; top: 200px; width: 380px; height: 290px; border-radius: 22px; background: var(--prop-board); box-shadow: inset 0 0 0 14px var(--prop-wood-d), 0 20px 40px var(--prop-shadow-soft); }
-  .board .ln { position: absolute; left: 150px; height: 12px; border-radius: 6px; background: color-mix(in srgb, var(--color-white) 55%, transparent); }
-  .cup { position: absolute; width: 70px; height: 92px; border-radius: 8px 8px 22px 22px; background: color-mix(in srgb, var(--prop-gold) 45%, var(--prop-paper)); }
-  .cup::before { content: ""; position: absolute; left: -6px; right: -6px; top: -12px; height: 18px; border-radius: 9px; background: var(--prop-card); }
-  .cup::after { content: ""; position: absolute; left: 40px; top: -48px; width: 9px; height: 46px; border-radius: 4px; background: var(--color-accent); transform: rotate(12deg); }
-  .cup.t { background: color-mix(in srgb, var(--prop-petal) 50%, var(--prop-paper)); }
-  .cup.m { background: color-mix(in srgb, var(--prop-shirt-c) 60%, var(--prop-paper)); }
-  .cup.s { transform: scale(0.6); transform-origin: 0 0; }
-  .shelfA { position: absolute; left: -20px; right: -20px; top: 660px; height: 26px; background: var(--prop-wood); box-shadow: 0 10px 20px var(--prop-shadow-soft); }
-  .lampA { position: absolute; top: -10px; width: 6px; height: 140px; background: var(--prop-wood-d); }
-  .lampA::after { content: ""; position: absolute; left: -54px; top: 136px; width: 114px; height: 60px; border-radius: 60px 60px 8px 8px; background: var(--prop-gold); }
-  .counterA { position: absolute; left: -40px; right: -40px; top: 1340px; height: 640px; background: linear-gradient(180deg, var(--prop-wood) 0 34px, var(--prop-wood-d) 34px 46px, color-mix(in srgb, var(--prop-wood) 85%, var(--prop-wall)) 46px); }
   .qr-stand { position: absolute; left: 70px; top: 1180px; width: 170px; height: 200px; border-radius: 20px; background: var(--prop-card); box-shadow: 0 20px 40px var(--prop-shadow); padding: 22px; box-sizing: border-box; }
   .qr { width: 126px; height: 126px; border-radius: 8px; background: conic-gradient(var(--prop-ink) 25%, transparent 0 50%, var(--prop-ink) 0 75%, transparent 0) 0 0 / 42px 42px; opacity: 0.9; }
   .crowd { filter: blur(3px) saturate(0.7); opacity: 0.75; }
@@ -49,16 +30,6 @@
   .nightA { background: var(--prop-night); }
 
   /* ===== B. Đêm ở nhà ===== */
-  .nightB { background: linear-gradient(180deg, var(--prop-night) 0%, var(--prop-night-2) 100%); }
-  .win { position: absolute; left: 760px; top: 600px; width: 300px; height: 420px; border-radius: 16px; overflow: hidden; background: linear-gradient(180deg, color-mix(in srgb, var(--prop-night) 70%, var(--color-black)) 0%, var(--prop-night-2) 100%); box-shadow: inset 0 0 0 16px var(--prop-wood-d); }
-  .win .moon { position: absolute; left: 150px; top: 60px; width: 80px; height: 80px; border-radius: 50%; box-shadow: -18px 10px 0 0 var(--prop-pollen); }
-  .win .star { position: absolute; width: 8px; height: 8px; border-radius: 50%; background: var(--prop-pollen); }
-  .win .city { position: absolute; bottom: 0; background: color-mix(in srgb, var(--prop-night) 60%, var(--color-black)); }
-  .win .lit { position: absolute; width: 12px; height: 16px; background: var(--prop-pollen); opacity: 0.8; }
-  .glowB { position: absolute; left: -260px; top: 640px; width: 1100px; height: 1100px; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--prop-gold) 40%, transparent) 0%, transparent 62%); }
-  .lampB { position: absolute; left: 40px; top: 1150px; width: 220px; height: 120px; border-radius: 110px 110px 12px 12px; background: var(--prop-gold); box-shadow: 0 0 80px color-mix(in srgb, var(--prop-gold) 60%, transparent); }
-  .lampB::after { content: ""; position: absolute; left: 100px; top: 120px; width: 20px; height: 220px; background: var(--prop-wood-d); }
-  .deskB { position: absolute; left: -40px; right: -40px; top: 1470px; height: 520px; background: linear-gradient(180deg, color-mix(in srgb, var(--prop-wood) 70%, var(--prop-night)) 0 30px, color-mix(in srgb, var(--prop-wood-d) 70%, var(--prop-night)) 30px); }
   .head-b { position: absolute; left: 80px; right: 160px; top: 230px; color: var(--color-white); }
   .head-b .l1 { font-weight: 800; font-size: var(--type-h1); line-height: 1.15; }
   .head-b .l2 { font-weight: 900; line-height: 1.1; white-space: nowrap; color: var(--color-accent-glow); }
@@ -74,9 +45,6 @@
   .flash { background: var(--color-white); }
 
   /* ===== C. Lật tẩy ===== */
-  .alarm { background: radial-gradient(90% 60% at 60% 45%, color-mix(in srgb, var(--prop-alarm) 70%, var(--color-accent)) 0%, var(--prop-alarm) 48%, color-mix(in srgb, var(--prop-alarm) 50%, var(--color-black)) 100%); }
-  .beam { position: absolute; left: -460px; top: -40px; width: 2000px; height: 2000px; background: conic-gradient(from 0deg at 50% 50%, color-mix(in srgb, var(--color-accent) 22%, transparent) 0 8%, transparent 8% 25%, color-mix(in srgb, var(--color-accent) 22%, transparent) 25% 33%, transparent 33% 50%, color-mix(in srgb, var(--color-accent) 22%, transparent) 50% 58%, transparent 58% 75%, color-mix(in srgb, var(--color-accent) 22%, transparent) 75% 83%, transparent 83%); }
-  .scan { background: repeating-linear-gradient(180deg, color-mix(in srgb, var(--color-white) 5%, transparent) 0 3px, transparent 3px 9px); }
   .head-c { position: absolute; left: 80px; right: 160px; top: 230px; color: var(--color-white); }
   .head-c .l1 { font-weight: 800; font-size: var(--type-h1); line-height: 1.1; }
   .head-c .l2 { font-weight: 900; line-height: 1.05; white-space: nowrap; color: var(--color-accent-glow); }
@@ -101,8 +69,6 @@
   .iris { clip-path: circle(0% at 50% 50%); }
 
   /* ===== D. SIPOS ===== */
-  .day { background: radial-gradient(120% 70% at 70% 30%, var(--color-white) 0%, var(--prop-day) 55%, color-mix(in srgb, var(--prop-day) 80%, var(--color-primary)) 100%); }
-  .blob { position: absolute; border-radius: 50%; }
   .head-d { position: absolute; left: 80px; right: 160px; top: 220px; color: var(--color-primary); }
   .head-d div { font-weight: 900; line-height: 1.12; white-space: nowrap; }
   .head-d .acc { color: var(--color-accent); }
@@ -117,14 +83,12 @@
   .ord small { display: block; font-weight: 600; font-size: calc(var(--type-small) * 0.65); color: var(--prop-card-muted); }
 
   /* ===== E. CTA ===== */
-  .rays { position: absolute; left: -460px; top: -540px; width: 2000px; height: 2000px; background: repeating-conic-gradient(from 0deg at 50% 50%, color-mix(in srgb, var(--color-white) 7%, transparent) 0 6deg, transparent 6deg 18deg); }
   .logo-s { position: absolute; left: 270px; top: 250px; width: 540px; }
   .logo-r { position: absolute; left: 420px; top: 520px; width: 240px; }
   .rule { position: absolute; left: 480px; top: 492px; width: 120px; height: 6px; border-radius: 3px; background: color-mix(in srgb, var(--color-white) 45%, transparent); transform-origin: center; }
   .tagline { position: absolute; left: 60px; right: 60px; top: 650px; text-align: center; font-weight: 700; line-height: 1.3; color: var(--color-white); }
   .tagline div { white-space: nowrap; }
   .tagline b { color: var(--color-accent-glow); font-weight: 900; }
-  .floor { position: absolute; left: -40px; right: -40px; top: 1440px; height: 520px; background: color-mix(in srgb, var(--color-background) 70%, var(--color-black)); border-top: 10px solid color-mix(in srgb, var(--color-background) 80%, var(--color-white)); }
   .cta-btn { position: absolute; left: 90px; width: 800px; top: 1260px; height: 170px; white-space: nowrap; border-radius: 85px; background: var(--color-accent); color: var(--color-white); display: flex; align-items: center; justify-content: center; gap: 26px; font-weight: 900; font-size: var(--type-h3); box-shadow: 0 30px 70px var(--prop-shadow); }
   .chat-ico { flex: none; position: relative; width: 74px; height: 58px; border-radius: 22px; background: var(--color-white); }
   .chat-ico::after { content: ""; position: absolute; left: 14px; bottom: -14px; border-top: 18px solid var(--color-white); border-right: 18px solid transparent; }
@@ -139,17 +103,10 @@
 
   <!-- ===== A. QUÁN BAN NGÀY (0 – 3.4): cận điện thoại khách → lùi ra thấy quầy đông → đẩy vào đồng hồ ===== -->
   <div id="sA" class="clip rs-scene" data-start="0" data-duration="3.4" data-track-index="1">
-    <div class="rs-fill wallA"></div>
     <div id="camA2" class="cam" data-layout-allow-overflow>
       <div id="camA" class="cam" data-layout-allow-overflow>
-        <div class="lampA" style="left: 420px"></div><div class="lampA" style="left: 1000px; height: 110px"></div>
-        <div class="board" id="board"><div class="cup s" style="left: 40px; top: 70px"></div><div class="cup s t" style="left: 40px; top: 180px"></div>
-          <div class="ln" style="top: 80px; width: 170px"></div><div class="ln" style="top: 116px; width: 120px"></div><div class="ln" style="top: 190px; width: 160px"></div><div class="ln" style="top: 226px; width: 100px"></div></div>
-        <div class="clock" id="clockA" style="left: 110px; top: 250px"><b style="transform: rotate(0deg)"></b><b style="transform: rotate(90deg)"></b><b style="transform: rotate(180deg)"></b><b style="transform: rotate(270deg)"></b><i class="h" id="hA"></i><i class="m" id="mA"></i><u></u></div>
-        <div class="shelfA"></div>
-        <div class="cup" style="left: 520px; top: 568px"></div><div class="cup t" style="left: 610px; top: 568px"></div><div class="cup m" style="left: 700px; top: 568px"></div><div class="cup" style="left: 880px; top: 568px"></div><div class="cup t" style="left: 970px; top: 568px"></div>
         <div id="cashier" style="position: absolute; left: -60px; top: 640px"></div>
-        <div class="counterA"></div>
+        <div class="bc-cho-gan"></div>
         <div class="qr-stand" data-minh-hoa><div class="qr"></div></div>
         <div id="q1" class="crowd" style="position: absolute; left: 330px; top: 800px"></div>
         <div id="q2" class="crowd" style="position: absolute; left: 840px; top: 760px"></div>
@@ -163,19 +120,9 @@
 
   <!-- ===== B. ĐÊM Ở NHÀ (3.4 – 11.1): đồng hồ đêm lùi ra → kiểm danh sách tiền vào → thiếu một khoản → nhíu mày, cận mặt ===== -->
   <div id="sB" class="clip rs-scene" data-start="3.4" data-duration="7.7" data-track-index="2">
-    <div class="rs-fill nightB"></div>
     <div id="camB3" class="cam" data-layout-allow-overflow><div id="camB2" class="cam" data-layout-allow-overflow><div id="camB" class="cam" data-layout-allow-overflow>
-      <div class="win" id="win">
-        <div class="moon"></div>
-        <div class="star" style="left: 40px; top: 50px"></div><div class="star" style="left: 250px; top: 40px"></div><div class="star" style="left: 90px; top: 150px"></div><div class="star" style="left: 210px; top: 190px"></div>
-        <div class="city" style="left: 0; width: 90px; height: 170px"></div><div class="city" style="left: 100px; width: 70px; height: 230px"></div><div class="city" style="left: 180px; width: 120px; height: 140px"></div>
-        <div class="lit" style="left: 30px; top: 300px"></div><div class="lit" style="left: 125px; top: 240px"></div><div class="lit" style="left: 130px; top: 320px"></div><div class="lit" style="left: 220px; top: 330px"></div>
-      </div>
-      <div class="clock" id="clockB" style="left: 110px; top: 560px"><b style="transform: rotate(0deg)"></b><b style="transform: rotate(90deg)"></b><b style="transform: rotate(180deg)"></b><b style="transform: rotate(270deg)"></b><i class="h" style="transform: rotate(300deg)"></i><i class="m" style="transform: rotate(0deg)"></i><u></u></div>
-      <div class="glowB" id="glowB"></div>
       <div id="owner" style="position: absolute; left: 190px; top: 640px"></div>
-      <div class="lampB"></div>
-      <div class="deskB"></div>
+      <div class="bc-cho-gan"></div>
       <div class="qmark" id="qm1" style="left: 160px; top: 760px">?</div>
       <div class="qmark" id="qm2" style="left: 800px; top: 700px">?</div>
       <div class="qmark" id="qm3" style="left: 860px; top: 960px">?</div>
@@ -201,9 +148,6 @@
 
   <!-- ===== C. LẬT TẨY (11.1 – 17.3): ảnh "chuyển tiền thành công" → soi → hoá ra ảnh trong thư viện → nhân viên sững người → dấu GIẢ → xé đôi ===== -->
   <div id="sC" class="clip rs-scene" data-start="11.1" data-duration="6.2" data-track-index="3">
-    <div class="rs-fill alarm"></div>
-    <div class="beam" id="beam" data-layout-allow-overflow></div>
-    <div class="rs-fill scan"></div>
     <div class="shot-wrap" id="shotWrap" data-minh-hoa data-layout-allow-overlap>
       <div class="half l" id="halfL"><div class="dev"></div><div class="shot">
         <div class="gallery g">Ảnh · Thư viện</div><div class="ok-big"></div><div class="t1">Chuyển tiền thành công</div><div class="amt">250.000 đ</div>
@@ -221,14 +165,11 @@
       <div class="l2" id="c2">ảnh giả</div>
     </div>
     <div class="rs-sub" id="subC"><span>Ảnh chuyển khoản mà không phải chuyển khoản thật.</span></div>
-    <div class="rs-fill day iris" id="irisC"></div>
+    <div class="rs-fill bc-day iris" id="irisC"></div>
   </div>
 
   <!-- ===== D. SIPOS (17.3 – 23.4): buổi sáng sáng sủa, màn hình theo ca, chủ quán thở phào ===== -->
   <div id="sD" class="clip rs-scene" data-start="17.3" data-duration="6.1" data-track-index="4">
-    <div class="rs-fill day"></div>
-    <div class="blob" id="blob1" style="left: -200px; top: 1100px; width: 700px; height: 700px; background: color-mix(in srgb, var(--color-primary) 10%, transparent)"></div>
-    <div class="blob" id="blob2" style="left: 640px; top: 420px; width: 560px; height: 560px; background: color-mix(in srgb, var(--prop-gold) 16%, transparent)"></div>
     <div id="camD" class="cam" data-layout-allow-overflow>
       <div id="owner2" style="position: absolute; left: -70px; top: 860px"></div>
       <div class="rs-phone phone-d" id="phoneD" data-minh-hoa>
@@ -261,8 +202,6 @@
 
   <!-- ===== E. CTA (23.4 – 31): teal SIPOS, hai người vẫy chào, nút được bấm ===== -->
   <div id="sE" class="clip rs-scene" data-start="23.4" data-duration="7.6" data-track-index="5">
-    <div class="rs-fill rs-bg-brand"></div>
-    <div class="rays" id="rays" data-layout-allow-overflow></div>
     <div class="rs-fill" id="chatsE"></div>
     <img class="logo-s" id="logoS" src="brand/logos/sipos/sipos-logo-trang.png" alt="SIPOS" />
     <div class="rule" id="ruleE"></div>
@@ -270,86 +209,14 @@
     <div class="tagline" id="tag"><div><b>SIPOS,</b> giải pháp quản lý bán hàng</div><div>trong thời đại AI.</div></div>
     <div id="pE1" style="position: absolute; left: 40px; top: 830px"></div>
     <div id="pE2" style="position: absolute; left: 570px; top: 830px"></div>
-    <div class="floor"></div>
+    <div class="bc-cho-gan"></div>
     <div class="cta-ring" id="ring"></div>
     <div class="cta-btn" id="btn"><span class="chat-ico"></span><span id="btnTxt">Nhắn tin để được tư vấn</span></div>
     <div class="tap" id="tap"></div>
   </div>
 
   <audio id="music" src="music/bgm.mp3" data-start="0" data-duration="31" data-track-index="9" data-volume="1"></audio>
-  <!-- SFX:BEGIN -->
-  <audio id="sfx01" src="sfx/whoosh-nhanh.wav" data-start="0.02" data-duration="0.28" data-track-index="20" data-volume="0.35"></audio>
-  <audio id="sfx02" src="sfx/pop.wav" data-start="0.28" data-duration="0.16" data-track-index="21" data-volume="0.5"></audio>
-  <audio id="sfx03" src="sfx/ding.wav" data-start="0.55" data-duration="0.90" data-track-index="22" data-volume="0.3"></audio>
-  <audio id="sfx04" src="sfx/whoosh.wav" data-start="1.15" data-duration="0.50" data-track-index="23" data-volume="0.3"></audio>
-  <audio id="sfx05" src="sfx/pop.wav" data-start="1.58" data-duration="0.16" data-track-index="24" data-volume="0.45"></audio>
-  <audio id="sfx06" src="sfx/pop.wav" data-start="2.10" data-duration="0.16" data-track-index="25" data-volume="0.25"></audio>
-  <audio id="sfx07" src="sfx/whoosh-nhanh.wav" data-start="2.62" data-duration="0.28" data-track-index="26" data-volume="0.3"></audio>
-  <audio id="sfx08" src="sfx/whoosh.wav" data-start="2.85" data-duration="0.50" data-track-index="27" data-volume="0.35"></audio>
-  <audio id="sfx09" src="sfx/tick.wav" data-start="2.95" data-duration="0.04" data-track-index="28" data-volume="0.45"></audio>
-  <audio id="sfx10" src="sfx/tick.wav" data-start="3.07" data-duration="0.04" data-track-index="29" data-volume="0.45"></audio>
-  <audio id="sfx11" src="sfx/tick.wav" data-start="3.19" data-duration="0.04" data-track-index="30" data-volume="0.45"></audio>
-  <audio id="sfx12" src="sfx/tick.wav" data-start="3.31" data-duration="0.04" data-track-index="31" data-volume="0.45"></audio>
-  <audio id="sfx13" src="sfx/whoosh.wav" data-start="3.42" data-duration="0.50" data-track-index="32" data-volume="0.3"></audio>
-  <audio id="sfx14" src="sfx/whoosh-nhanh.wav" data-start="3.69" data-duration="0.28" data-track-index="33" data-volume="0.3"></audio>
-  <audio id="sfx15" src="sfx/thump.wav" data-start="4.09" data-duration="0.30" data-track-index="34" data-volume="0.5"></audio>
-  <audio id="sfx16" src="sfx/whoosh.wav" data-start="4.48" data-duration="0.50" data-track-index="35" data-volume="0.35"></audio>
-  <audio id="sfx17" src="sfx/coin.wav" data-start="4.85" data-duration="0.70" data-track-index="36" data-volume="0.25"></audio>
-  <audio id="sfx18" src="sfx/coin.wav" data-start="5.25" data-duration="0.70" data-track-index="37" data-volume="0.25"></audio>
-  <audio id="sfx19" src="sfx/coin.wav" data-start="5.65" data-duration="0.70" data-track-index="38" data-volume="0.25"></audio>
-  <audio id="sfx20" src="sfx/sai.wav" data-start="6.05" data-duration="0.42" data-track-index="39" data-volume="0.45"></audio>
-  <audio id="sfx21" src="sfx/tick.wav" data-start="6.45" data-duration="0.04" data-track-index="40" data-volume="0.45"></audio>
-  <audio id="sfx22" src="sfx/tick.wav" data-start="6.65" data-duration="0.04" data-track-index="41" data-volume="0.45"></audio>
-  <audio id="sfx23" src="sfx/tick.wav" data-start="6.85" data-duration="0.04" data-track-index="42" data-volume="0.45"></audio>
-  <audio id="sfx24" src="sfx/tick.wav" data-start="7.05" data-duration="0.04" data-track-index="43" data-volume="0.45"></audio>
-  <audio id="sfx25" src="sfx/tick.wav" data-start="7.47" data-duration="0.04" data-track-index="44" data-volume="0.45"></audio>
-  <audio id="sfx26" src="sfx/tick.wav" data-start="7.57" data-duration="0.04" data-track-index="45" data-volume="0.45"></audio>
-  <audio id="sfx27" src="sfx/tick.wav" data-start="7.67" data-duration="0.04" data-track-index="46" data-volume="0.45"></audio>
-  <audio id="sfx28" src="sfx/whoosh.wav" data-start="7.69" data-duration="0.50" data-track-index="47" data-volume="0.3"></audio>
-  <audio id="sfx29" src="sfx/pop.wav" data-start="8.89" data-duration="0.16" data-track-index="48" data-volume="0.4"></audio>
-  <audio id="sfx30" src="sfx/pop.wav" data-start="9.29" data-duration="0.16" data-track-index="49" data-volume="0.4"></audio>
-  <audio id="sfx31" src="sfx/pop.wav" data-start="9.69" data-duration="0.16" data-track-index="50" data-volume="0.4"></audio>
-  <audio id="sfx32" src="sfx/riser.wav" data-start="10.20" data-duration="0.90" data-track-index="51" data-volume="0.35"></audio>
-  <audio id="sfx33" src="sfx/whoosh-nhanh.wav" data-start="10.45" data-duration="0.28" data-track-index="52" data-volume="0.3"></audio>
-  <audio id="sfx34" src="sfx/whoosh.wav" data-start="10.95" data-duration="0.50" data-track-index="53" data-volume="0.4"></audio>
-  <audio id="sfx35" src="sfx/thump.wav" data-start="11.12" data-duration="0.30" data-track-index="54" data-volume="0.45"></audio>
-  <audio id="sfx36" src="sfx/riser.wav" data-start="11.40" data-duration="0.90" data-track-index="55" data-volume="0.3"></audio>
-  <audio id="sfx37" src="sfx/glitch.wav" data-start="12.49" data-duration="0.42" data-track-index="56" data-volume="0.5"></audio>
-  <audio id="sfx38" src="sfx/pop.wav" data-start="12.89" data-duration="0.16" data-track-index="57" data-volume="0.45"></audio>
-  <audio id="sfx39" src="sfx/whoosh-nhanh.wav" data-start="13.69" data-duration="0.28" data-track-index="58" data-volume="0.3"></audio>
-  <audio id="sfx40" src="sfx/boom.wav" data-start="14.09" data-duration="0.90" data-track-index="59" data-volume="0.6"></audio>
-  <audio id="sfx41" src="sfx/dap-dau.wav" data-start="14.09" data-duration="0.45" data-track-index="60" data-volume="0.45"></audio>
-  <audio id="sfx42" src="sfx/dap-dau.wav" data-start="14.49" data-duration="0.45" data-track-index="61" data-volume="0.55"></audio>
-  <audio id="sfx43" src="sfx/whoosh.wav" data-start="15.67" data-duration="0.50" data-track-index="62" data-volume="0.45"></audio>
-  <audio id="sfx44" src="sfx/thump.wav" data-start="16.15" data-duration="0.30" data-track-index="63" data-volume="0.3"></audio>
-  <audio id="sfx45" src="sfx/sparkle.wav" data-start="16.90" data-duration="0.90" data-track-index="64" data-volume="0.4"></audio>
-  <audio id="sfx46" src="sfx/whoosh-nhanh.wav" data-start="17.69" data-duration="0.28" data-track-index="65" data-volume="0.25"></audio>
-  <audio id="sfx47" src="sfx/pop.wav" data-start="18.10" data-duration="0.16" data-track-index="66" data-volume="0.25"></audio>
-  <audio id="sfx48" src="sfx/whoosh-nhanh.wav" data-start="18.11" data-duration="0.28" data-track-index="67" data-volume="0.25"></audio>
-  <audio id="sfx49" src="sfx/pop.wav" data-start="18.50" data-duration="0.16" data-track-index="68" data-volume="0.25"></audio>
-  <audio id="sfx50" src="sfx/whoosh-nhanh.wav" data-start="18.51" data-duration="0.28" data-track-index="69" data-volume="0.25"></audio>
-  <audio id="sfx51" src="sfx/tap.wav" data-start="18.89" data-duration="0.08" data-track-index="70" data-volume="0.55"></audio>
-  <audio id="sfx52" src="sfx/tap.wav" data-start="20.49" data-duration="0.08" data-track-index="71" data-volume="0.55"></audio>
-  <audio id="sfx53" src="sfx/hoi-tho.wav" data-start="20.70" data-duration="0.80" data-track-index="72" data-volume="0.6"></audio>
-  <audio id="sfx54" src="sfx/pop.wav" data-start="21.29" data-duration="0.16" data-track-index="73" data-volume="0.3"></audio>
-  <audio id="sfx55" src="sfx/sparkle.wav" data-start="22.09" data-duration="0.90" data-track-index="74" data-volume="0.45"></audio>
-  <audio id="sfx56" src="sfx/pop.wav" data-start="22.49" data-duration="0.16" data-track-index="75" data-volume="0.3"></audio>
-  <audio id="sfx57" src="sfx/whoosh.wav" data-start="23.00" data-duration="0.50" data-track-index="76" data-volume="0.4"></audio>
-  <audio id="sfx58" src="sfx/sparkle.wav" data-start="23.60" data-duration="0.90" data-track-index="77" data-volume="0.35"></audio>
-  <audio id="sfx59" src="sfx/pop.wav" data-start="24.09" data-duration="0.16" data-track-index="78" data-volume="0.3"></audio>
-  <audio id="sfx60" src="sfx/whoosh-nhanh.wav" data-start="24.49" data-duration="0.28" data-track-index="79" data-volume="0.25"></audio>
-  <audio id="sfx61" src="sfx/pop.wav" data-start="24.85" data-duration="0.16" data-track-index="80" data-volume="0.3"></audio>
-  <audio id="sfx62" src="sfx/pop.wav" data-start="25.29" data-duration="0.16" data-track-index="81" data-volume="0.45"></audio>
-  <audio id="sfx63" src="sfx/pop.wav" data-start="25.70" data-duration="0.16" data-track-index="82" data-volume="0.18"></audio>
-  <audio id="sfx64" src="sfx/pop.wav" data-start="26.50" data-duration="0.16" data-track-index="83" data-volume="0.18"></audio>
-  <audio id="sfx65" src="sfx/tap.wav" data-start="26.89" data-duration="0.08" data-track-index="84" data-volume="0.55"></audio>
-  <audio id="sfx66" src="sfx/pop.wav" data-start="27.30" data-duration="0.16" data-track-index="85" data-volume="0.18"></audio>
-  <audio id="sfx67" src="sfx/tap.wav" data-start="28.49" data-duration="0.08" data-track-index="86" data-volume="0.55"></audio>
-  <audio id="sfx68" src="sfx/whoosh-nhanh.wav" data-start="29.29" data-duration="0.28" data-track-index="87" data-volume="0.3"></audio>
-  <audio id="sfx69" src="sfx/pop.wav" data-start="30.09" data-duration="0.16" data-track-index="88" data-volume="0.4"></audio>
-  <audio id="sfx70" src="sfx/sparkle.wav" data-start="30.09" data-duration="0.90" data-track-index="89" data-volume="0.45"></audio>
-  <audio id="sfx71" src="sfx/tap.wav" data-start="30.09" data-duration="0.08" data-track-index="90" data-volume="0.55"></audio>
-  <!-- SFX:END -->
+  <!-- TIENG-DONG -->
 </div>
 
 <script>
@@ -366,6 +233,8 @@ RS.ready(function (tl) {
   });
 
   /* ---------- A. QUÁN ---------- */
+  const bgA = RS.set($("#camA"), "quan", { clock: [110, 250], gio: [15, 0] });
+  RS.setLive(tl, bgA, 0, 3.4, 1);
   const cashier = put("#cashier", ai("nv", { width: 600, pose: "chap-tay" }));
   const customer = put("#customer", ai("khach", { phone: true, phoneOk: true, width: 760, pose: { R: [470, 400], dt: -4 }, mood: "cuoi" }));
   put("#q1", ai("xep1", { width: 380 }));
@@ -392,21 +261,22 @@ RS.ready(function (tl) {
   tl.to("#customer", { x: 420, duration: 0.45, ease: "power2.in" }, 2.6);
   tl.to(["#bA", "#bB"], { opacity: 0, scale: 0.6, duration: 0.2, ease: "power2.in" }, 2.7);
   // Hết ngày: đẩy vào đồng hồ, kim quay, trời tối
-  tl.to("#camA2", { scale: 4.6, duration: 0.55, ease: "power3.in", transformOrigin: "205px 345px" }, 2.85);
-  tl.fromTo("#mA", { rotation: 30 }, { rotation: 30 + 360 * 3, duration: 0.55, ease: "power2.in" }, 2.85);
-  tl.fromTo("#hA", { rotation: 90 }, { rotation: 300, duration: 0.55, ease: "power2.in" }, 2.85);
+  const [ckx, cky] = bgA.pos("clock");
+  tl.to("#camA2", { scale: 4.6, duration: 0.55, ease: "power3.in", transformOrigin: ckx + "px " + cky + "px" }, 2.85);
+  RS.clockSpin(tl, bgA, 2.85, 0.55, 7); // 15:00 → 22:00, khớp đồng hồ đêm cảnh sau
   tl.fromTo("#nightA", { opacity: 0 }, { opacity: 0.9, duration: 0.45, ease: "power2.in" }, 2.95);
 
   /* ---------- B. ĐÊM Ở NHÀ ---------- */
   const B = 3.4;
+  const bgB = RS.set($("#camB"), "nha", { light: "dem", window: [760, 600], clock: [110, 560], gio: [22, 0] });
+  RS.setLive(tl, bgB, B, 11.1, 2);
   const owner = put("#owner", ai("chu", { width: 700, phone: true, pose: "nhin-dt", mood: "tap-trung" }));
   RS.idle(tl, owner, B, 11.1, 6);
   RS.look(tl, owner, "xuong", B);
   RS.fit($("#b2"), 840, 150, 90);
   // Nối hình: đồng hồ đêm thật to rồi lùi ra thấy bàn làm việc
-  tl.fromTo("#camB", { scale: 4.6, transformOrigin: "205px 655px" }, { scale: 1, duration: 0.75, ease: "power3.out" }, B);
-  tl.fromTo("#glowB", { opacity: 0.6, scale: 0.92 }, { opacity: 1, scale: 1.06, duration: 7.7, ease: "sine.inOut" }, B);
-  tl.fromTo("#win .lit", { opacity: 0.8 }, { opacity: 0.25, duration: 0.6, stagger: 0.5, yoyo: true, repeat: 5, ease: "steps(1)" }, B);
+  const [cbx, cby] = bgB.pos("clock");
+  tl.fromTo("#camB", { scale: 4.6, transformOrigin: cbx + "px " + cby + "px" }, { scale: 1, duration: 0.75, ease: "power3.out" }, B);
   tl.fromTo("#b1", { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: "expo.out" }, 3.69);
   tl.fromTo("#b2", { scale: 1.6, opacity: 0, filter: "blur(12px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power4.in", transformOrigin: "0% 50%" }, 3.79);
   tl.fromTo("#subB", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 4.1);
@@ -444,10 +314,10 @@ RS.ready(function (tl) {
 
   /* ---------- C. LẬT TẨY ---------- */
   const C = 11.1;
+  RS.setLive(tl, RS.set($("#sC"), "bao-dong"), C, 17.3, 3);
   const cashier2 = put("#cashier2", ai("nv", { width: 640 }));
   RS.idle(tl, cashier2, C, 17.3, 8);
   RS.fit($("#c2"), 840, 230, 120);
-  tl.fromTo("#beam", { rotation: 0 }, { rotation: 60, duration: 6.2, ease: "none" }, C);
   tl.fromTo("#shotWrap", { scale: 1.5, opacity: 0.4, rotation: 0 }, { scale: 1, opacity: 1, rotation: -3, duration: 0.45, ease: "expo.out" }, C);
   tl.fromTo("#subC", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 11.5);
   tl.fromTo(".g", { y: -74 }, { y: -74, duration: 0.01 }, C);
@@ -483,11 +353,10 @@ RS.ready(function (tl) {
 
   /* ---------- D. SIPOS ---------- */
   const D = 17.3;
+  RS.setLive(tl, RS.set($("#sD"), "sang"), D, 23.4, 4);
   const owner2 = put("#owner2", ai("chu", { width: 640, pose: "xuoi", mood: "lo-lang" }));
   RS.idle(tl, owner2, D, 23.4, 12);
   ["#d1", "#d2", "#d3"].forEach((s) => RS.fit($(s), 840, 104, 60));
-  tl.fromTo("#blob1", { x: 0, y: 0 }, { x: 80, y: -60, duration: 6.1, ease: "sine.inOut" }, D);
-  tl.fromTo("#blob2", { x: 0, y: 0 }, { x: -60, y: 80, duration: 6.1, ease: "sine.inOut" }, D);
   tl.fromTo("#camD", { scale: 1.08 }, { scale: 1, duration: 6.1, ease: "sine.out", transformOrigin: "540px 1100px" }, D);
   [["#d1", 17.69], ["#d2", 18.11], ["#d3", 18.51]].forEach(([s, t]) => tl.fromTo(s, { x: -500, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: "expo.out" }, t));
   tl.fromTo("#phoneD", { y: 1100, rotation: 10 }, { y: 0, rotation: -3, duration: 0.6, ease: "power4.out" }, D + 0.05);
@@ -519,6 +388,7 @@ RS.ready(function (tl) {
 
   /* ---------- E. CTA ---------- */
   const E = 23.4;
+  RS.setLive(tl, RS.set($("#sE"), "thuong-hieu"), E, 31, 5);
   const p1 = put("#pE1", ai("chu", { width: 470, mood: "cuoi" }));
   const p2 = put("#pE2", ai("nv", { width: 470, mood: "cuoi" }));
   RS.idle(tl, p1, E, 31, 14); RS.idle(tl, p2, E, 31, 15);
@@ -526,7 +396,6 @@ RS.ready(function (tl) {
   RS.fit(tagLines[0], 860, 64, 44);
   tagLines[1].style.fontSize = tagLines[0].style.fontSize;
   RS.fit($("#btnTxt"), 580, 64, 40);
-  tl.fromTo("#rays", { rotation: 0 }, { rotation: 60, duration: 7.6, ease: "none" }, E);
   [[110, 1080, 0.9], [880, 980, 1.1], [120, 330, 1.0], [880, 380, 0.8], [40, 1010, 0.7], [960, 860, 0.75]].forEach(([x, y, s], i) => {
     const m = document.createElement("div");
     m.className = "mini-chat";
