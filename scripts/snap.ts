@@ -3,7 +3,7 @@
  * mặc định mỗi 1.25 giây một khung, kèm ảnh ghép contact-sheet*.jpg. Vẫn chụp khi `hyperframes check` còn lỗi
  * (in lỗi ra) để thấy chỗ sai.
  */
-import { readdirSync, readFileSync, rmSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, rmSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { buildVideo } from './lib/build-video.ts';
 import { parseCli, runCommand } from './lib/cli.ts';
@@ -24,7 +24,8 @@ await runCommand(() => {
   const total = built.props.totalSec;
   const at = atArg?.slice(5) || Array.from({ length: Math.floor(total / 1.25) }, (_, i) => (0.6 + i * 1.25).toFixed(2)).join(',');
   const out = join(REPO_ROOT, 'out', 'snap', a.slug);
-  rmSync(out, { recursive: true, force: true });
+  // Xoá khung hình cũ, giữ bảng khung chính (./reel bang ghi cùng thư mục)
+  if (existsSync(out)) for (const f of readdirSync(out)) if (!f.startsWith('bang')) rmSync(join(out, f), { recursive: true, force: true });
   const r = runHyperframes(['snapshot', built.stageDir, '-o', out, '--at', at, '--no-end']);
   if (r.status !== 0) throw new Error(`Chụp khung hình lỗi:\n${stripAnsi(r.stdout + r.stderr).slice(-1500)}`);
   const sheets = readdirSync(out).filter((f) => f.startsWith('contact-sheet'));

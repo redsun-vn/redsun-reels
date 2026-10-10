@@ -34,7 +34,7 @@ Nam chốt 2026-10-09: "MKT chỉ cần đưa brief, sau đó đợi output vide
 4. **Kịch bản** (bước 5): viết, `./reel validate`, tự chấm ≥ 85.
 5. **Dựng video**: mặc định **dựng riêng** — ghi `"build": "custom"` vào `script.json` rồi gọi skill `dung-video` (thiết kế + viết composition riêng, tự soát khung hình bằng `./reel snap`). Nam chốt 2026-10-09 (decisions §18). Chỉ dùng mẫu có sẵn (bỏ `build`, gọi `dao-dien-chuyen-dong`) khi MKT cần gấp hoặc dựng riêng lỗi mãi không qua.
 6. **Xuất** (bước 8): `./reel render <tên-video>` rồi `./reel post <tên-video>`. Lỗi kịch bản/nhạc thì tự sửa và xuất lại; lỗi máy thì theo mục "Khi có lỗi".
-7. **Báo MKT**: đường dẫn video `out/<tên-video>.mp4`, thời lượng; ảnh bảng khung chính `out/snap/<tên-video>/bang-canh.png` (MKT góp ý theo số khung); bảng ngắn **Cảnh · Chữ trên màn hình** + concept đã chọn, phong cách, nhạc; caption trong `post.md`. Hỏi: "Bạn xem video, muốn sửa gì cứ nói." Sửa theo góp ý (bước 7) rồi xuất lại.
+7. **Báo MKT**: đường dẫn video `out/<tên-video>.mp4`, thời lượng; ảnh bảng khung chính `out/snap/<tên-video>/bang/bang-canh.png` (MKT góp ý theo số khung); bảng ngắn **Cảnh · Chữ trên màn hình** + concept đã chọn, phong cách, nhạc; caption trong `post.md`. Hỏi: "Bạn xem video, muốn sửa gì cứ nói." Sửa theo góp ý (bước 7) rồi xuất lại.
 
 **Luồng từng bước** (dừng chờ chọn concept, duyệt kịch bản, duyệt bảng khung chính, xem thử): chỉ dùng khi MKT nói "làm từng bước", "cho tôi chọn ý tưởng", "cho xem kịch bản trước", hoặc brief là chiến dịch lớn MKT muốn duyệt kỹ. Khi đó theo đủ các điểm DỪNG bên dưới.
 

@@ -1,5 +1,5 @@
 /**
- * pnpm bang <slug> — bảng khung chính của video dựng riêng cho MKT duyệt bằng hình (out/snap/<slug>/bang-canh.png):
+ * pnpm bang <slug> — bảng khung chính của video dựng riêng cho MKT duyệt bằng hình (out/snap/<slug>/bang/bang-canh.png):
  * dựng, chụp từng khung khai trong dung-rieng/bang-canh.txt, ghép thành một ảnh có số khung, giây, mô tả, tiếng, chuyển cảnh.
  */
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
@@ -41,7 +41,8 @@ await runCommand(() => {
   if (b.status !== 0) throw new Error(`Ghép bảng lỗi:\n${stripAnsi(b.stdout + b.stderr).slice(-1500)}`);
   const shot = readdirSync(img).find((f) => /^frame-/.test(f));
   if (!shot) throw new Error('Không ra được ảnh bảng.');
-  const final = join(REPO_ROOT, 'out', 'snap', a.slug, 'bang-canh.png');
+  // Nằm trong thư mục bang/: hyperframes snapshot của ./reel snap dọn ảnh png ở thư mục khung hình
+  const final = join(out, 'bang-canh.png');
   renameSync(join(img, shot), final);
   console.log(`Bảng khung chính (${panels.length} khung): ${relative(REPO_ROOT, final)}`);
 });

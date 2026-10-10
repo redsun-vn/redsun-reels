@@ -7,7 +7,7 @@ import type { BuiltVideo } from './build-video.ts';
 import { REPO_ROOT, runFfprobe, runHyperframes, stripAnsi } from './hyperframes-env.ts';
 import { normalizeAudio, type Loudness } from './loudness.ts';
 import { CUSTOM_DIR } from './custom-video.ts';
-import { beatsOfFile } from './music-beats.ts';
+import { BEAT_WINDOW_SEC, beatsOfFile } from './music-beats.ts';
 import { CUE_FILE, parseCues } from './sfx-cues.ts';
 import { arcCheck, beatCheck, loudnessWindows, transitions } from './sound-arc.ts';
 import { frameDiffs, motionPerSecond, stillRuns } from './video-liveliness.ts';
@@ -97,7 +97,7 @@ function customNotes(built: BuiltVideo, file: string, diffs: Array<{ t: number; 
   } else notes.push(`! Chưa khai khoảng lặng trước khoảnh khắc vỡ lẽ (dòng "lang <từ> <đến>" trong ${CUE_FILE}).`);
   const music = join(built.stageDir, 'music', 'bgm.mp3');
   if (existsSync(music)) {
-    const { on, off } = beatCheck(transitions(diffs), beatsOfFile(music, 0, built.props.totalSec + 1).beats);
+    const { on, off } = beatCheck(transitions(diffs), beatsOfFile(music, 0, Math.max(BEAT_WINDOW_SEC, built.props.totalSec + 1)).beats);
     const n = on.length + off.length;
     if (n) notes.push(`${on.length * 10 >= n * 7 ? '' : '! '}Chuyển hình trên phách: ${on.length}/${n}${off.length ? ` (lệch phách: ${off.slice(0, 8).map((m) => `${m.start}–${m.end}s`).join(', ')}${off.length > 8 ? '…' : ''}; cho cú chuyển bắt đầu hoặc dừng đúng phách)` : ''}.`);
   }

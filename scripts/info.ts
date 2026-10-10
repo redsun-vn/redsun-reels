@@ -13,7 +13,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { readBriefFile } from './lib/brief.ts';
 import { signatureOf } from './lib/motion-check.ts';
 import { recentVideos } from './lib/recent-videos.ts';
-import { beatsOfFile } from './lib/music-beats.ts';
+import { BEAT_WINDOW_SEC, beatsOfFile } from './lib/music-beats.ts';
 import { MusicManifestSchema, usableSec } from '../config/music-manifest.ts';
 import { join } from 'node:path';
 import { OCCASIONS } from '../config/occasions.ts';
@@ -110,7 +110,7 @@ await runCommand(() => {
     if (!t) throw new Error(`Không có nhạc "${id}". Gõ "./reel info nhac" để xem danh sách.`);
     const file = join(REPO_ROOT, 'brand', 'music', t.file);
     if (!existsSync(file)) throw new Error(`Thiếu file nhạc brand/music/${t.file}. Chạy ./reel music:fetch.`);
-    const max = Number(secArg) || 45;
+    const max = Number(secArg) || BEAT_WINDOW_SEC;
     const b = beatsOfFile(file, t.startSec ?? 0, max);
     const f = (xs: number[]) => xs.map((x) => x.toFixed(2)).join(' ');
     console.log(`${t.id}: ~${b.bpm} BPM (mỗi phách ${(60 / b.bpm).toFixed(3)}s; giây tính từ đầu video)`);

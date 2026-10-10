@@ -7,6 +7,8 @@ import { spawnSync } from 'node:child_process';
 import { ffmpegPath } from './hyperframes-env.ts';
 
 const SR = 11025;
+/** Độ dài nhạc (giây) dùng để dò nhịp; `info nhip` và bước kiểm sau khi xuất dùng chung để ra cùng lưới phách. */
+export const BEAT_WINDOW_SEC = 45;
 const HOP = 256;
 
 export interface BeatInfo {
