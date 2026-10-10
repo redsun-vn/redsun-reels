@@ -10,6 +10,7 @@ import type { Script } from '../../config/script.schema.ts';
 import { normalizeText, numberTokens } from './fact-check.ts';
 import { REPO_ROOT } from './hyperframes-env.ts';
 import { CUE_FILE, CUE_MARKER, cueIssues, parseCues } from './sfx-cues.ts';
+import { BOARD_FILE, boardIssues, parseBoard } from './storyboard-board.ts';
 
 export const CUSTOM_DIR = 'dung-rieng';
 /** Đường dẫn cố định trong stage (scripts/lib/stage-project.ts `stageCustom`). */
@@ -122,6 +123,13 @@ export function customIssues(dir: string, script: Script, briefBody: string, tot
   // Nhân vật nhất quán: khai dàn nhân vật một lần bằng RS.cast, không tạo người lẻ bằng RS.person
   if (/RS\.person\(/.test(html)) warn('Tạo nhân vật qua dàn nhân vật RS.cast({ tên: { tóc, áo… } }) rồi gọi theo tên, để một người giữ nguyên tóc/áo ở mọi cảnh.');
 
+  // Bảng khung chính cho MKT duyệt bằng hình (./reel bang)
+  const boardFile = join(dir, CUSTOM_DIR, BOARD_FILE);
+  if (existsSync(boardFile)) {
+    const { panels, errors } = parseBoard(readFileSync(boardFile, 'utf8'));
+    for (const e of [...errors, ...(Number.isFinite(d) ? boardIssues(panels, d) : [])]) err(e);
+  } else warn(`Chưa có bảng khung chính ${CUSTOM_DIR}/${BOARD_FILE} (mỗi dòng "giây | điều xảy ra | tiếng | chuyển sang khung sau") để MKT duyệt bằng hình: ./reel bang <tên>.`);
+
   // Bối cảnh vẽ sẵn: nạp đủ bộ, tên bối cảnh phải có
   if (/RS\.set\(/.test(html)) {
     if (!html.includes('src="_rieng/boi-canh.js"') || !html.includes('href="_rieng/boi-canh.css"')) err('Dùng bối cảnh RS.set thì nạp <link rel="stylesheet" href="_rieng/boi-canh.css" /> và <script src="_rieng/boi-canh.js"></script> (sau nhan-vat.js).');
@@ -133,8 +141,9 @@ export function customIssues(dir: string, script: Script, briefBody: string, tot
   const cueFile = join(dir, CUSTOM_DIR, CUE_FILE);
   const manualSfx = /src=["']sfx\//.test(html);
   if (existsSync(cueFile)) {
-    const { cues, errors } = parseCues(readFileSync(cueFile, 'utf8'));
-    for (const e of [...errors, ...(Number.isFinite(d) ? cueIssues(cues, d) : [])]) err(e);
+    const { cues, errors, silence } = parseCues(readFileSync(cueFile, 'utf8'));
+    for (const e of [...errors, ...(Number.isFinite(d) ? cueIssues(cues, d, undefined, silence) : [])]) err(e);
+    if (!silence && cues.length) warn(`${CUE_FILE} chưa khai khoảng lặng trước khoảnh khắc vỡ lẽ ("lang <từ> <đến>"): lặng 0.5–2 giây rồi tiếng nhấn to nhất ngay ở <đến>.`);
     if (!html.includes(CUE_MARKER)) err(`Có ${CUE_FILE} nhưng index.html thiếu dòng đánh dấu ${CUE_MARKER} (đặt sau thẻ nhạc, trong gốc composition).`);
     if (manualSfx) warn(`Tiếng động khai ở cả ${CUE_FILE} và thẻ <audio src="sfx/…"> trong index.html: chỉ giữ một nơi (${CUE_FILE}).`);
     if (!cues.length) warn(`${CUE_FILE} chưa có tiếng động nào.`);

@@ -8,7 +8,7 @@ import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } fr
 import { dirname, extname, isAbsolute, join, normalize } from 'node:path';
 import { checkTrack, findTrack, missingFileHint, MusicManifestSchema, type MusicPurpose } from '../../config/music-manifest.ts';
 import { REPO_ROOT, runFfmpeg } from './hyperframes-env.ts';
-import { CUE_FILE, cueIssues, cueTags, injectCues, parseCues, rootDuration } from './sfx-cues.ts';
+import { CUE_FILE, cueIssues, cueTags, injectCues, injectSilence, parseCues, rootDuration } from './sfx-cues.ts';
 
 export interface StageOptions {
   /** Tên thư mục trong templates/ (vd. `_blank`, `FeatureLaunch`). */
@@ -95,9 +95,10 @@ function stageCues(dir: string): void {
   const htmlFile = join(dir, 'index.html');
   const html = readFileSync(htmlFile, 'utf8');
   const total = rootDuration(html);
-  const { cues, errors } = parseCues(readFileSync(join(dir, CUE_FILE), 'utf8'));
-  const problems = [...errors, ...cueIssues(cues, total)];
+  const { cues, errors, silence } = parseCues(readFileSync(join(dir, CUE_FILE), 'utf8'));
+  const problems = [...errors, ...cueIssues(cues, total, undefined, silence)];
   if (problems.length) throw new Error(problems.join(' '));
-  writeFileSync(htmlFile, injectCues(html, cueTags(cues, total)));
+  const withCues = injectCues(html, cueTags(cues, total));
+  writeFileSync(htmlFile, silence ? injectSilence(withCues, silence) : withCues);
   rmSync(join(dir, CUE_FILE));
 }

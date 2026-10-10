@@ -34,9 +34,9 @@ Nam chốt 2026-10-09: "MKT chỉ cần đưa brief, sau đó đợi output vide
 4. **Kịch bản** (bước 5): viết, `./reel validate`, tự chấm ≥ 85.
 5. **Dựng video**: mặc định **dựng riêng** — ghi `"build": "custom"` vào `script.json` rồi gọi skill `dung-video` (thiết kế + viết composition riêng, tự soát khung hình bằng `./reel snap`). Nam chốt 2026-10-09 (decisions §18). Chỉ dùng mẫu có sẵn (bỏ `build`, gọi `dao-dien-chuyen-dong`) khi MKT cần gấp hoặc dựng riêng lỗi mãi không qua.
 6. **Xuất** (bước 8): `./reel render <tên-video>` rồi `./reel post <tên-video>`. Lỗi kịch bản/nhạc thì tự sửa và xuất lại; lỗi máy thì theo mục "Khi có lỗi".
-7. **Báo MKT**: đường dẫn video `out/<tên-video>.mp4`, thời lượng; bảng ngắn **Cảnh · Chữ trên màn hình** + concept đã chọn, phong cách, nhạc; caption trong `post.md`. Hỏi: "Bạn xem video, muốn sửa gì cứ nói." Sửa theo góp ý (bước 7) rồi xuất lại.
+7. **Báo MKT**: đường dẫn video `out/<tên-video>.mp4`, thời lượng; ảnh bảng khung chính `out/snap/<tên-video>/bang-canh.png` (MKT góp ý theo số khung); bảng ngắn **Cảnh · Chữ trên màn hình** + concept đã chọn, phong cách, nhạc; caption trong `post.md`. Hỏi: "Bạn xem video, muốn sửa gì cứ nói." Sửa theo góp ý (bước 7) rồi xuất lại.
 
-**Luồng từng bước** (dừng chờ chọn concept, duyệt kịch bản, xem thử): chỉ dùng khi MKT nói "làm từng bước", "cho tôi chọn ý tưởng", "cho xem kịch bản trước", hoặc brief là chiến dịch lớn MKT muốn duyệt kỹ. Khi đó theo đủ các điểm DỪNG bên dưới.
+**Luồng từng bước** (dừng chờ chọn concept, duyệt kịch bản, duyệt bảng khung chính, xem thử): chỉ dùng khi MKT nói "làm từng bước", "cho tôi chọn ý tưởng", "cho xem kịch bản trước", hoặc brief là chiến dịch lớn MKT muốn duyệt kỹ. Khi đó theo đủ các điểm DỪNG bên dưới.
 
 Làm nhiều video một lúc (vd. "làm 3 video 20/10 cho SIPOS, Webino, BOS"): mỗi video một thư mục; làm lần lượt, video sau chạy `./reel info gan-day` để khác video trước (phong cách, bố cục, kiểu nhấn, loại video).
 
@@ -112,7 +112,7 @@ Nam chốt 2026-10-09: hình minh hoạ, yếu tố con người lấy từ hìn
 - Phong cách `vui-nhon` hoặc câu có chơi chữ: nhắc MKT đọc lại câu chữ (hài kiểu Việt cần người Việt chỉnh).
 
 ### 5b. Dựng video — **gọi skill `dung-video`** (mặc định)
-- Kịch bản duyệt xong → `"build": "custom"` trong `script.json`, gọi skill `dung-video`: thiết kế từng cảnh như một thế giới (người, vật, động tác hợp nghĩa câu), viết `briefs/<tên>/dung-rieng/index.html`, `./reel snap` tự soát đến khi đạt.
+- Kịch bản duyệt xong → `"build": "custom"` trong `script.json`, gọi skill `dung-video`: thiết kế từng cảnh như một thế giới (người, vật, động tác hợp nghĩa câu), viết `briefs/<tên>/dung-rieng/index.html`, dựng **bảng khung chính** (`./reel bang`) — luồng từng bước: gửi MKT và **DỪNG chờ duyệt**; luồng tự động: tự soát rồi làm tiếp — rồi làm kỹ, `./reel snap` tự soát đến khi đạt.
 - Brief kiểu kịch bản chi tiết (cảnh, hình, chữ, lời nói, thời gian): giữ đúng cảnh và chữ; lời nói thành bong bóng thoại/phụ đề; nếu thời gian brief không đủ để đọc (validate báo), kéo dài tối thiểu và báo MKT.
 - **Dự phòng — mẫu có sẵn**: bỏ `build`, gọi skill `dao-dien-chuyen-dong` (chữ nhấn `[ ]` + `motion`).
 

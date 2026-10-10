@@ -40,7 +40,7 @@
 11.40 riser 0.3
 12.49 glitch 0.5
 12.89 pop 0.45
-13.69 whoosh-nhanh 0.3
+lang 13.55 14.09      # lặng trước khi lật tẩy: nhạc hạ, chữ "Hóa ra là" hiện trong im lặng
 14.09 boom 0.6
 14.09 dap-dau 0.45
 14.49 dap-dau 0.55

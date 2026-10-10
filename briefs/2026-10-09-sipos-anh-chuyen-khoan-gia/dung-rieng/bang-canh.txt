@@ -1,0 +1,13 @@
+# Bảng khung chính cho MKT duyệt: giây | điều xảy ra | tiếng | chuyển sang khung sau
+0.6 | Cận mặt khách cười, điện thoại có dấu tick, "Em chuyển rồi nha" | vút, bụp | lùi máy trên phách
+1.9 | Quầy đông, nhân viên đáp "Dạ vâng ạ", gật đầu | bụp | khách vẫy chào đi ra
+3.1 | Đẩy máy vào đồng hồ, kim quay, trời tối | tích tích | đồng hồ quán nối sang đồng hồ đêm
+4.4 | Đêm ở nhà, chủ quán kiểm tiền trên điện thoại | vút, đặt máy | chèn cận màn hình
+6.8 | Sổ "Tiền vào hôm nay": thiếu khoản "Em chuyển rồi" | xu, buzz sai | quay lại chủ quán
+9.4 | Chủ quán cau mày, chống cằm, dấu hỏi bật theo phách | bụp | lo lắng, mở lại ảnh
+11.8 | Ảnh "chuyển tiền thành công", kính lúp soi | dâng lên | lộ "Ảnh · Thư viện"
+13.8 | Lặng: nhân viên ôm đầu, "Hóa ra là" | (nhạc hạ) | dập "ảnh giả"
+14.4 | Dấu GIẢ dập xuống | ầm, dập dấu | xé đôi ảnh
+18.1 | Buổi sáng: màn hình SIPOS theo ca, chủ quán còn lo | trượt, bấm | đổi ca
+21.0 | Chủ quán thở phào, đơn mới cuộn lên | thở phào | tự tin nắm tay
+25.6 | Logo SIPOS, hai người vẫy chào, nút "Nhắn tin để được tư vấn" | lấp lánh, bấm | ăn mừng

@@ -107,6 +107,7 @@ Không chắc loại nào? Cứ kể việc muốn làm, Claude sẽ đề xuấ
 | "chọn ý 2" | Viết kịch bản theo ý tưởng số 2 |
 | "cảnh 3 đổi chữ thành …", "bỏ cảnh 4", "ngắn lại còn 15 giây" | Sửa kịch bản |
 | "đổi phong cách sang …", "đổi nhạc" | Đổi kiểu hiệu ứng, đổi bài |
+| "sửa khung 3, 5: …" | Sửa đúng các khung trên **bảng khung chính** (ảnh Claude gửi kèm video, mỗi khung một số) |
 | "xem thử" | Mở bản xem thử ở `http://localhost:3002` |
 | "xem thử có vùng an toàn" | Xem thử, tô đỏ vùng chữ không được lấn vào |
 | "xuất" | Xuất MP4 vào `out/`, soạn caption + hashtag |

@@ -1,12 +1,16 @@
 /**
  * Render một video đã build → out/<tên>.mp4, chuẩn hóa âm thanh, kiểm output spec (REQUIREMENTS v0.4 §9.1), ghi cost.json.
  */
-import { existsSync, mkdirSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { BuiltVideo } from './build-video.ts';
 import { REPO_ROOT, runFfprobe, runHyperframes, stripAnsi } from './hyperframes-env.ts';
 import { normalizeAudio, type Loudness } from './loudness.ts';
-import { motionPerSecond, stillRuns } from './video-liveliness.ts';
+import { CUSTOM_DIR } from './custom-video.ts';
+import { beatsOfFile } from './music-beats.ts';
+import { CUE_FILE, parseCues } from './sfx-cues.ts';
+import { arcCheck, beatCheck, loudnessWindows, transitions } from './sound-arc.ts';
+import { frameDiffs, motionPerSecond, stillRuns } from './video-liveliness.ts';
 
 export interface RenderResult {
   file: string;
@@ -16,6 +20,8 @@ export interface RenderResult {
   loudness: Loudness;
   /** Bản dựng riêng: các đoạn [giây đầu, giây cuối) gần như đứng hình. */
   stills: Array<[number, number]>;
+  /** Bản dựng riêng: kết quả đo sau khi xuất (dòng bắt đầu "!" là cần sửa). */
+  notes: string[];
 }
 
 export const DURATION_TOLERANCE_SEC = 0.2;
@@ -71,6 +77,29 @@ function renderInner(built: BuiltVideo, opts: { briefDir?: string; quality?: 'dr
       JSON.stringify({ renderedAt: new Date().toISOString(), renderSec: Math.round(renderSec), music: built.script.music, durationSec, sizeMB: Math.round(sizeMB * 10) / 10 }, null, 2) + '\n',
     );
   }
-  const stills = built.script.build === 'custom' ? stillRuns(motionPerSecond(finalFile)) : [];
-  return { file: finalFile, durationSec, sizeMB, renderSec, loudness, stills };
+  const custom = built.script.build === 'custom';
+  const diffs = custom ? frameDiffs(finalFile) : [];
+  const stills = custom ? stillRuns(motionPerSecond(finalFile, diffs)) : [];
+  const notes = custom ? customNotes(built, finalFile, diffs, stills, opts.briefDir) : [];
+  return { file: finalFile, durationSec, sizeMB, renderSec, loudness, stills, notes };
+}
+
+/** Đứng hình, lặng trước vỡ lẽ, cắt trên phách — đo trên file đã xuất. */
+function customNotes(built: BuiltVideo, file: string, diffs: Array<{ t: number; v: number }>, stills: Array<[number, number]>, briefDir?: string): string[] {
+  const notes: string[] = [];
+  if (stills.length) notes.push(`! Đoạn gần như đứng hình: ${stills.map(([s, e]) => `${s}–${e}s`).join(', ')}. Bản dựng riêng nên luôn có chuyển động (máy quay trôi, nhân vật thở/chớp mắt/đổi tư thế, hạt trôi); thêm hành động rồi xuất lại.`);
+  const cueFile = briefDir ? join(briefDir, CUSTOM_DIR, CUE_FILE) : '';
+  const silence = cueFile && existsSync(cueFile) ? parseCues(readFileSync(cueFile, 'utf8')).silence : undefined;
+  if (silence) {
+    const arc = arcCheck(loudnessWindows(file), silence);
+    notes.push(...arc.messages.map((m) => `! ${m}`));
+    if (!arc.messages.length) notes.push(`Lặng trước vỡ lẽ: đạt (lặng ${silence.from}–${silence.to}s thấp hơn ${(arc.payoffDb - arc.silenceDb).toFixed(1)} dB, tiếng to nhất ở giây ${arc.peakAt}).`);
+  } else notes.push(`! Chưa khai khoảng lặng trước khoảnh khắc vỡ lẽ (dòng "lang <từ> <đến>" trong ${CUE_FILE}).`);
+  const music = join(built.stageDir, 'music', 'bgm.mp3');
+  if (existsSync(music)) {
+    const { on, off } = beatCheck(transitions(diffs), beatsOfFile(music, 0, built.props.totalSec + 1).beats);
+    const n = on.length + off.length;
+    if (n) notes.push(`${on.length * 10 >= n * 7 ? '' : '! '}Chuyển hình trên phách: ${on.length}/${n}${off.length ? ` (lệch phách: ${off.slice(0, 8).map((m) => `${m.start}–${m.end}s`).join(', ')}${off.length > 8 ? '…' : ''}; cho cú chuyển bắt đầu hoặc dừng đúng phách)` : ''}.`);
+  }
+  return notes;
 }

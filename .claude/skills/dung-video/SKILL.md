@@ -32,9 +32,10 @@ Skill kỹ thuật của plugin HyperFrames (chỉ đọc, **không** chạy cre
 1. **Ý tưởng hình** (ghi vào `briefs/<tên>/dung-rieng/storyboard.md`): mỗi cảnh của kịch bản là một **thế giới**, không phải một slide. Với từng cảnh trả lời: người xem đang ở đâu, thấy ai, vật gì tượng trưng cho ý (cuốn sổ = cộng sổ, kính lúp = soi ảnh giả, con dấu = ưu đãi…), chữ nào là điểm nhìn, động từ chuyển động (dập, trượt, vẽ, rơi, nở…), chuyển cảnh. Ghi nhịp cả video (vd. chậm–dồn–CHÉM–sáng–giữ). Xem `storyboard.md` của các video gần đây cùng sản phẩm/dịp để **không lặp lại** thế giới, phép ẩn dụ, bố cục.
    - Lấy nhịp: `./reel info nhip <id-nhạc>` → đặt điểm cắt cảnh/nhấn mạnh (chữ dập, dấu, bật) lên **phách mạnh**, hành động nhỏ lên phách thường. Ghi các phách vào chú thích đầu composition.
    - Mỗi cảnh: chọn nền riêng (bối cảnh `RS.set`, đổi nơi/ánh sáng/tông giữa các cảnh); cỡ cảnh xen kẽ (toàn → chèn cận vật → trung → cận mặt); nối hình giữa các cảnh (vật cuối cảnh trước = vật đầu cảnh sau: đồng hồ quán → đồng hồ đêm; điện thoại → ảnh trên màn hình).
-2. **Viết** `briefs/<tên>/dung-rieng/index.html` theo khung dưới, và `briefs/<tên>/dung-rieng/tieng-dong.txt` (tiếng động theo giây). Thời lượng gốc = tổng `durationSec` của kịch bản. Cảnh kịch bản có thể chia thành nhiều nhịp nhỏ.
-3. **Kiểm**: `./reel validate <tên>` (không còn ✗), rồi `./reel snap <tên>` (dựng + kiểm bố cục/tương phản + so nền các cảnh + chụp khung). Xem khung hình và **tự soát** theo danh sách dưới. Sửa đến khi đạt (thường 2–3 vòng). Soát riêng **mọi khoảnh khắc cảm xúc** và chỗ chuyển cảnh: `./reel snap <tên> --at=…`.
-4. **Xuất**: `./reel render <tên>`. Còn dòng "Đoạn gần như đứng hình" → thêm hành động vào đoạn đó rồi xuất lại. Rồi `./reel post <tên>` (brief có caption sẵn thì thay `post.md` bằng caption của brief).
+2. **Dựng thô + bảng khung chính** (luồng từng bước của `tao-reel`: **DỪNG chờ MKT duyệt**; luồng tự động: tự soát bảng theo "Luật kể chuyện", sửa, rồi làm tiếp và gửi bảng kèm video). Viết `briefs/<tên>/dung-rieng/index.html` theo khung dưới đủ để từng khoảnh khắc chính đúng hình: bối cảnh, nhân vật đúng nét mặt/tư thế, chữ, đạo cụ (chuyển động kỹ, tiếng động làm sau). Thời lượng gốc = tổng `durationSec` của kịch bản; cảnh kịch bản có thể chia nhiều nhịp nhỏ. Khai `bang-canh.txt` (mỗi nhịp một khung, 4–18 khung): `giây | điều xảy ra | tiếng | chuyển sang khung sau`. Chạy `./reel bang <tên>` → `out/snap/<tên>/bang-canh.png`, tự soát bảng theo "Luật kể chuyện" rồi gửi MKT ảnh bảng (SendUserFile nếu có) và hỏi: **"đạt" hay "sửa khung số …"**. Sửa đến khi MKT duyệt; ghi kết quả vào `review.md`. Ở luồng từng bước, không làm bước 3 khi bảng chưa duyệt: sai câu chuyện hay hình thì sửa ở đây rẻ hơn sửa cả video.
+3. **Làm kỹ**: chuyển động đầy đủ (máy quay, nhân vật, nền sống), `tieng-dong.txt` (tiếng động theo giây + một khoảng lặng `lang` ngay trước khoảnh khắc vỡ lẽ), điểm cắt/nhấn theo phách.
+4. **Kiểm**: `./reel validate <tên>` (không còn ✗), rồi `./reel snap <tên>` (dựng + kiểm bố cục/tương phản + so nền các cảnh + chụp khung). Xem khung hình và **tự soát** theo danh sách dưới. Sửa đến khi đạt (thường 2–3 vòng). Soát riêng **mọi khoảnh khắc cảm xúc** và chỗ chuyển cảnh: `./reel snap <tên> --at=…`.
+5. **Xuất**: `./reel render <tên>`. Bước xuất đo trên file thật và in: đoạn gần như đứng hình, "Lặng trước vỡ lẽ" (khoảng lặng thấp hơn ≥ 8 dB, tiếng to nhất video rơi ngay lúc vỡ lẽ), "Chuyển hình trên phách" (≥ 70% cú chuyển bắt đầu hoặc dừng đúng phách). Dòng nào bắt đầu bằng "!" thì sửa rồi xuất lại. Rồi `./reel post <tên>` (brief có caption sẵn thì thay `post.md` bằng caption của brief).
 
 ## Khung composition
 ```html
@@ -84,7 +85,10 @@ RS.ready(function (tl) {
 0.28 pop 0.5        # bong bóng "Em chuyển rồi nha"
 1.30 whoosh 0.3     # lùi máy, trên phách
 ```
-Không viết tay thẻ `<audio src="sfx/…">`: validate báo khi tên tiếng, giây, âm lượng sai.
+Thêm **đúng một** dòng khoảng lặng trước khoảnh khắc vỡ lẽ: `lang 13.55 14.09` (nhạc nền hạ xuống 0.15 từ 13.55, trở lại ở 14.09; mức khác: `lang 13.55 14.09 0.25`). Trong khoảng lặng không đặt tiếng động to (> 0.25); tiếng nhấn to nhất (`boom`, `dap-dau`) đặt đúng giây <đến>.
+Không viết tay thẻ `<audio src="sfx/…">`: validate báo khi tên tiếng, giây, âm lượng, khoảng lặng sai.
+
+`bang-canh.txt` (cùng thư mục): mỗi dòng một khung chính cho MKT duyệt, ví dụ `14.4 | Dấu GIẢ dập xuống | ầm, dập dấu | xé đôi ảnh`.
 
 Máy quay: mỗi kiểu chuyển động máy (lùi ra, đẩy vào, lao vào vật) dùng **một lớp `.cam` riêng lồng nhau** (`#camB3 > #camB2 > #camB`); đổi `transformOrigin` trên cùng một lớp đang phóng to sẽ giật hình.
 
@@ -119,6 +123,18 @@ Máy quay: mỗi kiểu chuyển động máy (lùi ra, đẩy vào, lao vào v�
 - Tương phản ≥ 3:1: màu nhấn trên nền tối dùng `var(--color-accent-glow)`; chữ xanh "đã nhận" trên nền trắng dùng `var(--prop-ok-ink)`. Chuyển nền kiểu "mở tròn" dùng `clip-path: circle()` trên lớp phủ kín khung (không scale chấm tròn, bộ đo tương phản đọc sai).
 - Chữ quan trọng trong vùng an toàn: trái 80, phải 160 (tính từ mép phải: chữ không quá x = 920), trên 220, dưới 420 (không thấp hơn y = 1500).
 
+## Luật kể chuyện (soát ở bảng khung chính, rồi ở bản xuất)
+- **Câu chuyện là một quá trình thật** theo đúng thứ tự (nhận ảnh → tối kiểm tiền → thiếu → soi → lật tẩy → có giải pháp). Mỗi nhịp sinh ra từ nhịp trước.
+- **Một thứ để mắt bám** suốt video: nhân vật chính (cùng dàn nhân vật), hoặc một vật (cuốn sổ, điện thoại).
+- **Một màu một nghĩa** suốt video (vd. đỏ = rủi ro/ảnh giả, teal = SIPOS). Không dùng màu đó để trang trí chỗ khác.
+- **Lặng trước, to nhất lúc vỡ lẽ**: 0.5–2 giây lặng (khai `lang`) giữ hình, rồi tiếng nhấn to nhất đúng khoảnh khắc vỡ lẽ. Đoạn dày hình nhất nằm ngay trước khoảng lặng, không trùng điểm vỡ lẽ.
+- **Kết là mở đầu đã đổi khác**: cảnh cuối gọi lại hình mở đầu với điều câu chuyện mang lại (quầy quán ban đầu → cùng quầy, giờ có SIPOS, hai người cười).
+- **Mỗi lần chuyển cảnh nói được lý do** (ghi ở cột "chuyển sang khung sau"): bước tiếp theo · nối hình (vật cuối cảnh trước = vật đầu cảnh sau) · biến hình (vật này thành vật kia) · mở/đóng tròn vào nhân vật · phóng vào bên trong / lùi ra toàn cảnh · nhìn thấy gì (góc nhìn nhân vật) · nguyên nhân → kết quả · thời gian trôi (kim quay, trời tối) · gọi lại cảnh trước.
+- **Diễn ý bằng hình, không dán nhãn**: "kiểm tiền thiếu" = ngón tay dò từng dòng, một dòng đỏ "Không thấy"; chữ chỉ gọi tên.
+- **Cỡ cảnh xen kẽ**, có ít nhất **một cận cực sát** (mặt, ngón tay, dấu tick).
+- **Mỗi khung có ít nhất 3 chi tiết sống** ở nền hoặc người (đèn đung đưa, khói cốc, chớp mắt, người xếp hàng nhún, đèn cửa sổ nháy): `RS.idle`, `RS.setLive`.
+- **Tránh kiểu "nhìn là biết máy làm"**: tiêu đề giữa nền gradient trơn; mọi thứ hiện mờ dần; nhãn/khung ở bốn góc; quầng sáng trên giao diện; bùng hạt chung chung; kết chỉ bằng logo xoay.
+
 ## Nét mặt theo cảm xúc (chọn đúng, không dùng "cười" cho mọi lúc)
 | Khoảnh khắc trong chuyện | `mood` | Hay đi với tư thế |
 |---|---|---|
@@ -141,11 +157,12 @@ Máy quay: mỗi kiểu chuyển động máy (lùi ra, đẩy vào, lao vào v�
 - [ ] Có **con người** (hình MKT gửi hoặc nhân vật) khi câu chuyện có người; có **sản phẩm** (màn hình app) ở cảnh giải pháp.
 - [ ] Chữ đọc được: tiêu đề ≥ 60px, không dính chữ, không gãy dòng xấu (chữ đơn lẻ rơi xuống dòng), không tràn khung, không bị che.
 - [ ] Hình động đúng nghĩa câu (vật/động từ khớp ý), đổi hình ít nhất mỗi 2 giây, cảnh cuối giữ đủ lâu nhưng vẫn chuyển động.
-- [ ] Mỗi hành động có tiếng động hợp; điểm nhấn rơi trên phách.
+- [ ] Mỗi hành động có tiếng động hợp; điểm nhấn rơi trên phách; có khoảng lặng ngay trước khoảnh khắc vỡ lẽ.
+- [ ] Đủ "Luật kể chuyện": một thứ để mắt bám, một màu một nghĩa, kết gọi lại mở đầu, mỗi chuyển cảnh có lý do, có cận cực sát, ≥ 3 chi tiết sống mỗi khung.
 - [ ] Khác hẳn video gần đây cùng sản phẩm/dịp.
 
 ## Mẫu (đọc để lấy chuẩn chất lượng)
-- `briefs/2026-10-09-sipos-anh-chuyen-khoan-gia/dung-rieng/index.html` — **chuẩn mới**, 31s: mở bằng cận mặt khách + điện thoại → lùi ra quầy đông → đẩy vào đồng hồ, nối sang đồng hồ đêm → chèn cận sổ tiền → cận mặt chủ quán → lao vào điện thoại → ảnh giả trên nền đỏ mận, kính lúp, nhiễu, dấu GIẢ, xé đôi → mở tròn sang buổi sáng SIPOS → mở tròn teal CTA, hai người vẫy chào. 5 nền khác nhau (bối cảnh `quan` ngày → `nha` đêm → `bao-dong` → `sang` → `thuong-hieu`), 71 tiếng động trong `tieng-dong.txt`, nhấn trên phách.
+- `briefs/2026-10-09-sipos-anh-chuyen-khoan-gia/dung-rieng/index.html` — **chuẩn mới**, 31s: mở bằng cận mặt khách + điện thoại → lùi ra quầy đông → đẩy vào đồng hồ, nối sang đồng hồ đêm → chèn cận sổ tiền → cận mặt chủ quán → lao vào điện thoại → ảnh giả trên nền đỏ mận, kính lúp, nhiễu, dấu GIẢ, xé đôi → mở tròn sang buổi sáng SIPOS → mở tròn teal CTA, hai người vẫy chào. 5 nền khác nhau (bối cảnh `quan` ngày → `nha` đêm → `bao-dong` → `sang` → `thuong-hieu`), 71 tiếng động trong `tieng-dong.txt`, lặng 13.55–14.09 trước dấu GIẢ, bảng khung chính 12 khung (`bang-canh.txt`).
 - `briefs/2026-10-20-sipos-phu-nu-20-10/dung-rieng/index.html` — 15s: đêm, cuốn sổ, giấy nhớ vây, nét bút chém → điện thoại đổi ô "kho / thu chi / khách quen" → hồng 20/10, hoa nở, con dấu -20% → CTA.
 
 ## Không làm

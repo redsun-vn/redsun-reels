@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { REPO_ROOT } from '../scripts/lib/hyperframes-env.ts';
-import { cueIssues, cueTags, injectCues, parseCues, rootDuration, sfxNames, wavDuration } from '../scripts/lib/sfx-cues.ts';
+import { cueIssues, cueTags, injectCues, injectSilence, parseCues, rootDuration, sfxNames, wavDuration } from '../scripts/lib/sfx-cues.ts';
 
 describe('tiếng động khai theo giây', () => {
   it('đọc dòng, bỏ ghi chú, xếp theo giây, báo dòng sai dạng', () => {
@@ -39,4 +39,19 @@ describe('tiếng động khai theo giây', () => {
     expect(d).toBeGreaterThan(0.05);
     expect(d).toBeLessThan(1);
   });
+
+  it('khoảng lặng: đọc, kiểm, hạ nhạc nền đúng khoảng', () => {
+    const { silence, errors } = parseCues('lang 4 5\n1 pop 0.5\n4.5 boom 0.6\n');
+    expect(errors).toEqual([]);
+    expect(silence).toMatchObject({ from: 4, to: 5, level: 0.15 });
+    const { cues } = parseCues('1 pop 0.5\n4.5 boom 0.6\n');
+    expect(cueIssues(cues, 8, ['pop', 'boom'], silence!).join('\n')).toContain('4.5 boom');
+    expect(cueIssues([], 8, [], { line: 1, from: 4, to: 9, level: 0.15 }).join('\n')).toContain('ngoài video');
+    expect(parseCues('lang 1 2\nlang 3 4\n').errors[0]).toContain('một khoảng lặng');
+    const html = injectSilence('<div><audio id="music" src="music/bgm.mp3" data-start="0"></audio></div>', silence!);
+    const auto = JSON.parse(/data-automation='([^']+)'/.exec(html)![1]);
+    expect(auto.lanes[0].points).toEqual([{ t: 0, v: 1 }, { t: 3.85, v: 1 }, { t: 4, v: 0.15 }, { t: 4.98, v: 0.15 }, { t: 5, v: 1 }]);
+    expect(() => injectSilence(html, silence!)).toThrow('data-automation');
+  });
 });
+

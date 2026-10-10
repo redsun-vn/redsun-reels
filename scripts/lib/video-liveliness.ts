@@ -11,17 +11,24 @@ export const STILL_THRESHOLD = 0.45;
 /** Đứng hình liên tục từ chừng này giây trở lên thì báo. */
 export const STILL_MIN_RUN = 2;
 
-export function motionPerSecond(mp4: string): number[] {
+/** Độ khác trung bình (0–255) giữa mỗi khung và khung trước, kèm giây của khung. */
+export function frameDiffs(mp4: string): Array<{ t: number; v: number }> {
   const r = spawnSync(ffmpegPath(), ['-hide_banner', '-i', mp4, '-an', '-vf', 'scale=270:480,tblend=all_mode=difference,signalstats,metadata=print:key=lavfi.signalstats.YAVG:file=-', '-f', 'null', '-'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
   if (r.status !== 0) throw new Error(`Không đo được chuyển động: ${r.stderr.slice(-500)}`);
-  const sum: number[] = [], n: number[] = [];
-  let sec = 0;
+  const out: Array<{ t: number; v: number }> = [];
+  let t = 0;
   for (const line of r.stdout.split('\n')) {
-    const t = /pts_time:([\d.]+)/.exec(line);
-    if (t) sec = Math.floor(Number(t[1]));
+    const pt = /pts_time:([\d.]+)/.exec(line);
+    if (pt) t = Number(pt[1]);
     const y = /YAVG=([\d.]+)/.exec(line);
-    if (y) { sum[sec] = (sum[sec] ?? 0) + Number(y[1]); n[sec] = (n[sec] ?? 0) + 1; }
+    if (y) out.push({ t, v: Number(y[1]) });
   }
+  return out;
+}
+
+export function motionPerSecond(mp4: string, diffs = frameDiffs(mp4)): number[] {
+  const sum: number[] = [], n: number[] = [];
+  for (const { t, v } of diffs) { const sec = Math.floor(t); sum[sec] = (sum[sec] ?? 0) + v; n[sec] = (n[sec] ?? 0) + 1; }
   return sum.map((s, i) => (n[i] ? s / n[i] : 0));
 }
 

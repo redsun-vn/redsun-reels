@@ -30,12 +30,13 @@ window.__timelines["main"] = tl;</script></body></html>`;
 }
 const OK_BODY = '<h1>Chị chủ quán, <em>tối nay</em> lại ngồi cộng sổ?</h1><img alt="SIPOS" src="brand/logos/sipos/x.png" /><b>lo</b><i>kho</i><div class="stamp">-20%</div><p>Tìm hiểu thêm tại sipos<span>.</span>vn</p>';
 
-function issues(html: string, cues: string | null = '1.00 pop 0.5\n') {
+function issues(html: string, cues: string | null = 'lang 5 6\n1.00 pop 0.5\n') {
   mkdirSync(tmpRoot, { recursive: true });
   const dir = mkdtempSync(join(tmpRoot, 'b-'));
   mkdirSync(join(dir, 'dung-rieng'));
   writeFileSync(join(dir, 'dung-rieng', 'index.html'), html);
   if (cues !== null) writeFileSync(join(dir, 'dung-rieng', 'tieng-dong.txt'), cues);
+  writeFileSync(join(dir, 'dung-rieng', 'bang-canh.txt'), '0.5 | mở | bụp | cắt\n3 | sổ\n6 | điện thoại\n9 | kết\n');
   return customIssues(dir, script, brief, 12);
 }
 const errors = (html: string) => issues(html).filter((i) => i.level === 'error').map((i) => i.message);
