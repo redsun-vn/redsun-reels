@@ -2,6 +2,17 @@
 
 Đánh số `MAJOR.MINOR.PATCH`. Trước 1.0: MINOR tăng khi có tính năng mới, PATCH khi chỉ sửa lỗi. Mỗi bản gắn tag git `vX.Y.Z` và có trang Release trên GitHub. Số bản nằm ở `package.json` (`./reel doctor` in ra).
 
+## Chưa phát hành
+- **Giọng đọc AI VieNeu** (skill `giong-doc`, `./reel giong`): mặc định một giọng kể (Duyên Hà My), giọng ngoài khung, mặt người phản ứng im lặng, cảnh kết được đọc, trần 20.000 token/video, nhãn "Do AI sản xuất".
+- **Người thật quay sẵn**: người châu Á, khai miệng im/nói, tự cắt đoạn, máy khác tải lại theo sổ nguồn (`./reel quay-san --tai-lai`).
+- **LUẬT SỐ 1 — 3 giây đầu**: chọn điểm hấp dẫn nhất của brief (bảng 5 tiêu chí), mở bằng nó; chặn từ bước kịch bản.
+- **LUẬT SỐ 2 — nỗi đau → giải pháp**: video phải nêu nỗi đau cụ thể của khách và cho thấy sản phẩm giải quyết nó thế nào; chặn từ bước kịch bản.
+- **Chủ động hỏi MKT** khi brief chưa đủ để viết kịch bản đạt luật (hook, nỗi đau, tính năng giải quyết, số liệu).
+- **Reel 15–30 giây** là luật cứng.
+- Bàn tay bấm nút (`RS.tayBam`, `RS.bam`), phụ đề theo giờ giọng thật (`RS.loiSubs`).
+
+Video mẫu: `briefs/2026-10-10-sipos-chuyen-khoan-gia-hook`, `briefs/2026-10-10-sipos-chuyen-khoan-gia-hook-hoat-hinh`.
+
 ## 0.1.0 — 2026-10-10
 Bản đầu tiên Nam chốt "đã ổn" sau khi thử luồng tự động từ brief ra video.
 

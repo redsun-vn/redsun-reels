@@ -1,0 +1,68 @@
+{
+  "giongVung": "nam",
+  "dan": {
+    "nguoi-dan": {
+      "giong": "Duyên Hà My",
+      "gioi": "nu",
+      "hoSo": "Một giọng kể duy nhất: nữ Sài Gòn, kiểu TikToker kể chuyện, rõ ràng, gần gũi"
+    }
+  },
+  "cau": [
+    {
+      "id": "hook-gia",
+      "vai": "nguoi-dan",
+      "at": 0.05,
+      "loi": "Ảnh chuyển khoản này… là GIẢ!",
+      "camXuc": "sung-sot",
+      "phongCach": "natural"
+    },
+    {
+      "id": "bo-sot",
+      "vai": "nguoi-dan",
+      "at": 1.95,
+      "loi": "Bán cả ngày, tối mới biết mình bị bỏ sót tiền.",
+      "camXuc": "buon",
+      "phongCach": "natural"
+    },
+    {
+      "id": "chuyen-la",
+      "vai": "nguoi-dan",
+      "at": 5.05,
+      "loi": "Chuyện là, khách chìa ảnh: “Em chuyển rồi nha.” Nhân viên: “Dạ vâng ạ.”",
+      "camXuc": "binh-thuong",
+      "phongCach": "natural"
+    },
+    {
+      "id": "toi-kiem",
+      "vai": "nguoi-dan",
+      "at": 10.4,
+      "loi": "Tối kiểm tài khoản, đếm đi đếm lại vẫn thiếu một khoản.",
+      "camXuc": "lo-lang",
+      "phongCach": "natural"
+    },
+    {
+      "id": "dan-anh-gia",
+      "vai": "nguoi-dan",
+      "at": 15.75,
+      "loi": "Ảnh chuyển khoản mà không phải chuyển khoản thật.",
+      "camXuc": "buon",
+      "phongCach": "natural"
+    },
+    {
+      "id": "sipos-ca",
+      "vai": "nguoi-dan",
+      "at": 18.95,
+      "loi": "Đơn hàng và doanh thu theo ca nằm cả trên một màn hình, kiểm cho nhanh.",
+      "camXuc": "cuoi",
+      "phongCach": "natural"
+    },
+    {
+      "id": "cta",
+      "vai": "nguoi-dan",
+      "at": 25.4,
+      "loi": "SIPOS. Nhắn tin để được tư vấn.",
+      "camXuc": "tu-tin",
+      "phongCach": "natural"
+    }
+  ]
+}

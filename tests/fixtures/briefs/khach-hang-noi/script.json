@@ -2,7 +2,19 @@
   "concept": {
     "title": "Mẫu khach-hang-noi",
     "bigIdea": "Fixture kiểm template M3",
-    "hookAngle": "quote"
+    "hookAngle": "quote",
+    "diemHapDan": {
+      "ungVien": "Chủ quán cà phê về sớm mỗi tối?",
+      "diem": 21
+    },
+    "noiDau": {
+      "khach": "Chốt sổ đến 11 giờ đêm",
+      "canh": "c1-problem"
+    },
+    "giaiPhap": {
+      "cach": "Doanh thu tự tổng hợp cuối ngày",
+      "canh": "c2-solution"
+    }
   },
   "videoType": "khach-hang-noi",
   "style": "tin-cay",
@@ -17,7 +29,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 4.2
+      "durationSec": 3.7
     },
     {
       "id": "c1-problem",
@@ -26,7 +38,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 5.5,
+      "durationSec": 6.0,
       "subText": "Trước khi dùng SIPOS"
     },
     {
@@ -38,7 +50,7 @@
         "src": "assets/_demo/screen-record-test.mp4",
         "mute": true
       },
-      "durationSec": 4.3
+      "durationSec": 4.8
     },
     {
       "id": "c3-proof",
@@ -47,7 +59,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 6.0,
+      "durationSec": 5.5,
       "attribution": "Chị Hạnh · Quán cà phê Mộc, Đà Lạt"
     },
     {
@@ -64,6 +76,6 @@
   "music": "test-pad-01",
   "selfScore": {
     "total": 90,
-    "notes": "Fixture kiểm template, không đăng."
+    "notes": "Hook 21/25. Fixture kiểm template, không đăng."
   }
 }

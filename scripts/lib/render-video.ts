@@ -53,7 +53,7 @@ function renderInner(built: BuiltVideo, opts: { briefDir?: string; quality?: 'dr
   if (remote.length) throw new Error(`Render tải tài nguyên từ mạng hoặc thiếu file:\n${remote.join('\n')}`);
 
   // Video có người thật do AI tạo: ghi dấu AI máy đọc được vào siêu dữ liệu (REQUIREMENTS §7.4)
-  const loudness = normalizeAudio(rawFile, tmpFile, built.props.totalSec, built.aiContent ? { comment: AI_VIDEO.metadataComment, description: AI_VIDEO.label } : {});
+  const loudness = normalizeAudio(rawFile, tmpFile, built.props.totalSec, built.aiLabel ? { comment: AI_VIDEO.metadataComment, description: built.aiLabel.label } : {});
 
   const probe = runFfprobe(['-v', 'error', '-show_entries', 'stream=codec_type,codec_name,width,height,r_frame_rate,pix_fmt,sample_rate:format=duration:format_tags=comment', '-of', 'json', tmpFile]);
   const info = JSON.parse(probe.stdout) as { streams: Array<Record<string, string | number>>; format: { duration: string; tags?: { comment?: string } } };
@@ -70,7 +70,7 @@ function renderInner(built: BuiltVideo, opts: { briefDir?: string; quality?: 'dr
   if (Math.abs(loudness.integrated - -14) > 1) problems.push(`độ to ${loudness.integrated} LUFS (cần −14 ±1)`);
   if (loudness.truePeak > -1) problems.push(`đỉnh âm ${loudness.truePeak} dBTP (cần ≤ −1)`);
   if (sizeMB > (50 * durationSec) / 60 + 1) problems.push(`dung lượng ${sizeMB.toFixed(1)} MB vượt mục tiêu 50 MB/60 giây`);
-  if (built.aiContent && info.format.tags?.comment !== AI_VIDEO.metadataComment) problems.push('thiếu dấu nội dung AI trong siêu dữ liệu file');
+  if (built.aiLabel && info.format.tags?.comment !== AI_VIDEO.metadataComment) problems.push('thiếu dấu nội dung AI trong siêu dữ liệu file');
   if (problems.length) throw new Error(`Video ra chưa đúng chuẩn: ${problems.join('; ')}.`);
   renameSync(tmpFile, finalFile); // chỉ thay file cuối khi đã đạt chuẩn
 
@@ -84,6 +84,8 @@ function renderInner(built: BuiltVideo, opts: { briefDir?: string; quality?: 'dr
   const diffs = custom ? frameDiffs(finalFile) : [];
   const stills = custom ? stillRuns(motionPerSecond(finalFile, diffs)) : [];
   const notes = custom ? customNotes(built, finalFile, diffs, stills, opts.briefDir) : [];
+  // LUẬT SỐ 1 — 3 giây đầu: phải có biến động mạnh (dập, cắt, rung) trong giây đầu
+  if (custom && !transitions(diffs).some((m) => m.start <= 1.0)) notes.unshift('✗ LUẬT SỐ 1 — 3 giây đầu: không có biến động mạnh nào trong giây đầu (dập, cắt, rung, chớp). Mở bằng hình mạnh nhất của hook rồi xuất lại.');
   return { file: finalFile, durationSec, sizeMB, renderSec, loudness, stills, notes };
 }
 

@@ -11,6 +11,11 @@ import { normalizeText, numberTokens } from './fact-check.ts';
 import { REPO_ROOT } from './hyperframes-env.ts';
 import { CUE_FILE, CUE_MARKER, cueIssues, parseCues, SFX_TRACK_START } from './sfx-cues.ts';
 import { BOARD_FILE, boardIssues, parseBoard } from './storyboard-board.ts';
+import { VOICE } from '../../config/voice.ts';
+import { readVoice } from './voice-stage.ts';
+import { spokenText, voiceScriptIssues } from './voice-script.ts';
+import { faceClips, voiceFaceIssues } from './voice-sync.ts';
+import { stockLog } from './kieu-hinh-rules.ts';
 
 export const CUSTOM_DIR = 'dung-rieng';
 /** Đường dẫn cố định trong stage (scripts/lib/stage-project.ts `stageCustom`). */
@@ -96,7 +101,8 @@ export function backdropNames(): string[] {
   return [...readFileSync(join(REPO_ROOT, 'templates', '_rieng', 'boi-canh.js'), 'utf8').matchAll(/SETS\["([a-z-]+)"\]\s*=/g)].map((m) => m[1]);
 }
 
-export function customIssues(dir: string, script: Script, briefBody: string, totalSec: number): CustomIssue[] {
+/** `voiceDraft`: soát hình khi giọng chưa đủ (./reel snap) — câu thiếu giọng/chưa đạt chỉ là lưu ý; xuất video vẫn chặn. */
+export function customIssues(dir: string, script: Script, briefBody: string, totalSec: number, voiceDraft = false): CustomIssue[] {
   const out: CustomIssue[] = [];
   const err = (message: string) => out.push({ level: 'error', message });
   const warn = (message: string) => out.push({ level: 'warning', message });
@@ -122,6 +128,54 @@ export function customIssues(dir: string, script: Script, briefBody: string, tot
 
   // Nhân vật nhất quán: khai dàn nhân vật một lần bằng RS.cast, không tạo người lẻ bằng RS.person
   if (/RS\.person\(/.test(html)) warn('Tạo nhân vật qua dàn nhân vật RS.cast({ tên: { tóc, áo… } }) rồi gọi theo tên, để một người giữ nguyên tóc/áo ở mọi cảnh.');
+
+  // Giọng đọc AI (loi-doc.json, ./reel giong): hợp lệ, mọi câu có bản đạt máy chấm, có chỗ gắn, chống bịa số
+  const voiceFile = join(dir, CUSTOM_DIR, VOICE.file);
+  if (existsSync(voiceFile)) {
+    let voice: ReturnType<typeof readVoice>;
+    try {
+      voice = readVoice(join(dir, CUSTOM_DIR));
+    } catch (e) {
+      err(`${CUSTOM_DIR}/${VOICE.file} chưa đúng dạng: ${(e as Error).message.slice(0, 300)}`);
+    }
+    if (voice) {
+      for (const m of voiceScriptIssues(voice.vs, Number.isFinite(d) ? d : Infinity)) err(m);
+      const gap = voiceDraft ? (message: string) => out.push({ level: 'warning', message }) : err;
+      if (voice.missing.length) gap(`Câu ${voice.missing.join(', ')} chưa có giọng đọc: chạy ./reel giong <tên-video>.`);
+      const weak = voice.placed.filter((p) => !p.dat).map((p) => p.id);
+      if (weak.length) gap(`Câu ${weak.join(', ')} chưa đạt máy chấm (cảm xúc/cường độ/giọng vùng/đủ chữ): sửa lời hoặc ghi chú diễn rồi chạy lại ./reel giong … --cau=… --lai.`);
+      if (!html.includes(VOICE.marker)) err(`Có ${VOICE.file} nhưng index.html thiếu dòng đánh dấu ${VOICE.marker} (đặt sau thẻ nhạc).`);
+      const sorted = [...voice.placed].sort((a, b) => a.at - b.at);
+      for (let i = 1; i < sorted.length; i++) if (sorted[i].at < sorted[i - 1].at + sorted[i - 1].dur - 0.05) out.push({ level: 'warning', message: `Câu "${sorted[i].id}" bắt đầu khi câu "${sorted[i - 1].id}" chưa đọc xong (đè tiếng).` });
+      const silence = existsSync(join(dir, CUSTOM_DIR, CUE_FILE)) ? parseCues(readFileSync(join(dir, CUSTOM_DIR, CUE_FILE), 'utf8')).silence : undefined;
+      for (const p of sorted) if (silence && p.at < silence.to && p.at + p.dur > silence.from + 0.05) out.push({ level: 'warning', message: `Câu "${p.id}" (${p.at}–${(p.at + p.dur).toFixed(2)}s) rơi vào khoảng lặng ${silence.from}–${silence.to}s trước vỡ lẽ: khoảng lặng dành cho im, dời câu hoặc rút gọn lời.` });
+      for (const p of sorted) if (Number.isFinite(d) && p.at + p.dur > d + 0.05) err(`Câu "${p.id}" đọc tới ${(p.at + p.dur).toFixed(2)}s, quá cuối video ${d}s.`);
+      // 3 giây đầu: câu hook phải vào ngay (references/chon-diem-hap-dan.md)
+      const first = Math.min(...voice.vs.cau.map((c) => c.at));
+      if (first > 0.3) err(`LUẬT SỐ 1 — 3 giây đầu: câu giọng đầu tiên bắt đầu ở giây ${first}; câu hook phải bắt đầu ≤ 0,3 giây.`);
+      // Thông điệp cuối (cảnh CTA) phải được đọc khi video có giọng (Nam 2026-10-10: "thông điệp cuối cùng, quan trọng nhất
+      // liên quan đến sản phẩm lại không được đọc")
+      let t0 = 0;
+      for (const sc of script.scenes) {
+        if (sc.role === 'cta' && !voice.vs.cau.some((c) => c.at >= t0 - 0.3 && c.at < t0 + sc.durationSec)) err(`Video có giọng nhưng cảnh kết "${sc.id}" không có câu nào được đọc: thêm câu đọc thông điệp sản phẩm + lời kêu gọi ("${script.cta}") vào ${VOICE.file}.`);
+        t0 += sc.durationSec;
+      }
+      // Giọng – mặt khớp nhau (vai, cảm xúc; mặt không hiện lâu khi người đó im)
+      const lines = voice.vs.cau.flatMap((c) => {
+        const p = voice!.placed.find((x) => x.id === c.id);
+        return p ? [{ id: c.id, vai: c.vai, camXuc: c.camXuc, at: c.at, dur: p.dur }] : [];
+      });
+      for (const m of voiceFaceIssues(lines, faceClips(html), stockLog(dir).valid)) err(m);
+      // Có giọng và mặt người thì chữ trên hình nhỏ, ít (Nam 2026-10-10: "toàn bộ text vẫn còn quá lớn, không hợp")
+      const big = [...new Set(html.match(/var\(--type-(hero|h1|h2)\)|class="[^"]*\brs-(hero|h1)\b/g) ?? [])];
+      if (big.length) out.push({ level: 'warning', message: `Video có giọng nhưng còn chữ cỡ lớn (${big.slice(0, 3).join(', ')}): chữ nhấn dùng nhãn nhỏ gắn vào vật (≤ --type-h3), giọng và nét mặt đã truyền ý.` });
+      const known = new Set([...numberTokens(briefBody), ...scriptCopy(script).flatMap(numberTokens)]);
+      for (const c of voice.vs.cau) {
+        const miss = numberTokens(spokenText(c.loi)).filter((n) => !known.has(n));
+        if (miss.length) err(`Lời đọc "${c.id}" có số ${miss.join(', ')} không có trong brief/kịch bản (không bịa số).`);
+      }
+    }
+  }
 
   // Bảng khung chính cho MKT duyệt bằng hình (./reel bang)
   const boardFile = join(dir, CUSTOM_DIR, BOARD_FILE);

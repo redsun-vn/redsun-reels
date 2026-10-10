@@ -7,7 +7,7 @@ occasion:
 template: Promo
 goal: "Fixture kiểm template M3 (thu-gian-asmr)"
 audience: "MKT nội bộ"
-duration: 11.5
+duration: 15
 tone: "thử nghiệm"
 cta: "Tìm hiểu thêm tại sipos.vn"
 music: test-pad-01

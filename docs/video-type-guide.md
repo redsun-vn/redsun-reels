@@ -16,6 +16,8 @@ Viết tắt template: **FL** FeatureLaunch, **TIP** TipOfTheDay, **BA** BeforeA
 - **N**: chỉ nhạc nền + chữ/caption (Nam cho phép khi không có giọng đạt).
 - **B**: nhạc năng lượng cao làm chủ đạo. *Cập nhật 2026-10-08 (Nam): cảnh không cắt theo beat; thời lượng mỗi cảnh = số giây cố định do Claude tính từ độ dài chữ (REQUIREMENTS §6.2).*
 
+> **Luật cứng reel 15–30 giây** (Nam 2026-10-10): độ dài thật của mỗi loại = cột "Độ dài" giao với 15–30 s (`reelRange`, `config/video-types.ts`); validate và `./reel info` dùng khoảng đã giao.
+
 | # | Loại video (`videoType`) | Mục đích | Độ dài | Template | Phong cách hợp (chính / phụ) | Âm thanh | Sản phẩm |
 |---|---|---|---|---|---|---|---|
 | 1 | `ra-mat-tinh-nang` Ra mắt tính năng | giới thiệu tính năng mới | 20–45 s | FL | `toi-gian` / `tuong-lai`, `robot-cong-nghe` | N | SIPOS, BOS, WEB |

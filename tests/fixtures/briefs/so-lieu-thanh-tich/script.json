@@ -2,7 +2,11 @@
   "concept": {
     "title": "Mẫu so-lieu-thanh-tich",
     "bigIdea": "Fixture kiểm template M4",
-    "hookAngle": "con-so"
+    "hookAngle": "con-so",
+    "diemHapDan": {
+      "ungVien": "1.200+ cửa hàng đã chọn SIPOS",
+      "diem": 21
+    }
   },
   "videoType": "so-lieu-thanh-tich",
   "style": "du-lieu",
@@ -26,7 +30,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 4.0,
+      "durationSec": 4.4,
       "stats": [
         {
           "value": "1.200+",
@@ -76,6 +80,6 @@
   "music": "test-pad-01",
   "selfScore": {
     "total": 90,
-    "notes": "Fixture kiểm template, không đăng."
+    "notes": "Hook 21/25. Fixture kiểm template, không đăng."
   }
 }

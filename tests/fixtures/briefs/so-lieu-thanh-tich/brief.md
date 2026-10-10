@@ -7,7 +7,7 @@ occasion:
 template: Stats
 goal: "Fixture kiểm template M4 (so-lieu-thanh-tich)"
 audience: "MKT nội bộ"
-duration: 14.6
+duration: 15
 tone: "thử nghiệm"
 cta: "Tìm hiểu thêm tại sipos.vn"
 music: test-pad-01

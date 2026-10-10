@@ -2,7 +2,11 @@
   "concept": {
     "title": "Mẫu thong-bao",
     "bigIdea": "Fixture kiểm template M1",
-    "hookAngle": "con-so"
+    "hookAngle": "con-so",
+    "diemHapDan": {
+      "ungVien": "Webino có giao diện mới",
+      "diem": 21
+    }
   },
   "videoType": "thong-bao",
   "style": "toi-gian",
@@ -26,7 +30,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 3.5
+      "durationSec": 9.0
     },
     {
       "id": "c2-cta",
@@ -39,5 +43,9 @@
     }
   ],
   "cta": "Tạo website tại webino.vn",
-  "music": "test-pad-01"
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 88,
+    "notes": "Hook 21/25. "
+  }
 }

@@ -8,7 +8,9 @@ import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } fr
 import { dirname, extname, isAbsolute, join, normalize } from 'node:path';
 import { checkTrack, findTrack, missingFileHint, MusicManifestSchema, type MusicPurpose } from '../../config/music-manifest.ts';
 import { REPO_ROOT, runFfmpeg } from './hyperframes-env.ts';
-import { CUE_FILE, cueIssues, cueTags, injectCues, injectSilence, parseCues, rootDuration } from './sfx-cues.ts';
+import { VOICE } from '../../config/voice.ts';
+import { CUE_FILE, cueIssues, cueTags, injectCues, parseCues, rootDuration, type Silence } from './sfx-cues.ts';
+import { injectMusicAutomation, musicAutomation, musicLevelPoints, readVoice, voiceTags, voiceTimingScript } from './voice-stage.ts';
 
 export interface StageOptions {
   /** Tên thư mục trong templates/ (vd. `_blank`, `FeatureLaunch`). */
@@ -28,6 +30,8 @@ export interface StageOptions {
   aiDir?: string;
   /** Thư mục clip người thật quay sẵn (briefs/<tên>/quay-san, REQUIREMENTS §7.5), copy thành quay-san/ trong stage. */
   stockDir?: string;
+  /** Soát hình khi giọng đọc chưa đủ: bỏ qua câu thiếu giọng (báo lưu ý) thay vì dừng. */
+  voiceDraft?: boolean;
 }
 
 export interface StagedProject {
@@ -64,7 +68,7 @@ export function stageProject(opts: StageOptions): StagedProject {
   cpSync(join(REPO_ROOT, 'templates', opts.customDir ? '_rieng' : '_shared'), join(dir, opts.customDir ? '_rieng' : '_shared'), { recursive: true });
   // Bản dựng riêng: tiếng động tự tổng hợp (brand/sfx) nằm ở sfx/ trong stage
   if (opts.customDir) cpSync(join(REPO_ROOT, 'brand', 'sfx'), join(dir, 'sfx'), { recursive: true });
-  if (opts.customDir && existsSync(join(dir, CUE_FILE))) stageCues(dir);
+  if (opts.customDir) stageAudio(dir, opts.voiceDraft);
   if (opts.mediaDir && existsSync(opts.mediaDir)) cpSync(opts.mediaDir, join(dir, 'hinh'), { recursive: true, filter: (src) => !src.includes('/.goc') });
   if (opts.aiDir && existsSync(opts.aiDir)) cpSync(opts.aiDir, join(dir, 'ai'), { recursive: true, filter: (src) => !src.endsWith('.json') });
   if (opts.stockDir && existsSync(opts.stockDir)) cpSync(opts.stockDir, join(dir, 'quay-san'), { recursive: true, filter: (src) => !src.endsWith('.json') });
@@ -96,15 +100,31 @@ export function stageProject(opts: StageOptions): StagedProject {
   return { dir, musicFile };
 }
 
-/** Bản dựng riêng có tieng-dong.txt: sinh thẻ <audio> vào chỗ đánh dấu của index.html trong stage. */
-function stageCues(dir: string): void {
+/**
+ * Bản dựng riêng: tiếng động từ tieng-dong.txt và giọng đọc từ loi-doc.json (giong/) vào chỗ đánh dấu của index.html,
+ * rồi một đường âm lượng nhạc nền gộp khoảng lặng trước vỡ lẽ và các đoạn có lời.
+ */
+function stageAudio(dir: string, voiceDraft = false): void {
   const htmlFile = join(dir, 'index.html');
-  const html = readFileSync(htmlFile, 'utf8');
+  let html = readFileSync(htmlFile, 'utf8');
   const total = rootDuration(html);
-  const { cues, errors, silence } = parseCues(readFileSync(join(dir, CUE_FILE), 'utf8'));
-  const problems = [...errors, ...cueIssues(cues, total, undefined, silence)];
-  if (problems.length) throw new Error(problems.join(' '));
-  const withCues = injectCues(html, cueTags(cues, total));
-  writeFileSync(htmlFile, silence ? injectSilence(withCues, silence) : withCues);
-  rmSync(join(dir, CUE_FILE));
+  let silence: Silence | undefined;
+  if (existsSync(join(dir, CUE_FILE))) {
+    const parsed = parseCues(readFileSync(join(dir, CUE_FILE), 'utf8'));
+    const problems = [...parsed.errors, ...cueIssues(parsed.cues, total, undefined, parsed.silence)];
+    if (problems.length) throw new Error(problems.join(' '));
+    html = injectCues(html, cueTags(parsed.cues, total));
+    silence = parsed.silence;
+    rmSync(join(dir, CUE_FILE));
+  }
+  const voice = readVoice(dir);
+  if (voice) {
+    if (voice.missing.length && !voiceDraft) throw new Error(`Câu ${voice.missing.join(', ')} chưa có giọng đọc: chạy ./reel giong <tên-video>.`);
+    if (voice.missing.length) console.log(`! Bản soát hình chưa có giọng câu: ${voice.missing.join(', ')}.`);
+    if (!html.includes(VOICE.marker)) throw new Error(`Có ${VOICE.file} nhưng index.html thiếu dòng đánh dấu ${VOICE.marker} (đặt sau thẻ nhạc).`);
+    html = html.replace(VOICE.marker, `${voiceTimingScript(voice.vs, voice.placed)}\n  ${voiceTags(voice.placed, total)}`);
+  }
+  const windows = (voice?.placed ?? []).map((p) => ({ from: p.at, to: Math.min(total, p.at + p.dur) }));
+  if (silence || windows.length) html = injectMusicAutomation(html, musicAutomation(musicLevelPoints({ totalSec: total, voice: windows, silence })));
+  writeFileSync(htmlFile, html);
 }

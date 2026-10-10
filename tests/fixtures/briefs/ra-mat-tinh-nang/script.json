@@ -2,7 +2,19 @@
   "concept": {
     "title": "Mẫu ra-mat-tinh-nang",
     "bigIdea": "Fixture kiểm template M1",
-    "hookAngle": "cau-hoi-noi-dau"
+    "hookAngle": "cau-hoi-noi-dau",
+    "diemHapDan": {
+      "ungVien": "Bạn vẫn kiểm kho bằng sổ tay?",
+      "diem": 21
+    },
+    "noiDau": {
+      "khach": "Mỗi tối lại ngồi đếm hàng",
+      "canh": "c1-problem"
+    },
+    "giaiPhap": {
+      "cach": "Quét mã vạch, tồn kho cập nhật ngay",
+      "canh": "c2-solution"
+    }
   },
   "videoType": "ra-mat-tinh-nang",
   "style": "toi-gian",
@@ -17,7 +29,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 4.5
+      "durationSec": 3.5
     },
     {
       "id": "c1-problem",
@@ -26,7 +38,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 7.0,
+      "durationSec": 8.0,
       "subText": "Sai một số là lệch cả tháng"
     },
     {
@@ -55,5 +67,9 @@
     }
   ],
   "cta": "Tìm hiểu thêm tại sipos.vn",
-  "music": "test-pad-01"
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 88,
+    "notes": "Hook 21/25. "
+  }
 }

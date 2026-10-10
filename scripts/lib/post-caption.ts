@@ -9,8 +9,8 @@ export interface PostInput {
   script: Script;
   hashtags: string[];
   track?: MusicTrack;
-  /** Video có người thật do AI tạo: caption mở đầu bằng nhãn AI, ghi chú nhắc bật khai báo AI của nền tảng. */
-  aiContent?: boolean;
+  /** Video có nội dung AI (hình người thật, giọng đọc): caption mở đầu bằng nhãn, ghi chú nhắc bật khai báo AI của nền tảng. */
+  aiLabel?: { label: string; caption: string } | null;
   /** Clip người thật quay sẵn đã dùng: ghi nguồn trong phần ghi chú (không bắt buộc theo giấy phép, nên ghi). */
   stockCredits?: Array<{ author: string; license: string; link: string }>;
 }
@@ -38,7 +38,7 @@ function promoLine(p: NonNullable<Script['scenes'][number]['promo']>): string | 
   return parts.length ? `🎁 ${parts.join(' · ')}` : null;
 }
 
-export function buildPost({ script, hashtags, track, aiContent, stockCredits = [] }: PostInput): string {
+export function buildPost({ script, hashtags, track, aiLabel, stockCredits = [] }: PostInput): string {
   const body = script.scenes
     .filter((s) => s.role !== 'hook' && s.role !== 'cta')
     .flatMap((s) => {
@@ -52,7 +52,7 @@ export function buildPost({ script, hashtags, track, aiContent, stockCredits = [
     '',
     '## Caption (copy nguyên phần dưới)',
     '',
-    ...(aiContent ? [AI_VIDEO.captionLabel, ''] : []),
+    ...(aiLabel ? [aiLabel.caption, ''] : []),
     plain(script.hook.replace(/\n/g, ' ')),
     '',
     ...body,
@@ -70,6 +70,6 @@ export function buildPost({ script, hashtags, track, aiContent, stockCredits = [
     '- Chỉ đăng tự nhiên (organic), không chạy quảng cáo bằng video này.',
   );
   for (const c of stockCredits) lines.push(`- Clip quay sẵn: ${c.author} (${c.license}) — ${c.link}`);
-  if (aiContent) lines.push(`- **Video có người thật do AI tạo.** ${AI_VIDEO.platformNote} Giữ nguyên dòng nhãn AI ở đầu caption.`);
+  if (aiLabel) lines.push(`- **${aiLabel.label}.** ${AI_VIDEO.platformNote} Giữ nguyên dòng nhãn AI ở đầu caption.`);
   return lines.join('\n') + '\n';
 }

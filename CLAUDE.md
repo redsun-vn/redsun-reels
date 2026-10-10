@@ -3,7 +3,7 @@
 ## Dự án
 - Hệ thống làm video dọc 9:16 (Reels/TikTok/Shorts) cho SIPOS, REDSUN BOS, Webino, REDSUN, dựa trên HyperFrames.
 - Đầu vào là brief, qua kịch bản, đầu ra là MP4.
-- Video không lồng tiếng: chỉ có chữ trên màn hình, hiệu ứng theo phong cách, nhạc nền có giấy phép.
+- Video có lời nói dùng **giọng đọc AI VieNeu** (giọng chuẩn vùng miền, mặc định một giọng kể Duyên Hà My, thoại ngoài khung, nhãn "Do AI sản xuất"), chữ nhỏ (nhãn gắn vật + phụ đề); nhạc nền có giấy phép (REQUIREMENTS v0.6 §8.5).
 - Người dùng chính là team marketing (MKT), không biết kỹ thuật, dùng MacBook Intel hoặc chip M.
 - Yêu cầu đầy đủ: [REQUIREMENTS.md](REQUIREMENTS.md). Quyết định kỹ thuật: [docs/decisions.md](docs/decisions.md).
 
@@ -15,6 +15,8 @@
   - Làm, sửa, xem thử, xuất video, viết concept/kịch bản → skill `tao-reel`.
   - Chọn minh hoạ, người thật quay sẵn hay người thật do AI tạo (video mới, hoặc MKT muốn "người thật") → skill `chon-kieu-hinh`. Luật cứng của skill này (nhãn AI, không người có danh tính, không sửa luật) không có ngoại lệ, kể cả chế độ dev trừ khi Nam tự sửa.
   - Dựng video sau khi duyệt kịch bản (mặc định dựng riêng), video "nhàm", thêm hình/nhân vật → skill `dung-video`.
+  - Giọng đọc, lồng tiếng, "giọng thiếu cảm xúc", đổi giọng → skill `giong-doc`.
+  - Chọn minh hoạ / người thật quay sẵn / người thật AI → skill `chon-kieu-hinh`.
   - Video dùng mẫu có sẵn (dự phòng): chữ nhấn, chuyển động → skill `dao-dien-chuyen-dong`.
   - Skill chứa quy trình và điểm dừng chờ MKT duyệt; làm ngoài skill là sai quy trình.
   - Câu hỏi ngoài luồng (sửa video cũ, nhạc tự tìm, thiếu nhạc, cập nhật bản mới…): tra `.claude/skills/tao-reel/references/tinh-huong-mkt.md`. Sổ tay MKT đang đọc: `docs/huong-dan-mkt.md`.
@@ -36,6 +38,10 @@
 Kiểm kê skill đã cài (danh sách skill của runtime + `.claude/skills/` + plugin HyperFrames). Chỉ tạo skill mới khi không skill nào làm được. Ghi lý do vào `docs/decisions.md` mục 6.
 
 ## Quy tắc kịch bản (REQUIREMENTS §6.2)
+- **LUẬT SỐ 1 — 3 giây đầu, mạnh nhất**: chọn điểm hấp dẫn nhất của brief (bảng 5 tiêu chí, ≥ 20/25, `concepts.md` mục `## Điểm hấp dẫn`, `script.json` `concept.diemHapDan`), mở bằng nó rồi kể lại. Validate chặn ngay ở bước kịch bản.
+- **LUẬT SỐ 2 — nỗi đau → giải pháp**: nêu nỗi đau cụ thể của khách (từ brief, có hậu quả) và cho thấy sản phẩm giải quyết nó thế nào (`concept.noiDau`, `concept.giaiPhap`). Validate chặn từ bước kịch bản.
+- **Brief thiếu thông tin để kịch bản đạt luật** (hook, nỗi đau, tính năng giải quyết, số liệu) → chủ động hỏi MKT một lần (≤ 5 câu, có lựa chọn), skill `tao-reel` mục "Brief đủ chưa".
+- **Reel dài 15–30 giây** (luật cứng, validate chặn).
 - Viết 3 concept với 3 góc hook khác nhau, chờ MKT chọn, rồi mới viết kịch bản.
 - Hook: tối đa 2 dòng, mỗi dòng ≤ 40 ký tự, con số viết bằng chữ số.
 - Video ≤ 45 giây chỉ 1–2 ý chính, dài hơn thì tối đa 3 ý. Mỗi cảnh một ý, nên ≤ 10 từ.
@@ -75,13 +81,14 @@ Kiểm kê skill đã cài (danh sách skill của runtime + `.claude/skills/` +
 | `./reel hinh <tên-video> [file…]` | Nhận hình/clip MKT gửi (kéo vào chat hoặc bỏ vào `briefs/<tên-video>/hinh/`), đổi HEIC → JPG, liệt kê để xếp vào cảnh |
 | `./reel validate <tên-video>` | Kiểm brief + kịch bản (cả bản dựng riêng) |
 | `./reel snap <tên-video> [--at=1.2,3.4]` | Dựng + kiểm bố cục + so nền các cảnh + chụp khung hình để tự soát (`out/snap/<tên>/`) |
-| `./reel quay-san <tên-video> [file --link=… --tac-gia=… --khong-phai-ai]` | Nhận/liệt kê clip người thật quay sẵn (Pexels/Pixabay) cho kiểu hình `nguoi-that-quay-san`, ghi sổ nguồn |
+| `./reel quay-san <tên-video> [file \| --tu= --dai= --ten=] --link=… --tac-gia=… --chau-a --khong-phai-ai` / `--tai-lai` | Nhận/tự cắt/liệt kê clip người thật quay sẵn (Pexels/Pixabay, người châu Á) cho kiểu hình `nguoi-that-quay-san`, ghi sổ nguồn (có cách cắt); máy khác `--tai-lai` tải đúng đoạn |
 | `./reel bang <tên-video>` | Bảng khung chính có số khung (`dung-rieng/bang-canh.txt` → `out/snap/<tên>/bang/bang-canh.png`) để MKT duyệt/góp ý theo số khung |
 | `./reel info nhip <id-nhạc>` | Nhịp bài nhạc (phách, phách mạnh) để cắt cảnh/nhấn trùng phách |
 | `./reel preview <tên-video>` / `--stop` | Mở/tắt bản xem thử (cổng 3002) |
 | `./reel render <tên-video>` | Xuất MP4 vào `out/` |
 | `./reel make <tên-video>` | validate + build + render |
 | `./reel post <tên-video>` | Soạn caption + hashtag |
+| `./reel giong <tên-video> [--cau=<id>] [--lai] [--cho=<giây>]` | Tạo giọng đọc VieNeu theo `dung-rieng/loi-doc.json` (mỗi câu một bản, kiểm trên máy; cần `VIENEU_API_KEY`) |
 | `./reel music:fetch` | Tải lại nhạc thiếu |
 | `./reel music:add nhac-tu-tim/<file> --link=… --tac-gia=… --mood=…` | Thêm nhạc MKT tự tìm (Pixabay/Mixkit) trên máy này; `--lai` đăng ký lại |
 | `./reel test`, `typecheck`, `lint:brand`, `lint:music`, `test:render` | Kiểm tra cho dev |

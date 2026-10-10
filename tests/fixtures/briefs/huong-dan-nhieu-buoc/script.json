@@ -2,7 +2,19 @@
   "concept": {
     "title": "Mẫu huong-dan-nhieu-buoc",
     "bigIdea": "Fixture kiểm template M1",
-    "hookAngle": "con-so"
+    "hookAngle": "con-so",
+    "diemHapDan": {
+      "ungVien": "Tạo website trong 4 bước",
+      "diem": 21
+    },
+    "noiDau": {
+      "khach": "Tạo website trong 4 bước",
+      "canh": "c0-hook"
+    },
+    "giaiPhap": {
+      "cach": "Chọn mẫu giao diện",
+      "canh": "c1-solution"
+    }
   },
   "videoType": "huong-dan-nhieu-buoc",
   "style": "toi-gian",
@@ -36,7 +48,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 7.0
+      "durationSec": 6.5
     },
     {
       "id": "c3-solution",
@@ -67,5 +79,9 @@
     }
   ],
   "cta": "Tạo website tại webino.vn",
-  "music": "test-pad-01"
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 88,
+    "notes": "Hook 21/25. "
+  }
 }

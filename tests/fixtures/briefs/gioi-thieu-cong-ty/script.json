@@ -2,7 +2,19 @@
   "concept": {
     "title": "Mẫu gioi-thieu-cong-ty",
     "bigIdea": "Fixture kiểm template M4",
-    "hookAngle": "thuong-hieu"
+    "hookAngle": "thuong-hieu",
+    "diemHapDan": {
+      "ungVien": "Phần mềm Việt cho cửa hàng Việt",
+      "diem": 21
+    },
+    "noiDau": {
+      "khach": "Chủ cửa hàng mất nhiều giờ cho sổ sách",
+      "canh": "c1-problem"
+    },
+    "giaiPhap": {
+      "cach": "SIPOS, REDSUN BOS, Webino",
+      "canh": "c2-solution"
+    }
   },
   "videoType": "gioi-thieu-cong-ty",
   "style": "dien-anh",
@@ -21,7 +33,7 @@
           "assets/_demo/su-kien-4.jpg"
         ]
       },
-      "durationSec": 5.0
+      "durationSec": 3.5
     },
     {
       "id": "c1-problem",
@@ -30,7 +42,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 6.0
+      "durationSec": 7.5
     },
     {
       "id": "c2-solution",
@@ -71,6 +83,6 @@
   "music": "test-pad-01",
   "selfScore": {
     "total": 90,
-    "notes": "Fixture kiểm template, không đăng."
+    "notes": "Hook 21/25. Fixture kiểm template, không đăng."
   }
 }

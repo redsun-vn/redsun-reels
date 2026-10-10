@@ -9,11 +9,11 @@
  */
 import { existsSync, readFileSync } from 'node:fs';
 import { join, normalize } from 'node:path';
-import { AI_VIDEO, KIEU_HINH, type KieuHinh } from '../../config/ai-video.ts';
+import { AI_LABEL_ON_SCREEN, AI_VIDEO, aiLabelFor, KIEU_HINH, type KieuHinh } from '../../config/ai-video.ts';
 import { CAM_XUC, STOCK_FOOTAGE } from '../../config/stock-footage.ts';
 import type { Script } from '../../config/script.schema.ts';
 import { assetPaths } from './build-props.ts';
-import { checkStockLink } from './stock-footage.ts';
+import { checkStockLink, type StockCut } from './stock-footage.ts';
 
 export interface RuleIssue {
   level: 'error' | 'warning';
@@ -57,6 +57,12 @@ export interface StockEntry {
   nguoi?: string;
   /** Cảm xúc thấy trên mặt trong đoạn dùng (config/stock-footage.ts CAM_XUC). */
   camXuc?: string;
+  /** Đã xem: người trong clip là người châu Á (Nam 2026-10-10: chủ thể là người châu Á). */
+  chauA?: boolean;
+  /** Miệng người trong đoạn dùng: `im` (không nói: cười, khóc, nhíu mày, nghe) hay `noi` (đang nói). Video có giọng chỉ dùng `im`. */
+  mieng?: 'im' | 'noi';
+  /** Đoạn đã cắt từ clip nguồn: máy khác tải lại đúng đoạn bằng ./reel quay-san <tên> --tai-lai. */
+  cat?: StockCut;
   addedAt: string;
 }
 
@@ -84,6 +90,7 @@ export function stockLog(dir: string): { valid: Map<string, StockEntry>; invalid
     if (!reason && !it.author?.trim()) reason = 'thiếu tác giả.';
     if (!reason && it.aiGenerated !== false) reason = 'chưa kiểm hoặc là clip do AI tạo. Clip quay sẵn phải là quay thật.';
     if (!reason && (!it.vai?.trim() || !it.nguoi?.trim() || !(CAM_XUC as readonly string[]).includes(it.camXuc ?? ''))) reason = `thiếu vai, người mẫu hoặc cảm xúc (cảm xúc: ${CAM_XUC.join(', ')}). Thêm lại bằng ./reel quay-san … --vai=… --nguoi=… --cam-xuc=….`;
+    if (!reason && it.camXuc !== 'khong-mat' && it.chauA !== true) reason = 'chưa xác nhận người châu Á (chủ thể phải là người châu Á; thêm lại bằng ./reel quay-san … --chau-a sau khi xem mặt người trong clip).';
     if (reason) invalid.set(key, reason);
     else valid.set(key, it);
   }
@@ -91,16 +98,16 @@ export function stockLog(dir: string): { valid: Map<string, StockEntry>; invalid
 }
 
 /** Nhãn AI: phần tử data-nhan-ai, đúng chữ, class rs-nhan-ai, nằm ngoài mọi .clip (hiện suốt video). */
-export function labelIssues(html: string): string[] {
+export function labelIssues(html: string, label: string = AI_LABEL_ON_SCREEN): string[] {
   const out: string[] = [];
   const body = html.replace(/<!--[\s\S]*?-->/g, '');
   const tags = [...body.matchAll(new RegExp(`<([a-zA-Z][\\w-]*)\\b([^>]*\\b${LABEL_ATTR}\\b[^>]*)>([^<]*)<\\/\\1>`, 'g'))];
   if (tags.length !== 1) {
-    out.push(`Thiếu nhãn AI trên hình: đặt đúng một <div class="${LABEL_CLASS}" ${LABEL_ATTR}>${AI_VIDEO.label}</div> là con trực tiếp của gốc composition (ngoài mọi .clip).`);
+    out.push(`Thiếu nhãn AI trên hình: đặt đúng một <div class="${LABEL_CLASS}" ${LABEL_ATTR}>${label}</div> là con trực tiếp của gốc composition (ngoài mọi .clip).`);
     return out;
   }
   const [whole, , attrs, text] = tags[0];
-  if (text.trim() !== AI_VIDEO.label) out.push(`Nhãn AI phải đúng chữ "${AI_VIDEO.label}" (đang là "${text.trim()}").`);
+  if (text.trim() !== label) out.push(`Nhãn AI phải đúng chữ "${label}" (đang là "${text.trim()}").`);
   if (!new RegExp(`class="[^"]*\\b${LABEL_CLASS}\\b`).test(attrs)) out.push(`Nhãn AI phải dùng class "${LABEL_CLASS}" của bộ dụng cụ (vị trí, cỡ chữ, tương phản cố định).`);
   if (/\bstyle\s*=/.test(attrs)) out.push('Nhãn AI không được có style riêng (không đổi vị trí, cỡ, màu, độ mờ).');
   // Cha của nhãn: phải là gốc composition, không nằm trong clip (clip chỉ hiện một đoạn)
@@ -129,9 +136,28 @@ export interface AiRuleInput {
   script: Script;
   /** Composition dựng riêng (nếu có). */
   html?: string;
+  /** Video có giọng đọc do AI tạo (dung-rieng/loi-doc.json): cũng bắt buộc nhãn AI. */
+  hasVoice?: boolean;
 }
 
-export function aiRuleIssues({ dir, kieuHinh, script, html = '' }: AiRuleInput): RuleIssue[] {
+export function aiRuleIssues(input: AiRuleInput): RuleIssue[] {
+  const out = imageRuleIssues(input);
+  const err = (message: string) => out.push({ level: 'error', message });
+  // Nhãn AI: video có hình người thật AI hoặc giọng đọc AI
+  const need = aiLabelFor(input.kieuHinh === 'nguoi-that-ai', !!input.hasVoice);
+  if (!need) return out;
+  if (input.hasVoice && input.script.build !== 'custom') err('Video có giọng đọc AI phải dựng riêng ("build": "custom").');
+  if (input.script.build === 'custom') for (const m of labelIssues(input.html ?? '', need.label)) err(m);
+  const post = join(input.dir, 'post.md');
+  if (existsSync(post)) {
+    const caption = readFileSync(post, 'utf8').split('## Caption')[1] ?? '';
+    const first = caption.split('\n').map((l) => l.trim()).find((l) => l && !l.startsWith('(') && !/^copy/i.test(l) && !l.startsWith('#'));
+    if (first !== need.caption) err(`Caption (post.md) phải mở đầu bằng "${need.caption}". Chạy lại ./reel post, khi thay caption của brief vẫn giữ dòng này.`);
+  }
+  return out;
+}
+
+function imageRuleIssues({ dir, kieuHinh, script, html = '' }: AiRuleInput): RuleIssue[] {
   const out: RuleIssue[] = [];
   const err = (message: string) => out.push({ level: 'error', message });
   const refs = aiRefs(html, script);
@@ -150,7 +176,7 @@ export function aiRuleIssues({ dir, kieuHinh, script, html = '' }: AiRuleInput):
     const { valid, invalid, errors } = stockLog(dir);
     for (const e of errors) err(e);
     for (const r of stock) {
-      if (!existsSync(join(dir, r))) err(`Không có file clip "${r}".`);
+      if (!existsSync(join(dir, r))) err(valid.get(r)?.cat ? `Máy này chưa có clip "${r}": chạy ./reel quay-san <tên-video> --tai-lai (tải lại đúng đoạn từ nguồn).` : `Không có file clip "${r}".`);
       else if (invalid.has(r)) err(`Clip quay sẵn "${r}": ${invalid.get(r)}`);
       else if (!valid.has(r)) err(`Clip "${r}" chưa có trong sổ nguồn ${STOCK_FOOTAGE.dir}/${STOCK_FOOTAGE.logFile} hợp lệ. Thêm clip bằng ./reel quay-san (ghi link trang clip, tác giả, đã kiểm không phải AI).`);
     }
@@ -171,7 +197,6 @@ export function aiRuleIssues({ dir, kieuHinh, script, html = '' }: AiRuleInput):
   if ((AI_VIDEO.forbiddenVideoTypes as readonly string[]).includes(script.videoType)) err(`Loại video "${script.videoType}" không được dùng người thật do AI tạo (cần người, lời nói, sự kiện hay đội ngũ thật). Dùng kiểu minh hoạ hoặc hình/clip thật MKT gửi.`);
   if (script.build !== 'custom') err('Video người thật do AI tạo phải dựng riêng ("build": "custom"): mẫu có sẵn không có nhãn AI.');
   else {
-    for (const m of labelIssues(html)) err(m);
     // Mọi cảnh AI phải do quy trình của dự án tạo: có trong nhật ký (model, mô tả tạo), file có thật
     const logPath = join(dir, AI_VIDEO.dir, AI_VIDEO.logFile);
     let logged = new Set<string>();
@@ -188,13 +213,6 @@ export function aiRuleIssues({ dir, kieuHinh, script, html = '' }: AiRuleInput):
       if (!existsSync(join(dir, r))) err(`Không có file cảnh AI "${r}".`);
       else if (!logged.has(r)) err(`Cảnh AI "${r}" không có trong nhật ký tạo ${AI_VIDEO.dir}/${AI_VIDEO.logFile} (model, mô tả tạo). Chỉ dùng cảnh do quy trình của dự án tạo, không dùng ảnh/clip AI từ nơi khác.`);
     }
-  }
-  // Caption đã soạn phải có nhãn ở câu đầu
-  const post = join(dir, 'post.md');
-  if (existsSync(post)) {
-    const caption = readFileSync(post, 'utf8').split('## Caption')[1] ?? '';
-    const first = caption.split('\n').map((l) => l.trim()).find((l) => l && !l.startsWith('(') && !/^copy/i.test(l) && !l.startsWith('#'));
-    if (first !== AI_VIDEO.captionLabel) err(`Caption (post.md) phải mở đầu bằng "${AI_VIDEO.captionLabel}". Chạy lại ./reel post, khi thay caption của brief vẫn giữ dòng này.`);
   }
   return out;
 }

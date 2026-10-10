@@ -2,7 +2,19 @@
   "concept": {
     "title": "Mẫu demo-san-pham",
     "bigIdea": "Fixture kiểm template M1",
-    "hookAngle": "con-so"
+    "hookAngle": "con-so",
+    "diemHapDan": {
+      "ungVien": "Chỉ 3 bước để chốt đơn",
+      "diem": 21
+    },
+    "noiDau": {
+      "khach": "Chỉ 3 bước để chốt đơn",
+      "canh": "c0-hook"
+    },
+    "giaiPhap": {
+      "cach": "Bước 1: chọn khách hàng",
+      "canh": "c1-solution"
+    }
   },
   "videoType": "demo-san-pham",
   "style": "khuyen-mai",
@@ -17,7 +29,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 4.0
+      "durationSec": 3.5
     },
     {
       "id": "c1-solution",
@@ -72,5 +84,9 @@
     }
   ],
   "cta": "Yêu cầu tư vấn tại redsun.vn",
-  "music": "test-pad-01"
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 88,
+    "notes": "Hook 21/25. "
+  }
 }

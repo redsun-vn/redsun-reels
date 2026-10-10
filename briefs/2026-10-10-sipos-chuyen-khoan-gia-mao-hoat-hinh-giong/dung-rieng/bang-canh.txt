@@ -1,0 +1,15 @@
+# Bảng khung chính: giây | điều xảy ra | tiếng | chuyển sang khung sau
+0.6 | Cận cực sát điện thoại có dấu tick, khách "Em chuyển rồi nha" | ting, bụp | lùi máy trên phách 1.24
+2.0 | Quầy tạp hoá chiều đông khách, nhân viên "Dạ vâng ạ", gật đầu | bụp | khách vẫy chào, nắng tắt
+4.6 | Cùng quầy, đêm: chủ tiệm một mình kiểm tiền, "Tối kiểm tiền: không thấy đâu" | dập chữ | thời gian trôi, chèn cận sổ
+8.7 | Sổ "Tiền vào hôm nay": dòng "Em chuyển rồi" không thấy, ngón tay dò | xu, buzz sai, tích | quay lại chủ tiệm
+10.6 | Chủ tiệm cau mày, lo lắng, dấu hỏi bật theo phách | bụp | giơ ảnh lên, lao vào màn hình
+11.8 | Ảnh "chuyển tiền thành công", kính lúp soi | vút | lộ "Ảnh · Thư viện"
+13.3 | Nhân viên bật lên ôm đầu, ảnh nhiễu | nhiễu, dâng | lặng
+14.3 | Lặng: "Hóa ra là" | (nhạc hạ) | dập "ảnh giả"
+15.0 | Dấu GIẢ dập xuống, cả khung rung | ầm, dập dấu | vò ảnh rơi
+16.5 | Ảnh giả bị vò lại, nhân viên tiu nghỉu | thịch, vút | mở tròn sang sáng hôm sau
+19.6 | Cùng quầy buổi sáng: SIPOS theo ca trên điện thoại, chủ tiệm còn lo | trượt, bấm | đổi ca
+22.8 | Chủ tiệm tự tin nắm tay, đơn mới cuộn lên | thở phào, lấp lánh | mở tròn teal
+26.0 | Logo SIPOS, tagline, hai người vẫy chào | lấp lánh, vút | bấm nút
+29.6 | Nút "Nhắn tin để được tư vấn" được bấm, ăn mừng | bấm, bụp | —

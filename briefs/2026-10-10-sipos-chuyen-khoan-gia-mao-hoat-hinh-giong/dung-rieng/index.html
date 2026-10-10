@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<link rel="stylesheet" href="brand/brand.css" />
+<link rel="stylesheet" href="_rieng/rieng.css" />
+<link rel="stylesheet" href="_rieng/boi-canh.css" />
+<script src="runtime/gsap/gsap.min.js"></script>
+<script src="_rieng/rieng.js"></script>
+<script src="_rieng/nhan-vat.js"></script>
+<script src="_rieng/boi-canh.js"></script>
+<!--
+  Chuyển khoản giả mạo — SIPOS, 31.5s. Concept "Cùng một quầy": tiệm tạp hoá chiều → đêm → (lật tẩy) → sáng → CTA.
+  Nhạc mixkit-gimme-that-groove-872 ~112.5 BPM: phách mạnh 1.72 3.88 6.01 8.15 10.31 12.45 14.58 16.74 18.88 20.97 23.10 25.23 27.33 29.47.
+  Nền (RS.set): A "cua-hang" chiều · B "cua-hang" đêm · C "bao-dong" · D "cua-hang" ngày · E "thuong-hieu".
+  Mọi số trên màn hình là số mẫu trong đạo cụ minh hoạ (data-minh-hoa). Không tên ngân hàng, không ảnh thật.
+-->
+<style>
+  html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: var(--color-background); }
+  .cam { position: absolute; inset: 0; }
+  .crowd { filter: blur(3px) saturate(0.7); opacity: 0.8; }
+  /* Có giọng kể: chữ nhỏ, ít (bóng thoại, bảng chữ cỡ phụ đề) */
+  .rs-bubble { font-size: var(--type-caption); padding: 18px 26px; }
+  .bubble-a { right: 100px; top: 520px; }
+  .bubble-b { left: 50px; top: 700px; }
+  .qr-stand { position: absolute; left: 820px; top: 1230px; width: 170px; height: 200px; border-radius: 20px; background: var(--prop-card); box-shadow: 0 20px 40px var(--prop-shadow); padding: 22px; box-sizing: border-box; }
+  .qr { width: 126px; height: 126px; border-radius: 8px; background: conic-gradient(var(--prop-ink) 25%, transparent 0 50%, var(--prop-ink) 0 75%, transparent 0) 0 0 / 42px 42px; opacity: 0.9; }
+  /* Ánh sáng: chiều nắng cam xiên, sáng sớm trong dịu (cùng tiệm, khác giờ) */
+  .nang-chieu { background: linear-gradient(200deg, color-mix(in srgb, var(--set-tint-chieu) 55%, transparent) 0%, color-mix(in srgb, var(--set-tint-chieu) 25%, transparent) 45%, color-mix(in srgb, var(--prop-wood-d) 30%, transparent) 100%); }
+  .nang-sang { background: linear-gradient(160deg, color-mix(in srgb, var(--color-white) 60%, transparent) 0%, color-mix(in srgb, var(--prop-day) 55%, transparent) 50%, color-mix(in srgb, var(--color-primary) 18%, transparent) 100%); }
+  .sun-out { background: color-mix(in srgb, var(--prop-night) 85%, transparent); }
+
+  /* Bảng chữ có nền mờ, để chữ đọc được trên nền tiệm nhiều chi tiết */
+  .plate { position: absolute; left: 60px; top: 220px; padding: 16px 24px; border-radius: 24px; }
+  .plate.dark { background: color-mix(in srgb, var(--prop-night) 78%, transparent); color: var(--color-white); }
+  .plate.light { background: color-mix(in srgb, var(--color-white) 86%, transparent); color: var(--color-primary); box-shadow: 0 18px 40px var(--prop-shadow-soft); }
+  .plate .l1 { font-weight: 800; font-size: var(--type-caption); line-height: 1.15; white-space: nowrap; }
+  .plate .l2 { font-weight: 900; line-height: 1.1; white-space: nowrap; color: var(--color-accent-glow); }
+  .plate.light div { font-weight: 900; line-height: 1.14; white-space: nowrap; }
+  .plate.light .acc { color: var(--color-accent); }
+
+  /* B. sổ tiền vào trên điện thoại */
+  .ins-dim { background: color-mix(in srgb, var(--prop-night) 70%, transparent); }
+  .ledger-phone { position: absolute; left: 230px; top: 560px; width: 620px; height: 820px; border-radius: 64px; background: var(--prop-device); box-shadow: 0 50px 100px var(--prop-shadow); }
+  .ledger-phone .scr { position: absolute; inset: 18px; border-radius: 48px; background: var(--prop-screen); overflow: hidden; color: var(--prop-card-ink); }
+  .ledger-phone .bar { height: 150px; padding: 80px 40px 0; box-sizing: border-box; background: color-mix(in srgb, var(--prop-night-2) 85%, var(--color-white)); color: var(--color-white); font-weight: 800; font-size: calc(var(--type-small) * 1.15); }
+  .lrow { position: relative; display: flex; justify-content: space-between; align-items: center; height: 104px; margin: 20px 26px 0; padding: 0 24px; border-radius: 22px; background: var(--prop-card); box-shadow: 0 6px 16px var(--prop-shadow-soft); font-weight: 800; font-size: calc(var(--type-small) * 0.95); white-space: nowrap; }
+  .lrow .ok { color: var(--prop-ok-ink); }
+  .lrow.miss { background: var(--prop-warn); color: var(--color-accent); border: 4px dashed var(--color-accent); }
+  .qmark { position: absolute; font-weight: 900; font-size: var(--type-h3); color: var(--prop-pollen); }
+  .flash { background: var(--color-white); }
+
+  /* C. ảnh giả */
+  .head-c { position: absolute; left: 80px; right: 160px; top: 230px; color: var(--color-white); }
+  .head-c .l1 { font-weight: 800; font-size: var(--type-caption); line-height: 1.1; }
+  .head-c .l2 { font-weight: 900; line-height: 1.05; white-space: nowrap; color: var(--color-accent-glow); }
+  .shot-wrap { position: absolute; left: 400px; top: 600px; width: 560px; height: 800px; }
+  .dev { position: absolute; inset: 0; border-radius: 56px; background: var(--prop-device); box-shadow: 0 50px 110px var(--prop-shadow); }
+  .shot { position: absolute; inset: 16px; border-radius: 42px; background: var(--prop-card); overflow: hidden; color: var(--prop-card-ink); text-align: center; padding-top: 110px; box-sizing: border-box; }
+  .shot .ok-big { width: 140px; height: 140px; margin: 0 auto; border-radius: 50%; background: var(--prop-ok); display: flex; align-items: center; justify-content: center; }
+  .shot .ok-big::after { content: ""; width: 60px; height: 32px; border-left: 14px solid var(--color-white); border-bottom: 14px solid var(--color-white); transform: translateY(-8px) rotate(-45deg); }
+  .shot .t1 { margin-top: 30px; font-weight: 800; font-size: calc(var(--type-small) * 1.15); }
+  .shot .amt { margin-top: 16px; font-weight: 900; font-size: var(--type-h3); color: var(--color-primary); }
+  .shot .meta { margin: 36px 44px 0; text-align: left; font-weight: 600; font-size: calc(var(--type-small) * 0.85); line-height: 1.9; color: var(--prop-card-muted); border-top: 3px dashed var(--prop-paper-line); padding-top: 20px; }
+  .shot .gallery { position: absolute; left: 0; right: 0; top: 0; height: 74px; background: var(--prop-device); color: var(--color-white); font-weight: 700; font-size: calc(var(--type-small) * 0.8); line-height: 74px; text-align: left; padding-left: 40px; }
+  .crease { position: absolute; inset: 16px; border-radius: 42px; opacity: 0; background: repeating-linear-gradient(35deg, color-mix(in srgb, var(--prop-device) 18%, transparent) 0 6px, transparent 6px 70px), repeating-linear-gradient(-50deg, color-mix(in srgb, var(--prop-device) 14%, transparent) 0 5px, transparent 5px 90px); }
+  .rgb { position: absolute; inset: 0; border-radius: 56px; mix-blend-mode: screen; opacity: 0; }
+  .rgb.r { background: color-mix(in srgb, var(--color-accent) 45%, transparent); }
+  .rgb.c { background: color-mix(in srgb, var(--prop-shirt-a) 45%, transparent); }
+  .glass { position: absolute; left: 0; top: 0; width: 230px; height: 230px; border-radius: 50%; border: 18px solid var(--prop-device); background: color-mix(in srgb, var(--color-white) 22%, transparent); }
+  .glass::after { content: ""; position: absolute; right: -78px; bottom: -64px; width: 110px; height: 34px; border-radius: 17px; background: var(--prop-device); transform: rotate(45deg); }
+  .fake { position: absolute; left: 450px; top: 860px; width: 460px; height: 200px; border: 14px solid var(--color-accent); border-radius: 26px; color: var(--color-accent); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: calc(var(--type-h3) * 1.4); letter-spacing: 0.06em; background: color-mix(in srgb, var(--color-white) 85%, transparent); }
+  .iris { clip-path: circle(0% at 50% 50%); }
+
+  /* D. SIPOS trên quầy */
+  .phone-d { left: 500px; top: 620px; }
+  .tab-row { position: relative; display: flex; gap: 12px; margin-bottom: 22px; border-radius: 18px; background: var(--prop-card); box-shadow: 0 6px 16px var(--prop-shadow-soft); }
+  .tab { flex: 1; height: 72px; border-radius: 18px; color: var(--prop-card-muted); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: calc(var(--type-small) * 0.85); position: relative; z-index: 2; }
+  .tab-hi { position: absolute; z-index: 1; left: 0; top: 0; width: calc((100% - 24px) / 3); height: 72px; border-radius: 18px; background: var(--color-primary); }
+  .sum { display: flex; gap: 16px; margin-bottom: 20px; }
+  .sum .rs-card { flex: 1; }
+  .ord { display: flex; align-items: center; justify-content: space-between; height: 96px; padding: 0 24px; margin-bottom: 14px; border-radius: 20px; background: var(--prop-card); color: var(--prop-card-ink); font-weight: 700; font-size: calc(var(--type-small) * 0.85); box-shadow: 0 6px 16px var(--prop-shadow-soft); }
+  .ord b { color: var(--color-primary); font-weight: 800; }
+  .ord small { display: block; font-weight: 600; font-size: calc(var(--type-small) * 0.65); color: var(--prop-card-muted); }
+
+  /* E. CTA */
+  .logo-s { position: absolute; left: 270px; top: 250px; width: 540px; }
+  .logo-r { position: absolute; left: 420px; top: 520px; width: 240px; }
+  .rule { position: absolute; left: 480px; top: 492px; width: 120px; height: 6px; border-radius: 3px; background: color-mix(in srgb, var(--color-white) 45%, transparent); transform-origin: center; }
+  .tagline { position: absolute; left: 60px; right: 60px; top: 650px; text-align: center; font-weight: 700; line-height: 1.3; color: var(--color-white); }
+  .tagline div { white-space: nowrap; }
+  .tagline b { color: var(--color-accent-glow); font-weight: 900; }
+  .cta-btn { position: absolute; left: 90px; width: 800px; top: 1260px; height: 170px; white-space: nowrap; border-radius: 85px; background: var(--color-accent); color: var(--color-white); display: flex; align-items: center; justify-content: center; gap: 26px; font-weight: 900; font-size: var(--type-h3); box-shadow: 0 30px 70px var(--prop-shadow); }
+  .chat-ico { flex: none; position: relative; width: 74px; height: 58px; border-radius: 22px; background: var(--color-white); }
+  .chat-ico::after { content: ""; position: absolute; left: 14px; bottom: -14px; border-top: 18px solid var(--color-white); border-right: 18px solid transparent; }
+  .cta-ring-cu { position: absolute; left: 90px; width: 800px; top: 1260px; height: 170px; border-radius: 85px; border: 6px solid var(--color-accent-glow); }
+</style>
+</head>
+<body>
+<div id="root" class="rs-root" data-product="sipos" data-composition-id="main" data-duration="31.5" data-width="1080" data-height="1920">
+
+  <!-- ===== A. TIỆM CHIỀU (0 – 3.34): cận cực sát điện thoại có tick → lùi ra quầy đông → khách đi ===== -->
+  <div id="sA" class="clip rs-scene" data-start="0" data-duration="3.34" data-track-index="1">
+    <div id="camA" class="cam" data-layout-allow-overflow>
+      <div class="rs-fill nang-chieu" data-layout-allow-overflow></div>
+      <div id="cashier" style="position: absolute; left: -60px; top: 600px"></div>
+      <div class="bc-cho-gan"></div>
+      <div class="qr-stand" data-minh-hoa><div class="qr"></div></div>
+      <div id="q1" class="crowd" style="position: absolute; left: 380px; top: 820px"></div>
+      <div id="q2" class="crowd" style="position: absolute; left: 860px; top: 780px"></div>
+      <div id="customer" style="position: absolute; left: 330px; top: 600px"></div>
+    </div>
+    <div class="rs-bubble right bubble-a" id="bA" data-layout-allow-overlap>Em chuyển rồi nha chị!</div>
+    <div class="rs-bubble left bubble-b" id="bB" data-layout-allow-overlap>Dạ vâng ạ.</div>
+    <div class="rs-fill sun-out" id="sunOut"></div>
+  </div>
+
+  <!-- ===== B. CÙNG QUẦY, ĐÊM (3.34 – 11.40): chủ tiệm kiểm tiền → thiếu một khoản → cau mày → giơ ảnh lên ===== -->
+  <div id="sB" class="clip rs-scene" data-start="3.34" data-duration="8.06" data-track-index="2">
+    <div id="camB2" class="cam" data-layout-allow-overflow><div id="camB" class="cam" data-layout-allow-overflow>
+      <div id="owner" style="position: absolute; left: 190px; top: 560px"></div>
+      <div class="bc-cho-gan"></div>
+      <div class="qmark" id="qm1" style="left: 130px; top: 720px">?</div>
+      <div class="qmark" id="qm2" style="left: 820px; top: 680px">?</div>
+      <div class="qmark" id="qm3" style="left: 880px; top: 940px">?</div>
+    </div></div>
+    <div class="rs-fill ins-dim" id="insDim"></div>
+    <div class="ledger-phone" id="ledger" data-minh-hoa data-layout-allow-overlap>
+      <div class="scr">
+        <div class="bar">Tiền vào hôm nay</div>
+        <div class="lrow"><span>Gạo 5kg</span><span class="ok">+ 95.000 ✓</span></div>
+        <div class="lrow"><span>Nước mắm</span><span class="ok">+ 42.000 ✓</span></div>
+        <div class="lrow"><span>Mì gói</span><span class="ok">+ 36.000 ✓</span></div>
+        <div class="lrow miss" id="miss"><span>“Em chuyển rồi”</span><span>Không thấy</span></div>
+      </div>
+    </div>
+    <div id="finger" style="left: 730px; top: 812px" data-minh-hoa></div>
+    <div class="plate dark" id="plateB">
+      <div class="l1" id="b1">Tối kiểm tiền:</div>
+      <div class="l2" id="b2">không thấy đâu</div>
+    </div>
+    <div class="rs-fill flash" id="flashB"></div>
+  </div>
+
+  <!-- ===== C. LẬT TẨY (11.40 – 17.77): ảnh "chuyển tiền thành công" → soi → ảnh trong thư viện → LẶNG → dấu GIẢ → vò ảnh ===== -->
+  <div id="sC" class="clip rs-scene" data-start="11.4" data-duration="6.37" data-track-index="3">
+    <div class="shot-wrap" id="shotWrap" data-minh-hoa data-layout-allow-overlap>
+      <div class="dev"></div>
+      <div class="shot">
+        <div class="gallery" id="gal">Ảnh · Thư viện</div><div class="ok-big"></div><div class="t1" data-layout-allow-overlap>Chuyển tiền thành công</div><div class="amt" data-layout-allow-overlap>180.000 đ</div>
+        <div class="meta"><div data-layout-allow-overlap>Người nhận: TIỆM TẠP HOÁ</div><div data-layout-allow-overlap>Nội dung: mua hang</div></div>
+      </div>
+      <div class="crease" id="crease"></div>
+      <div class="rgb r" id="rgbR"></div><div class="rgb c" id="rgbC"></div>
+    </div>
+    <div class="glass" id="glass"></div>
+    <div class="fake" id="fake" data-layout-allow-overlap>GIẢ</div>
+    <div id="cashier2" style="position: absolute; left: -90px; top: 880px"></div>
+    <div class="head-c">
+      <div class="l1" id="c1">Hóa ra là</div>
+      <div class="l2" id="c2">ảnh giả</div>
+    </div>
+    <div class="rs-fill iris" id="irisC"></div>
+  </div>
+
+  <!-- ===== D. CÙNG QUẦY, SÁNG HÔM SAU (17.77 – 24.17): SIPOS trên quầy, chủ tiệm thở phào ===== -->
+  <div id="sD" class="clip rs-scene" data-start="17.77" data-duration="6.4" data-track-index="4">
+    <div id="camD" class="cam" data-layout-allow-overflow>
+      <div class="rs-fill nang-sang" data-layout-allow-overflow></div>
+      <div id="owner2" style="position: absolute; left: -70px; top: 780px"></div>
+      <div class="bc-cho-gan"></div>
+      <div class="rs-phone phone-d" id="phoneD" data-minh-hoa>
+        <div class="rs-screen">
+          <div class="rs-notch"></div>
+          <div class="rs-appbar">SIPOS<small>Doanh thu theo ca</small></div>
+          <div class="rs-pane">
+            <div class="tab-row"><div class="tab-hi" id="tabHi"></div><div class="tab" id="t1" style="color: var(--color-white)">Ca sáng</div><div class="tab" id="t2">Ca chiều</div><div class="tab" id="t3">Ca tối</div></div>
+            <div class="sum" id="sumD"><div class="rs-card"><small>Đơn hàng</small><b id="nOrd">38</b></div><div class="rs-card"><small>Doanh thu</small><b id="nRev">2.460.000</b></div></div>
+            <div style="height: 500px; overflow: hidden" data-layout-allow-overflow><div id="ordList">
+            <div class="ord"><span>#031 Gạo 5kg ×1<small>07:12</small></span><b>95.000</b></div>
+            <div class="ord"><span>#032 Trứng ×10<small>07:20</small></span><b>35.000</b></div>
+            <div class="ord"><span>#033 Nước mắm ×2<small>07:31</small></span><b>84.000</b></div>
+            <div class="ord"><span>#034 Mì gói ×5<small>07:40</small></span><b>30.000</b></div>
+            <div class="ord"><span>#035 Dầu ăn ×1<small>07:52</small></span><b>48.000</b></div>
+            <div class="ord"><span>#036 Sữa ×4<small>08:05</small></span><b>36.000</b></div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="plate light" id="plateD">
+      <div id="d1">Đơn hàng và doanh thu</div>
+      <div id="d2">tự tổng hợp <span class="acc">theo ca,</span></div>
+      <div id="d3">trên <span class="acc">một màn hình</span></div>
+    </div>
+    <div class="rs-fill" id="sparkD"></div>
+    <div class="rs-fill rs-bg-brand iris" id="irisD"></div>
+  </div>
+
+  <!-- ===== E. CTA (24.17 – 31.5) ===== -->
+  <div id="sE" class="clip rs-scene" data-start="24.17" data-duration="7.33" data-track-index="5">
+    <div class="rs-fill" id="chatsE"></div>
+    <img class="logo-s" id="logoS" src="brand/logos/sipos/sipos-logo-trang.png" alt="SIPOS" />
+    <div class="rule" id="ruleE"></div>
+    <img class="logo-r" id="logoR" src="brand/logos/redsun/redsun-logo-trang.png" alt="Redsun" />
+    <div class="tagline" id="tag"><div><b>SIPOS,</b> giải pháp quản lý bán hàng</div><div>trong thời đại AI.</div></div>
+    <div id="pE1" style="position: absolute; left: 40px; top: 830px"></div>
+    <div id="pE2" style="position: absolute; left: 570px; top: 830px"></div>
+    <div class="bc-cho-gan"></div>
+    <div class="cta-btn" id="btn"><span class="chat-ico"></span><span id="btnTxt">Nhắn tin để được tư vấn</span></div>
+    <div id="tap" style="left: 790px; top: 1337px"></div>
+  </div>
+
+  <div class="rs-nhan-ai" data-nhan-ai>Do AI sản xuất</div>
+  <audio id="music" src="music/bgm.mp3" data-start="0" data-duration="31.5" data-track-index="9" data-volume="1"></audio>
+  <!-- GIONG-DOC -->
+  <!-- TIENG-DONG -->
+</div>
+
+<script>
+RS.ready(function (tl) {
+  const $ = (s) => document.querySelector(s);
+  const put = (host, person) => { $(host).appendChild(person); return person; };
+  // Dàn nhân vật: chủ tiệm, nhân viên quầy, khách gửi ảnh, hai khách xếp hàng
+  const ai = RS.cast({
+    chu: { hair: "long", outfit: "ba-ba", shirt: "b" },
+    nv: { hair: "ponytail", outfit: "tap-de", shirt: "c" },
+    khach: { hair: "short", outfit: "so-mi", shirt: "a" },
+    xep1: { hair: "mai-ngan", outfit: "ao", shirt: "b" },
+    xep2: { hair: "short", outfit: "ao", shirt: "c", glasses: true, skin: 2 },
+  });
+
+  /* ---------- A. TIỆM CHIỀU ---------- */
+  const bgA = RS.set($("#camA"), "cua-hang", { light: "chieu", seed: 11 });
+  RS.setLive(tl, bgA, 0, 3.34, 1);
+  const cashier = put("#cashier", ai("nv", { width: 600, pose: "chap-tay" }));
+  const customer = put("#customer", ai("khach", { phone: true, phoneOk: true, width: 760, pose: { R: [470, 400], dt: -4 }, mood: "cuoi" }));
+  put("#q1", ai("xep1", { width: 360, pose: "nhin-dt", phone: true }));
+  put("#q2", ai("xep2", { width: 380 }));
+  RS.idle(tl, cashier, 0, 3.34, 2);
+  RS.idle(tl, customer, 0, 3.34, 4);
+  // Cận cực sát dấu tick trên điện thoại, lùi ra trên phách 1.24 → 1.72
+  tl.fromTo("#camA", { scale: 2.6 }, { scale: 2.6, duration: 0.01, transformOrigin: "925px 1010px" }, 0);
+  tl.to("#camA", { scale: 1.0, duration: 0.48, ease: "power3.out" }, 1.24);
+  tl.fromTo("#bA", { scale: 0.2, opacity: 0, transformOrigin: "85% 110%" }, { scale: 1, opacity: 1, duration: 0.35, ease: "back.out(2.2)" }, 0.17);
+  tl.fromTo("#bA", { scale: 1 }, { scale: 0.82, x: 40, y: -60, duration: 0.45, ease: "power3.inOut", immediateRender: false }, 1.24);
+  ["#q1", "#q2"].forEach((q, i) => tl.fromTo(q, { y: 0 }, { y: -12, duration: 0.4, repeat: 7, yoyo: true, ease: "sine.inOut" }, i * 0.15));
+  tl.fromTo("#bB", { scale: 0.2, opacity: 0, transformOrigin: "15% 110%" }, { scale: 1, opacity: 1, duration: 0.32, ease: "back.out(2.2)" }, 1.72);
+  RS.mood(tl, cashier, "cuoi", 1.7);
+  RS.tilt(tl, cashier, 7, 1.85, 0.15); RS.tilt(tl, cashier, 0, 2.0, 0.15); RS.tilt(tl, cashier, 7, 2.15, 0.15); RS.tilt(tl, cashier, 0, 2.3, 0.2);
+  RS.look(tl, customer, "trai", 1.75);
+  RS.pose(tl, customer, "vay", 2.3, 0.3);
+  RS.wave(tl, customer, 2.55, 2);
+  tl.to("#customer", { x: 460, duration: 0.45, ease: "power2.in" }, 2.83);
+  tl.to(["#bA", "#bB"], { opacity: 0, scale: 0.6, duration: 0.2, ease: "power2.in" }, 2.85);
+  // Nắng tắt dần trước khi cắt sang đêm
+  tl.fromTo("#sunOut", { opacity: 0 }, { opacity: 0.45, duration: 0.5, ease: "power1.in" }, 2.84);
+
+  /* ---------- B. CÙNG QUẦY, ĐÊM ---------- */
+  const B = 3.34;
+  const bgB = RS.set($("#camB"), "cua-hang", { light: "dem", seed: 11 });
+  RS.setLive(tl, bgB, B, 11.4, 2);
+  const owner = put("#owner", ai("chu", { width: 700, phone: true, pose: "nhin-dt", mood: "tap-trung" }));
+  RS.idle(tl, owner, B, 11.4, 6);
+  RS.look(tl, owner, "xuong", B);
+  // Đang nghe kể "đếm đi đếm lại": chủ tiệm dò điện thoại, nghiêng đầu, máy quay trôi chậm (không đứng hình)
+  RS.tilt(tl, owner, 6, 4.4, 0.4); RS.tilt(tl, owner, -5, 5.0, 0.4); RS.tilt(tl, owner, 4, 5.6, 0.35);
+  RS.look(tl, owner, "trai", 4.7); RS.look(tl, owner, "xuong", 5.3);
+  tl.to("#camB2", { x: -24, duration: 2.2, ease: "sine.inOut" }, 4.0);
+  RS.fit($("#b2"), 760, 60, 40);
+  tl.fromTo("#camB", { scale: 1.08 }, { scale: 1, duration: 2.6, ease: "sine.out", transformOrigin: "540px 1100px" }, B);
+  tl.fromTo("#plateB", { y: -60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, 3.6);
+  tl.fromTo("#b2", { scale: 1.6, opacity: 0, filter: "blur(12px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.28, ease: "power4.in", transformOrigin: "0% 50%" }, 3.6);
+  // Chèn cận sổ tiền vào: từng khoản có tick, khoản "Em chuyển rồi" không thấy
+  tl.fromTo("#insDim", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 6.01);
+  tl.fromTo("#ledger", { y: 1500, rotation: 8 }, { y: 0, rotation: -2, duration: 0.45, ease: "power3.out" }, 6.01);
+  tl.fromTo("#ledger .lrow", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.2, ease: "power2.out", stagger: 0.53 }, 6.55);
+  tl.to("#ledger", { scale: 1.08, rotation: 1, duration: 2.8, ease: "sine.inOut" }, 6.5);
+  RS.shake(tl, "#miss", 8.15, 10, 3);
+  RS.tayBam("#finger");
+  tl.set("#finger", { rotation: -90 }, 0);
+  tl.fromTo("#finger", { opacity: 0, y: 0 }, { opacity: 1, y: 0, duration: 0.2 }, 8.3);
+  tl.to("#finger", { y: 372, duration: 0.7, ease: "steps(4)" }, 8.42);
+  tl.to("#finger", { y: 0, duration: 0.15, ease: "power2.inOut" }, 9.12);
+  tl.to("#finger", { y: 372, duration: 0.35, ease: "steps(4)" }, 9.29);
+  tl.to(["#ledger", "#finger"], { y: "+=1500", rotation: 6, duration: 0.35, ease: "power2.out" }, 9.78);
+  tl.to("#insDim", { opacity: 0, duration: 0.3 }, 9.85);
+  RS.mood(tl, owner, "nhiu-may", 9.9);
+  RS.pose(tl, owner, "chong-cam", 9.9, 0.35);
+  RS.look(tl, owner, "giua", 9.9);
+  tl.fromTo("#camB2", { scale: 1 }, { scale: 1.28, duration: 1.45, ease: "sine.inOut", transformOrigin: "540px 960px" }, 9.9);
+  ["#qm1", "#qm2", "#qm3"].forEach((q, i) => tl.fromTo(q, { scale: 0, rotation: -40, opacity: 0 }, { scale: 1, rotation: i % 2 ? 14 : -12, opacity: 1, duration: 0.22, ease: "back.out(3)" }, 10.31 + i * 0.18));
+  RS.mood(tl, owner, "lo-lang", 10.5);
+  RS.tilt(tl, owner, -8, 10.5, 0.25);
+  RS.pose(tl, owner, "khoe-dt", 10.87, 0.22);
+  RS.mood(tl, owner, "nghi", 10.87);
+  tl.to(["#qm1", "#qm2", "#qm3"], { opacity: 0, duration: 0.15 }, 10.95);
+  tl.to("#plateB", { opacity: 0, duration: 0.2 }, 11.0);
+  tl.fromTo("#flashB", { opacity: 0 }, { opacity: 1, duration: 0.53, ease: "none" }, 10.87);
+
+  /* ---------- C. LẬT TẨY ---------- */
+  const C = 11.4;
+  RS.setLive(tl, RS.set($("#sC"), "bao-dong"), C, 17.77, 3);
+  const cashier2 = put("#cashier2", ai("nv", { width: 640 }));
+  RS.idle(tl, cashier2, C, 17.77, 8);
+  RS.fit($("#c2"), 600, 76, 52);
+  tl.fromTo("#shotWrap", { scale: 1.6, opacity: 0.4, rotation: 0 }, { scale: 1, opacity: 1, rotation: -3, duration: 0.42, ease: "expo.out" }, C);
+  tl.fromTo("#gal", { y: -74 }, { y: -74, duration: 0.01 }, C);
+  tl.fromTo("#glass", { x: 900, y: 600, opacity: 1 }, { x: 640, y: 760, duration: 0.4, ease: "power2.out" }, 11.5);
+  tl.to("#glass", { x: 430, y: 900, duration: 0.3, ease: "sine.inOut" }, 11.91);
+  tl.to("#glass", { x: 480, y: 560, duration: 0.2, ease: "power2.inOut" }, 12.22);
+  // Phách 12.45: ảnh nằm trong thư viện, nhiễu sọc
+  tl.to("#gal", { y: 0, duration: 0.2, ease: "power3.out" }, 12.45);
+  tl.fromTo("#rgbR", { opacity: 0, x: 0 }, { opacity: 1, x: -18, duration: 0.05, repeat: 7, yoyo: true, ease: "steps(1)" }, 12.46);
+  tl.fromTo("#rgbC", { opacity: 0, x: 0 }, { opacity: 1, x: 18, duration: 0.05, repeat: 7, yoyo: true, ease: "steps(1)" }, 12.46);
+  RS.shake(tl, "#shotWrap", 12.46, 12, 4);
+  tl.to("#glass", { opacity: 0, scale: 0.6, duration: 0.2, ease: "power2.in" }, 12.6);
+  // Nhân viên (người đã nhận ảnh) bật lên, sững người, ôm đầu
+  tl.fromTo("#cashier2", { y: 1100 }, { y: 0, duration: 0.4, ease: "back.out(1.5)" }, 12.6);
+  RS.mood(tl, cashier2, "sung-sot", 12.98);
+  RS.pose(tl, cashier2, "om-dau", 12.98, 0.25);
+  // Lặng 13.98–14.58: chữ "Hóa ra là" hiện trong im lặng, ảnh trôi chậm
+  tl.fromTo("#c1", { y: -40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 14.07);
+  tl.to("#shotWrap", { scale: 1.04, duration: 0.6, ease: "sine.inOut" }, 13.98);
+  // Phách 14.58: "ảnh giả" + dấu GIẢ dập — to nhất video
+  tl.fromTo("#c2", { scale: 2.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.2, ease: "power4.in", transformOrigin: "0% 60%" }, 14.38);
+  tl.fromTo("#fake", { scale: 2.6, rotation: -30, opacity: 0 }, { scale: 1, rotation: -14, opacity: 1, duration: 0.2, ease: "power4.in" }, 14.38);
+  RS.shake(tl, [".head-c", "#cashier2", "#shotWrap"], 14.58, 14, 3);
+  RS.mood(tl, cashier2, "buon", 15.14);
+  RS.pose(tl, cashier2, "xoe-tay", 15.14, 0.35);
+  RS.tilt(tl, cashier2, -9, 15.4, 0.25); RS.tilt(tl, cashier2, 9, 15.67, 0.25); RS.tilt(tl, cashier2, 0, 15.95, 0.3);
+  // Phách 16.21: vò ảnh giả lại, rơi xuống
+  tl.to("#fake", { opacity: 0, scale: 1.3, duration: 0.15 }, 16.1);
+  tl.fromTo("#crease", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 16.21);
+  tl.to("#shotWrap", { scale: 0.32, rotation: 210, borderRadius: "40%", duration: 0.5, ease: "power3.in" }, 16.21);
+  tl.to("#shotWrap", { y: 1300, x: -120, duration: 0.5, ease: "power2.in" }, 16.74);
+  // Mở tròn sang sáng hôm sau, dừng đúng phách 17.77
+  tl.fromTo("#irisC", { clipPath: "circle(0% at 60% 55%)" }, { clipPath: "circle(150% at 60% 55%)", duration: 0.5, ease: "power3.in" }, 17.27);
+
+  /* ---------- D. CÙNG QUẦY, SÁNG ---------- */
+  const D = 17.77;
+  const bgD = RS.set($("#camD"), "cua-hang", { light: "ngay", seed: 11 });
+  RS.setLive(tl, bgD, D, 24.17, 4);
+  // Lớp mở tròn cuối cảnh C là ảnh tĩnh của chính tiệm buổi sáng: chép lớp sau của bối cảnh
+  $("#irisC").appendChild(bgD.sau.cloneNode(true));
+  const owner2 = put("#owner2", ai("chu", { width: 640, pose: "xuoi", mood: "lo-lang" }));
+  RS.idle(tl, owner2, D, 24.17, 12);
+  ["#d1", "#d2", "#d3"].forEach((s) => RS.fit($(s), 760, 50, 36));
+  tl.fromTo("#camD", { scale: 1.12 }, { scale: 1.02, duration: 6.4, ease: "sine.out", transformOrigin: "540px 1000px" }, D);
+  tl.fromTo("#plateD", { x: -600, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: "expo.out" }, 18.88);
+  [["#d1", 18.88], ["#d2", 19.37], ["#d3", 19.9]].forEach(([s, t]) => tl.fromTo(s, { x: -400, opacity: 0 }, { x: 0, opacity: 1, duration: 0.3, ease: "expo.out" }, t));
+  tl.fromTo("#phoneD", { y: 1100, rotation: 10 }, { y: 0, rotation: -3, duration: 0.55, ease: "power4.out" }, 18.34);
+  tl.to("#phoneD", { y: -16, rotation: 0, duration: 4.2, ease: "sine.inOut" }, 18.95);
+  tl.fromTo("#owner2", { x: -320 }, { x: 0, duration: 0.5, ease: "power3.out" }, 18.34);
+  RS.look(tl, owner2, "phai", 18.9);
+  RS.tilt(tl, owner2, 6, 18.9, 0.4);
+  tl.fromTo("#phoneD .ord", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.25, stagger: 0.27, ease: "power2.out" }, 18.95);
+  // Đổi ca trên phách: sáng → chiều → tối
+  [[20.43, 1], [21.48, 2]].forEach(([t, k]) => {
+    tl.to("#tabHi", { xPercent: k * 100, x: k * 12, duration: 0.3, ease: "back.out(1.6)" }, t);
+    tl.set("#t" + k, { color: "var(--prop-card-muted)" }, t + 0.12);
+    tl.set("#t" + (k + 1), { color: "var(--color-white)" }, t + 0.12);
+    tl.fromTo("#sumD", { opacity: 0.2, y: 16 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out", immediateRender: false }, t + 0.12);
+    tl.fromTo("#phoneD .ord", { opacity: 0.2, x: 30 }, { opacity: 1, x: 0, duration: 0.25, stagger: 0.06, ease: "power2.out", immediateRender: false }, t + 0.15);
+  });
+  RS.countUp(tl, $("#nOrd"), 20.5, 0.5, 18);
+  RS.countUp(tl, $("#nRev"), 21.55, 0.6, 1200000);
+  RS.mood(tl, owner2, "nhe-nhom", 20.97);
+  RS.pose(tl, owner2, "giu-nguc", 20.97, 0.4);
+  RS.tilt(tl, owner2, 0, 20.97, 0.4);
+  [22.04, 23.1].forEach((t, i) => tl.fromTo("#ordList", { y: -110 * i }, { y: -110 * (i + 1), duration: 0.35, ease: "back.out(1.4)", immediateRender: false }, t));
+  RS.mood(tl, owner2, "tu-tin", 22.52);
+  RS.pose(tl, owner2, "nam-tay", 22.52, 0.3);
+  RS.burst(tl, $("#sparkD"), "star", { x: 300, y: 1100, count: 10, spread: 280, rise: -60, at: 22.52, seed: 41 });
+  tl.fromTo("#irisD", { clipPath: "circle(0% at 70% 55%)" }, { clipPath: "circle(150% at 70% 55%)", duration: 0.5, ease: "power3.in" }, 23.67);
+
+  /* ---------- E. CTA ---------- */
+  const E = 24.17;
+  RS.setLive(tl, RS.set($("#sE"), "thuong-hieu"), E, 31.5, 5);
+  const p1 = put("#pE1", ai("chu", { width: 470, mood: "cuoi" }));
+  const p2 = put("#pE2", ai("nv", { width: 470, mood: "cuoi" }));
+  RS.idle(tl, p1, E, 31.5, 14); RS.idle(tl, p2, E, 31.5, 15);
+  const tagLines = document.querySelectorAll("#tag div");
+  RS.fit(tagLines[0], 860, 64, 44);
+  tagLines[1].style.fontSize = tagLines[0].style.fontSize;
+  RS.fit($("#btnTxt"), 580, 64, 40);
+  tl.fromTo("#logoS", { scale: 0.5, opacity: 0, filter: "blur(14px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.42, ease: "expo.out" }, 24.17);
+  tl.fromTo("#ruleE", { scale: 0 }, { scale: 1, duration: 0.3, ease: "power3.inOut" }, 24.5);
+  tl.fromTo("#logoR", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 24.7);
+  tl.fromTo("#tag div", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.35, stagger: 0.25, ease: "power2.out" }, 25.23);
+  tl.fromTo(["#pE1", "#pE2"], { y: 600 }, { y: 0, duration: 0.5, stagger: 0.12, ease: "back.out(1.4)" }, 24.7);
+  RS.pose(tl, p1, "vay", 25.23, 0.3); RS.wave(tl, p1, 25.5, 3);
+  RS.pose(tl, p2, "chap-tay", 25.23, 0.35);
+  RS.tilt(tl, p2, 6, 25.5, 0.3); RS.tilt(tl, p2, 0, 26.2, 0.3);
+  tl.fromTo("#btn", { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.8)" }, 25.77);
+  RS.tayBam("#tap");
+  tl.fromTo("#tap", { x: 260, y: 360, opacity: 0, rotation: -12 }, { x: 0, y: 0, opacity: 1, rotation: -12, duration: 0.45, ease: "power3.out" }, 26.75);
+  [27.33, 29.47, 30.53].forEach((t) => RS.bam(tl, "#tap", t, "#btn"));
+  RS.pose(tl, p1, "nam-tay", 28.4, 0.3);
+  RS.pose(tl, p2, "vay", 28.4, 0.35); RS.wave(tl, p2, 28.75, 2);
+  RS.pose(tl, p1, "an-mung", 29.47, 0.35);
+  RS.pose(tl, p2, "an-mung", 29.6, 0.35);
+  RS.burst(tl, $("#chatsE"), "confetti", { x: 540, y: 900, count: 22, spread: 520, rise: 260, at: 29.47, dur: 0.9, seed: 77 });
+  tl.fromTo(["#pE1", "#pE2"], { y: 0 }, { y: -30, duration: 0.2, yoyo: true, repeat: 3, ease: "power1.inOut", immediateRender: false }, 29.9);
+  tl.to("#logoS", { scale: 1.05, duration: 7, ease: "sine.inOut" }, 24.6);
+  window.__timelines["main"] = tl;
+});
+</script>
+</body>
+</html>

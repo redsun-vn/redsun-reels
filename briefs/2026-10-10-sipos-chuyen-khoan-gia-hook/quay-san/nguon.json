@@ -1,0 +1,92 @@
+{
+  "items": [
+    {
+      "file": "khach-tay.mp4",
+      "source": "pexels",
+      "link": "https://www.pexels.com/video/woman-with-calculator-at-the-counter-6202074/",
+      "author": "Tim Douglas",
+      "license": "Pexels License",
+      "aiGenerated": false,
+      "vai": "khach",
+      "nguoi": "Tim Douglas, chỉ bàn tay",
+      "camXuc": "khong-mat",
+      "addedAt": "2026-10-10T07:39:28.880Z",
+      "cat": {
+        "tu": 0,
+        "dai": 17.38
+      }
+    },
+    {
+      "file": "chu-lo-dem.mp4",
+      "source": "pexels",
+      "link": "https://www.pexels.com/video/sad-woman-looking-at-camera-8724318/",
+      "author": "Tima Miroshnichenko",
+      "license": "Pexels License",
+      "aiGenerated": false,
+      "vai": "chu-quan",
+      "nguoi": "Tima Miroshnichenko, người mẫu tóc đen thẳng ngang vai (tối áo xanh rêu, sáng hôm sau áo sơ mi sọc)",
+      "camXuc": "lo-lang",
+      "chauA": true,
+      "mieng": "im",
+      "cat": {
+        "tu": 0.3,
+        "dai": 3.2
+      },
+      "addedAt": "2026-10-10T11:22:35.781Z"
+    },
+    {
+      "file": "chu-buon-dem.mp4",
+      "source": "pexels",
+      "link": "https://www.pexels.com/video/close-up-video-of-a-shy-woman-8724216/",
+      "author": "Tima Miroshnichenko",
+      "license": "Pexels License",
+      "aiGenerated": false,
+      "vai": "chu-quan",
+      "nguoi": "Tima Miroshnichenko, người mẫu tóc đen thẳng ngang vai (tối áo xanh rêu, sáng hôm sau áo sơ mi sọc)",
+      "camXuc": "buon",
+      "chauA": true,
+      "mieng": "im",
+      "cat": {
+        "tu": 1.8,
+        "dai": 4
+      },
+      "addedAt": "2026-10-10T11:23:12.287Z"
+    },
+    {
+      "file": "nv-cuoi-im.mp4",
+      "source": "pexels",
+      "link": "https://www.pexels.com/video/woman-looking-at-camera-7988846/",
+      "author": "Antoni Shkraba",
+      "license": "Pexels License",
+      "aiGenerated": false,
+      "vai": "nhan-vien",
+      "nguoi": "Antoni Shkraba, người mẫu tóc đen bob, áo len kem, dây chuyền vàng",
+      "camXuc": "cuoi",
+      "chauA": true,
+      "mieng": "im",
+      "cat": {
+        "tu": 3.5,
+        "dai": 4
+      },
+      "addedAt": "2026-10-10T11:23:31.952Z"
+    },
+    {
+      "file": "nv-mim-moi.mp4",
+      "source": "pexels",
+      "link": "https://www.pexels.com/video/woman-disagreeing-7988852/",
+      "author": "Antoni Shkraba",
+      "license": "Pexels License",
+      "aiGenerated": false,
+      "vai": "nhan-vien",
+      "nguoi": "Antoni Shkraba, người mẫu tóc đen bob, áo len kem, dây chuyền vàng",
+      "camXuc": "nhiu-may",
+      "chauA": true,
+      "mieng": "im",
+      "cat": {
+        "tu": 5.6,
+        "dai": 2.2
+      },
+      "addedAt": "2026-10-10T11:23:53.907Z"
+    }
+  ]
+}

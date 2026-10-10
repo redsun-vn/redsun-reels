@@ -2,7 +2,19 @@
   "concept": {
     "title": "Mẫu su-kien-webinar",
     "bigIdea": "Fixture kiểm template M3",
-    "hookAngle": "cau-hoi-noi-dau"
+    "hookAngle": "cau-hoi-noi-dau",
+    "diemHapDan": {
+      "ungVien": "Vận hành rối vì số liệu rời rạc?",
+      "diem": 21
+    },
+    "noiDau": {
+      "khach": "Vận hành rối vì số liệu rời rạc?",
+      "canh": "c0-hook"
+    },
+    "giaiPhap": {
+      "cach": "Webinar: Số hoá vận hành doanh nghiệp",
+      "canh": "c1-solution"
+    }
   },
   "videoType": "su-kien-webinar",
   "style": "tin-tuc",
@@ -17,7 +29,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 4.2
+      "durationSec": 3.7
     },
     {
       "id": "c1-solution",
@@ -26,7 +38,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 4.3
+      "durationSec": 4.8
     },
     {
       "id": "c2-proof",
@@ -55,6 +67,6 @@
   "music": "test-pad-01",
   "selfScore": {
     "total": 90,
-    "notes": "Fixture kiểm template, không đăng."
+    "notes": "Hook 21/25. Fixture kiểm template, không đăng."
   }
 }

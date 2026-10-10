@@ -82,7 +82,20 @@ export const SceneSchema = z.object({
 export type Scene = z.infer<typeof SceneSchema>;
 
 export const ScriptSchema = z.object({
-  concept: z.object({ title: z.string().min(1), bigIdea: z.string().min(1), hookAngle: z.enum(HOOK_ANGLES) }),
+  concept: z.object({
+    title: z.string().min(1),
+    bigIdea: z.string().min(1),
+    hookAngle: z.enum(HOOK_ANGLES),
+    /**
+     * LUẬT SỐ 1 — 3 giây đầu: điểm hấp dẫn đã chọn từ brief (tao-reel/references/chon-diem-hap-dan.md) và điểm 5 tiêu chí
+     * (tối đa 25). Validate chặn ngay ở bước kịch bản khi thiếu hoặc dưới 20.
+     */
+    diemHapDan: z.object({ ungVien: z.string().min(1), diem: z.number().min(0).max(25) }).optional(),
+    /** Nỗi đau cụ thể của khách (lấy từ brief) và cảnh làm nó nổi bật (vai trò hook/problem). */
+    noiDau: z.object({ khach: z.string().min(1), canh: z.string().min(1) }).optional(),
+    /** Sản phẩm giải quyết nỗi đau đó thế nào (chỉ điều brief/hồ sơ sản phẩm có) và cảnh cho thấy (vai trò solution). */
+    giaiPhap: z.object({ cach: z.string().min(1), canh: z.string().min(1) }).optional(),
+  }),
   videoType: z.string().min(1),
   style: z.enum(STYLE_IDS),
   template: z.enum(TEMPLATE_IDS),

@@ -2,22 +2,34 @@
   "concept": {
     "title": "Test dấu tiếng Việt",
     "bigIdea": "Chuỗi §13 ở mọi vị trí chữ",
-    "hookAngle": "con-so"
+    "hookAngle": "con-so",
+    "diemHapDan": {
+      "ungVien": "Ưu đãi đặc biệt, giảm 30%!",
+      "diem": 21
+    },
+    "noiDau": {
+      "khach": "ă â đ ê ô ơ ư — Ă Â Đ Ê Ô Ơ Ư",
+      "canh": "dau"
+    },
+    "giaiPhap": {
+      "cach": "ằ ắ ẳ ẵ ặ · ừ ứ ử ữ ự · ỳ ý ỷ ỹ ỵ",
+      "canh": "phone"
+    }
   },
   "videoType": "ra-mat-tinh-nang",
   "style": "vui-nhon",
   "template": "FeatureLaunch",
   "product": "sipos",
-  "hook": "Ứng dụng quản lý bán hàng —\nưu đãi đặc biệt, giảm 30%!",
+  "hook": "Ưu đãi đặc biệt,\ngiảm 30%!",
   "scenes": [
     {
       "id": "hook",
       "role": "hook",
-      "onScreenText": "Ứng dụng quản lý bán hàng — ưu đãi đặc biệt, giảm 30%!",
+      "onScreenText": "Ưu đãi đặc biệt, giảm 30%!",
       "visual": {
         "type": "text"
       },
-      "durationSec": 6
+      "durationSec": 3.5
     },
     {
       "id": "dau",
@@ -27,7 +39,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 11
+      "durationSec": 13.5
     },
     {
       "id": "phone",
@@ -55,5 +67,9 @@
     }
   ],
   "cta": "Tìm hiểu thêm tại sipos.vn",
-  "music": "test-pad-01"
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 88,
+    "notes": "Hook 21/25. "
+  }
 }

@@ -2,7 +2,11 @@
   "concept": {
     "title": "Mẫu chuc-mung-dip-le",
     "bigIdea": "Fixture kiểm template M3",
-    "hookAngle": "thuong-hieu"
+    "hookAngle": "thuong-hieu",
+    "diemHapDan": {
+      "ungVien": "Chúc mừng 20/10",
+      "diem": 21
+    }
   },
   "videoType": "chuc-mung-dip-le",
   "style": "lang-man",
@@ -26,7 +30,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 7.1,
+      "durationSec": 8.5,
       "subText": "Luôn tận tâm với từng vị khách"
     },
     {
@@ -43,6 +47,6 @@
   "music": "test-pad-01",
   "selfScore": {
     "total": 90,
-    "notes": "Fixture kiểm template, không đăng."
+    "notes": "Hook 21/25. Fixture kiểm template, không đăng."
   }
 }

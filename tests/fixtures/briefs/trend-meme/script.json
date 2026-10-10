@@ -2,7 +2,19 @@
   "concept": {
     "title": "Mẫu trend-meme",
     "bigIdea": "Fixture kiểm template M1",
-    "hookAngle": "lat-nguoc"
+    "hookAngle": "lat-nguoc",
+    "diemHapDan": {
+      "ungVien": "Chủ quán lúc 11 giờ đêm",
+      "diem": 21
+    },
+    "noiDau": {
+      "khach": "vẫn ngồi đếm từng gói đường",
+      "canh": "c1-problem"
+    },
+    "giaiPhap": {
+      "cach": "Chủ quán dùng SIPOS: đi ngủ",
+      "canh": "c2-solution"
+    }
   },
   "videoType": "trend-meme",
   "style": "vui-nhon",
@@ -26,7 +38,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 3.0
+      "durationSec": 5.0
     },
     {
       "id": "c2-solution",
@@ -35,9 +47,13 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 3.0
+      "durationSec": 7.0
     }
   ],
   "cta": "Theo dõi để xem thêm mẹo",
-  "music": "test-pad-01"
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 88,
+    "notes": "Hook 21/25. "
+  }
 }

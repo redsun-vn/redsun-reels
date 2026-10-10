@@ -15,7 +15,8 @@ export const BriefSchema = z.object({
   template: z.union([z.literal('auto'), z.enum(TEMPLATE_IDS)]).default('auto'),
   goal: z.string().min(1),
   audience: z.string().min(1),
-  duration: z.number().min(7).max(60),
+  /** LUẬT CỨNG reel 15–30 giây (config/video-types.ts REEL_SEC). */
+  duration: z.number().min(15, 'Reel dài 15–30 giây (luật cứng).').max(30, 'Reel dài 15–30 giây (luật cứng).'),
   tone: z.string().min(1),
   cta: z.string().min(1),
   music: z.string().min(1).default('auto'),

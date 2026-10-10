@@ -2,7 +2,19 @@
   "concept": {
     "title": "Mẫu video-co-nguoi-noi",
     "bigIdea": "Fixture kiểm template M4",
-    "hookAngle": "quote"
+    "hookAngle": "quote",
+    "diemHapDan": {
+      "ungVien": "Cuối ngày mất cả tiếng để ghi sổ?",
+      "diem": 21
+    },
+    "noiDau": {
+      "khach": "Đếm tiền, ghi sổ mất cả tiếng",
+      "canh": "c1-problem"
+    },
+    "giaiPhap": {
+      "cach": "Doanh thu tự tổng hợp",
+      "canh": "c2-solution"
+    }
   },
   "videoType": "video-co-nguoi-noi",
   "style": "tin-cay",
@@ -18,7 +30,7 @@
         "type": "asset",
         "src": "assets/_demo/nguoi-noi-test.mp4"
       },
-      "durationSec": 4.5
+      "durationSec": 3.7
     },
     {
       "id": "c1-problem",
@@ -28,7 +40,7 @@
         "type": "asset",
         "src": "assets/_demo/nguoi-noi-test.mp4"
       },
-      "durationSec": 4.5,
+      "durationSec": 5.3,
       "attribution": "Anh Minh · Tiệm tạp hóa Minh Phát"
     },
     {
@@ -56,6 +68,6 @@
   "music": "test-pad-01",
   "selfScore": {
     "total": 90,
-    "notes": "Fixture kiểm template, không đăng."
+    "notes": "Hook 21/25. Fixture kiểm template, không đăng."
   }
 }

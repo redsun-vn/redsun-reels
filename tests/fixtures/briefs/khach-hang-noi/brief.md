@@ -7,7 +7,7 @@ occasion:
 template: Testimonial
 goal: "Fixture kiểm template M3 (khach-hang-noi)"
 audience: "MKT nội bộ"
-duration: 24.0
+duration: 24
 tone: "thử nghiệm"
 cta: "Tìm hiểu thêm tại sipos.vn"
 music: test-pad-01

@@ -2,7 +2,19 @@
   "concept": {
     "title": "Mẫu so-sanh",
     "bigIdea": "Fixture kiểm template M3",
-    "hookAngle": "lat-nguoc"
+    "hookAngle": "lat-nguoc",
+    "diemHapDan": {
+      "ungVien": "Excel gửi qua Zalo đã đủ chưa?",
+      "diem": 21
+    },
+    "noiDau": {
+      "khach": "Mỗi phòng một file, cuối tháng mới gộp",
+      "canh": "c1-problem"
+    },
+    "giaiPhap": {
+      "cach": "Số liệu về một chỗ",
+      "canh": "c2-solution"
+    }
   },
   "videoType": "so-sanh",
   "style": "du-lieu",
@@ -17,7 +29,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 3.8
+      "durationSec": 3.5
     },
     {
       "id": "c1-problem",
@@ -26,7 +38,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 4.7
+      "durationSec": 5.0
     },
     {
       "id": "c2-solution",
@@ -35,7 +47,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 4.3,
+      "durationSec": 4.5,
       "subText": "REDSUN BOS"
     },
     {
@@ -45,7 +57,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 5.1,
+      "durationSec": 4.9,
       "subText": "Không chờ cuối tháng"
     },
     {
@@ -62,6 +74,6 @@
   "music": "test-pad-01",
   "selfScore": {
     "total": 90,
-    "notes": "Fixture kiểm template, không đăng."
+    "notes": "Hook 21/25. Fixture kiểm template, không đăng."
   }
 }

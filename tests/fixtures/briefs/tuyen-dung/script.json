@@ -2,18 +2,22 @@
   "concept": {
     "title": "Mẫu tuyen-dung",
     "bigIdea": "Fixture kiểm template M4",
-    "hookAngle": "lat-nguoc"
+    "hookAngle": "lat-nguoc",
+    "diemHapDan": {
+      "ungVien": "Làm phần mềm là ngồi một mình?",
+      "diem": 21
+    }
   },
   "videoType": "tuyen-dung",
   "style": "nang-dong",
   "template": "EventRecap",
   "product": "redsun",
-  "hook": "Bạn nghĩ làm phần mềm\nlà ngồi một mình?",
+  "hook": "Làm phần mềm\nlà ngồi một mình?",
   "scenes": [
     {
       "id": "c0-hook",
       "role": "hook",
-      "onScreenText": "Bạn nghĩ làm phần mềm là ngồi một mình?",
+      "onScreenText": "Làm phần mềm là ngồi một mình?",
       "visual": {
         "type": "montage",
         "srcs": [
@@ -21,7 +25,7 @@
           "assets/_demo/su-kien-2.jpg"
         ]
       },
-      "durationSec": 4.5
+      "durationSec": 3.5
     },
     {
       "id": "c1-proof",
@@ -35,7 +39,7 @@
           "assets/_demo/su-kien-1.jpg"
         ]
       },
-      "durationSec": 5.0
+      "durationSec": 6.0
     },
     {
       "id": "c2-solution",
@@ -62,6 +66,6 @@
   "music": "test-pad-01",
   "selfScore": {
     "total": 90,
-    "notes": "Fixture kiểm template, không đăng."
+    "notes": "Hook 21/25. Fixture kiểm template, không đăng."
   }
 }

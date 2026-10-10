@@ -6,7 +6,7 @@ style: khuyen-mai
 template: FeatureLaunch
 goal: "Fixture kiểm template M1 (demo-san-pham)"
 audience: "MKT nội bộ"
-duration: 30.5
+duration: 30
 tone: "thử nghiệm"
 cta: "Yêu cầu tư vấn tại redsun.vn"
 music: test-pad-01

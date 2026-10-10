@@ -24,3 +24,17 @@ export const AI_VIDEO = {
   dir: 'ai',
   logFile: 'nhat-ky.json',
 } as const;
+
+/**
+ * Nhãn AI theo nội dung AI có trong video (REQUIREMENTS v0.6): hình người thật do AI tạo, giọng đọc do AI tạo, hoặc cả hai.
+ * Không có nội dung AI → null (không cần nhãn).
+ */
+export function aiLabelFor(hinh: boolean, giong: boolean): { label: string; caption: string } | null {
+  if (!hinh && !giong) return null;
+  // Chữ trên hình: Nam chốt 2026-10-10 "chỉ nên ghi là: Do AI sản xuất"; caption ghi rõ phần nào do AI
+  const detail = hinh && giong ? 'Video có hình ảnh và giọng đọc do AI tạo' : hinh ? AI_VIDEO.label : 'Video có giọng đọc do AI tạo';
+  return { label: AI_LABEL_ON_SCREEN, caption: `⚠️ ${detail}.` };
+}
+
+/** Chữ nhãn AI trên hình (mọi video có nội dung AI). */
+export const AI_LABEL_ON_SCREEN = 'Do AI sản xuất';

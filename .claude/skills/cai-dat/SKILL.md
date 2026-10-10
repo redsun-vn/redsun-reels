@@ -28,4 +28,4 @@ Người dùng là nhân viên marketing, không biết kỹ thuật. Nói tiế
 
 - Không sửa file trong dự án, không đổi version, không bật auto-update plugin.
 - Không chạy lệnh cài khác (brew, pip, npm -g, sudo) dù gặp lỗi. Nếu script không xử lý được, báo dev.
-- Không in hay hỏi API key; dự án không dùng API key.
+- Không in hay hỏi API key. Khoá dự án dùng nằm trong `.env`: `VIENEU_API_KEY` (giọng đọc AI), `GEMINI_API_KEY` (cảnh AI, chưa bật); chỉ Nam đưa vào máy; doctor báo "chưa có khoá giọng đọc AI" thì nói MKT nhắn Nam, video cũ vẫn dựng được.

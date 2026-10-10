@@ -27,16 +27,16 @@ assets:
 
 function baseScript(): Script {
   return {
-    concept: { title: 'Kiểm kho 5 phút', bigIdea: 'Đếm hàng bằng điện thoại', hookAngle: 'cau-hoi-noi-dau' },
+    concept: { title: 'Kiểm kho 5 phút', bigIdea: 'Đếm hàng bằng điện thoại', hookAngle: 'cau-hoi-noi-dau', diemHapDan: { ungVien: 'Mỗi tối đếm hàng bằng sổ tay', diem: 21 }, noiDau: { khach: 'Mỗi tối mất 2 giờ đếm hàng', canh: 'problem' }, giaiPhap: { cach: 'SIPOS quét mã, tồn kho cập nhật ngay', canh: 'solution' } },
     videoType: 'ra-mat-tinh-nang',
     style: 'toi-gian',
     template: 'FeatureLaunch',
     product: 'sipos',
     hook: 'Bạn vẫn kiểm kho bằng sổ tay?',
     scenes: [
-      { id: 'hook', role: 'hook', onScreenText: 'Bạn vẫn kiểm kho bằng sổ tay?', visual: { type: 'text' }, durationSec: 4 },
+      { id: 'hook', role: 'hook', onScreenText: 'Bạn vẫn kiểm kho bằng sổ tay?', visual: { type: 'text' }, durationSec: 3.5 },
       { id: 'problem', role: 'problem', onScreenText: 'Mỗi tối mất 2 giờ đếm hàng', visual: { type: 'text' }, durationSec: 6 },
-      { id: 'solution', role: 'solution', onScreenText: 'SIPOS quét mã, tồn kho cập nhật ngay', visual: { type: 'phone', src: 'brand/logos/sipos/sipos-logo-chuan.png' }, durationSec: 7 },
+      { id: 'solution', role: 'solution', onScreenText: 'SIPOS quét mã, tồn kho cập nhật ngay', visual: { type: 'phone', src: 'brand/logos/sipos/sipos-logo-chuan.png' }, durationSec: 7.5 },
       { id: 'cta', role: 'cta', onScreenText: 'Tìm hiểu thêm tại sipos.vn', visual: { type: 'logo' }, durationSec: 5 },
     ],
     cta: 'Tìm hiểu thêm tại sipos.vn',
@@ -44,9 +44,10 @@ function baseScript(): Script {
   };
 }
 
-function makeDir(script: unknown, brief = BRIEF): string {
+function makeDir(script: unknown, brief = BRIEF, concepts = '# Concept\n\n## Điểm hấp dẫn\n| Ứng viên | Tổng |\n|---|---|\n| Mỗi tối đếm hàng bằng sổ tay | 21 |\n'): string {
   const dir = mkdtempSync(join(tmpdir(), 'reel-'));
   writeFileSync(join(dir, 'brief.md'), brief);
+  if (concepts) writeFileSync(join(dir, 'concepts.md'), concepts);
   writeFileSync(join(dir, 'script.json'), JSON.stringify(script));
   return dir;
 }
@@ -56,6 +57,47 @@ const errorsOf = (s: unknown, brief?: string) => validateVideo(makeDir(s, brief)
 describe('validateVideo', () => {
   it('kịch bản hợp lệ không có lỗi', () => {
     expect(errorsOf(baseScript())).toEqual([]);
+  });
+
+  it('LUẬT SỐ 1 chặn ngay ở bước kịch bản: thiếu/yếu điểm hấp dẫn, thiếu bảng chấm, cảnh hook dài, hook quá 8 từ', () => {
+    const noScore = baseScript();
+    delete (noScore.concept as { diemHapDan?: unknown }).diemHapDan;
+    expect(errorsOf(noScore).join()).toContain('concept.diemHapDan');
+    const weak = baseScript();
+    weak.concept.diemHapDan = { ungVien: 'Chào hỏi', diem: 16 };
+    expect(errorsOf(weak).join()).toContain('16/25');
+    expect(validateVideo(makeDir(baseScript(), BRIEF, ''), { musicPurpose: 'test' }).issues.map((i) => i.message).join()).toContain('Điểm hấp dẫn');
+    const longHook = baseScript();
+    longHook.scenes[0].durationSec = 4;
+    longHook.scenes[2].durationSec = 7;
+    expect(errorsOf(longHook).join()).toContain('3,5 giây');
+    const eight = baseScript();
+    eight.hook = 'Bạn vẫn kiểm kho bằng sổ tay sao?';
+    eight.scenes[0] = { ...eight.scenes[0], onScreenText: eight.hook, durationSec: 3.7 };
+    eight.scenes[2].durationSec = 7.3;
+    expect(errorsOf(eight).join()).not.toContain('LUẬT SỐ 1');
+  });
+
+  it('nỗi đau → giải pháp: thiếu, sai thứ tự, giải pháp muộn hoặc quá ngắn bị chặn ở bước kịch bản', () => {
+    const none = baseScript();
+    delete (none.concept as { noiDau?: unknown }).noiDau;
+    expect(errorsOf(none).join()).toContain('concept.noiDau');
+    const swapped = baseScript();
+    swapped.concept.noiDau = { khach: 'x', canh: 'solution' };
+    expect(errorsOf(swapped).join()).toContain('phải là hook hoặc problem');
+    const late = baseScript();
+    late.scenes[1].durationSec = 13;
+    late.scenes[2].durationSec = 4;
+    late.scenes[3].durationSec = 3;
+    const msgs = errorsOf(late).join();
+    expect(msgs).toContain('quá muộn');
+    expect(msgs).toContain('≥ 20% video');
+  });
+
+  it('LUẬT CỨNG reel 15–30 giây', () => {
+    const long = baseScript();
+    long.scenes[2].durationSec = 20;
+    expect(errorsOf(long).join()).toContain('15–30');
   });
 
   it('hook quá 40 ký tự / quá 2 dòng', () => {
@@ -138,6 +180,7 @@ describe('validateVideo', () => {
 
   it('khối khuyến mãi: cảnh quá ngắn và đếm ngược đi cùng giá bị chặn', () => {
     const s = baseScript();
+    s.scenes[2].durationSec = 7;
     s.scenes[2].promo = { countdownFrom: 5, badge: '-20%' };
     const msgs = errorsOf(s, BRIEF + 'Giảm 20%.\n').join(' ');
     expect(msgs).toMatch(/cần dài ít nhất 7.2s/);

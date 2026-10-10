@@ -1,0 +1,84 @@
+{
+  "giongVung": "nam",
+  "dan": {
+    "nguoi-dan": {
+      "giong": "Duyên Hà My",
+      "gioi": "nu",
+      "hoSo": "Một giọng kể duy nhất: nữ Sài Gòn, kiểu TikToker kể chuyện, rõ ràng, gần gũi"
+    }
+  },
+  "cau": [
+    {
+      "id": "khach-chuyen",
+      "vai": "nguoi-dan",
+      "at": 0.2,
+      "loi": "Khách chìa ảnh: “Em chuyển rồi nha chị!”",
+      "camXuc": "binh-thuong",
+      "phongCach": "natural"
+    },
+    {
+      "id": "dan-dem",
+      "vai": "nguoi-dan",
+      "at": 3.5,
+      "loi": "Bán cả ngày, tối kiểm tài khoản, đếm đi đếm lại vẫn thiếu một khoản.",
+      "camXuc": "lo-lang",
+      "phongCach": "natural"
+    },
+    {
+      "id": "chu-ky",
+      "vai": "nguoi-dan",
+      "at": 8.4,
+      "loi": "Trời đất ơi! Sao kỳ vậy ta?",
+      "camXuc": "nhiu-may",
+      "phongCach": "natural"
+    },
+    {
+      "id": "nv-ua",
+      "vai": "nguoi-dan",
+      "at": 11.42,
+      "loi": "Soi kỹ mới thấy: ảnh chụp sẵn trong máy!",
+      "camXuc": "sung-sot",
+      "phongCach": "natural"
+    },
+    {
+      "id": "chu-anh-gia",
+      "vai": "nguoi-dan",
+      "at": 14.75,
+      "loi": "Hóa ra là ảnh giả!",
+      "camXuc": "buon",
+      "phongCach": "natural"
+    },
+    {
+      "id": "dan-anh-gia",
+      "vai": "nguoi-dan",
+      "at": 16.2,
+      "loi": "Ảnh chuyển khoản mà không phải chuyển khoản thật.",
+      "camXuc": "buon",
+      "phongCach": "natural"
+    },
+    {
+      "id": "chu-man-hinh",
+      "vai": "nguoi-dan",
+      "at": 18.5,
+      "loi": "Giờ thì khác nè: đơn hàng với doanh thu theo ca, nằm gọn một màn hình luôn á!",
+      "camXuc": "cuoi",
+      "phongCach": "natural"
+    },
+    {
+      "id": "dan-kiem-nhanh",
+      "vai": "nguoi-dan",
+      "at": 24.3,
+      "loi": "Kiểm cho nhanh, khỏi dò từng dòng.",
+      "camXuc": "nhe-nhom",
+      "phongCach": "natural"
+    },
+    {
+      "id": "cta",
+      "vai": "nguoi-dan",
+      "at": 26.7,
+      "loi": "SIPOS. Nhắn tin để được tư vấn nha!",
+      "camXuc": "tu-tin",
+      "phongCach": "natural"
+    }
+  ]
+}

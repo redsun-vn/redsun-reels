@@ -10,6 +10,13 @@ Nói với MKT bằng lời thường. Không nhắc tên lệnh, file JSON, log
 | "làm reel/video … về …" | **Luồng tự động** (SKILL.md): chỉ hỏi phần thiếu mà tự đặt sẽ là bịa, rồi làm tới khi có video |
 | "làm từng bước", "cho tôi chọn ý tưởng" | Luồng từng bước: dừng chờ chọn concept, duyệt kịch bản, xem thử |
 | "làm N video …" (cùng dịp/chủ đề) | Mỗi video một thư mục, làm lần lượt; trước mỗi video chạy `./reel info gan-day` để khác video trước (phong cách xoay vòng `./reel info dip-le`, bố cục, kiểu nhấn) |
+| "câu … thiếu cảm xúc", "đọc sai", "nghe giọng Bắc", "đổi giọng <vai>" | Skill `giong-doc`: sửa lời/dấu câu/thẻ câu đó trong `dung-rieng/loi-doc.json` hoặc đổi giọng VieNeu của vai, `./reel giong <tên> --cau=<id> --lai`; đổi giọng một vai thì chạy lại mọi câu của vai đó |
+| "làm video 45 giây", "dài hơn" | Reel chỉ dài 15–30 giây (luật cứng: video ngắn dễ được xem hết, nền tảng phân phối rộng hơn). Nói MKT điều đó, gọt còn ý chính; nội dung dài thì tách thành 2 video |
+| "mỗi nhân vật một giọng" | Skill `giong-doc` mục 1: dàn nhiều giọng (mặc định chỉ một giọng kể Duyên Hà My) |
+| "không cần giọng" | Bỏ `dung-rieng/loi-doc.json` + chỗ `<!-- GIONG-DOC -->` + nhãn giọng AI; lời thoại về bong bóng/phụ đề |
+| Máy báo "Chưa có VIENEU_API_KEY" | Nói MKT nhắn Nam đưa khoá vào máy; video đã có giọng vẫn dựng/xuất được |
+| Mở video người thật quay sẵn trên máy khác, báo "Máy này chưa có clip" | `./reel quay-san <tên> --tai-lai` (tự tải đúng đoạn theo sổ nguồn), rồi làm tiếp |
+| Brief thiếu nỗi đau cụ thể / tính năng giải quyết / hook đủ mạnh, hoặc ghi "cần team xác nhận" | Hỏi MKT một lần (≤ 5 câu, có lựa chọn) theo mục "Brief đủ chưa" của `SKILL.md`; MKT chọn "làm luôn bản tạm" thì ghi phần thiếu vào `review.md` mục `## Cần team xác nhận` |
 | "chọn ý N" | Ghi lựa chọn vào cuối `concepts.md`, viết `script.json`, `./reel validate <tên>` |
 | "cảnh N đổi chữ…", "bỏ cảnh…", "ngắn lại…" | Sửa `script.json`; tính lại thời lượng bằng `./reel info thoi-luong "<chữ>"`; `./reel validate` |
 | "đổi phong cách sang …" | Sửa `style` ở cả brief và kịch bản; đổi nhạc nếu bài cũ không hợp mood (`./reel info nhac <phong-cách>`) |

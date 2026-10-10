@@ -1,0 +1,93 @@
+{
+  "concept": {
+    "title": "Lật tẩy trước",
+    "bigIdea": "Mở bằng khoảnh khắc ảnh chuyển khoản bị lộ là giả, rồi tua lại một ngày bán hàng bị bỏ sót tiền; SIPOS gom đơn hàng và doanh thu theo ca trên một màn hình.",
+    "hookAngle": "lat-nguoc",
+    "diemHapDan": {
+      "ungVien": "Dấu GIẢ dập lên ảnh \"chuyển tiền thành công\"",
+      "diem": 24
+    },
+    "noiDau": {
+      "khach": "Bán cả ngày, tối kiểm tài khoản mới thấy thiếu một khoản: khách đưa ảnh chuyển khoản giả",
+      "canh": "c2-toi-kiem"
+    },
+    "giaiPhap": {
+      "cach": "SIPOS tự tổng hợp đơn hàng và doanh thu theo ca trên một màn hình, kiểm cho nhanh (brief chưa xác nhận tính năng đối chiếu chuyển khoản nên không nói thêm)",
+      "canh": "c4-sipos"
+    }
+  },
+  "videoType": "so-sanh",
+  "style": "vui-nhon",
+  "template": "BeforeAfter",
+  "build": "custom",
+  "product": "sipos",
+  "hook": "Ảnh chuyển khoản này… là GIẢ!",
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "onScreenText": "Ảnh chuyển khoản này… là GIẢ!",
+      "subText": "Bán cả ngày, tối mới biết mình bị bỏ sót tiền.",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 3.34
+    },
+    {
+      "id": "c1-quay",
+      "role": "problem",
+      "onScreenText": "Em chuyển rồi nha",
+      "subText": "Dạ vâng ạ.",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 6.97
+    },
+    {
+      "id": "c2-toi-kiem",
+      "role": "problem",
+      "onScreenText": "Tối kiểm tiền: không thấy đâu",
+      "subText": "Tối kiểm tài khoản, đếm đi đếm lại vẫn thiếu một khoản.",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 4.27
+    },
+    {
+      "id": "c3-anh-gia",
+      "role": "problem",
+      "onScreenText": "Hóa ra là ảnh giả",
+      "subText": "Ảnh chuyển khoản mà không phải chuyển khoản thật.",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 4.3
+    },
+    {
+      "id": "c4-sipos",
+      "role": "solution",
+      "onScreenText": "Đơn hàng và doanh thu tự tổng hợp theo ca, trên một màn hình",
+      "subText": "Đơn hàng và doanh thu theo ca nằm cả trên một màn hình, kiểm cho nhanh.",
+      "visual": {
+        "type": "text"
+      },
+      "durationSec": 6.35
+    },
+    {
+      "id": "c5-cta",
+      "role": "cta",
+      "onScreenText": "Nhắn tin để được tư vấn",
+      "subText": "SIPOS, giải pháp quản lý bán hàng trong thời đại AI.",
+      "visual": {
+        "type": "logo"
+      },
+      "durationSec": 4.24
+    }
+  ],
+  "cta": "Nhắn tin để được tư vấn",
+  "music": "mixkit-gimme-that-groove-872",
+  "selfScore": {
+    "total": 90,
+    "notes": "Hook 24/25 (LUẬT SỐ 1: mở bằng dấu GIẢ dập lên ảnh \"chuyển tiền thành công\" ở giây 0,7, giọng vào ngay 0,05s; điểm hấp dẫn mạnh nhất của brief 24/25). Thông điệp 19/20 (đúng thông điệp brief: bán cả ngày, tối mới biết bị bỏ sót tiền; SIPOS chỉ gom đơn hàng và doanh thu theo ca, không hứa chống gian lận). Đọc kịp 18/20 (một giọng Duyên Hà My đọc đúng lời nói của brief, phụ đề nhỏ). Đúng brand/sự thật 19/20 (ảnh chuyển khoản mô phỏng, không tên ngân hàng). CTA 10/15. 29,5 giây (luật cứng 15–30)."
+  }
+}

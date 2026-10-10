@@ -65,33 +65,37 @@ Muốn biết nên chụp gì cho đúng kịch bản: nói "gợi ý cảnh c�
 ## 5. Chọn loại video và phong cách
 Không chắc loại nào? Cứ kể việc muốn làm, Claude sẽ đề xuất.
 
+Mỗi video nói rõ **một nỗi đau của khách** (trong brief, ghi cụ thể: khách mất gì) và **sản phẩm giải quyết nó thế nào** (tính năng nào, làm gì). Brief thiếu thông tin để kịch bản đủ mạnh (khoảnh khắc mở đầu, nỗi đau cụ thể, tính năng giải quyết, số liệu) thì Claude **hỏi lại một lần**, tối đa 5 câu có lựa chọn sẵn. Chưa có câu trả lời ngay: chọn "làm luôn bản tạm", Claude ghi lại phần còn thiếu.
+
+Mọi video dài **15–30 giây**: video ngắn dễ được xem hết, nền tảng đưa tới nhiều người hơn. Nội dung dài thì tách thành 2 video.
+
 | Loại video | Khi nào dùng | Dài | Cần chuẩn bị |
 |---|---|---|---|
-| Ra mắt tính năng | Có tính năng mới | 20–45s | Ảnh chụp/quay màn hình |
-| Demo thao tác | Cho xem cách dùng | 30–60s | Quay màn hình |
+| Ra mắt tính năng | Có tính năng mới | 20–30s | Ảnh chụp/quay màn hình |
+| Demo thao tác | Cho xem cách dùng | 30s | Quay màn hình |
 | Mẹo "Bạn có biết?" | Một mẹo nhỏ | 15–30s | Không bắt buộc |
-| Hướng dẫn 3–5 bước | Dạy từng bước | 30–60s | Ảnh/quay từng bước |
+| Hướng dẫn 3–5 bước | Dạy từng bước | 30s | Ảnh/quay từng bước |
 | Trước / sau | Khác biệt khi dùng sản phẩm | 15–30s | Ảnh trước và sau |
-| So sánh cũ / mới | Cách cũ và cách mới | 20–40s | Ảnh hoặc chỉ chữ |
-| Khách hàng nói | Lời khách thật | 20–45s | Lời khách, tên, đồng ý; ảnh/clip khách |
-| Khuyến mãi | Ưu đãi đang chạy | 10–20s | Mức giảm, giá, hạn chót |
-| Đếm ngược / teaser | Sắp ra mắt | 10–15s | Ngày ra mắt |
-| Chúc mừng dịp lễ | 8/3, 20/10, Tết… | 10–20s | Không bắt buộc |
+| So sánh cũ / mới | Cách cũ và cách mới | 20–30s | Ảnh hoặc chỉ chữ |
+| Khách hàng nói | Lời khách thật | 20–30s | Lời khách, tên, đồng ý; ảnh/clip khách |
+| Khuyến mãi | Ưu đãi đang chạy | 15–20s | Mức giảm, giá, hạn chót |
+| Đếm ngược / teaser | Sắp ra mắt | 15s | Ngày ra mắt |
+| Chúc mừng dịp lễ | 8/3, 20/10, Tết… | 15–20s | Không bắt buộc |
 | Mời sự kiện, webinar | Mời tham dự | 15–30s | Tên, giờ, nơi đăng ký |
-| Tổng kết sự kiện | Sau sự kiện | 20–45s | 6–10 ảnh/clip sự kiện |
-| Số liệu / thành tích | Khoe con số | 10–20s | 2–3 con số thật, có nguồn |
-| Bắt trend / hài | Theo trend | 7–15s | Ý tưởng trend |
+| Tổng kết sự kiện | Sau sự kiện | 20–30s | 6–10 ảnh/clip sự kiện |
+| Số liệu / thành tích | Khoe con số | 15–20s | 2–3 con số thật, có nguồn |
+| Bắt trend / hài | Theo trend | 15s | Ý tưởng trend |
 | Hỏi đáp (FAQ) | Trả lời câu hay hỏi | 15–30s | Câu hỏi + câu trả lời |
-| Giới thiệu thương hiệu | REDSUN là ai | 30–60s | Ảnh đội ngũ, văn phòng |
-| Tuyển dụng / văn hoá | Tuyển người | 20–45s | Vị trí tuyển, ảnh đội ngũ |
-| Thông báo nhanh | Bảo trì, đổi giờ… | 7–15s | Nội dung thông báo |
-| Có người nói trước camera | Bạn tự quay người nói | 15–60s | Clip quay dọc có tiếng, lời nói + mốc giây |
-| Thư giãn / không khí quán | Quán đẹp, nhạc nhẹ | 10–20s | Clip quán |
+| Giới thiệu thương hiệu | REDSUN là ai | 30s | Ảnh đội ngũ, văn phòng |
+| Tuyển dụng / văn hoá | Tuyển người | 20–30s | Vị trí tuyển, ảnh đội ngũ |
+| Thông báo nhanh | Bảo trì, đổi giờ… | 15s | Nội dung thông báo |
+| Có người nói trước camera | Bạn tự quay người nói | 15–30s | Clip quay dọc có tiếng, lời nói + mốc giây |
+| Thư giãn / không khí quán | Quán đẹp, nhạc nhẹ | 15–20s | Clip quán |
 
 **Phong cách** (19 kiểu: tối giản, sang trọng, vui nhộn, lễ hội, điện ảnh, bí ẩn…): nói "dùng phong cách vui nhộn". Không nói thì Claude dùng kiểu hợp với loại video. Video theo dịp lễ (8/3, 20/10, Halloween, Tết…) tự chọn kiểu hợp dịp. Xem danh sách dịp: nói "có những dịp lễ nào".
 
 ## 6. Nhạc
-- Video **không có giọng đọc**, chỉ có nhạc nền. Thư viện có sẵn 23 bài Mixkit dùng để đăng được, đã được Nam nghe và duyệt. Claude tự chọn bài hợp phong cách. Muốn đổi bài: nói "đổi nhạc khác vui hơn".
+- Video có nhạc nền. Thư viện có sẵn 23 bài Mixkit dùng để đăng được, đã được Nam nghe và duyệt. Claude tự chọn bài hợp phong cách. Muốn đổi bài: nói "đổi nhạc khác vui hơn".
 - Bài ghi **"chỉ xem thử"** không đăng được.
 - **Dùng nhạc bạn tự tìm:**
   1. Chỉ lấy từ [Pixabay Music](https://pixabay.com/music/) hoặc [Mixkit](https://mixkit.co/free-stock-music/), bài **không lời**, **bắt tai** (có nhịp ngay mấy giây đầu; reel cần giữ người xem). Không dùng nhạc YouTube, nhạc ca sĩ, nhạc thịnh hành trên TikTok.
@@ -101,6 +105,14 @@ Không chắc loại nào? Cứ kể việc muốn làm, Claude sẽ đề xuấ
   5. Nói: "thêm nhạc nhac-vui, link <dán link trang bài>, tác giả <tên>".
   6. Báo Nam để đưa bài vào thư viện chung của cả team.
 - Video có người nói hoặc khách hàng nói: giữ tiếng gốc, nhạc tự nhỏ lại khi có người nói.
+
+### Giọng đọc AI
+- Video có lời nói được **lồng giọng đọc AI VieNeu**: giọng tiếng Việt chuẩn miền Nam. Mặc định **một giọng kể** (Duyên Hà My) đọc cả chuyện và thông điệp cuối; muốn mỗi nhân vật một giọng thì nói "mỗi nhân vật một giọng". Giọng nhân vật đặt lúc không thấy miệng người nói (bàn tay, màn hình…), nên không bị lệch miệng.
+- Video có giọng AI luôn có chữ nhỏ **"Do AI sản xuất"** ở góc trên trái và dòng nhãn ở đầu caption. Giữ nguyên khi đăng, bật thêm mục khai báo nội dung AI của nền tảng nếu có.
+- Claude gửi file nghe thử giọng để bạn chọn giọng cho từng vai, và gửi video để bạn nghe lại. Câu nào chưa ưng: nói "câu <lời> đọc chưa hay" hoặc "đổi giọng <vai>".
+- Video hoạt hình đã nhiều chữ nên không có phụ đề theo giọng; video người thật có phụ đề nhỏ.
+- Không muốn có giọng: nói "video này không cần giọng".
+- Máy báo "chưa có khoá giọng đọc": nhắn Nam. Video đã làm giọng rồi vẫn xuất được.
 
 ## 7. Câu nói hay dùng
 | Bạn nói | Claude làm |
@@ -115,6 +127,7 @@ Không chắc loại nào? Cứ kể việc muốn làm, Claude sẽ đề xuấ
 | "xuất" | Xuất MP4 vào `out/`, soạn caption + hashtag |
 | "sửa video <tên> …", "xuất lại video <tên>" | Mở lại video cũ để sửa |
 | "các video tôi đã làm" | Liệt kê các video trong `briefs/` |
+| "câu … thiếu cảm xúc", "đổi giọng nhân viên", "không cần giọng" | Sửa giọng đọc AI |
 | "kiểm tra máy", "cài lại" | Kiểm hoặc sửa môi trường máy |
 
 ## 8. Đăng bài

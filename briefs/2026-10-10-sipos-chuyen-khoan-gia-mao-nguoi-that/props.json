@@ -31,24 +31,24 @@
     {
       "id": "c0-quay-chieu",
       "role": "hook",
-      "text": "Em chuyển rồi nha",
-      "sub": "Dạ vâng ạ.",
+      "text": "Em chuyển rồi nha chị!",
+      "sub": "Dạ, em cảm ơn nha!",
       "visual": {
         "type": "text"
       },
       "start": 0,
-      "duration": 3.34
+      "duration": 5.5
     },
     {
       "id": "c1-toi-kiem",
       "role": "problem",
-      "text": "Tối kiểm tiền: không thấy đâu",
+      "text": "Thiếu một khoản",
       "sub": "Tối kiểm tài khoản, đếm đi đếm lại vẫn thiếu một khoản.",
       "visual": {
         "type": "text"
       },
-      "start": 3.34,
-      "duration": 8.06
+      "start": 5.5,
+      "duration": 5.37
     },
     {
       "id": "c2-anh-gia",
@@ -58,17 +58,18 @@
       "visual": {
         "type": "text"
       },
-      "start": 11.4,
-      "duration": 6.37
+      "start": 10.87,
+      "duration": 9.03
     },
     {
       "id": "c3-sipos",
       "role": "solution",
-      "text": "Đơn hàng và doanh thu tự tổng hợp theo ca, trên một màn hình",
+      "text": "Theo ca, trên một màn hình",
+      "sub": "Đơn hàng với doanh thu theo ca, nằm gọn một màn hình luôn á!",
       "visual": {
         "type": "text"
       },
-      "start": 17.77,
+      "start": 19.9,
       "duration": 6.4
     },
     {
@@ -79,12 +80,12 @@
       "visual": {
         "type": "logo"
       },
-      "start": 24.17,
-      "duration": 7.33
+      "start": 26.3,
+      "duration": 5.2
     }
   ],
   "totalSec": 31.5,
-  "seed": 308,
+  "seed": 31,
   "numberSteps": false,
   "voiceWindows": []
 }

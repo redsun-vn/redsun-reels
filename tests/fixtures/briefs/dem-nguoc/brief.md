@@ -7,7 +7,7 @@ occasion:
 template: Promo
 goal: "Fixture kiểm template M3 (dem-nguoc)"
 audience: "MKT nội bộ"
-duration: 12.7
+duration: 15
 tone: "thử nghiệm"
 cta: "Tạo website tại webino.vn"
 music: test-pad-01

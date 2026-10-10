@@ -7,7 +7,7 @@ occasion: 20-10
 template: Promo
 goal: "Fixture kiểm template M3 (chuc-mung-dip-le)"
 audience: "MKT nội bộ"
-duration: 13.6
+duration: 15
 tone: "thử nghiệm"
 cta: "Tìm hiểu thêm tại sipos.vn"
 music: test-pad-01

@@ -6,7 +6,7 @@ style: toi-gian
 template: TipOfTheDay
 goal: "Fixture kiểm template M1 (huong-dan-nhieu-buoc)"
 audience: "MKT nội bộ"
-duration: 30.5
+duration: 30
 tone: "thử nghiệm"
 cta: "Tạo website tại webino.vn"
 music: test-pad-01

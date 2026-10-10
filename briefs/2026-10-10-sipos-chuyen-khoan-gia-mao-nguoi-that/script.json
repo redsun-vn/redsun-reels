@@ -9,27 +9,27 @@
   "template": "BeforeAfter",
   "build": "custom",
   "product": "sipos",
-  "hook": "Em chuyển rồi nha",
+  "hook": "Em chuyển rồi nha chị!",
   "scenes": [
     {
       "id": "c0-quay-chieu",
       "role": "hook",
-      "onScreenText": "Em chuyển rồi nha",
-      "subText": "Dạ vâng ạ.",
+      "onScreenText": "Em chuyển rồi nha chị!",
+      "subText": "Dạ, em cảm ơn nha!",
       "visual": {
         "type": "text"
       },
-      "durationSec": 3.34
+      "durationSec": 5.5
     },
     {
       "id": "c1-toi-kiem",
       "role": "problem",
-      "onScreenText": "Tối kiểm tiền: không thấy đâu",
+      "onScreenText": "Thiếu một khoản",
       "subText": "Tối kiểm tài khoản, đếm đi đếm lại vẫn thiếu một khoản.",
       "visual": {
         "type": "text"
       },
-      "durationSec": 8.06
+      "durationSec": 5.37
     },
     {
       "id": "c2-anh-gia",
@@ -39,16 +39,17 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 6.37
+      "durationSec": 9.03
     },
     {
       "id": "c3-sipos",
       "role": "solution",
-      "onScreenText": "Đơn hàng và doanh thu tự tổng hợp theo ca, trên một màn hình",
+      "onScreenText": "Theo ca, trên một màn hình",
       "visual": {
         "type": "text"
       },
-      "durationSec": 6.4
+      "durationSec": 6.4,
+      "subText": "Đơn hàng với doanh thu theo ca, nằm gọn một màn hình luôn á!"
     },
     {
       "id": "c4-cta",
@@ -58,13 +59,13 @@
       "visual": {
         "type": "logo"
       },
-      "durationSec": 7.33
+      "durationSec": 5.2
     }
   ],
   "cta": "Nhắn tin để được tư vấn",
   "music": "mixkit-gimme-that-groove-872",
   "selfScore": {
     "total": 88,
-    "notes": "Hook 22/25 (lời khách đời thường, tình huống quầy quen). Thông điệp 18/20 (một nỗi đau, giải pháp đúng phạm vi brief: chỉ đơn hàng + doanh thu theo ca, không hứa chống gian lận). Đọc kịp 17/20 (31.5s thay 30s để lời thoại kịp đọc; cảnh SIPOS 14 từ do brief). Đúng brand/sự thật 19/20 (ảnh chuyển khoản mô phỏng, không tên ngân hàng). CTA 12/15. Người thật quay sẵn (Pexels, Mizuno K + Tim Douglas): khách gửi ảnh giả chỉ lộ bàn tay; một người đóng chủ quán kiêm thu ngân."
+    "notes": "Hook 22/25 (lời khách đời thường, tình huống quầy quen). Thông điệp 18/20 (một nỗi đau, giải pháp đúng phạm vi brief: chỉ đơn hàng + doanh thu theo ca, không hứa chống gian lận). Đọc kịp 17/20 (31.5s thay 30s để lời thoại kịp đọc; cảnh SIPOS 14 từ do brief). Đúng brand/sự thật 19/20 (ảnh chuyển khoản mô phỏng, không tên ngân hàng). CTA 12/15. Bản 5 (Nam 2026-10-10: \"soạn lại toàn bộ kịch bản\", không để cảnh mặt người im lặng không lời): thoại nhân vật ngoài khung + giọng dẫn (Leda) kể theo lời nói của brief trên mặt người phản ứng và đọc thông điệp cuối \"SIPOS. Nhắn tin để được tư vấn\". Người thật quay sẵn (Pexels), người châu Á."
   }
 }

@@ -2,7 +2,11 @@
   "concept": {
     "title": "Mẫu dem-nguoc",
     "bigIdea": "Fixture kiểm template M3",
-    "hookAngle": "sap-thay-doi"
+    "hookAngle": "sap-thay-doi",
+    "diemHapDan": {
+      "ungVien": "Webino sắp có điều mới",
+      "diem": 21
+    }
   },
   "videoType": "dem-nguoc",
   "style": "bi-an",
@@ -26,7 +30,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 7.6,
+      "durationSec": 9.9,
       "promo": {
         "countdownFrom": 5,
         "deadline": "Ra mắt 20/10"
@@ -46,6 +50,6 @@
   "music": "test-pad-01",
   "selfScore": {
     "total": 90,
-    "notes": "Fixture kiểm template, không đăng."
+    "notes": "Hook 21/25. Fixture kiểm template, không đăng."
   }
 }

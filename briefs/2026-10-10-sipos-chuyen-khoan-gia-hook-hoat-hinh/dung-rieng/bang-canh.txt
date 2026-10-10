@@ -1,0 +1,17 @@
+# giây | điều xảy ra | tiếng | chuyển sang khung sau
+0.30 | Ảnh "chuyển tiền thành công" lao vào, chữ "Ảnh chuyển khoản này…" | nhiễu | dấu dập xuống
+0.90 | Dấu GIẢ đỏ dập lên ảnh, khung rung, chớp trắng, "là GIẢ!" | ầm, dập dấu | cắt sang chủ tiệm (hậu quả)
+3.00 | Chủ tiệm ở nhà ban đêm, buồn, lắc đầu: "Bán cả ngày, tối mới biết mình bị bỏ sót tiền." | vụt | ôm đầu
+4.30 | Chủ tiệm ôm đầu, màn tối dần | thịch | "Chuyện là…" tua lại
+6.40 | Tiệm chiều đông: lùi ra từ dấu tick, khách chìa điện thoại "Em chuyển rồi nha" | bật | nhân viên đáp
+9.00 | Nhân viên cười gật "Dạ vâng ạ.", khách vẫy chào | bật | trời tối, cùng quầy
+11.40 | Đêm, sổ "Tiền vào hôm nay", ngón tay dò từng dòng | tích tích | dòng cuối đỏ
+12.10 | "Em chuyển rồi" — "Không thấy" rung, "Tối kiểm tiền: không thấy đâu" | sai | sổ rơi, cận chủ tiệm
+13.60 | Chủ tiệm cau mày, lo, dấu hỏi quanh đầu | bật | chớp, phóng vào ảnh
+15.40 | Kính lúp soi ảnh, nhạc lặng, "Hóa ra là" | (lặng) | lộ thư viện
+16.30 | Lộ "Ảnh · Thư viện" + dấu GIẢ + "ảnh giả", nhân viên sững người ôm đầu | ầm, dập dấu | vò ảnh
+18.10 | Ảnh giả bị vò tròn rơi xuống | thịch | mở tròn sang sáng
+21.50 | Sáng, cùng quầy: SIPOS đổi ca, chủ tiệm thở phào | thở phào, bấm | nhãn "trên một màn hình"
+23.50 | "Đơn hàng và doanh thu tự tổng hợp theo ca, trên một màn hình", chủ tiệm tự tin | xu | mở tròn teal
+26.50 | Logo SIPOS + Redsun, "SIPOS, giải pháp quản lý bán hàng trong thời đại AI." | lấp lánh | nút hiện
+28.60 | Bàn tay bấm "Nhắn tin để được tư vấn", chủ tiệm và nhân viên vẫy, ăn mừng | bấm | hết

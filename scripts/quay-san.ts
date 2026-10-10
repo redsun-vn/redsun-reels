@@ -1,6 +1,8 @@
 /**
  * ./reel quay-san <tên-video>                                   — liệt kê clip quay sẵn của video (dọc/ngang, số giây, nguồn)
- * ./reel quay-san <tên-video> <file> --link=<trang clip> --tac-gia="<tác giả>" --vai=<vai> --nguoi="<người mẫu>" --cam-xuc=<cảm xúc> --khong-phai-ai
+ * ./reel quay-san <tên-video> <file> --link=<trang clip> --tac-gia="<tác giả>" --vai=<vai> --nguoi="<người mẫu>" --cam-xuc=<cảm xúc> --mieng=im|noi [--chau-a] --khong-phai-ai
+ * ./reel quay-san <tên-video> --link=<trang clip Pexels> --tu=<giây> --dai=<giây> --ten=<tên-file> …(như trên) — tự tải và cắt đúng đoạn
+ * ./reel quay-san <tên-video> --tai-lai                         — máy khác: tải lại mọi clip còn thiếu theo cách cắt trong sổ nguồn
  *
  * Kiểu hình `nguoi-that-quay-san` (REQUIREMENTS v0.5 §7.5): MKT tải clip người thật từ Pexels/Pixabay, Claude mở
  * trang clip kiểm không bị đánh dấu do AI tạo, rồi chạy lệnh này. Lệnh kiểm nguồn, chép vào briefs/<tên>/quay-san/
@@ -13,14 +15,14 @@ import { briefDir } from './lib/brief.ts';
 import { fileHash, safeFileName } from './lib/brief-media.ts';
 import { probeClip } from './lib/clip-check.ts';
 import { runCommand } from './lib/cli.ts';
-import { checkStockLink } from './lib/stock-footage.ts';
+import { checkStockLink, cutStockSegment, stockFileUrl, type StockCut } from './lib/stock-footage.ts';
 import type { StockEntry } from './lib/kieu-hinh-rules.ts';
 
 const args = process.argv.slice(2);
 const flag = (name: string) => args.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
 const [slug, file] = args.filter((a) => !a.startsWith('--'));
 
-await runCommand(() => {
+await runCommand(async () => {
   if (!slug) throw new Error('Cách dùng: ./reel quay-san <tên-video> [<file> --link=<trang clip> --tac-gia="<tác giả>" --vai=<vai> --nguoi="<người mẫu>" --cam-xuc=<cảm xúc> --khong-phai-ai]');
   const dir = briefDir(slug);
   if (!existsSync(dir)) throw new Error(`Chưa có video "${slug}". Tạo trước: ./reel new ${slug}`);
@@ -28,7 +30,34 @@ await runCommand(() => {
   const logPath = join(folder, STOCK_FOOTAGE.logFile);
   const log: { items: StockEntry[] } = existsSync(logPath) ? JSON.parse(readFileSync(logPath, 'utf8')) : { items: [] };
 
-  if (file) {
+  if (args.includes('--tai-lai')) {
+    let n = 0;
+    for (const it of log.items) {
+      if (existsSync(join(folder, it.file))) continue;
+      if (!it.cat) { console.log(`! ${it.file}: sổ nguồn không có cách cắt, tải tay từ ${it.link}.`); continue; }
+      mkdirSync(folder, { recursive: true });
+      cutStockSegment(await stockFileUrl(it.link), it.cat, join(folder, it.file));
+      console.log(`Đã tải lại: ${STOCK_FOOTAGE.dir}/${it.file} (${it.cat.tu}s–${it.cat.tu + it.cat.dai}s của ${it.link}).`);
+      n++;
+    }
+    console.log(n ? `Xong, tải lại ${n} clip.` : 'Đủ clip, không cần tải.');
+  }
+
+  // Tự tải đúng đoạn từ trang clip Pexels (ghi cách cắt vào sổ để máy khác tải lại được)
+  let cut: StockCut | undefined;
+  let input = file;
+  if (!file && flag('tu') !== undefined) {
+    const tu = Number(flag('tu')), dai = Number(flag('dai')), ten = safeFileName(`${flag('ten') ?? ''}.mp4`);
+    if (!(tu >= 0) || !(dai > 0) || ten === '.mp4') throw new Error('Tự tải cần --tu=<giây bắt đầu> --dai=<số giây> --ten=<tên-file>.');
+    checkStockLink(flag('link') ?? '');
+    cut = { tu, dai };
+    mkdirSync(folder, { recursive: true });
+    input = join(folder, ten);
+    cutStockSegment(await stockFileUrl(flag('link')!), cut, input);
+  }
+
+  if (input) {
+    const file = input;
     if (!existsSync(file) || !statSync(file).isFile()) throw new Error(`Không thấy file "${file}". Kéo lại file vào khung chat.`);
     const ext = extname(file).toLowerCase();
     if (!(STOCK_FOOTAGE.extensions as readonly string[]).includes(ext)) throw new Error(`File ${basename(file)} không dùng được; chỉ nhận ${STOCK_FOOTAGE.extensions.join(', ')}.`);
@@ -39,6 +68,10 @@ await runCommand(() => {
     const vai = (flag('vai') ?? '').trim(), nguoi = (flag('nguoi') ?? '').trim(), camXuc = (flag('cam-xuc') ?? '').trim();
     if (!vai || !nguoi) throw new Error('Thiếu vai (--vai=chu-quan, nhan-vien, khach…) hoặc người mẫu (--nguoi="tác giả, đặc điểm người trong clip"). Một vai phải là một người suốt video.');
     if (!(CAM_XUC as readonly string[]).includes(camXuc)) throw new Error(`Thiếu hoặc sai cảm xúc (--cam-xuc=…): ghi đúng cảm xúc đã thấy trên mặt trong đoạn dùng, một trong ${CAM_XUC.join(', ')}.`);
+    const mieng = flag('mieng') as 'im' | 'noi' | undefined;
+    if (camXuc !== 'khong-mat' && mieng !== 'im' && mieng !== 'noi') throw new Error('Thiếu --mieng=im (người trong đoạn không nói: cười, khóc, nhíu mày, nghe) hoặc --mieng=noi (đang nói). Video có giọng đọc chỉ dùng đoạn miệng im.');
+    const chauA = args.includes('--chau-a');
+    if (camXuc !== 'khong-mat' && !chauA) throw new Error('Chủ thể phải là người châu Á: xem mặt người trong clip, đúng là người châu Á thì thêm --chau-a. Không phải thì chọn clip khác.');
     if (!args.includes('--khong-phai-ai')) throw new Error('Mở trang clip, kiểm clip KHÔNG bị đánh dấu "AI generated"/do AI tạo, rồi chạy lại kèm --khong-phai-ai. Clip do AI tạo không dùng cho kiểu hình này.');
     mkdirSync(folder, { recursive: true });
     const hash = fileHash(file);
@@ -48,8 +81,9 @@ await runCommand(() => {
       for (let i = 2; existsSync(join(folder, name)); i++) name = safeFileName(`${basename(file, ext)}-${i}${ext}`);
       copyFileSync(file, join(folder, name));
     }
+    const prevCut = log.items.find((x) => x.file === name)?.cat;
     log.items = log.items.filter((x) => x.file !== name);
-    log.items.push({ file: name, source: source.id, link, author, license: source.license, aiGenerated: false, vai, nguoi, camXuc, addedAt: new Date().toISOString() });
+    log.items.push({ file: name, source: source.id, link, author, license: source.license, aiGenerated: false, vai, nguoi, camXuc, chauA: camXuc === 'khong-mat' ? undefined : true, mieng: camXuc === 'khong-mat' ? undefined : mieng, cat: cut ?? prevCut, addedAt: new Date().toISOString() });
     writeFileSync(logPath, JSON.stringify(log, null, 2) + '\n');
     console.log(`${dup ? 'Đã có, cập nhật nguồn' : 'Đã thêm'}: ${STOCK_FOOTAGE.dir}/${name} (${source.license}, ${author}).`);
   }

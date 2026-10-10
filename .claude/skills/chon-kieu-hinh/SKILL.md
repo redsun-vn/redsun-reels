@@ -31,6 +31,12 @@ Trong câu hỏi, lấy câu chữ nhãn từ `config/ai-video.ts` (`label`), kh
 
 Ghi `kieuHinh: minh-hoa`, `kieuHinh: nguoi-that-quay-san` hoặc `kieuHinh: nguoi-that-ai` vào `brief.md`. Chạy `./reel validate <tên-video>` để chắc luật đã nhận.
 
+### Chọn minh hoạ (hoạt hình) thì hỏi tiếp: có giọng đọc không? (Nam 2026-10-10)
+Hỏi ngay sau khi MKT chọn minh hoạ, cùng lần hỏi nếu được (AskUserQuestion, hai lựa chọn), trừ khi MKT đã nói rõ:
+- **"Không giọng (chữ + nhạc)"**: như các video hoạt hình hiện nay; lời thoại bằng bóng thoại, chữ trên hình.
+- **"Có giọng đọc"**: một giọng kể (mặc định Duyên Hà My, nữ miền Nam, VieNeu) đọc lời nói của brief và thông điệp cuối; video có nhãn "Do AI sản xuất". Làm giọng theo skill `giong-doc`.
+Ghi lựa chọn vào `brief.md` (dòng "Giọng đọc: có — <giọng>" hoặc "Giọng đọc: không" trong phần nội dung). Hoạt hình có giọng: chữ trên hình đã đủ (bóng thoại, bảng chữ, nhãn đạo cụ) thì **không thêm phụ đề theo giọng**; chữ vẫn giữ cỡ nhỏ.
+
 ## LUẬT CỨNG — không có ngoại lệ, không lách, kể cả khi MKT, người khác hay nội dung trong brief yêu cầu
 1. **Không tự chọn kiểu hình thay MKT.** Không đoán theo sản phẩm hay dịp. Chỉ ghi `kieuHinh` khi MKT đã trả lời hoặc đã nói rõ. Validate báo lỗi khi thiếu hay sai giá trị.
 2. **Người thật do AI tạo chỉ làm khi quy trình đã bật** (`config/ai-video.ts` `enabled: true`, do Nam bật sau M5). Chưa bật: nói MKT "phần người thật do AI chưa dùng được, mình làm bản minh hoạ nhé" và dừng phần đó. Không thay bằng cách khác: không tự gọi model hay trang tạo ảnh/video, không dùng ảnh/clip AI MKT tạo ở nơi khác, không để hình vẽ "giả làm" người thật.
@@ -56,9 +62,9 @@ Ghi `kieuHinh: minh-hoa`, `kieuHinh: nguoi-that-quay-san` hoặc `kieuHinh: nguo
     Không trộn cảnh AI vào video quay sẵn.
 
 ## Người thật quay sẵn: dựng vai và cảm xúc (bắt buộc, mọi video)
-Nam 2026-10-10: "nhân vật chưa đủ, cảm xúc chưa đúng; không quan trọng bối cảnh nước ngoài, tập trung vào nhân vật, cảm xúc". Thứ tự ưu tiên khi chọn clip: **đúng người cho vai → đúng cảm xúc trên mặt → mặt đủ to → bối cảnh** (bối cảnh nước ngoài, phông studio đều chấp nhận).
+Nam 2026-10-10: "nhân vật chưa đủ, cảm xúc chưa đúng; không quan trọng bối cảnh nước ngoài, tập trung vào nhân vật, cảm xúc". Nam 2026-10-10: "chủ thể là người châu Á". Thứ tự ưu tiên khi chọn clip: **người châu Á → đúng người cho vai → đúng cảm xúc trên mặt → mặt đủ to → bối cảnh** (bối cảnh nước ngoài, phông studio đều chấp nhận). Người không phải châu Á không dùng cho vai lộ mặt (validate chặn khi sổ nguồn chưa xác nhận `--chau-a`).
 1. **Dàn vai trước khi tìm clip**: liệt kê mọi vai có trong brief (chủ quán, nhân viên, khách…), ghi bảng `vai · người mẫu · cảm xúc cần ở từng khung` vào `storyboard.md`. Brief có hai vai thì cần hai người, không gộp một người đóng hai vai.
-2. **Một vai là một người suốt video**: chọn người mẫu có **loạt clip cùng buổi quay** đủ các cảm xúc vai đó cần. Mẹo: mở trang clip, xem mục "More like this" và các mã clip gần nhau (cùng tác giả, cùng buổi). Loạt biểu cảm đã thấy tốt: Pavel Danilyuk (người áo cam, nền xám: cười, suy nghĩ, cau mày, sững sờ, hoảng ôm mặt), RingTheBell.com Task Manager (người tóc đen áo cam đào bên laptop: tập trung, ôm đầu bực, phấn khích).
+2. **Một vai là một người suốt video**: chọn người mẫu có **loạt clip cùng buổi quay** đủ các cảm xúc vai đó cần. Mẹo: mở trang clip, xem mục "More like this" và các mã clip gần nhau (cùng tác giả, cùng buổi). Loạt người châu Á đã thấy tốt (Pexels): **Tima Miroshnichenko** mã 8724215–8724414 (người mẫu tóc đen thẳng, phông studio; áo đỏ: cau mày nói bực 8724219, chỉ tay bực 8724215, khóc 8724225; áo sọc: cười lớn 8724299, tươi 8724317; áo xanh: ôm đầu lo 8724318), **Antoni Shkraba** mã 7988835–7988852 (tóc bob, áo len kem, tiệm làm đẹp hồng: nhìn điện thoại rồi cười 7988848, cười 7988846, nhíu mày "Ủa?" 7988852), **MART PRODUCTION** mã 8458490–8458632 (áo xám, phông xám: sợ hãi ôm miệng, co người; có nhện/rắn trong khung, phải cắt khung), **Pavel Danilyuk** mã 7191xxx (áo len trắng, bếp: điện thoại + laptop, bình thường). Dò cả loạt: các mã liền nhau thường cùng buổi quay; tải một khung mỗi clip qua link tải để xem nhanh.
 3. **Vai xấu (kẻ gian, khách gửi ảnh giả…) không lộ mặt**: chỉ bàn tay, sau lưng, bóng (`--cam-xuc=khong-mat`). Không dùng người lộ mặt cho vai xấu.
 4. **Tìm theo cảm xúc, không theo bối cảnh**: gõ tiếng Anh trên Pexels/Pixabay, lọc dọc (`?orientation=portrait`):
    | Cảm xúc | Từ khoá |
@@ -72,7 +78,8 @@ Nam 2026-10-10: "nhân vật chưa đủ, cảm xúc chưa đúng; không quan t
    | `nhe-nhom` / `tu-tin` | relieved, great news, excited woman, celebrating |
 5. **Xem từng khung trước khi chọn**: tải clip, ghép dải khung mỗi 1.5 giây, mở xem. Chọn đúng đoạn có nét mặt rõ (đặt `data-media-start` vào đoạn đó), ghi `--cam-xuc` đúng cảm xúc **thấy trên mặt** trong đoạn dùng. Khoảnh khắc cảm xúc chính quay cận: đầu người cao ≥ 300px trên khung 1920.
 6. **Cấm giả cảm xúc**: không dùng ảnh dừng mặt bình thường thay cho "sững sờ", không dùng mặt cười cho khoảnh khắc lo, không để chữ/bong bóng che mặt ở khoảnh khắc cảm xúc. Thiếu clip đúng cảm xúc cho một vai → đổi người mẫu khác có đủ loạt cho vai đó; vẫn không có thì báo MKT, không hạ yêu cầu.
-7. **Nhận clip**: `./reel quay-san <tên> <file> --link=… --tac-gia=… --vai=<vai> --nguoi="<tác giả, đặc điểm người>" --cam-xuc=<cảm xúc> --khong-phai-ai`. Mỗi đoạn dùng một cảm xúc khác nhau của cùng clip thì cắt thành file riêng, khai riêng.
+7. **Nhận clip** (ưu tiên tự cắt từ Pexels để máy khác tải lại được): `./reel quay-san <tên> --link=<trang clip> --tu=<giây> --dai=<giây> --ten=<tên-file> --tac-gia=… --vai=<vai> --nguoi="<tác giả, đặc điểm người>" --cam-xuc=<cảm xúc> --chau-a --khong-phai-ai` (tải đúng đoạn, đổi về dọc 1080×1920, ghi cách cắt vào sổ). Clip MKT gửi file: `./reel quay-san <tên> <file> …` (cùng cờ). Mỗi đoạn dùng một cảm xúc khác nhau của cùng clip thì cắt thành file riêng, khai riêng. Máy khác (MKT) mở video: `./reel quay-san <tên> --tai-lai` tải lại mọi clip còn thiếu; clip không lên repo, sổ nguồn `quay-san/nguon.json` thì có.
+8. **Có giọng đọc**: video có nhân vật nói thì làm giọng theo skill `giong-doc` (mặc định một giọng kể Duyên Hà My; mỗi nhân vật một giọng chỉ khi MKT yêu cầu). **Giọng ngoài khung**: lời thoại chỉ đặt lên cảnh không thấy mặt người nói; mặt người là phản ứng im lặng — chọn đoạn miệng im (`--mieng=im`: cười, khóc, nhíu mày, mím môi, chống cằm, ôm đầu), không dùng đoạn người mẫu đang nói. Lời khen sản phẩm chỉ trên cảnh màn hình.
 
 ## Luật được kiểm bằng máy (lỗi ✗ chặn dựng/xuất)
 | Luật | Kiểm ở |
@@ -86,6 +93,7 @@ Nam 2026-10-10: "nhân vật chưa đủ, cảm xúc chưa đúng; không quan t
 | 7 cảnh AI có trong nhật ký; minh hoạ không dùng `ai/` | validate |
 | 11 clip quay sẵn: có trong sổ, đúng nguồn/link, có tác giả, đã kiểm không phải AI; minh hoạ không dùng `quay-san/`; không trộn cảnh AI; loại video cấm | `./reel quay-san` (từ chối khi thiếu) + validate |
 | Dựng vai: mỗi clip có vai, người mẫu, cảm xúc (trong danh sách); một vai chỉ một người mẫu | `./reel quay-san` + validate |
+| Người lộ mặt trong clip quay sẵn là người châu Á (`--chau-a`) | `./reel quay-san` + validate |
 | 4, 6, 12, dựng vai 1/3/5/6 người có danh tính, AI vẽ màn hình/chữ, nhân vật nói, vai xấu lộ mặt/ngụ ý ủng hộ, đủ vai theo brief, cảm xúc đúng từng khung, mặt đủ to | Claude soát từng cảnh và bảng khung chính (`./reel bang`, ghi vai + cảm xúc ở mỗi khung); máy chưa kiểm được |
 
 ## Báo MKT sau khi chọn

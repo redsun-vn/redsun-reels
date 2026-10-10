@@ -147,5 +147,62 @@
     tl.fromTo(el, { opacity: peak || 0.6 }, { opacity: 0, duration: 0.18, ease: "power2.out", immediateRender: false }, at);
   };
 
+  /*
+   * Giọng đọc (skill giong-doc): bước dựng ghi giờ thật của từng câu vào window.RS_LOI = { id: { at, dur, loi } }
+   * (đo từ file giọng đã chọn). Phụ đề và chữ nhấn lấy giờ từ đây nên luôn khớp giọng, kể cả khi tạo lại giọng.
+   */
+  RS.loi = function (id) {
+    var L = (window.RS_LOI || {})[id];
+    if (!L) throw new Error("Không có câu giọng \"" + id + "\" (loi-doc.json).");
+    return { at: L.at, dur: L.dur, end: L.at + L.dur, loi: L.loi };
+  };
+  /** Giây giọng đọc tới cụm chữ `cum` trong câu `id` (ước theo vị trí chữ trong câu; thẻ [..] không tính). */
+  RS.loiAt = function (id, cum) {
+    var L = RS.loi(id), text = L.loi.replace(/\[[^\]]*\]/g, " ").replace(/\s+/g, " ").trim();
+    var i = text.toLowerCase().indexOf(String(cum).toLowerCase());
+    if (i < 0) throw new Error("Câu \"" + id + "\" không có cụm \"" + cum + "\".");
+    return L.at + (i / Math.max(1, text.length)) * L.dur;
+  };
+  /** Phụ đề lời đọc: mỗi <div class="rs-sub rs-loi" data-loi="<id>"> hiện đúng lúc câu bắt đầu, tắt khi đọc xong. */
+  RS.loiSubs = function (tl) {
+    document.querySelectorAll(".rs-sub.rs-loi[data-loi]").forEach(function (el) {
+      var L = RS.loi(el.getAttribute("data-loi"));
+      tl.fromTo(el, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.12, ease: "power2.out" }, L.at);
+      tl.to(el, { opacity: 0, duration: 0.12, ease: "power1.in" }, L.end + 0.12);
+    });
+  };
+
+  /** Bàn tay giơ ngón trỏ (SVG) vào phần tử `el` (class rs-tay). Đầu ngón ở 40% ngang, 4% dọc của khung tay. */
+  RS.tayBam = function (el) {
+    el = typeof el === "string" ? document.querySelector(el) : el;
+    el.classList.add("rs-tay");
+    el.innerHTML = '<svg viewBox="0 0 100 140" aria-hidden="true">' +
+      '<rect class="tay-ao" x="24" y="114" width="56" height="26" rx="6"/>' +
+      '<rect class="da" x="30" y="4" width="20" height="74" rx="10"/>' +
+      '<rect class="mong" x="34" y="7" width="12" height="13" rx="5"/>' +
+      '<rect class="da" x="20" y="58" width="64" height="62" rx="22"/>' +
+      '<circle class="bong" cx="60" cy="66" r="11"/><circle class="da" cx="60" cy="64" r="11"/>' +
+      '<circle class="bong" cx="75" cy="72" r="10"/><circle class="da" cx="75" cy="70" r="10"/>' +
+      '<rect class="da" x="6" y="66" width="20" height="44" rx="10" transform="rotate(-28 16 88)"/>' +
+      '</svg>';
+    return el;
+  };
+  /**
+   * Bấm: tay nhấn xuống rồi nhả, nút (nếu có) lún nhẹ, vòng gợn toả ở đầu ngón. `hand` đã gọi RS.tayBam, nằm cùng lớp cha
+   * với vòng gợn (tạo tự động).
+   */
+  RS.bam = function (tl, hand, at, target) {
+    hand = typeof hand === "string" ? document.querySelector(hand) : hand;
+    var gon = document.createElement("div");
+    gon.className = "rs-gon";
+    gon.style.left = hand.offsetLeft + hand.offsetWidth * 0.4 + "px";
+    gon.style.top = hand.offsetTop + hand.offsetHeight * 0.04 + "px";
+    hand.parentNode.insertBefore(gon, hand);
+    tl.to(hand, { y: "+=12", scale: 0.94, duration: 0.08, yoyo: true, repeat: 1, ease: "power2.in" }, at - 0.08);
+    if (target) tl.to(target, { scale: 0.95, duration: 0.08, yoyo: true, repeat: 1, ease: "power2.in" }, at - 0.08);
+    tl.fromTo(gon, { scale: 0.2, opacity: 0.95 }, { scale: 2.4, opacity: 0, duration: 0.5, ease: "power2.out", immediateRender: false }, at);
+    tl.set(gon, { opacity: 0 }, 0);
+  };
+
   window.RS = RS;
 })();

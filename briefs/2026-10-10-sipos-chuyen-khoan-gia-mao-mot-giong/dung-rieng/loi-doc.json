@@ -1,0 +1,92 @@
+{
+  "giongVung": "nam",
+  "dan": {
+    "nguoi-dan": {
+      "giong": "Duyên Hà My",
+      "gioi": "nu",
+      "hoSo": "Một giọng kể duy nhất: nữ Sài Gòn, kiểu TikToker kể chuyện, rõ ràng, gần gũi"
+    }
+  },
+  "cau": [
+    {
+      "id": "khach-chuyen",
+      "vai": "nguoi-dan",
+      "at": 0.25,
+      "loi": "Khách chìa ảnh: “Em chuyển rồi nha chị!”",
+      "camXuc": "binh-thuong",
+      "phongCach": "natural"
+    },
+    {
+      "id": "dan-tin-anh",
+      "vai": "nguoi-dan",
+      "at": 3.15,
+      "loi": "Bán cả ngày, ai cũng tin cái ảnh đó.",
+      "camXuc": "binh-thuong",
+      "phongCach": "natural"
+    },
+    {
+      "id": "chu-troi-dat",
+      "vai": "nguoi-dan",
+      "at": 5.6,
+      "loi": "Tối kiểm lại… trời đất ơi!",
+      "camXuc": "lo-lang",
+      "phongCach": "natural"
+    },
+    {
+      "id": "dan-thieu",
+      "vai": "nguoi-dan",
+      "at": 8.25,
+      "loi": "Đếm đi đếm lại, vẫn thiếu một khoản.",
+      "camXuc": "lo-lang",
+      "phongCach": "natural"
+    },
+    {
+      "id": "nv-ua",
+      "vai": "nguoi-dan",
+      "at": 11,
+      "loi": "Soi kỹ mới thấy: ảnh chụp sẵn trong máy!",
+      "camXuc": "sung-sot",
+      "phongCach": "natural"
+    },
+    {
+      "id": "chu-anh-gia",
+      "vai": "nguoi-dan",
+      "at": 14.7,
+      "loi": "Hóa ra là ảnh giả!",
+      "camXuc": "buon",
+      "phongCach": "natural"
+    },
+    {
+      "id": "dan-anh-gia",
+      "vai": "nguoi-dan",
+      "at": 16.3,
+      "loi": "Ảnh chuyển khoản mà không phải chuyển khoản thật.",
+      "camXuc": "buon",
+      "phongCach": "natural"
+    },
+    {
+      "id": "chu-man-hinh",
+      "vai": "nguoi-dan",
+      "at": 19.75,
+      "loi": "Giờ thì khác nè: đơn hàng với doanh thu theo ca, nằm gọn một màn hình luôn á!",
+      "camXuc": "cuoi",
+      "phongCach": "natural"
+    },
+    {
+      "id": "dan-kiem-nhanh",
+      "vai": "nguoi-dan",
+      "at": 25.25,
+      "loi": "Kiểm cho nhanh, khỏi dò từng dòng.",
+      "camXuc": "nhe-nhom",
+      "phongCach": "natural"
+    },
+    {
+      "id": "cta",
+      "vai": "nguoi-dan",
+      "at": 27.5,
+      "loi": "SIPOS. Nhắn tin để được tư vấn nha!",
+      "camXuc": "tu-tin",
+      "phongCach": "natural"
+    }
+  ]
+}

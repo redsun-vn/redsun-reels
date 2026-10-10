@@ -2,7 +2,7 @@
  * Dựng một video từ thư mục brief: validate → props.json → stage project → hyperframes lint + check.
  * Dùng chung cho build, preview, render, make và render test.
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { MusicPurpose } from '../../config/music-manifest.ts';
 import type { Script } from '../../config/script.schema.ts';
@@ -12,7 +12,8 @@ import { REPO_ROOT, runHyperframes, stripAnsi } from './hyperframes-env.ts';
 import { injectMusicDucking } from './music-ducking.ts';
 import { stageProject } from './stage-project.ts';
 import { CUSTOM_DIR } from './custom-video.ts';
-import { AI_VIDEO } from '../../config/ai-video.ts';
+import { AI_VIDEO, aiLabelFor } from '../../config/ai-video.ts';
+import { VOICE } from '../../config/voice.ts';
 import { STOCK_FOOTAGE } from '../../config/stock-footage.ts';
 import { mediaDir } from './brief-media.ts';
 import { formatIssues, hasErrors, type Issue, validateVideo } from './validate-video.ts';
@@ -24,15 +25,17 @@ export interface BuiltVideo {
   stageDir: string;
   /** Không có với video dựng riêng. */
   varsFile?: string;
-  /** Video có người thật do AI tạo (brief kieuHinh "nguoi-that-ai"): xuất kèm dấu AI trong siêu dữ liệu. */
-  aiContent: boolean;
+  /** Nhãn AI khi video có hình người thật AI hoặc giọng đọc AI: xuất kèm dấu AI trong siêu dữ liệu. */
+  aiLabel: { label: string; caption: string } | null;
   warnings: Issue[];
 }
 
 export class BuildError extends Error {}
 
 export function buildVideo(opts: { dir: string; name: string; musicPurpose: MusicPurpose; debugSafeZone?: boolean; check?: boolean; writeProps?: boolean }): BuiltVideo {
-  const { script, brief, issues } = validateVideo(opts.dir, { musicPurpose: opts.musicPurpose });
+  // Soát hình (check: false, ./reel snap) được chạy khi giọng đọc chưa đủ câu; xuất video thì không
+  const voiceDraft = opts.check === false;
+  const { script, brief, issues } = validateVideo(opts.dir, { musicPurpose: opts.musicPurpose, voiceDraft });
   if (hasErrors(issues) || !script) throw new BuildError(`Kịch bản chưa dựng được:\n${formatIssues(issues)}`);
 
   const props = buildProps(REPO_ROOT, script, brief?.occasion ?? undefined);
@@ -51,6 +54,7 @@ export function buildVideo(opts: { dir: string; name: string; musicPurpose: Musi
     mediaDir: custom ? mediaDir(opts.dir) : undefined,
     aiDir: custom ? join(opts.dir, AI_VIDEO.dir) : undefined,
     stockDir: custom ? join(opts.dir, STOCK_FOOTAGE.dir) : undefined,
+    voiceDraft,
   });
   // Dựng riêng: composition tự chứa dữ liệu, không có biến; template: dữ liệu video truyền qua variables.json
   let varsFile: string | undefined;
@@ -69,7 +73,7 @@ export function buildVideo(opts: { dir: string; name: string; musicPurpose: Musi
     if (check.status !== 0) throw new BuildError(`Kiểm tra bố cục (hyperframes check) chưa đạt:\n${stripAnsi(check.stdout + check.stderr)}`);
   }
 
-  return { name: opts.name, script, props, stageDir, varsFile, warnings: issues, aiContent: brief?.kieuHinh === 'nguoi-that-ai' };
+  return { name: opts.name, script, props, stageDir, varsFile, warnings: issues, aiLabel: aiLabelFor(brief?.kieuHinh === 'nguoi-that-ai', custom && existsSync(join(opts.dir, CUSTOM_DIR, VOICE.file))) };
 }
 
 /**

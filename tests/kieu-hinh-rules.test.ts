@@ -1,7 +1,7 @@
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
-import { AI_VIDEO } from '../config/ai-video.ts';
+import { AI_LABEL_ON_SCREEN, AI_VIDEO, aiLabelFor } from '../config/ai-video.ts';
 import type { Script } from '../config/script.schema.ts';
 import { aiRefs, aiRuleIssues, kieuHinhIssue, labelIssues, stockLog } from '../scripts/lib/kieu-hinh-rules.ts';
 import { checkStockLink } from '../scripts/lib/stock-footage.ts';
@@ -17,7 +17,7 @@ const script = (over: Partial<Script> = {}) => ({
   ...over,
 }) as unknown as Script;
 
-const LABEL = `<div class="rs-nhan-ai" data-nhan-ai>${AI_VIDEO.label}</div>`;
+const LABEL = `<div class="rs-nhan-ai" data-nhan-ai>${AI_LABEL_ON_SCREEN}</div>`;
 const page = (inner: string, css = '', js = '') => `<!doctype html><html lang="vi"><head><meta charset="utf-8" /><style>${css}</style></head><body>
 <div id="root" data-composition-id="main" data-duration="12">
   <div id="sA" class="clip" data-start="0" data-duration="12"><video src="ai/canh-1.mp4"></video></div>
@@ -63,8 +63,8 @@ describe('luật cứng kiểu hình', () => {
     expect(labelIssues(page(LABEL))).toEqual([]);
     expect(labelIssues(page('')).join('\n')).toContain('Thiếu nhãn AI');
     expect(labelIssues(page(`<div class="rs-nhan-ai" data-nhan-ai>Có dùng AI</div>`)).join('\n')).toContain('đúng chữ');
-    expect(labelIssues(page(`<div class="x" data-nhan-ai>${AI_VIDEO.label}</div>`)).join('\n')).toContain('class');
-    expect(labelIssues(page(`<div class="rs-nhan-ai" data-nhan-ai style="opacity:0">${AI_VIDEO.label}</div>`)).join('\n')).toContain('style riêng');
+    expect(labelIssues(page(`<div class="x" data-nhan-ai>${AI_LABEL_ON_SCREEN}</div>`)).join('\n')).toContain('class');
+    expect(labelIssues(page(`<div class="rs-nhan-ai" data-nhan-ai style="opacity:0">${AI_LABEL_ON_SCREEN}</div>`)).join('\n')).toContain('style riêng');
     expect(labelIssues(page('').replace('</div>\n  \n', `${LABEL}</div>\n`)).join('\n')).toContain('con trực tiếp');
     expect(labelIssues(page(LABEL, '.rs-nhan-ai{opacity:0}')).join('\n')).toContain('CSS');
     expect(labelIssues(page(LABEL, '', 'tl.to("[data-nhan-ai]", { opacity: 0 });')).join('\n')).toContain('JS');
@@ -73,7 +73,7 @@ describe('luật cứng kiểu hình', () => {
   it('cảnh AI phải có trong nhật ký tạo; caption phải mở đầu bằng nhãn', () => {
     const noLog = msgs(aiRuleIssues({ dir: briefDir(), kieuHinh: 'nguoi-that-ai', script: script(), html: page(LABEL) }));
     expect(noLog).toContain('nhật ký');
-    const goodPost = buildPost({ script: script(), hashtags: ['#SIPOS'], aiContent: true });
+    const goodPost = buildPost({ script: script(), hashtags: ['#SIPOS'], aiLabel: aiLabelFor(true, false) });
     expect(goodPost).toContain(AI_VIDEO.captionLabel);
     expect(goodPost).toContain('khai báo nội dung AI');
     const ok = msgs(aiRuleIssues({ dir: briefDir(LOG, goodPost), kieuHinh: 'nguoi-that-ai', script: script(), html: page(LABEL) }));
@@ -98,8 +98,8 @@ describe('luật cứng kiểu hình', () => {
     writeFileSync(join(dir, 'quay-san', 'la.mp4'), '');
     for (const f of ['khac.mp4', 'thieu.mp4']) writeFileSync(join(dir, 'quay-san', f), '');
     writeFileSync(join(dir, 'quay-san', 'nguon.json'), JSON.stringify({ items: [
-      { file: 'quay.mp4', source: 'pexels', link: 'https://www.pexels.com/video/shop-8358964/', author: 'Tác giả A', license: 'Pexels License', aiGenerated: false, vai: 'chu-quan', nguoi: 'A, tóc dài', camXuc: 'lo-lang', addedAt: 'x' },
-      { file: 'khac.mp4', source: 'pexels', link: 'https://www.pexels.com/video/other-123/', author: 'B', license: 'Pexels License', aiGenerated: false, vai: 'chu-quan', nguoi: 'B, tóc ngắn', camXuc: 'cuoi', addedAt: 'x' },
+      { file: 'quay.mp4', source: 'pexels', link: 'https://www.pexels.com/video/shop-8358964/', author: 'Tác giả A', license: 'Pexels License', aiGenerated: false, vai: 'chu-quan', nguoi: 'A, tóc dài', camXuc: 'lo-lang', chauA: true, addedAt: 'x' },
+      { file: 'khac.mp4', source: 'pexels', link: 'https://www.pexels.com/video/other-123/', author: 'B', license: 'Pexels License', aiGenerated: false, vai: 'chu-quan', nguoi: 'B, tóc ngắn', camXuc: 'cuoi', chauA: true, addedAt: 'x' },
       { file: 'thieu.mp4', source: 'pexels', link: 'https://www.pexels.com/video/x-9/', author: 'C', license: 'Pexels License', aiGenerated: false, addedAt: 'x' },
       { file: 'la.mp4', source: 'pixabay', link: 'https://pixabay.com/videos/x-1/', author: 'B', license: 'Pixabay Content License', aiGenerated: true, addedAt: 'x' },
     ] }));
@@ -113,6 +113,31 @@ describe('luật cứng kiểu hình', () => {
     writeFileSync(join(dir, 'quay-san', 'khong-ghi.mp4'), '');
     expect(msgs(aiRuleIssues({ dir, kieuHinh: 'nguoi-that-quay-san', script: script(), html: html('quay-san/khong-ghi.mp4') }))).toContain('sổ nguồn');
     expect(msgs(aiRuleIssues({ dir, kieuHinh: 'minh-hoa', script: script(), html: html('quay-san/quay.mp4') }))).toContain('clip quay sẵn');
+    // Người lộ mặt phải là người châu Á; cận bàn tay (khong-mat) thì không cần
+    writeFileSync(join(dir, 'quay-san', 'tay.mp4'), '');
+    writeFileSync(join(dir, 'quay-san', 'nguon.json'), JSON.stringify({ items: [
+      { file: 'quay.mp4', source: 'pexels', link: 'https://www.pexels.com/video/shop-8358964/', author: 'A', license: 'Pexels License', aiGenerated: false, vai: 'chu-quan', nguoi: 'A', camXuc: 'cuoi', addedAt: 'x' },
+      { file: 'tay.mp4', source: 'pexels', link: 'https://www.pexels.com/video/hand-77/', author: 'D', license: 'Pexels License', aiGenerated: false, vai: 'khach', nguoi: 'D, chỉ bàn tay', camXuc: 'khong-mat', addedAt: 'x', cat: { tu: 0, dai: 3 } },
+    ] }));
+    expect(msgs(aiRuleIssues({ dir, kieuHinh: 'nguoi-that-quay-san', script: script(), html: html('quay-san/quay.mp4') }))).toContain('người châu Á');
+    expect(aiRuleIssues({ dir, kieuHinh: 'nguoi-that-quay-san', script: script(), html: html('quay-san/tay.mp4') })).toEqual([]);
+    // Máy khác chưa có clip nhưng sổ có cách cắt: chỉ cách tải lại
+    rmSync(join(dir, 'quay-san', 'tay.mp4'));
+    expect(msgs(aiRuleIssues({ dir, kieuHinh: 'nguoi-that-quay-san', script: script(), html: html('quay-san/tay.mp4') }))).toContain('--tai-lai');
+  });
+
+  it('nhãn AI theo nội dung AI: hình, giọng, hoặc cả hai', () => {
+    expect(aiLabelFor(false, false)).toBeNull();
+    expect(aiLabelFor(true, false)).toEqual({ label: 'Do AI sản xuất', caption: `⚠️ ${AI_VIDEO.label}.` });
+    expect(aiLabelFor(false, true)).toEqual({ label: 'Do AI sản xuất', caption: '⚠️ Video có giọng đọc do AI tạo.' });
+    expect(aiLabelFor(true, true)?.caption).toBe('⚠️ Video có hình ảnh và giọng đọc do AI tạo.');
+    const dir = briefDir();
+    const custom = script({ build: 'custom' });
+    const page = (label: string) => `<div data-composition-id="main"><div class="clip"></div><div class="rs-nhan-ai" data-nhan-ai>${label}</div></div>`;
+    expect(msgs(aiRuleIssues({ dir, kieuHinh: 'minh-hoa', script: custom, html: page('Video có giọng đọc do AI tạo'), hasVoice: true }))).toContain('Do AI sản xuất');
+    expect(aiRuleIssues({ dir, kieuHinh: 'minh-hoa', script: custom, html: page(AI_LABEL_ON_SCREEN), hasVoice: true })).toEqual([]);
+    expect(msgs(aiRuleIssues({ dir, kieuHinh: 'minh-hoa', script: script({ build: undefined }), html: '', hasVoice: true }))).toContain('dựng riêng');
+    expect(buildPost({ script: script(), hashtags: [], aiLabel: aiLabelFor(false, true) })).toContain('⚠️ Video có giọng đọc do AI tạo.');
   });
 
   it('caption ghi nguồn clip quay sẵn', () => {

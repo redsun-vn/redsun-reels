@@ -15,12 +15,13 @@ import { factIssues } from './fact-check.ts';
 import { assetPaths } from './build-props.ts';
 import { clipIssues } from './clip-check.ts';
 import { mediaWarnings } from './brief-media.ts';
-import { compositionPath, customIssues } from './custom-video.ts';
+import { compositionPath, CUSTOM_DIR, customIssues } from './custom-video.ts';
+import { VOICE } from '../../config/voice.ts';
 import { motionIssues, repetitionIssues } from './motion-check.ts';
 import { recentForBrief } from './recent-videos.ts';
 import { getOccasion, OCCASIONS } from '../../config/occasions.ts';
 import { ScriptSchema, type Script } from '../../config/script.schema.ts';
-import { getVideoType, type SceneRole, type VideoType } from '../../config/video-types.ts';
+import { NO_PAIN_TYPES, REEL_SEC, getVideoType, reelRange, type SceneRole, type VideoType } from '../../config/video-types.ts';
 import { readBriefFile, readScriptFile } from './brief.ts';
 import { REPO_ROOT } from './hyperframes-env.ts';
 
@@ -71,7 +72,7 @@ export function hookIssues(hook: string): Issue[] {
   return out;
 }
 
-export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose } = { musicPurpose: 'production' }): ValidationResult {
+export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose; voiceDraft?: boolean } = { musicPurpose: 'production' }): ValidationResult {
   const issues: Issue[] = [];
 
   let brief: Brief | undefined;
@@ -115,6 +116,39 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose } 
     issues.push(warn(`Loại "${type.name}" thường không dùng cho sản phẩm "${script.product}".`));
   }
 
+  // LUẬT SỐ 1 — 3 giây đầu, chặn ngay ở bước kịch bản (references/chon-diem-hap-dan.md)
+  const dhd = script.concept.diemHapDan;
+  if (!dhd) issues.push(err('LUẬT SỐ 1 — 3 giây đầu: script.json thiếu concept.diemHapDan { ungVien, diem } (điểm hấp dẫn đã chọn từ brief và điểm 5 tiêu chí).'));
+  else if (dhd.diem < 20) issues.push(err(`LUẬT SỐ 1 — 3 giây đầu: điểm hấp dẫn "${dhd.ungVien}" chỉ ${dhd.diem}/25 (cần ≥ 20). Chọn ứng viên mạnh hơn trong brief.`));
+  const conceptsFile = join(dir, 'concepts.md');
+  if (!existsSync(conceptsFile) || !/^##\s*Điểm hấp dẫn/m.test(readFileSync(conceptsFile, 'utf8'))) issues.push(err('LUẬT SỐ 1 — 3 giây đầu: concepts.md thiếu mục "## Điểm hấp dẫn" (bảng ứng viên + điểm 5 tiêu chí).'));
+  const hookScene = script.scenes[0];
+  // Cảnh hook gói trong 3,5 giây; hook 8 từ không giọng được vừa đủ thời gian đọc chữ hook (3,7 giây), không hơn
+  const hookCap = hookScene ? Math.max(3.5, sceneDurationSec(hookScene.onScreenText)) : 3.5;
+  if (hookScene && hookScene.durationSec > hookCap) issues.push(err(`LUẬT SỐ 1 — 3 giây đầu: cảnh hook "${hookScene.id}" dài ${hookScene.durationSec}s; hook phải gói trong ${String(hookCap).replace('.', ',')} giây (mở bằng điểm mạnh nhất, kể lại sau).`));
+  if (countWords(script.hook.replace(/\n/g, ' ')) > 8) issues.push(err(`LUẬT SỐ 1 — 3 giây đầu: hook "${script.hook}" quá 8 từ.`));
+
+  // NỖI ĐAU → GIẢI PHÁP (Nam 2026-10-10: "phải nổi bật được nỗi đau của khách hàng và cách sản phẩm giải quyết nó"), chặn ở bước kịch bản
+  if (!NO_PAIN_TYPES.has(type.id)) {
+    const { noiDau, giaiPhap } = script.concept;
+    const at = (id: string) => script.scenes.findIndex((s) => s.id === id);
+    const startOf = (i: number) => script.scenes.slice(0, i).reduce((sum, s) => sum + s.durationSec, 0);
+    const len = script.scenes.reduce((sum, s) => sum + s.durationSec, 0);
+    if (!noiDau) issues.push(err('Nỗi đau → giải pháp: script.json thiếu concept.noiDau { khach, canh } (nỗi đau cụ thể của khách trong brief và cảnh làm nó nổi bật).'));
+    if (!giaiPhap) issues.push(err('Nỗi đau → giải pháp: script.json thiếu concept.giaiPhap { cach, canh } (sản phẩm giải quyết nỗi đau đó thế nào và cảnh cho thấy).'));
+    if (noiDau && giaiPhap) {
+      const p = at(noiDau.canh), g = at(giaiPhap.canh);
+      if (p < 0) issues.push(err(`Nỗi đau → giải pháp: không có cảnh "${noiDau.canh}" (concept.noiDau.canh).`));
+      else if (!['hook', 'problem'].includes(script.scenes[p].role)) issues.push(err(`Nỗi đau → giải pháp: cảnh nỗi đau "${noiDau.canh}" phải là hook hoặc problem.`));
+      if (g < 0) issues.push(err(`Nỗi đau → giải pháp: không có cảnh "${giaiPhap.canh}" (concept.giaiPhap.canh).`));
+      else if (script.scenes[g].role !== 'solution') issues.push(err(`Nỗi đau → giải pháp: cảnh giải pháp "${giaiPhap.canh}" phải là solution.`));
+      if (p >= 0 && g >= 0 && g <= p) issues.push(err('Nỗi đau → giải pháp: cảnh giải pháp phải đến sau cảnh nỗi đau.'));
+      if (g >= 0 && startOf(g) > len * 0.7 + 1e-6) issues.push(err(`Nỗi đau → giải pháp: giải pháp bắt đầu ở giây ${startOf(g).toFixed(1)}, quá muộn (phải trước 70% video, ${(len * 0.7).toFixed(1)} giây) để người xem kịp thấy sản phẩm giải quyết.`));
+      const solSec = script.scenes.filter((s) => s.role === 'solution').reduce((sum, s) => sum + s.durationSec, 0);
+      if (solSec + 1e-6 < len * 0.2) issues.push(err(`Nỗi đau → giải pháp: cảnh giải pháp chỉ ${solSec.toFixed(1)} giây; cần ≥ 20% video (${(len * 0.2).toFixed(1)} giây) để thấy rõ sản phẩm giải quyết thế nào.`));
+    }
+  }
+
   // Hook, vai trò cảnh, CTA
   issues.push(...hookIssues(script.hook));
   const roles = script.scenes.map((s) => s.role);
@@ -128,14 +162,17 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose } 
   const ctaScene = script.scenes.find((s) => s.role === 'cta');
   if (ctaScene && ctaScene.onScreenText !== script.cta) issues.push(err('Chữ của cảnh CTA phải trùng với trường "cta".'));
 
-  // Thời lượng
+  // Thời lượng. Video có giọng đọc AI: lời phụ (subText) là lời nói, phụ đề chạy theo giọng; cảnh chỉ cần đủ đọc câu nhấn
+  // (giọng đọc hết trước cuối video kiểm ở customIssues)
+  const hasVoice = script.build === 'custom' && existsSync(join(dir, CUSTOM_DIR, VOICE.file));
   const total = script.scenes.reduce((sum, s) => sum + s.durationSec, 0);
   for (const s of script.scenes) {
-    const min = sceneDurationSec(s.onScreenText, s.subText);
+    const min = hasVoice ? sceneDurationSec(s.onScreenText) : sceneDurationSec(s.onScreenText, s.subText);
     if (s.durationSec + 1e-9 < min) issues.push(err(`Cảnh "${s.id}" dài ${s.durationSec}s, cần tối thiểu ${min}s để kịp đọc chữ.`));
   }
-  if (total < type.minSec || total > type.maxSec) {
-    issues.push(err(`Tổng thời lượng ${total.toFixed(1)}s nằm ngoài khoảng ${type.minSec}–${type.maxSec}s của "${type.name}".`));
+  const range = reelRange(type);
+  if (total < range.min || total > range.max) {
+    issues.push(err(`Tổng thời lượng ${total.toFixed(1)}s nằm ngoài khoảng ${range.min}–${range.max}s (loại "${type.name}", luật cứng reel ${REEL_SEC.min}–${REEL_SEC.max} giây).`));
   }
   if (Math.abs(total - brief.duration) > brief.duration * DURATION_TOLERANCE) {
     issues.push(err(`Tổng thời lượng ${total.toFixed(1)}s lệch quá 10% so với brief (${brief.duration}s).`));
@@ -189,14 +226,14 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose } 
   if (script.build === 'custom') {
     // Dựng riêng: bố cục/chuyển động do composition quyết định; kiểm composition (cấu trúc, nhạc, chống bịa chữ)
     const totalSec = script.scenes.reduce((sum, s) => sum + s.durationSec, 0);
-    issues.push(...customIssues(dir, script, briefBody, Math.round(totalSec * 1000) / 1000));
+    issues.push(...customIssues(dir, script, briefBody, Math.round(totalSec * 1000) / 1000, opts.voiceDraft));
   } else {
     issues.push(...motionIssues(script));
     issues.push(...repetitionIssues(script, recentForBrief(dir)));
   }
   // Kiểu hình: luật cứng minh hoạ / người thật do AI tạo (không có cờ bỏ qua)
   const customHtml = script.build === 'custom' && existsSync(compositionPath(dir)) ? readFileSync(compositionPath(dir), 'utf8') : '';
-  issues.push(...aiRuleIssues({ dir, kieuHinh: brief.kieuHinh, script, html: customHtml }));
+  issues.push(...aiRuleIssues({ dir, kieuHinh: brief.kieuHinh, script, html: customHtml, hasVoice }));
   if (brief.occasion && !getOccasion(brief.occasion)) {
     issues.push(warn(`Dịp lễ "${brief.occasion}" chưa có trong lịch, nên không tự chọn phong cách theo dịp. Có: ${OCCASIONS.map((o) => o.id).join(', ')}.`));
   }
@@ -237,7 +274,13 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose } 
   }
 
   if (!script.selfScore) issues.push(warn('Kịch bản chưa có điểm tự chấm (selfScore). Claude cần tự chấm ≥ 85 trước khi đưa MKT duyệt.'));
-  else if (script.selfScore.total < 85) {
+  else {
+    // LUẬT SỐ 1 — 3 giây đầu (references/chon-diem-hap-dan.md): điểm hook tự chấm ≥ 20/25, ghi "Hook N/25" trong notes
+    const hook = /Hook\s*(\d+(?:[.,]\d+)?)\s*\/\s*25/i.exec(script.selfScore.notes ?? '');
+    if (!hook) issues.push(err('LUẬT SỐ 1 — 3 giây đầu: selfScore.notes phải ghi "Hook N/25" (điểm của điểm hấp dẫn đã chọn, chon-diem-hap-dan.md).'));
+    else if (Number(hook[1].replace(',', '.')) < 20) issues.push(err(`LUẬT SỐ 1 — 3 giây đầu: hook ${hook[1]}/25 dưới 20. Chọn điểm hấp dẫn mạnh hơn trong brief (chon-diem-hap-dan.md).`));
+  }
+  if (script.selfScore && script.selfScore.total < 85) {
     issues.push(err(`Điểm tự chấm ${script.selfScore.total}/100 dưới ngưỡng 85. Sửa kịch bản trước khi đưa MKT duyệt.`));
   }
 

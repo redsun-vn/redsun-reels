@@ -2,7 +2,11 @@
   "concept": {
     "title": "Mẫu thu-gian-asmr",
     "bigIdea": "Fixture kiểm template M3",
-    "hookAngle": "thuong-hieu"
+    "hookAngle": "thuong-hieu",
+    "diemHapDan": {
+      "ungVien": "Một buổi sáng ở quán",
+      "diem": 21
+    }
   },
   "videoType": "thu-gian-asmr",
   "style": "thu-gian",
@@ -27,7 +31,7 @@
         "type": "asset",
         "src": "assets/_demo/screen-record-test.mp4"
       },
-      "durationSec": 4.5
+      "durationSec": 8.0
     },
     {
       "id": "c2-cta",
@@ -43,6 +47,6 @@
   "music": "test-pad-01",
   "selfScore": {
     "total": 90,
-    "notes": "Fixture kiểm template, không đăng."
+    "notes": "Hook 21/25. Fixture kiểm template, không đăng."
   }
 }

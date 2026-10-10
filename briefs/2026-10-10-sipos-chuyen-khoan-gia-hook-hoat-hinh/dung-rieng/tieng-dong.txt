@@ -1,0 +1,42 @@
+# Tiếng động: giây  tên  âm-lượng  # ghi chú. Phách 0.533s (112.5 BPM). LUẬT SỐ 1: dập GIẢ ở 0.70.
+0.05 glitch 0.35         # ảnh chuyển khoản
+0.70 boom 0.7            # HOOK: dấu GIẢ dập
+0.70 dap-dau 0.6
+1.72 whoosh-nhanh 0.25   # chủ tiệm buồn trong đêm
+3.88 thump 0.25          # ôm đầu
+4.59 whoosh 0.3          # "Chuyện là…" tua lại
+5.10 ding 0.25           # tick trên điện thoại
+5.53 whoosh 0.3          # lùi ra quầy
+6.30 pop 0.4             # "Em chuyển rồi nha"
+8.70 pop 0.35            # "Dạ vâng ạ."
+9.70 whoosh-nhanh 0.2    # khách đi
+9.86 whoosh 0.3          # trời tối
+10.31 thump 0.4          # sổ tiền vào
+10.55 tick 0.3
+10.80 tick 0.3
+11.05 tick 0.3
+11.91 sai 0.45           # dòng "Không thấy"
+12.45 whoosh-nhanh 0.25  # sổ rơi, chủ tiệm cau mày
+12.98 pop 0.25           # dấu hỏi
+13.16 pop 0.25
+13.34 pop 0.25
+14.05 whoosh 0.35        # chớp, vào ảnh
+14.58 thump 0.35         # ảnh chụp
+14.65 whoosh-nhanh 0.25  # kính lúp
+lang 15.17 15.67         # lặng trước khi lộ ảnh trong thư viện
+15.67 boom 0.95          # lộ ảnh giả, dấu GIẢ
+15.67 dap-dau 0.7
+15.67 glitch 0.5
+15.85 whoosh-nhanh 0.25  # nhân viên bật lên
+17.81 thump 0.3          # vò ảnh
+18.43 sparkle 0.4        # mở tròn sang sáng
+18.88 whoosh 0.35        # điện thoại SIPOS vào
+20.97 hoi-tho 0.35       # chủ tiệm thở phào
+22.04 tap 0.35
+23.10 coin 0.3
+24.78 whoosh 0.35        # mở tròn teal
+25.23 sparkle 0.4        # logo
+27.33 tap 0.5
+27.33 pop 0.3
+28.40 tap 0.45
+29.00 tap 0.4

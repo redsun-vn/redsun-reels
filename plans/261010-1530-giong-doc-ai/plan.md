@@ -1,5 +1,5 @@
 ---
-status: in-progress
+status: done
 created: 2026-10-10
 owner: Nam
 ---
@@ -31,7 +31,7 @@ Nam 2026-10-10: "nâng chất lượng bằng cách: chủ thể là người ch
 ## Giai đoạn
 | # | Việc | Trạng thái |
 |---|---|---|
-| 1 | Máy chấm + thử giọng (casting 3 giọng nữ miền Nam, cách viết lời có cảm thán/thẻ âm thanh) | đang làm |
-| 2 | Lệnh `./reel giong` + sổ + validate + nhãn giọng AI + gắn vào bản dựng + hạ nhạc + phụ đề | chờ |
-| 3 | Skill `giong-doc`, REQUIREMENTS v0.6, luật người châu Á + giảm chữ | chờ |
-| 4 | Làm video có giọng, Nam nghe duyệt | chờ |
+| 1 | Máy chấm + thử giọng (casting 3 giọng nữ miền Nam, cách viết lời có cảm thán/thẻ âm thanh) | xong (Nam: "giọng nghe thử đã tốt") |
+| 2 | Lệnh `./reel giong` + sổ + validate + nhãn giọng AI + gắn vào bản dựng + hạ nhạc + phụ đề | xong |
+| 3 | Skill `giong-doc`, REQUIREMENTS v0.6, luật người châu Á + giảm chữ; máy khác dùng được (sổ nguồn có cách cắt, `--tai-lai`, giọng commit, doctor báo key) | xong |
+| 4 | Làm video có giọng, Nam nghe duyệt | xong (bản 5, giọng VieNeu; xem docs/decisions.md §27–29) |

@@ -89,3 +89,19 @@ export const OCCASION_STYLES: Readonly<Record<string, StyleId>> = Object.fromEnt
 export function getVideoType(id: string): VideoType | undefined {
   return VIDEO_TYPES.find((t) => t.id === id);
 }
+
+/**
+ * Loại video không bán giải pháp cho một nỗi đau (lời chúc, teaser, tổng kết, tuyển dụng, thông báo, không khí, khoe số):
+ * miễn luật "nỗi đau → giải pháp". Mọi loại khác phải nêu nỗi đau của khách và cách sản phẩm giải quyết (Nam 2026-10-10).
+ */
+export const NO_PAIN_TYPES: ReadonlySet<string> = new Set(['chuc-mung-dip-le', 'dem-nguoc', 'tong-ket-su-kien', 'tuyen-dung', 'thong-bao', 'thu-gian-asmr', 'so-lieu-thanh-tich']);
+
+/**
+ * LUẬT CỨNG — mọi reel dài 15–30 giây (Nam 2026-10-10: "video reels chỉ nên từ 15 đến 30 giây"; tỷ lệ xem hết cao hơn,
+ * thuật toán phân phối rộng hơn). Khoảng thời lượng thật của một loại video = khoảng của loại đó giao với khoảng này.
+ */
+export const REEL_SEC = { min: 15, max: 30 } as const;
+
+export function reelRange(t: { minSec: number; maxSec: number }): { min: number; max: number } {
+  return { min: Math.max(REEL_SEC.min, Math.min(t.minSec, REEL_SEC.max)), max: Math.min(REEL_SEC.max, Math.max(t.maxSec, REEL_SEC.min)) };
+}

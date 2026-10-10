@@ -1,0 +1,147 @@
+{
+  "giongVung": "nam",
+  "dan": {
+    "chu-quan": {
+      "giong": "Tưởng Vy",
+      "gioi": "nu",
+      "hoSo": "Chị chủ quán nước người Sài Gòn, khoảng 30 tuổi, tính nóng nhưng dễ thương, cảm xúc lộ ra giọng"
+    },
+    "nhan-vien": {
+      "giong": "Cẩm Hồng",
+      "gioi": "nu",
+      "hoSo": "Em nhân viên đứng quầy người Sài Gòn, khoảng 22 tuổi, lanh lợi, phản ứng nhanh"
+    },
+    "khach": {
+      "giong": "Anh Phi",
+      "gioi": "nam",
+      "hoSo": "Anh khách quen (chỉ thấy bàn tay), nói tỉnh bơ như chuyện thường"
+    },
+    "nguoi-dan": {
+      "giong": "Đăng Quân",
+      "gioi": "nam",
+      "hoSo": "Giọng dẫn của thương hiệu SIPOS: nam Sài Gòn, ấm, truyền cảm, như người bạn kể chuyện"
+    }
+  },
+  "cau": [
+    {
+      "id": "khach-chuyen",
+      "vai": "khach",
+      "at": 0.25,
+      "loi": "Em chuyển rồi nha chị!",
+      "camXuc": "binh-thuong",
+      "cuongDo": 3,
+      "boiCanh": "Ở quầy quán nước buổi chiều, khách giơ điện thoại khoe ảnh chuyển khoản rồi định đi luôn.",
+      "dienXuat": "Nói nhanh, tỉnh bơ, hơi vội như sắp đi; nhấn \"rồi nha\", lên giọng nhẹ ở \"chị\". Không ngập ngừng."
+    },
+    {
+      "id": "nv-cam-on",
+      "vai": "nhan-vien",
+      "at": 1.8,
+      "loi": "Dạ, em cảm ơn nha!",
+      "camXuc": "cuoi",
+      "cuongDo": 3,
+      "boiCanh": "Nhân viên liếc ảnh trên điện thoại khách, tin là tiền đã vào, cười chào.",
+      "dienXuat": "Tươi, lễ phép, cười trong giọng; \"Dạ\" ngắn gọn, \"nha\" kéo nhẹ và đi lên."
+    },
+    {
+      "id": "dan-tin-anh",
+      "loi": "Bán cả ngày, ai cũng tin cái ảnh đó.",
+      "camXuc": "binh-thuong",
+      "cuongDo": 2,
+      "boiCanh": "Quầy quán đông khách buổi chiều, nhân viên cười vì tin ảnh chuyển khoản của khách là thật.",
+      "dienXuat": "Kể chuyện nhẹ nhàng, thân mật như nói với bạn, không diễn mạnh; nhấn nhẹ \"ai cũng tin\"; hạ giọng ở \"cái ảnh đó\" như báo trước có chuyện. Gọn trong 2 giây rưỡi.",
+      "vai": "nguoi-dan",
+      "at": 3.42
+    },
+    {
+      "id": "chu-troi-dat",
+      "vai": "chu-quan",
+      "at": 6.55,
+      "loi": "Trời đất ơi!",
+      "camXuc": "lo-lang",
+      "cuongDo": 5,
+      "boiCanh": "Tối đóng quán, chị chủ cầm điện thoại kiểm tiền vào tài khoản, phát hiện thiếu một khoản.",
+      "dienXuat": "Thở gấp nghe rõ trước câu; \"Trời đất ơi!\" LA LÊN to, gắt, cao giọng, như vừa phát hiện mất tiền. Không đọc đều."
+    },
+    {
+      "id": "dan-thieu",
+      "loi": "Tối kiểm tài khoản, đếm đi đếm lại vẫn thiếu một khoản.",
+      "camXuc": "lo-lang",
+      "cuongDo": 3,
+      "boiCanh": "Tối đóng quán, chủ quán kiểm tiền vào tài khoản, thấy thiếu một khoản, lo lắng.",
+      "dienXuat": "Kể chậm lại, đồng cảm, hơi lo; \"đếm đi đếm lại\" nhịp đều như đang đếm; nhấn \"vẫn thiếu một khoản\", hạ giọng cuối câu. Gọn trong 4 giây.",
+      "vai": "nguoi-dan",
+      "at": 7.72
+    },
+    {
+      "id": "nv-ua",
+      "vai": "nhan-vien",
+      "at": 12.0,
+      "loi": "Ủa?! Ảnh chụp sẵn mà!",
+      "camXuc": "sung-sot",
+      "cuongDo": 4,
+      "boiCanh": "Mở ảnh khách gửi ra soi kỹ, nhân viên thấy đó là ảnh lấy trong thư viện máy, không phải giao dịch thật.",
+      "dienXuat": "Thốt \"Ủa?!\" THẬT TO, cao vút như bị giật mình, ngưng rất ngắn; \"Ảnh chụp sẵn mà!\" nói nhanh, gắt, hốt hoảng, nhấn \"chụp sẵn\", dừng đúng ở chữ \"mà\". Cả câu gọn trong 1 giây rưỡi."
+    },
+    {
+      "id": "chu-anh-gia",
+      "vai": "chu-quan",
+      "at": 14.65,
+      "loi": "[thở dài] Trời ơi… ảnh giả hả?!",
+      "camXuc": "buon",
+      "cuongDo": 5,
+      "boiCanh": "Chị chủ biết mình bị lừa bằng ảnh chuyển khoản giả, mất tiền hàng của cả buổi.",
+      "dienXuat": "Nghẹn ngào gần khóc; \"Trời ơi…\" run và kéo dài; \"ảnh giả hả?!\" vỡ giọng, cao lên như không tin nổi."
+    },
+    {
+      "id": "dan-anh-gia",
+      "loi": "Ảnh chuyển khoản mà không phải chuyển khoản thật.",
+      "camXuc": "buon",
+      "cuongDo": 3,
+      "boiCanh": "Chủ quán vừa biết bị lừa bằng ảnh chuyển khoản giả, cúi mặt buồn.",
+      "dienXuat": "Trầm xuống, chậm, rõ từng chữ; nhấn \"không phải\" và \"thật\"; như một lời thở dài. Gọn trong 3 giây rưỡi.",
+      "vai": "nguoi-dan",
+      "at": 17.38
+    },
+    {
+      "id": "chu-woa",
+      "vai": "chu-quan",
+      "at": 20.0,
+      "loi": "Woa!",
+      "camXuc": "cuoi",
+      "cuongDo": 5,
+      "boiCanh": "Sáng hôm sau, chị chủ mở phần mềm bán hàng mới, thấy mọi thứ rõ ràng, bật cười sung sướng.",
+      "dienXuat": "Hét \"Woa!\" thật cao, thật to, có tiếng cười lẫn trong hơi, kéo dài \"Woaa\" nhưng gọn trong khoảng 1 giây rưỡi, như vừa trúng số. Chỉ một từ, không cười dài trước."
+    },
+    {
+      "id": "chu-man-hinh",
+      "vai": "chu-quan",
+      "at": 20.7,
+      "loi": "Đơn hàng với doanh thu theo ca, nằm gọn một màn hình luôn á!",
+      "camXuc": "cuoi",
+      "cuongDo": 3,
+      "boiCanh": "Chị chủ khoe màn hình điện thoại: đơn hàng và doanh thu chia theo ca sáng, chiều, tối.",
+      "dienXuat": "Nói nhanh, hớn hở như khoe với bạn thân, cười trong giọng (không cười thành tràng); nhấn và lên cao ở \"theo ca\" và \"một màn hình\"; \"luôn á!\" vút lên. Cả câu gọn trong 3 giây."
+    },
+    {
+      "id": "dan-kiem-nhanh",
+      "loi": "Kiểm cho nhanh, khỏi dò từng dòng.",
+      "camXuc": "nhe-nhom",
+      "cuongDo": 3,
+      "boiCanh": "Sáng hôm sau, chủ quán nhìn màn hình đơn hàng và doanh thu theo ca, tươi tỉnh, nhẹ nhõm.",
+      "dienXuat": "Tươi, nhẹ nhõm, có nụ cười trong giọng; nhấn \"nhanh\" và \"khỏi\"; nhịp vừa. Gọn trong 2 giây.",
+      "vai": "nguoi-dan",
+      "at": 24.25
+    },
+    {
+      "id": "cta",
+      "loi": "SIPOS. Nhắn tin để được tư vấn nha!",
+      "camXuc": "tu-tin",
+      "cuongDo": 3,
+      "boiCanh": "Cảnh kết: logo SIPOS và nút \"Nhắn tin để được tư vấn\" hiện lên.",
+      "dienXuat": "Ấm, tự tin, rõ chữ. Đọc \"SIPOS\" liền một từ \"xi-pốt\", nhấn mạnh, ngắt ngắn; \"Nhắn tin để được tư vấn nha!\" vui, mời gọi, lên giọng ở \"nha\". Gọn trong 2 giây rưỡi.",
+      "vai": "nguoi-dan",
+      "at": 26.55
+    }
+  ]
+}

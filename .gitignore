@@ -25,7 +25,11 @@ briefs/*/hinh/
 # Cảnh và ảnh tham chiếu do AI tạo (REQUIREMENTS §7.4): giữ trên máy, không đưa lên repo công khai
 briefs/*/ai/
 # Clip người thật quay sẵn (Pexels/Pixabay, REQUIREMENTS §7.5): giấy phép cấm phát tán lại, không đưa lên repo công khai
-briefs/*/quay-san/
+# Clip quay sẵn không phát tán lại (giấy phép); sổ nguồn nguon.json (link, tác giả, cách cắt) vẫn commit để máy khác tải lại
+briefs/*/quay-san/*
+!briefs/*/quay-san/nguon.json
+# Giọng đọc AI: bản đã chọn (giong/*.wav) và sổ chấm điểm commit để máy khác dựng ra đúng giọng đã duyệt; bản nháp thì không
+briefs/*/dung-rieng/giong/_tam/
 
 .DS_Store
 

@@ -88,6 +88,14 @@ if (ccVer) {
   if (older) ccWarn = `Claude Code trong Terminal là bản ${ccVer[0]}, cần ${MIN_CLAUDE_CODE.join('.')} trở lên để dùng Opus 5.5. Chạy "claude update" (hoặc cập nhật app Claude).`;
 }
 
+/*
+ * Khoá VieNeu cho giọng đọc AI (./reel giong, REQUIREMENTS v0.6 §8.5): chỉ cần khi tạo giọng mới; video đã có giọng
+ * (giong/*.wav trong repo) vẫn dựng được. Chỉ báo có/không, không in khoá.
+ */
+const envFile = join(REPO_ROOT, '.env');
+const hasVoiceKey = !!process.env.VIENEU_API_KEY || (existsSync(envFile) && /^VIENEU_API_KEY=\s*\S+/m.test(readFileSync(envFile, 'utf8')));
+const keyWarn = hasVoiceKey ? '' : 'Máy chưa có khoá giọng đọc AI (VIENEU_API_KEY trong .env): video cũ vẫn dựng được, tạo giọng mới cần nhắn Nam đưa khoá vào máy.';
+
 const projectVersion = JSON.parse(readFileSync(join(REPO_ROOT, 'package.json'), 'utf8')).version as string;
 console.log(`Bản dự án: ${projectVersion} (nhật ký thay đổi: docs/changelog.md)`);
 
@@ -100,5 +108,6 @@ for (const c of checks) {
   }
 }
 if (ccWarn) console.log(`! ${ccWarn}`);
+console.log(keyWarn ? `! ${keyWarn}` : '✓ Khoá giọng đọc AI: có');
 console.log(failed ? `\nCòn ${failed} mục cần xử lý.` : '\nMáy đã sẵn sàng làm video.');
 process.exit(failed ? 1 : 0);

@@ -2,7 +2,19 @@
   "concept": {
     "title": "Mẫu meo-hay",
     "bigIdea": "Fixture kiểm template M1",
-    "hookAngle": "lat-nguoc"
+    "hookAngle": "lat-nguoc",
+    "diemHapDan": {
+      "ungVien": "Bạn không cần đếm hàng mỗi tối",
+      "diem": 21
+    },
+    "noiDau": {
+      "khach": "Bạn không cần đếm hàng mỗi tối",
+      "canh": "c0-hook"
+    },
+    "giaiPhap": {
+      "cach": "Bật cảnh báo tồn kho thấp",
+      "canh": "c1-solution"
+    }
   },
   "videoType": "meo-hay",
   "style": "khuyen-mai",
@@ -17,7 +29,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 4.5
+      "durationSec": 3.5
     },
     {
       "id": "c1-solution",
@@ -26,7 +38,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 7.5,
+      "durationSec": 8.5,
       "subText": "SIPOS báo khi hàng sắp hết"
     },
     {
@@ -40,5 +52,9 @@
     }
   ],
   "cta": "Tìm hiểu thêm tại sipos.vn",
-  "music": "test-pad-01"
+  "music": "test-pad-01",
+  "selfScore": {
+    "total": 88,
+    "notes": "Hook 21/25. "
+  }
 }

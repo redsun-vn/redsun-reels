@@ -2,22 +2,34 @@
   "concept": {
     "title": "Mẫu truoc-sau",
     "bigIdea": "Fixture kiểm template M3",
-    "hookAngle": "truoc-sau"
+    "hookAngle": "truoc-sau",
+    "diemHapDan": {
+      "ungVien": "Kiểm kho: sổ tay hay điện thoại?",
+      "diem": 21
+    },
+    "noiDau": {
+      "khach": "Đếm tay, gạch xoá, vẫn lệch 2 gói",
+      "canh": "c1-problem"
+    },
+    "giaiPhap": {
+      "cach": "Quét mã, tồn kho tự cập nhật",
+      "canh": "c2-solution"
+    }
   },
   "videoType": "truoc-sau",
   "style": "dien-anh",
   "template": "BeforeAfter",
   "product": "sipos",
-  "hook": "Kiểm kho bằng sổ tay\nhay bằng điện thoại?",
+  "hook": "Kiểm kho: sổ tay\nhay điện thoại?",
   "scenes": [
     {
       "id": "c0-hook",
       "role": "hook",
-      "onScreenText": "Kiểm kho bằng sổ tay hay bằng điện thoại?",
+      "onScreenText": "Kiểm kho: sổ tay hay điện thoại?",
       "visual": {
         "type": "text"
       },
-      "durationSec": 4.1
+      "durationSec": 3.5
     },
     {
       "id": "c1-problem",
@@ -27,7 +39,7 @@
         "type": "asset",
         "src": "assets/_demo/so-tay-kiem-kho.png"
       },
-      "durationSec": 6.7,
+      "durationSec": 7.3,
       "subText": "Sổ ghi tay mỗi tối"
     },
     {
@@ -66,6 +78,6 @@
   "music": "test-pad-01",
   "selfScore": {
     "total": 90,
-    "notes": "Fixture kiểm template, không đăng."
+    "notes": "Hook 21/25. Fixture kiểm template, không đăng."
   }
 }

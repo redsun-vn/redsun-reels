@@ -20,7 +20,7 @@ import { OCCASIONS } from '../config/occasions.ts';
 import { availableStylePresets } from '../config/style-preset.schema.ts';
 import { countWords, sceneDurationSec } from '../config/scene-timing.ts';
 import { STYLES } from '../config/styles.ts';
-import { getVideoType, OCCASION_STYLES, VIDEO_TYPES } from '../config/video-types.ts';
+import { getVideoType, OCCASION_STYLES, VIDEO_TYPES, reelRange } from '../config/video-types.ts';
 import { runCommand } from './lib/cli.ts';
 import { REPO_ROOT } from './lib/hyperframes-env.ts';
 
@@ -35,7 +35,7 @@ await runCommand(() => {
     console.log('LOẠI VIDEO (✓ = làm được ngay):');
     for (const t of VIDEO_TYPES) {
       const ok = t.templates.some(isBuilt);
-      console.log(`  ${ok ? '✓' : '·'} ${t.id.padEnd(22)} ${t.name} — ${t.templates.join('/')} — ${t.minSec}–${t.maxSec}s — mặc định ${styleName(t.defaultStyle)}`);
+      console.log(`  ${ok ? '✓' : '·'} ${t.id.padEnd(22)} ${t.name} — ${t.templates.join('/')} — ${reelRange(t).min}–${reelRange(t).max}s — mặc định ${styleName(t.defaultStyle)}`);
     }
     console.log('\nPHONG CÁCH (✓ = dựng được ngay):');
     for (const s of STYLES) console.log(`  ${ready.has(s.id) ? '✓' : '·'} ${s.id.padEnd(18)} ${s.name} — ${s.mood}`);
@@ -129,7 +129,7 @@ await runCommand(() => {
   if (!t) throw new Error(`Không có loại video "${arg}". Gõ "./reel info" để xem danh sách.`);
   console.log(`${t.name} (${t.id})`);
   console.log(`  Template: ${t.templates.join(' / ')}${t.templates.some(isBuilt) ? '' : ' (chưa dựng)'}`);
-  console.log(`  Thời lượng: ${t.minSec}–${t.maxSec} giây`);
+  console.log(`  Thời lượng: ${reelRange(t).min}–${reelRange(t).max} giây (reel 15–30 giây)`);
   console.log(`  Thứ tự cảnh (role): ${t.roles.join(' → ')}${t.repeatRole ? `  (được lặp "${t.repeatRole}")` : ''}`);
   console.log(`  Góc hook gợi ý: ${t.hookAngles.join(', ') || '—'}`);
   console.log(`  Phong cách mặc định: ${styleName(t.defaultStyle)}`);

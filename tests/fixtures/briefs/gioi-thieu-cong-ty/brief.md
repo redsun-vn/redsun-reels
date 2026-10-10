@@ -7,7 +7,7 @@ occasion:
 template: EventRecap
 goal: "Fixture kiểm template M4 (gioi-thieu-cong-ty)"
 audience: "MKT nội bộ"
-duration: 30.0
+duration: 30
 tone: "thử nghiệm"
 cta: "Tìm hiểu thêm tại redsun.vn"
 music: test-pad-01

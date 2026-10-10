@@ -2,7 +2,19 @@
   "concept": {
     "title": "Mẫu khuyen-mai",
     "bigIdea": "Fixture kiểm template M3",
-    "hookAngle": "con-so"
+    "hookAngle": "con-so",
+    "diemHapDan": {
+      "ungVien": "Giảm 30% gói SIPOS năm",
+      "diem": 21
+    },
+    "noiDau": {
+      "khach": "Giảm 30% gói SIPOS năm",
+      "canh": "c0-hook"
+    },
+    "giaiPhap": {
+      "cach": "Chỉ còn 840.000đ",
+      "canh": "c1-solution"
+    }
   },
   "videoType": "khuyen-mai",
   "style": "khuyen-mai",
@@ -26,7 +38,7 @@
       "visual": {
         "type": "text"
       },
-      "durationSec": 6.0,
+      "durationSec": 9.0,
       "promo": {
         "badge": "-30%",
         "priceOld": "1.200.000đ",
@@ -48,6 +60,6 @@
   "music": "test-pad-01",
   "selfScore": {
     "total": 90,
-    "notes": "Fixture kiểm template, không đăng."
+    "notes": "Hook 21/25. Fixture kiểm template, không đăng."
   }
 }
