@@ -1,0 +1,90 @@
+{
+  "template": "BeforeAfter",
+  "product": "sipos",
+  "logoOnDark": "brand/logos/sipos/sipos-logo-trang.png",
+  "logoOnLight": "brand/logos/sipos/sipos-logo-chuan.svg",
+  "style": {
+    "id": "vui-nhon",
+    "transition": {
+      "type": "elastic-push",
+      "duration": 0.5,
+      "ease": "power4.out"
+    },
+    "text": {
+      "enter": "pop",
+      "duration": 0.4,
+      "ease": "back.out(2.2)",
+      "wordStagger": 0.05
+    },
+    "kenBurns": 1.08,
+    "accent": "sticker",
+    "overlay": "none",
+    "background": "flat",
+    "textFx": "hanazi",
+    "ctaPulse": true,
+    "musicMood": [
+      "vui-nhon",
+      "nang-dong"
+    ]
+  },
+  "scenes": [
+    {
+      "id": "c0-quay-chieu",
+      "role": "hook",
+      "text": "Em chuyển rồi nha",
+      "sub": "Dạ vâng ạ.",
+      "visual": {
+        "type": "text"
+      },
+      "start": 0,
+      "duration": 3.34
+    },
+    {
+      "id": "c1-toi-kiem",
+      "role": "problem",
+      "text": "Tối kiểm tiền: không thấy đâu",
+      "sub": "Tối kiểm tài khoản, đếm đi đếm lại vẫn thiếu một khoản.",
+      "visual": {
+        "type": "text"
+      },
+      "start": 3.34,
+      "duration": 8.06
+    },
+    {
+      "id": "c2-anh-gia",
+      "role": "problem",
+      "text": "Hóa ra là ảnh giả",
+      "sub": "Ảnh chuyển khoản mà không phải chuyển khoản thật.",
+      "visual": {
+        "type": "text"
+      },
+      "start": 11.4,
+      "duration": 6.37
+    },
+    {
+      "id": "c3-sipos",
+      "role": "solution",
+      "text": "Đơn hàng và doanh thu tự tổng hợp theo ca, trên một màn hình",
+      "visual": {
+        "type": "text"
+      },
+      "start": 17.77,
+      "duration": 6.4
+    },
+    {
+      "id": "c4-cta",
+      "role": "cta",
+      "text": "Nhắn tin để được tư vấn",
+      "sub": "SIPOS, giải pháp quản lý bán hàng trong thời đại AI.",
+      "visual": {
+        "type": "logo"
+      },
+      "start": 24.17,
+      "duration": 7.33
+    }
+  ],
+  "totalSec": 31.5,
+  "seed": 308,
+  "numberSteps": false,
+  "voiceWindows": []
+}
