@@ -36,8 +36,5 @@ brand/music/mixkit-*.mp3
 nhac-tu-tim/*
 !nhac-tu-tim/.gitkeep
 
-# Kế hoạch, báo cáo làm việc của dev: chỉ ở máy, không lên repo (Nam 2026-10-11). Riêng hồ sơ sản phẩm vẫn lên repo: skill tao-reel đọc làm nguồn thông tin sản phẩm.
-plans/*
-!plans/reports/
-plans/reports/*
-!plans/reports/brand-261008-1606-company-product-profiles.md
+# Kế hoạch, báo cáo làm việc của dev: chỉ ở máy, không lên repo (Nam 2026-10-11). Hồ sơ sản phẩm nằm ở docs/ho-so-cong-ty-san-pham.md.
+plans/

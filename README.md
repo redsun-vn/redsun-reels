@@ -237,8 +237,8 @@ scripts/           lệnh ./reel + lib/ (validate, dựng, render, giọng, đo 
 runtime/gsap/      GSAP local
 briefs/_example/   mẫu brief (chỉ thư mục này lên GitHub; video của MKT nằm trên máy, gitignore)
 tests/             unit test, fixtures/briefs/ (21 brief mẫu), baseline/ (ảnh chuẩn render test)
-docs/              decisions, changelog, huong-dan-mkt, video-type-guide, video-style-catalog, music-sources, spike-report
-plans/             (gitignore) kế hoạch, báo cáo của dev, chỉ trên máy; riêng reports/brand-…-product-profiles.md lên repo (hồ sơ sản phẩm)
+docs/              decisions, changelog, huong-dan-mkt, ho-so-cong-ty-san-pham, video-type-guide, video-style-catalog, music-sources, spike-report
+plans/             (gitignore) kế hoạch, báo cáo của dev, chỉ trên máy
 out/               (gitignore) video xuất ra, ảnh soát, project tạm out/stage/
 ```
 

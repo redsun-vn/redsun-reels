@@ -521,4 +521,4 @@ Nam (ak:advise): video qua luật nhưng giống quảng cáo (đoán trước, 
 - `.claude/settings.json` cho phép thêm `Skill(chon-kieu-hinh)`, `Skill(giong-doc)` (luồng MKT gọi hai skill này).
 
 ## 35. Kế hoạch không lên repo (2026-10-11)
-Nam: "loại bỏ plan khỏi repo, chỉ commit thay đổi code". `.gitignore` bỏ qua `plans/` (kế hoạch, báo cáo của dev chỉ nằm trên máy); 50 file đã commit trước đó gỡ khỏi repo, vẫn còn trên máy Nam và trong lịch sử git. Riêng `plans/reports/brand-261008-1606-company-product-profiles.md` vẫn lên repo vì skill `tao-reel` đọc làm nguồn thông tin sản phẩm (chống bịa). Đường dẫn `plans/…` nhắc trong các mục cũ của file này là lịch sử.
+Nam: "loại bỏ plan khỏi repo, chỉ commit thay đổi code". `.gitignore` bỏ qua `plans/` (kế hoạch, báo cáo của dev chỉ nằm trên máy); toàn bộ file đã commit trước đó gỡ khỏi repo, vẫn còn trên máy Nam và trong lịch sử git. Hồ sơ công ty và sản phẩm (trước ở `plans/reports/brand-261008-1606-company-product-profiles.md`) chuyển sang `docs/ho-so-cong-ty-san-pham.md`, vì skill `tao-reel` đọc làm nguồn thông tin sản phẩm (chống bịa) và máy MKT cần có. Đường dẫn `plans/…` nhắc trong các mục cũ của file này là lịch sử.

@@ -1,6 +1,6 @@
 # Kịch bản S3 — checklist 6 yếu tố (REQUIREMENTS §15)
 
-Nguồn: `plans/reports/brand-261008-1606-company-product-profiles.md`, mục "Hệ quả cho Spike". Văn bản gốc nằm ở `script.txt`. "giảm 30%" và "199.000đ" là số giả lập theo §15, không phải giá thật.
+Nguồn: `docs/ho-so-cong-ty-san-pham.md`, mục "Hệ quả cho Spike". Văn bản gốc nằm ở `script.txt`. "giảm 30%" và "199.000đ" là số giả lập theo §15, không phải giá thật.
 
 | # | Yếu tố | Có | Trích |
 |---|---|---|---|

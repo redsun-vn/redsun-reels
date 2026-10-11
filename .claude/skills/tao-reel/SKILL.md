@@ -165,7 +165,7 @@ Nam chốt 2026-10-09: hình minh hoạ, yếu tố con người lấy từ hìn
 
 ## Quy tắc nội dung
 - Một video một thông điệp. Video ≤ 45 giây chỉ 1–2 ý chính; dài hơn tối đa 3 ý. Mỗi cảnh ≤ 10 từ chữ chính.
-- **Không bịa** con số, giá, ưu đãi (kể cả "dùng thử miễn phí"), tính năng, lời khách hàng, độ tuổi khán giả. Chỉ dùng thông tin MKT nói hoặc có trong `brand/products.json` hoặc `plans/reports/brand-261008-1606-company-product-profiles.md`; thiếu thì hỏi MKT.
+- **Không bịa** con số, giá, ưu đãi (kể cả "dùng thử miễn phí"), tính năng, lời khách hàng, độ tuổi khán giả. Chỉ dùng thông tin MKT nói hoặc có trong `brand/products.json` hoặc `docs/ho-so-cong-ty-san-pham.md`; thiếu thì hỏi MKT.
 - Redsun BOS gọi là "hệ điều hành doanh nghiệp" hoặc "phần mềm vận hành doanh nghiệp", không gọi "ERP".
 - Viết đúng tên: SIPOS, REDSUN BOS, Webino, REDSUN.
 
