@@ -1,0 +1,113 @@
+{
+  "template": "BeforeAfter",
+  "product": "sipos",
+  "logoOnDark": "brand/logos/sipos/sipos-logo-trang.png",
+  "logoOnLight": "brand/logos/sipos/sipos-logo-chuan.svg",
+  "style": {
+    "id": "dien-anh",
+    "transition": {
+      "type": "dip-black",
+      "duration": 0.8,
+      "ease": "sine.inOut"
+    },
+    "text": {
+      "enter": "blur",
+      "duration": 0.8,
+      "ease": "power2.out",
+      "wordStagger": 0.08
+    },
+    "kenBurns": 1.06,
+    "accent": "underline",
+    "overlay": "letterbox",
+    "background": "gradient",
+    "textFx": "none",
+    "ctaPulse": false,
+    "musicMood": [
+      "dien-anh",
+      "sang-trong"
+    ]
+  },
+  "scenes": [
+    {
+      "id": "c0-hook",
+      "role": "hook",
+      "text": "Ảnh chuyển khoản này… là GIẢ!",
+      "sub": "Bán cả ngày, tối mới biết mình bị bỏ sót tiền.",
+      "visual": {
+        "type": "text"
+      },
+      "start": 0,
+      "duration": 3.32
+    },
+    {
+      "id": "c1-quay",
+      "role": "problem",
+      "text": "Em chuyển rồi nha",
+      "sub": "Dạ vâng ạ.",
+      "visual": {
+        "type": "text"
+      },
+      "start": 3.32,
+      "duration": 6.03
+    },
+    {
+      "id": "c2-toi-kiem",
+      "role": "problem",
+      "text": "Tối kiểm tiền: không thấy đâu",
+      "sub": "Tối kiểm tài khoản, đếm đi đếm lại vẫn thiếu một khoản.",
+      "visual": {
+        "type": "text"
+      },
+      "start": 9.35,
+      "duration": 4.19
+    },
+    {
+      "id": "c3-anh-gia",
+      "role": "problem",
+      "text": "Hóa ra là ảnh giả",
+      "sub": "Ảnh chuyển khoản mà không phải chuyển khoản thật.",
+      "visual": {
+        "type": "text"
+      },
+      "start": 13.54,
+      "duration": 2.99
+    },
+    {
+      "id": "c4-qr",
+      "role": "solution",
+      "text": "Mỗi đơn một mã QR, quét là tự xác nhận",
+      "sub": "Giờ mỗi đơn một mã QR. Khách quét trả tiền là SIPOS tự xác nhận.",
+      "visual": {
+        "type": "text"
+      },
+      "start": 16.53,
+      "duration": 6.06
+    },
+    {
+      "id": "c5-da-thanh-toan",
+      "role": "proof",
+      "text": "Đã thanh toán, khỏi soi ảnh chụp",
+      "sub": "Trả xong là báo đã thanh toán, khỏi soi ảnh chụp.",
+      "visual": {
+        "type": "text"
+      },
+      "start": 22.59,
+      "duration": 3.65
+    },
+    {
+      "id": "c6-cta",
+      "role": "cta",
+      "text": "Nhắn tin để được tư vấn",
+      "sub": "SIPOS, giải pháp quản lý bán hàng trong thời đại AI.",
+      "visual": {
+        "type": "logo"
+      },
+      "start": 26.24,
+      "duration": 3.62
+    }
+  ],
+  "totalSec": 29.86,
+  "seed": 934,
+  "numberSteps": false,
+  "voiceWindows": []
+}

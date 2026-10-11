@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<link rel="stylesheet" href="brand/brand.css" />
+<link rel="stylesheet" href="_rieng/rieng.css" />
+<link rel="stylesheet" href="_rieng/boi-canh.css" />
+<script src="runtime/gsap/gsap.min.js"></script>
+<script src="_rieng/rieng.js"></script>
+<script src="_rieng/nhan-vat.js"></script>
+<script src="_rieng/boi-canh.js"></script>
+<!--
+  Ảnh chuyển khoản giả — SIPOS, 29.86s, Trước / sau, điện ảnh, người thật quay sẵn + một giọng Duyên Hà My (VieNeu).
+  LUẬT SỐ 1: mở bằng dấu GIẢ dập lên ảnh "chuyển tiền thành công" ở giây 0.88 (phách), giọng vào 0.05s.
+  LUẬT SỐ 2: nỗi đau (tin ảnh chụp, tối thiếu một khoản) → SIPOS mỗi đơn một mã QR, khách quét là tự xác nhận thanh toán.
+  Người kể đọc trên mặt người phản ứng (người mẫu không nói, mieng: im). Chữ nhỏ: nhãn gắn vật + phụ đề theo giờ giọng thật.
+  Nhạc Driving Ambition ~99.5 BPM: phách mạnh 2.16 4.53 6.94 9.35 11.80 14.14 16.53 18.97 21.39 23.85 26.24 28.68.
+  Mọi số trên màn hình là số mẫu trong đạo cụ (data-minh-hoa). Không tên ngân hàng, không phần mềm khác.
+-->
+<style>
+  html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: var(--color-background); }
+
+  /* Clip người thật (lớp dưới cùng); lớp bọc .vw không hẹn giờ, máy quay animate lớp bọc */
+  .vw { position: absolute; inset: 0; overflow: hidden; }
+  .vw video { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+  .grade-chieu { background: linear-gradient(200deg, color-mix(in srgb, var(--set-tint-chieu) 30%, transparent) 0%, transparent 55%, color-mix(in srgb, var(--prop-wood-d) 25%, transparent) 100%); }
+  .grade-dem { background: linear-gradient(180deg, color-mix(in srgb, var(--prop-night) 45%, transparent) 0%, transparent 45%, color-mix(in srgb, var(--prop-night) 55%, transparent) 100%); }
+  .vignette { background: radial-gradient(120% 80% at 50% 45%, transparent 55%, color-mix(in srgb, var(--color-black) 45%, transparent) 100%); }
+  .dusk { background: color-mix(in srgb, var(--prop-night) 85%, transparent); }
+  .flash { background: var(--color-white); }
+
+  /* Cảnh chèn (không thấy mặt): lớp kín khung, hiện/tắt bằng độ mờ */
+  .ins { position: absolute; inset: 0; overflow: hidden; }
+
+  /* Nhãn nhỏ gắn vào vật (chữ nhấn khi có giọng: nhỏ, ít) */
+  .tag { position: absolute; padding: 12px 26px; border-radius: 999px; font-weight: 800; font-size: var(--type-caption); line-height: 1.2; white-space: nowrap; box-shadow: 0 14px 30px var(--prop-shadow-soft); }
+  .tag.red { background: var(--color-accent); color: var(--color-white); }
+  .tag.teal { background: var(--color-primary); color: var(--color-white); }
+  .tag.ink { background: color-mix(in srgb, var(--prop-night) 82%, transparent); color: var(--color-white); }
+
+  /* A. ảnh chuyển khoản trên tay khách */
+  .card-a { position: absolute; left: 330px; top: 520px; width: 440px; height: 620px; }
+  .dev { position: absolute; inset: 0; border-radius: 52px; background: var(--prop-device); box-shadow: 0 50px 110px var(--prop-shadow); }
+  .shot { position: absolute; inset: 14px; border-radius: 40px; background: var(--prop-card); overflow: hidden; color: var(--prop-card-ink); text-align: center; padding-top: 96px; box-sizing: border-box; }
+  .shot .ok-big { width: 120px; height: 120px; margin: 0 auto; border-radius: 50%; background: var(--prop-ok); display: flex; align-items: center; justify-content: center; }
+  .shot .ok-big::after { content: ""; width: 52px; height: 28px; border-left: 12px solid var(--color-white); border-bottom: 12px solid var(--color-white); transform: translateY(-7px) rotate(-45deg); }
+  .shot .t1 { margin-top: 26px; font-weight: 800; font-size: calc(var(--type-small) * 1.05); }
+  .shot .amt { margin-top: 12px; font-weight: 900; font-size: var(--type-h3); color: var(--color-primary); }
+  .shot .meta { margin: 30px 40px 0; text-align: left; font-weight: 600; font-size: calc(var(--type-small) * 0.8); line-height: 1.9; color: var(--prop-card-muted); border-top: 3px dashed var(--prop-paper-line); padding-top: 16px; }
+  .shot .gallery { position: absolute; left: 0; right: 0; top: 0; height: 70px; background: var(--prop-device); color: var(--color-white); font-weight: 700; font-size: calc(var(--type-small) * 0.8); line-height: 70px; text-align: left; padding-left: 36px; }
+
+  /* B. sổ tiền vào trên điện thoại */
+  .ledger { position: absolute; left: 210px; top: 380px; width: 660px; height: 900px; border-radius: 66px; background: var(--prop-device); box-shadow: 0 50px 100px var(--prop-shadow); }
+  .ledger .scr { position: absolute; inset: 18px; border-radius: 50px; background: var(--prop-screen); overflow: hidden; color: var(--prop-card-ink); }
+  .ledger .bar { height: 160px; padding: 86px 40px 0; box-sizing: border-box; background: color-mix(in srgb, var(--prop-night-2) 85%, var(--color-white)); color: var(--color-white); font-weight: 800; font-size: calc(var(--type-small) * 1.15); }
+  .lrow { position: relative; display: flex; justify-content: space-between; align-items: center; height: 108px; margin: 22px 26px 0; padding: 0 26px; border-radius: 22px; background: var(--prop-card); box-shadow: 0 6px 16px var(--prop-shadow-soft); font-weight: 800; font-size: calc(var(--type-small) * 0.95); white-space: nowrap; }
+  .lrow .ok { color: var(--prop-ok-ink); }
+  .lrow.miss { background: var(--prop-warn); color: var(--color-accent); border: 4px dashed var(--color-accent); }
+  .qmark { position: absolute; font-weight: 900; font-size: var(--type-h3); color: var(--prop-pollen); }
+
+  /* C. ảnh giả */
+  .shot-big { position: absolute; left: 250px; top: 420px; width: 580px; height: 840px; }
+  .shot-big .shot { padding-top: 130px; }
+  .glass { position: absolute; left: 0; top: 0; width: 230px; height: 230px; border-radius: 50%; border: 18px solid var(--prop-device); background: color-mix(in srgb, var(--color-white) 22%, transparent); }
+  .glass::after { content: ""; position: absolute; right: -78px; bottom: -64px; width: 110px; height: 34px; border-radius: 17px; background: var(--prop-device); transform: rotate(45deg); }
+  .rgb { position: absolute; inset: 0; border-radius: 52px; mix-blend-mode: screen; opacity: 0; }
+  .rgb.r { background: color-mix(in srgb, var(--color-accent) 45%, transparent); }
+  .rgb.c { background: color-mix(in srgb, var(--prop-shirt-a) 45%, transparent); }
+  .stamp { position: absolute; left: 300px; top: 700px; width: 480px; height: 200px; border: 14px solid var(--color-accent); border-radius: 26px; color: var(--color-accent); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: var(--type-h3); letter-spacing: 0.12em; background: color-mix(in srgb, var(--color-white) 88%, transparent); }
+  .crease { position: absolute; inset: 14px; border-radius: 40px; opacity: 0; background: repeating-linear-gradient(35deg, color-mix(in srgb, var(--prop-device) 18%, transparent) 0 6px, transparent 6px 70px), repeating-linear-gradient(-50deg, color-mix(in srgb, var(--prop-device) 14%, transparent) 0 5px, transparent 5px 90px); }
+  .iris { clip-path: circle(0% at 50% 50%); }
+  .day-wash { background: var(--prop-day); }
+
+  /* D. SIPOS */
+  .phone-d { left: 270px; top: 300px; }
+  .tab-row { position: relative; display: flex; gap: 12px; margin-bottom: 22px; border-radius: 18px; background: var(--prop-card); box-shadow: 0 6px 16px var(--prop-shadow-soft); }
+  .tab { flex: 1; height: 72px; border-radius: 18px; color: var(--prop-card-muted); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: calc(var(--type-small) * 0.85); position: relative; z-index: 2; }
+  .tab-hi { position: absolute; z-index: 1; left: 0; top: 0; width: calc((100% - 24px) / 3); height: 72px; border-radius: 18px; background: var(--color-primary); }
+  .sum { display: flex; gap: 16px; margin-bottom: 20px; }
+  .sum .rs-card { flex: 1; }
+  .ord { display: flex; align-items: center; justify-content: space-between; height: 96px; padding: 0 24px; margin-bottom: 14px; border-radius: 20px; background: var(--prop-card); color: var(--prop-card-ink); font-weight: 700; font-size: calc(var(--type-small) * 0.85); box-shadow: 0 6px 16px var(--prop-shadow-soft); }
+  .ord b { color: var(--color-primary); font-weight: 800; }
+  .ord small { display: block; font-weight: 600; font-size: calc(var(--type-small) * 0.65); color: var(--prop-card-muted); }
+
+  /* E. CTA */
+  .logo-s { position: absolute; left: 300px; top: 330px; width: 480px; }
+  .logo-r { position: absolute; left: 450px; top: 540px; width: 180px; }
+  .tagline { position: absolute; left: 60px; right: 60px; top: 740px; text-align: center; font-weight: 700; font-size: var(--type-caption); line-height: 1.35; color: var(--color-white); }
+  .tagline div { white-space: nowrap; }
+  .tagline b { color: var(--color-accent-glow); font-weight: 900; }
+  .cta-btn { position: absolute; left: 140px; width: 700px; top: 1120px; height: 140px; white-space: nowrap; border-radius: 70px; background: var(--color-accent); color: var(--color-white); display: flex; align-items: center; justify-content: center; gap: 22px; font-weight: 900; font-size: var(--type-body); box-shadow: 0 30px 70px var(--prop-shadow); }
+  .chat-ico { flex: none; position: relative; width: 62px; height: 48px; border-radius: 18px; background: var(--color-white); }
+  .chat-ico::after { content: ""; position: absolute; left: 12px; bottom: -12px; border-top: 15px solid var(--color-white); border-right: 15px solid transparent; }
+
+  /* Q. SIPOS: mỗi đơn một mã QR */
+  .phone-q { left: 270px; top: 350px; }
+  .q-total { display: flex; justify-content: space-between; align-items: baseline; margin: 6px 6px 18px; font-weight: 800; font-size: calc(var(--type-small) * 0.95); color: var(--prop-card-ink); }
+  .q-total b { font-size: calc(var(--type-small) * 1.3); color: var(--color-primary); font-weight: 900; }
+  .q-box { position: relative; margin: 0 auto; width: 330px; height: 370px; border-radius: 28px; background: var(--prop-card); box-shadow: 0 10px 26px var(--prop-shadow-soft); overflow: hidden; }
+  .q-code { position: absolute; left: 45px; top: 30px; width: 240px; height: 240px; background: conic-gradient(var(--prop-card-ink) 25%, transparent 0 50%, var(--prop-card-ink) 0 75%, transparent 0) 0 0 / 30px 30px; opacity: 0.92; }
+  .q-code i { position: absolute; width: 66px; height: 66px; box-sizing: border-box; border: 14px solid var(--prop-card-ink); background: var(--prop-card); outline: 8px solid var(--prop-card); }
+  .q-code i:nth-child(1) { left: 0; top: 0; } .q-code i:nth-child(2) { right: 0; top: 0; } .q-code i:nth-child(3) { left: 0; bottom: 0; }
+  .q-cap { position: absolute; left: 0; right: 0; bottom: 26px; text-align: center; font-weight: 800; font-size: calc(var(--type-small) * 0.8); color: var(--prop-card-muted); }
+  .q-scan { position: absolute; left: 30px; right: 30px; top: 30px; height: 8px; border-radius: 4px; background: var(--color-primary); box-shadow: 0 0 24px var(--color-primary); opacity: 0; }
+  .q-status { position: absolute; left: 30px; right: 30px; bottom: 34px; height: 92px; border-radius: 24px; display: flex; align-items: center; justify-content: center; gap: 14px; font-weight: 900; font-size: calc(var(--type-small) * 1.05); white-space: nowrap; }
+  .q-status.wait { background: var(--prop-card); color: var(--prop-card-muted); box-shadow: 0 6px 16px var(--prop-shadow-soft); }
+  .q-status.ok { background: var(--prop-card); color: var(--prop-ok-ink); border: 5px solid var(--prop-ok); box-sizing: border-box; }
+  /* P. thông báo đã thanh toán trên mặt chủ quán sáng hôm sau */
+  .notif { position: absolute; left: 130px; top: 250px; width: 820px; height: 150px; border-radius: 34px; background: var(--prop-card); box-shadow: 0 24px 60px var(--prop-shadow); display: flex; align-items: center; gap: 26px; padding: 0 34px; box-sizing: border-box; color: var(--prop-card-ink); }
+  .notif .tx { font-weight: 900; font-size: calc(var(--type-small) * 1.05); line-height: 1.25; white-space: nowrap; }
+  .notif .tx small { display: block; font-weight: 700; font-size: calc(var(--type-small) * 0.8); color: var(--prop-card-muted); }
+  .notif .app { flex: none; width: 92px; height: 92px; border-radius: 24px; background: var(--color-primary); display: flex; align-items: center; justify-content: center; }
+</style>
+</head>
+<body>
+<div id="root" class="rs-root" data-product="sipos" data-composition-id="main" data-duration="29.86" data-width="1080" data-height="1920">
+
+  <!-- ===== Clip người thật (mặt người phản ứng im lặng; tay khách) ===== -->
+  <div class="vw" id="vwH" data-layout-allow-overflow><video id="vH" src="quay-san/chu-buon-dem.mp4" muted playsinline data-start="2.16" data-duration="2.37" data-media-start="0.3" data-track-index="10"></video></div>
+  <div class="vw" id="vwF1" data-layout-allow-overflow><video id="vF1" src="quay-san/khach-tay.mp4" muted playsinline data-start="4.53" data-duration="3.01" data-media-start="2.6" data-track-index="11"></video></div>
+  <div class="vw" id="vwF2" data-layout-allow-overflow><video id="vF2" src="quay-san/nv-cuoi-im.mp4" muted playsinline data-start="7.54" data-duration="2.47" data-media-start="0.3" data-track-index="12"></video></div>
+  <div class="vw" id="vwN2" data-layout-allow-overflow><video id="vN2" src="quay-san/chu-lo-dem.mp4" muted playsinline data-start="11.8" data-duration="1.74" data-media-start="0.3" data-track-index="13"></video></div>
+  <div class="vw" id="vwR2" data-layout-allow-overflow><video id="vR2" src="quay-san/nv-mim-moi.mp4" muted playsinline data-start="15.35" data-duration="1.18" data-media-start="0.3" data-track-index="14"></video></div>
+  <div class="vw" id="vwP" data-layout-allow-overflow><video id="vP" src="quay-san/chu-tuoi.mp4" muted playsinline data-start="22.59" data-duration="3.65" data-media-start="0.3" data-track-index="15"></video></div>
+
+  <!-- ===== H. HOOK (0 – 2.16): dấu GIẢ ===== -->
+  <div id="sH" class="clip rs-scene" data-start="0" data-duration="2.16" data-track-index="1">
+    <div class="ins" id="insH">
+      <div class="shot-big" id="hShot" data-minh-hoa data-layout-allow-overlap>
+        <div class="dev"></div>
+        <div class="shot"><div class="ok-big"></div><div class="t1" data-layout-allow-overlap>Chuyển tiền thành công</div><div class="amt" data-layout-allow-overlap>180.000 đ</div>
+          <div class="meta"><div data-layout-allow-overlap>Người nhận: QUÁN NHỎ</div><div data-layout-allow-overlap>Nội dung: tra sua</div></div></div>
+      </div>
+      <div class="stamp" id="hStamp" data-layout-allow-overlap>GIẢ</div>
+    </div>
+    <div class="rs-fill flash" id="hFlash"></div>
+  </div>
+
+  <!-- ===== F. TUA LẠI: QUẦY CHIỀU (4.53 – 10.01) ===== -->
+  <div id="sF" class="clip rs-scene" data-start="4.53" data-duration="5.48" data-track-index="2">
+    <div class="rs-fill grade-chieu"></div>
+    <div class="rs-fill vignette"></div>
+    <div class="card-a" id="cardA" data-minh-hoa data-layout-allow-overlap>
+      <div class="dev"></div>
+      <div class="shot"><div class="ok-big"></div><div class="t1" data-layout-allow-overlap>Chuyển tiền thành công</div><div class="amt" data-layout-allow-overlap>180.000 đ</div></div>
+    </div>
+    <div class="rs-fill dusk" id="dusk"></div>
+  </div>
+
+  <!-- ===== N. TỐI KIỂM TIỀN (10.01 – 11.80) ===== -->
+  <div id="sN" class="clip rs-scene" data-start="10.01" data-duration="1.79" data-track-index="3">
+    <div class="ins" id="insN">
+      <div class="bc-cho-gan"></div>
+      <div class="ledger" id="ledger" data-minh-hoa data-layout-allow-overlap>
+        <div class="scr">
+          <div class="bar">Tiền vào hôm nay</div>
+          <div class="lrow"><span>Trà sữa ×2</span><span class="ok">+ 70.000 ✓</span></div>
+          <div class="lrow"><span>Cà phê ×3</span><span class="ok">+ 75.000 ✓</span></div>
+          <div class="lrow"><span>Bánh ngọt</span><span class="ok">+ 40.000 ✓</span></div>
+          <div class="lrow miss" id="miss"><span>“Em chuyển rồi”</span><span>Không thấy</span></div>
+        </div>
+      </div>
+      <div id="finger" style="left: 740px; top: 606px" data-minh-hoa></div>
+    </div>
+    <div class="tag red" id="tagMiss" style="left: 160px; top: 260px" data-layout-allow-overlap>Tối kiểm tiền: không thấy đâu</div>
+  </div>
+  <div id="sN2" class="clip rs-scene" data-start="11.8" data-duration="1.74" data-track-index="4">
+    <div class="rs-fill grade-dem"></div>
+    <div class="rs-fill flash" id="flashN"></div>
+  </div>
+
+  <!-- ===== R. LẬT TẨY (13.54 – 15.35) ===== -->
+  <div id="sR" class="clip rs-scene" data-start="13.54" data-duration="1.81" data-track-index="5">
+    <div class="ins" id="insR">
+      <div class="shot-big" id="shotBig" data-minh-hoa data-layout-allow-overlap>
+        <div class="dev"></div>
+        <div class="shot">
+          <div class="gallery" id="gal">Ảnh · Thư viện</div><div class="ok-big"></div><div class="t1" data-layout-allow-overlap>Chuyển tiền thành công</div><div class="amt" data-layout-allow-overlap>180.000 đ</div>
+          <div class="meta"><div data-layout-allow-overlap>Người nhận: QUÁN NHỎ</div><div data-layout-allow-overlap>Nội dung: tra sua</div></div>
+        </div>
+        <div class="rgb r" id="rgbR"></div><div class="rgb c" id="rgbC"></div>
+      </div>
+      <div class="stamp" id="rStamp" style="top: 760px" data-layout-allow-overlap>GIẢ</div>
+      <div class="glass" id="glass"></div>
+      <div class="tag ink" id="tagFake" style="left: 300px; top: 280px" data-layout-allow-overlap>Hóa ra là ảnh giả</div>
+    </div>
+  </div>
+  <div id="sR2" class="clip rs-scene" data-start="15.35" data-duration="1.18" data-track-index="6">
+    <div class="rs-fill day-wash iris" id="irisR"></div>
+  </div>
+
+  <!-- ===== Q. SIPOS: mỗi đơn một mã QR (16.53 – 18.97, 20.21 – 22.59); tay khách quét mã 18.97 – 20.21 ===== -->
+  <div id="sQ" class="clip rs-scene" data-start="16.53" data-duration="6.06" data-track-index="7">
+    <div class="ins" id="insQ">
+      <div class="rs-phone phone-q" id="phoneQ" data-minh-hoa>
+        <div class="rs-screen">
+          <div class="rs-notch"></div>
+          <div class="rs-appbar">SIPOS<small>Đơn #036 · Bàn 4</small></div>
+          <div class="rs-pane">
+            <div class="ord"><span>Trà sữa ×2<small>15:42</small></span><b>70.000</b></div>
+            <div class="ord"><span>Bánh ngọt ×2<small>15:42</small></span><b>110.000</b></div>
+            <div class="q-total"><span>Tổng</span><b>180.000 đ</b></div>
+            <div class="q-box" id="qBox"><div class="q-code"><i></i><i></i><i></i></div><div class="q-cap">Quét để thanh toán</div><div class="q-scan" id="qScan"></div></div>
+          </div>
+          <div class="q-status wait" id="qWait">Chờ thanh toán…</div>
+          <div class="q-status ok" id="qOk"><span class="rs-tick"></span>Đã thanh toán</div>
+        </div>
+      </div>
+      <div class="tag teal" id="tagQr" style="left: 80px; top: 230px" data-layout-allow-overlap>Mỗi đơn một mã QR,</div>
+      <div class="tag teal" id="tagXn" style="left: 80px; top: 316px" data-layout-allow-overlap>quét là tự xác nhận</div>
+    </div>
+    <div class="rs-fill" id="sparkQ"></div>
+  </div>
+  <div class="vw" id="vwQ" data-layout-allow-overflow><video id="vQ" src="quay-san/khach-quet-qr.mp4" muted playsinline data-start="18.97" data-duration="1.24" data-media-start="0.05" data-track-index="16"></video></div>
+
+  <!-- ===== P. SÁNG HÔM SAU (22.59 – 26.24): chủ quán cười, thông báo đã thanh toán ===== -->
+  <div id="sP" class="clip rs-scene" data-start="22.59" data-duration="3.65" data-track-index="8">
+    <div class="notif" id="notif" data-minh-hoa data-layout-allow-overlap>
+      <div class="app"><span class="rs-tick"></span></div>
+      <div class="tx">Đã thanh toán · Đơn #036<small>180.000 đ · SIPOS tự xác nhận</small></div>
+    </div>
+    <div class="tag teal" id="tagP" style="left: 130px; top: 440px" data-layout-allow-overlap>Đã thanh toán, khỏi soi ảnh chụp</div>
+    <div class="rs-fill rs-bg-brand iris" id="irisP"></div>
+  </div>
+
+  <!-- ===== E. CTA (26.24 – 29.86) ===== -->
+  <div id="sE" class="clip rs-scene" data-start="26.24" data-duration="3.62" data-track-index="17">
+    <div class="rs-fill" id="chatsE"></div>
+    <img class="logo-s" id="logoS" src="brand/logos/sipos/sipos-logo-trang.png" alt="SIPOS" />
+    <img class="logo-r" id="logoR" src="brand/logos/redsun/redsun-logo-trang.png" alt="Redsun" />
+    <div class="tagline" id="tag"><div><b>SIPOS,</b> giải pháp quản lý bán hàng</div><div>trong thời đại AI.</div></div>
+    <div class="bc-cho-gan"></div>
+    <div class="cta-btn" id="btn"><span class="chat-ico"></span><span id="btnTxt">Nhắn tin để được tư vấn</span></div>
+    <div id="tap" style="left: 728px; top: 1196px"></div>
+  </div>
+
+  <!-- Phụ đề lời kể (giờ lấy từ giọng thật) -->
+  <div class="rs-sub rs-loi" data-loi="hook-gia"><span>Ảnh chuyển khoản này… là GIẢ!</span></div>
+  <div class="rs-sub rs-loi" data-loi="bo-sot"><span>Bán cả ngày, tối mới biết mình bị bỏ sót tiền.</span></div>
+  <div class="rs-sub rs-loi" data-loi="chuyen-la"><span><div>Chuyện là, khách chìa ảnh: “Em chuyển rồi nha.”</div><div>Nhân viên: “Dạ vâng ạ.”</div></span></div>
+  <div class="rs-sub rs-loi" data-loi="toi-kiem"><span><div>Tối kiểm tài khoản,</div><div>đếm đi đếm lại vẫn thiếu một khoản.</div></span></div>
+  <div class="rs-sub rs-loi" data-loi="dan-anh-gia"><span><div>Ảnh chuyển khoản mà</div><div>không phải chuyển khoản thật.</div></span></div>
+  <div class="rs-sub rs-loi" data-loi="sipos-qr"><span><div>Giờ mỗi đơn một mã QR.</div><div>Khách quét trả tiền là SIPOS tự xác nhận.</div></span></div>
+  <div class="rs-sub rs-loi" data-loi="da-thanh-toan"><span><div>Trả xong là báo đã thanh toán,</div><div>khỏi soi ảnh chụp.</div></span></div>
+  <div class="rs-nhan-ai" data-nhan-ai>Do AI sản xuất</div>
+  <audio id="music" src="music/bgm.mp3" data-start="0" data-duration="29.86" data-track-index="9" data-volume="1"></audio>
+  <!-- GIONG-DOC -->
+  <!-- TIENG-DONG -->
+</div>
+
+<script>
+RS.ready(function (tl) {
+  const $ = (s) => document.querySelector(s);
+  const show = (sel, a, b) => {
+    tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: 0.01, immediateRender: false }, a);
+    if (b !== undefined) tl.to(sel, { opacity: 0, duration: 0.01 }, b);
+  };
+  const pop = (sel, at, origin) => {
+    tl.fromTo(sel, { scale: 0.3, opacity: 0, transformOrigin: origin || "50% 50%" }, { scale: 1, opacity: 1, duration: 0.22, ease: "back.out(2.4)", immediateRender: false }, at);
+    tl.set(sel, { opacity: 0 }, 0);
+  };
+
+  /* ---------- H: HOOK — dấu GIẢ dập trên phách 0.88 ---------- */
+  RS.setLive(tl, RS.set($("#insH"), "bao-dong"), 0, 2.16, 9);
+  tl.set("#hFlash", { opacity: 0 }, 0);
+  tl.fromTo("#hShot", { scale: 1.3, rotation: 0 }, { scale: 1.02, rotation: -3, duration: 0.55, ease: "expo.out" }, 0);
+  tl.set("#hStamp", { opacity: 0 }, 0);
+  tl.fromTo("#hStamp", { scale: 2.8, rotation: -30, opacity: 0 }, { scale: 1, rotation: -12, opacity: 1, duration: 0.18, ease: "power4.in", immediateRender: false }, 0.7);
+  RS.shake(tl, ["#hShot", "#hStamp"], 0.88, 16, 3);
+  RS.flash(tl, "#hFlash", 0.88, 0.55);
+  tl.to("#hShot", { scale: 1.1, duration: 1.2, ease: "sine.inOut" }, 0.95);
+  tl.to("#hStamp", { scale: 1.06, duration: 1.2, ease: "sine.inOut" }, 0.95);
+
+  /* ---------- Mặt người + máy quay trôi (không đứng hình) ---------- */
+  tl.fromTo("#vwH", { scale: 1.1, transformOrigin: "540px 700px" }, { scale: 1.3, duration: 2.37, ease: "sine.inOut" }, 2.16);
+  tl.fromTo("#vwF1", { scale: 1.55, transformOrigin: "540px 1250px" }, { scale: 1.8, duration: 3.01, ease: "sine.inOut" }, 4.53);
+  tl.fromTo("#vwF2", { scale: 1.12, transformOrigin: "540px 560px" }, { scale: 1.3, duration: 2.47, ease: "sine.inOut" }, 7.54);
+  tl.fromTo("#vwN2", { scale: 1.75, transformOrigin: "540px 520px" }, { scale: 2.0, duration: 1.74, ease: "power2.out" }, 11.8);
+  tl.fromTo("#vwR2", { scale: 1.3, transformOrigin: "540px 620px" }, { scale: 1.5, duration: 1.18, ease: "power3.out" }, 15.35);
+  tl.fromTo("#vwQ", { scale: 1.05, transformOrigin: "540px 900px" }, { scale: 1.22, duration: 1.24, ease: "sine.inOut" }, 18.97);
+  tl.fromTo("#vwP", { scale: 1.08, transformOrigin: "540px 760px" }, { scale: 1.25, duration: 3.65, ease: "sine.inOut" }, 22.59);
+
+  /* ---------- F: tua lại quầy chiều ---------- */
+  tl.fromTo("#cardA", { scale: 0.4, y: 140, opacity: 0, rotation: -8, transformOrigin: "50% 100%" }, { scale: 1, y: 0, opacity: 1, rotation: -4, duration: 0.4, ease: "back.out(1.8)" }, 5.13);
+  tl.to("#cardA", { y: -18, duration: 1.9, ease: "sine.inOut" }, 5.55);
+  tl.to("#cardA", { opacity: 0, y: -80, duration: 0.2, ease: "power2.in" }, 7.34);
+  tl.fromTo("#dusk", { opacity: 0 }, { opacity: 0.75, duration: 0.45, ease: "power1.in" }, 9.56);
+
+  /* ---------- N: tối kiểm tiền ---------- */
+  RS.setLive(tl, RS.set($("#insN"), "nha", { light: "dem", tone: "xanh", seed: 4, clock: false }), 10.01, 11.8, 2);
+  tl.fromTo("#ledger", { y: 1400, rotation: 6 }, { y: 0, rotation: -2, duration: 0.35, ease: "power3.out" }, 10.01);
+  tl.fromTo("#ledger .lrow", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.14, stagger: 0.1, ease: "power2.out" }, 10.12);
+  RS.tayBam("#finger");
+  tl.set("#finger", { rotation: -90 }, 0);
+  tl.fromTo("#finger", { opacity: 0, y: 0 }, { opacity: 1, y: 0, duration: 0.1 }, 10.2);
+  [[10.25, 130], [10.45, 260], [10.65, 390]].forEach(([t, y]) => tl.to("#finger", { y, duration: 0.18, ease: "power2.inOut" }, t));
+  RS.shake(tl, "#miss", 11.15, 12, 3);
+  pop("#tagMiss", 11.15);
+  tl.to("#ledger", { scale: 1.08, rotation: 1, duration: 1.2, ease: "sine.inOut" }, 10.5);
+  tl.fromTo("#flashN", { opacity: 0 }, { opacity: 0.85, duration: 0.3, ease: "power1.in", immediateRender: false }, 13.24);
+  tl.set("#flashN", { opacity: 0 }, 0);
+
+  /* ---------- R: soi ảnh, LẶNG 13.64–14.14, lộ thư viện + dấu GIẢ trên phách mạnh 14.14 ---------- */
+  RS.setLive(tl, RS.set($("#insR"), "bao-dong"), 13.54, 15.35, 3);
+  tl.fromTo("#shotBig", { scale: 1.5, opacity: 0.4, rotation: 0 }, { scale: 1, opacity: 1, rotation: -3, duration: 0.4, ease: "expo.out" }, 13.54);
+  tl.fromTo("#gal", { y: -70 }, { y: -70, duration: 0.01 }, 13.54);
+  tl.fromTo("#glass", { x: 900, y: 700, opacity: 1 }, { x: 600, y: 800, duration: 0.3, ease: "power2.out" }, 13.56);
+  tl.to("#glass", { x: 420, y: 470, duration: 0.5, ease: "sine.inOut" }, 13.64);
+  tl.to("#gal", { y: 0, duration: 0.18, ease: "power3.out" }, 14.14);
+  tl.fromTo("#rgbR", { opacity: 0, x: 0 }, { opacity: 1, x: -18, duration: 0.05, repeat: 7, yoyo: true, ease: "steps(1)" }, 14.14);
+  tl.fromTo("#rgbC", { opacity: 0, x: 0 }, { opacity: 1, x: 18, duration: 0.05, repeat: 7, yoyo: true, ease: "steps(1)" }, 14.14);
+  tl.set("#rStamp", { opacity: 0 }, 0);
+  tl.fromTo("#rStamp", { scale: 2.6, rotation: -30, opacity: 0 }, { scale: 1, rotation: -12, opacity: 1, duration: 0.18, ease: "power4.in", immediateRender: false }, 13.96);
+  RS.shake(tl, ["#shotBig", "#rStamp"], 14.14, 14, 3);
+  tl.to("#glass", { opacity: 0, scale: 0.6, duration: 0.2, ease: "power2.in" }, 14.2);
+  tl.fromTo("#tagFake", { y: -30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.25, ease: "power2.out", immediateRender: false }, 14.2);
+  tl.set("#tagFake", { opacity: 0 }, 0);
+  tl.to("#shotBig", { scale: 1.08, rotation: 0, duration: 1.0, ease: "sine.inOut" }, 14.35);
+  tl.fromTo("#irisR", { clipPath: "circle(0% at 50% 45%)" }, { clipPath: "circle(150% at 50% 45%)", duration: 0.4, ease: "power3.in" }, 16.13);
+
+  /* ---------- Q: SIPOS — đơn #036 có mã QR riêng; khách quét; tự xác nhận trên phách 21.39 ---------- */
+  RS.setLive(tl, RS.set($("#insQ"), "sang"), 16.53, 22.59, 5);
+  tl.fromTo("#phoneQ", { y: 1300, rotation: 10, scale: 0.8 }, { y: 0, rotation: -2, scale: 0.8, duration: 0.5, ease: "power4.out" }, 16.53);
+  tl.fromTo("#phoneQ .ord", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.2, stagger: 0.12, ease: "power2.out" }, 16.8);
+  tl.fromTo("#qBox", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: "back.out(1.8)" }, 17.21);
+  pop("#tagQr", RS.loiAt("sipos-qr", "mã QR"), "0% 50%");
+  tl.fromTo("#qScan", { opacity: 0, y: 0 }, { opacity: 1, y: 0, duration: 0.1, immediateRender: false }, 17.79);
+  tl.to("#qScan", { y: 230, duration: 0.55, repeat: 1, yoyo: true, ease: "sine.inOut" }, 17.85);
+  tl.to("#phoneQ", { scale: 0.86, rotation: 0, duration: 2.4, ease: "sine.inOut" }, 17.0);
+  tl.set("#qOk", { opacity: 0 }, 0);
+  tl.to("#qScan", { opacity: 0, duration: 0.1 }, 21.3);
+  tl.to("#qWait", { opacity: 0, duration: 0.12 }, 21.3);
+  tl.fromTo("#qOk", { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(2.4)", immediateRender: false }, 21.39);
+  RS.shake(tl, "#phoneQ", 21.39, 6, 2);
+  tl.set("#sparkQ", { opacity: 0 }, 0);
+  tl.set("#sparkQ", { opacity: 1 }, 21.38);
+  RS.burst(tl, $("#sparkQ"), "coin", { x: 540, y: 1250, count: 10, spread: 320, rise: 300, at: 21.39, dur: 0.9, seed: 21 });
+  pop("#tagXn", RS.loiAt("sipos-qr", "tự xác nhận") - 0.25, "0% 50%");
+  tl.to("#phoneQ", { scale: 0.9, duration: 1.2, ease: "sine.inOut" }, 21.4);
+
+  /* ---------- P: sáng hôm sau, chủ quán cười, thông báo đã thanh toán ---------- */
+  tl.fromTo("#notif", { y: -260, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "back.out(1.6)", immediateRender: false }, 23.2);
+  tl.set("#notif", { opacity: 0 }, 0);
+  tl.to("#notif", { y: 10, duration: 2.2, ease: "sine.inOut" }, 23.7);
+  pop("#tagP", RS.loiAt("da-thanh-toan", "khỏi soi"), "0% 50%");
+  tl.fromTo("#irisP", { clipPath: "circle(0% at 50% 45%)" }, { clipPath: "circle(150% at 50% 45%)", duration: 0.45, ease: "power3.in" }, 25.79);
+
+  /* ---------- E: CTA, người kể đọc "SIPOS. Nhắn tin để được tư vấn." ---------- */
+  RS.setLive(tl, RS.set($("#sE"), "thuong-hieu"), 26.24, 29.86, 6);
+  const tagLines = document.querySelectorAll("#tag div");
+  RS.fit(tagLines[0], 860, 48, 36);
+  tagLines[1].style.fontSize = tagLines[0].style.fontSize;
+  RS.fit($("#btnTxt"), 520, 52, 36);
+  tl.fromTo("#logoS", { scale: 0.5, opacity: 0, filter: "blur(14px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.42, ease: "expo.out" }, 26.24);
+  tl.fromTo("#logoR", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 26.6);
+  tl.fromTo("#tag div", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.3, stagger: 0.2, ease: "power2.out" }, 26.89);
+  tl.set("#btn", { opacity: 0 }, 0);
+  tl.fromTo("#btn", { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.8)", immediateRender: false }, RS.loiAt("cta", "Nhắn tin"));
+  RS.tayBam("#tap");
+  tl.fromTo("#tap", { x: 260, y: 360, opacity: 0, rotation: -12 }, { x: 0, y: 0, opacity: 1, rotation: -12, duration: 0.4, ease: "power3.out" }, 27.6);
+  [28.1, 28.68, 29.3].forEach((t) => RS.bam(tl, "#tap", t, "#btn"));
+  tl.set("#chatsE", { opacity: 0 }, 0);
+  tl.set("#chatsE", { opacity: 1 }, 28.67);
+  RS.burst(tl, $("#chatsE"), "confetti", { x: 540, y: 900, count: 20, spread: 500, rise: 240, at: 28.68, dur: 0.9, seed: 77 });
+  tl.to("#logoS", { scale: 1.04, duration: 3.2, ease: "sine.inOut" }, 26.66);
+
+  RS.loiSubs(tl);
+  window.__timelines["main"] = tl;
+});
+</script>
+</body>
+</html>

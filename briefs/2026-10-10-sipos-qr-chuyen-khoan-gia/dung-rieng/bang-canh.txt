@@ -1,0 +1,18 @@
+# giây | điều xảy ra | tiếng | chuyển sang khung sau
+0.40 | Ảnh "chuyển tiền thành công" lao sát mặt, giọng: "Ảnh chuyển khoản này…" | nhiễu | dấu dập
+1.00 | Dấu GIẢ đỏ dập lên ảnh trên phách, rung, chớp | ầm, dập dấu | cắt sang hậu quả
+3.30 | Chủ quán buồn trong đêm: "Bán cả ngày, tối mới biết mình bị bỏ sót tiền." | vụt | "Chuyện là…" tua lại
+5.80 | Tay khách chìa điện thoại, ảnh tick xanh bật lên | bật, ding | nhân viên nhìn ảnh
+9.00 | Nhân viên cười gật "Dạ vâng ạ." | vụt nhẹ | trời tối dần
+10.80 | Sổ "Tiền vào hôm nay", ngón tay dò từng dòng | tích tích | dòng cuối đỏ
+11.50 | "Em chuyển rồi" — "Không thấy" rung, "Tối kiểm tiền: không thấy đâu" | sai | cận mặt chủ quán lo
+12.80 | Cận mặt chủ quán lo lắng | vụt nhẹ | chớp, phóng vào ảnh
+13.90 | Kính lúp soi ảnh, nhạc lặng | (lặng) | lộ thư viện
+14.60 | Lộ "Ảnh · Thư viện" + dấu GIẢ, "Hóa ra là ảnh giả" | ầm, dập dấu | nhân viên thấy
+15.90 | Nhân viên mím môi nhíu mày | thịch | mở tròn sang sáng
+18.30 | SIPOS: đơn #036, mã QR riêng, "Mỗi đơn một mã QR," | bật, tích | tay khách quét
+19.60 | Tay khách cầm điện thoại quét mã | vụt | về màn hình SIPOS
+21.90 | "Đã thanh toán ✓" bật lên, xu bay, "quét là tự xác nhận" | ding, xu | sáng hôm sau
+24.40 | Chủ quán cười, thông báo "Đã thanh toán · Đơn #036" trượt xuống, "Đã thanh toán, khỏi soi ảnh chụp" | ding | mở tròn teal
+27.20 | Logo SIPOS + Redsun, "SIPOS, giải pháp quản lý bán hàng trong thời đại AI." | lấp lánh | nút hiện
+29.00 | Bàn tay bấm "Nhắn tin để được tư vấn" | bấm | hết
