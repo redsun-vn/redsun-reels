@@ -16,6 +16,7 @@
     "bang": "node scripts/bang-canh.ts",
     "quay-san": "node scripts/quay-san.ts",
     "giong": "node scripts/giong.ts",
+    "ai": "node scripts/ai.ts",
     "validate": "node scripts/validate.ts",
     "build": "node scripts/build.ts",
     "preview": "node scripts/preview.ts",

@@ -233,7 +233,7 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose; v
   }
   // Kiểu hình: luật cứng minh hoạ / người thật do AI tạo (không có cờ bỏ qua)
   const customHtml = script.build === 'custom' && existsSync(compositionPath(dir)) ? readFileSync(compositionPath(dir), 'utf8') : '';
-  issues.push(...aiRuleIssues({ dir, kieuHinh: brief.kieuHinh, script, html: customHtml, hasVoice }));
+  issues.push(...aiRuleIssues({ dir, kieuHinh: brief.kieuHinh, cachTaoAi: brief.cachTaoAi, script, html: customHtml, hasVoice }));
   if (brief.occasion && !getOccasion(brief.occasion)) {
     issues.push(warn(`Dịp lễ "${brief.occasion}" chưa có trong lịch, nên không tự chọn phong cách theo dịp. Có: ${OCCASIONS.map((o) => o.id).join(', ')}.`));
   }

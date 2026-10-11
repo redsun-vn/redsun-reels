@@ -89,6 +89,7 @@ Kiểm kê skill đã cài (danh sách skill của runtime + `.claude/skills/` +
 | `./reel make <tên-video>` | validate + build + render |
 | `./reel post <tên-video>` | Soạn caption + hashtag |
 | `./reel giong <tên-video> [--cau=<id>] [--lai] [--cho=<giây>]` | Tạo giọng đọc VieNeu theo `dung-rieng/loi-doc.json` (mỗi câu một bản, kiểm trên máy; cần `VIENEU_API_KEY`) |
+| `./reel ai <tên-video> [--canh=<id>] [--video] [--lai]` | Tạo cảnh người thật do AI (OpenRouter) theo `ai/canh-ai.json` và `cachTaoAi` của brief (`anh-vai`: ảnh vai → khung đầu → clip Kling; `tu-chu`: clip Seedance từ chữ); sổ `ai/nhat-ky.json`, trần 50.000đ/video; cần `OPENROUTER_API_KEY` |
 | `./reel music:fetch` | Tải lại nhạc thiếu |
 | `./reel music:add nhac-tu-tim/<file> --link=… --tac-gia=… --mood=…` | Thêm nhạc MKT tự tìm (Pixabay/Mixkit) trên máy này; `--lai` đăng ký lại |
 | `./reel test`, `typecheck`, `lint:brand`, `lint:music`, `test:render` | Kiểm tra cho dev |

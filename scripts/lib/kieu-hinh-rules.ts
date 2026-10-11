@@ -9,7 +9,7 @@
  */
 import { existsSync, readFileSync } from 'node:fs';
 import { join, normalize } from 'node:path';
-import { AI_LABEL_ON_SCREEN, AI_VIDEO, aiLabelFor, KIEU_HINH, type KieuHinh } from '../../config/ai-video.ts';
+import { AI_LABEL_ON_SCREEN, AI_VIDEO, aiLabelFor, CACH_TAO_AI, type CachTaoAi, KIEU_HINH, type KieuHinh } from '../../config/ai-video.ts';
 import { CAM_XUC, STOCK_FOOTAGE } from '../../config/stock-footage.ts';
 import type { Script } from '../../config/script.schema.ts';
 import { assetPaths } from './build-props.ts';
@@ -133,6 +133,8 @@ export interface AiRuleInput {
   /** Thư mục brief. */
   dir: string;
   kieuHinh: KieuHinh;
+  /** Cách tạo người AI (chỉ với nguoi-that-ai). */
+  cachTaoAi?: CachTaoAi | null;
   script: Script;
   /** Composition dựng riêng (nếu có). */
   html?: string;
@@ -157,7 +159,7 @@ export function aiRuleIssues(input: AiRuleInput): RuleIssue[] {
   return out;
 }
 
-function imageRuleIssues({ dir, kieuHinh, script, html = '' }: AiRuleInput): RuleIssue[] {
+function imageRuleIssues({ dir, kieuHinh, cachTaoAi, script, html = '' }: AiRuleInput): RuleIssue[] {
   const out: RuleIssue[] = [];
   const err = (message: string) => out.push({ level: 'error', message });
   const refs = aiRefs(html, script);
@@ -195,6 +197,8 @@ function imageRuleIssues({ dir, kieuHinh, script, html = '' }: AiRuleInput): Rul
   // nguoi-that-ai
   if (!AI_VIDEO.enabled) err('Quy trình người thật do AI tạo chưa bật (cần dev: REQUIREMENTS §7.4, M5). Làm bản minh hoạ, hoặc chờ Nam bật.');
   if ((AI_VIDEO.forbiddenVideoTypes as readonly string[]).includes(script.videoType)) err(`Loại video "${script.videoType}" không được dùng người thật do AI tạo (cần người, lời nói, sự kiện hay đội ngũ thật). Dùng kiểu minh hoạ hoặc hình/clip thật MKT gửi.`);
+  if (!cachTaoAi) err(`brief.md chưa chọn cách tạo người AI (cachTaoAi: ${CACH_TAO_AI.join(' | ')}). Hỏi MKT theo skill chon-kieu-hinh, không tự chọn.`);
+  else for (const m of methodIssues(dir, cachTaoAi)) err(m);
   if (script.build !== 'custom') err('Video người thật do AI tạo phải dựng riêng ("build": "custom"): mẫu có sẵn không có nhãn AI.');
   else {
     // Mọi cảnh AI phải do quy trình của dự án tạo: có trong nhật ký (model, mô tả tạo), file có thật
@@ -215,4 +219,22 @@ function imageRuleIssues({ dir, kieuHinh, script, html = '' }: AiRuleInput): Rul
     }
   }
   return out;
+}
+
+/** Kế hoạch cảnh AI (ai/canh-ai.json) khớp cách tạo đã chọn: `tu-chu` mọi cảnh là clip tạo từ chữ; `anh-vai` không cảnh nào tạo từ chữ. */
+export function methodIssues(dir: string, cach: CachTaoAi): string[] {
+  const p = join(dir, AI_VIDEO.dir, AI_VIDEO.specFile);
+  if (!existsSync(p)) return [];
+  let canh: Array<{ id?: string; video?: boolean; tuChu?: boolean }> = [];
+  try {
+    canh = (JSON.parse(readFileSync(p, 'utf8')) as { canh?: typeof canh }).canh ?? [];
+  } catch {
+    return [`${AI_VIDEO.dir}/${AI_VIDEO.specFile} không đọc được (JSON lỗi).`];
+  }
+  const bad = cach === 'tu-chu' ? canh.filter((c) => !(c.video && c.tuChu)) : canh.filter((c) => c.tuChu);
+  if (!bad.length) return [];
+  const ids = bad.map((c) => c.id).join(', ');
+  return [cach === 'tu-chu'
+    ? `Brief chọn cách tạo "tu-chu" (không ảnh nhân vật) nhưng cảnh ${ids} trong ${AI_VIDEO.specFile} không phải clip tạo từ chữ ("video": true, "tuChu": true).`
+    : `Brief chọn cách tạo "anh-vai" (ảnh nhân vật) nhưng cảnh ${ids} trong ${AI_VIDEO.specFile} tạo từ chữ (tuChu). Đổi cách tạo trong brief (hỏi MKT) hoặc bỏ tuChu.`];
 }

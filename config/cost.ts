@@ -8,6 +8,8 @@ export const COST = {
   capVndPerVideo: 15_000,
   /** Tỷ giá ước để quy đổi (USD → đồng); chỉ dùng để so với trần. */
   vndPerUsd: 26_000,
+  /** Trần cho cảnh người thật do AI tạo (ảnh vai, khung đầu, clip; OpenRouter, Nam 2026-10-11), đồng mỗi video. */
+  aiCapVndPerVideo: 50_000,
   /** VieNeu tính bằng token của gói (không đổi ra đồng được khi đang dùng thử): trần token mỗi video. */
   vieneuTokenCapPerVideo: 20_000,
   /** Giá theo model: input, output (output gồm cả phần "suy nghĩ"). */

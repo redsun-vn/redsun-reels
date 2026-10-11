@@ -111,7 +111,7 @@ Sổ tay [`docs/huong-dan-mkt.md`](docs/huong-dan-mkt.md) có đủ: chỗ để
 |---|---|---|
 | Minh hoạ | Nhân vật Việt vẽ phẳng, bối cảnh vẽ sẵn (quán, nhà, tạp hoá, văn phòng, kho, phố, livestream), nét mặt theo cảm xúc | Dùng được |
 | Người thật quay sẵn | Clip người châu Á từ Pexels/Pixabay, mỗi vai một người, đúng cảm xúc từng khung; Claude tự cắt đoạn và ghi sổ nguồn | Dùng được |
-| Người thật do AI tạo | Cảnh người thật do AI dựng, luôn gắn nhãn AI | Chưa bật (REQUIREMENTS §7.4, M5) |
+| Người thật do AI tạo | Nhân vật trông như thật do AI tạo, luôn gắn nhãn AI, tốn phí (trần 50.000đ/video). Hai cách: **ảnh nhân vật trước** (duyệt mặt, mặt giữ y hệt, Kling) hoặc **tạo thẳng từ kịch bản** (không cần ảnh, cử động mọi cảnh, Seedance 2.0 Fast) | Dùng được |
 
 Hình, clip của chính bạn (ảnh quán, màn hình phần mềm, người thật đã đồng ý): kéo vào khung chat, hoặc bỏ vào `briefs/<tên-video>/hinh/`.
 
@@ -169,7 +169,7 @@ Chế độ dev chỉ bật khi nói rõ "chế độ dev" (xem [`CLAUDE.md`](CL
 git clone git@github.com:redsun-vn/redsun-reels.git
 cd redsun-reels
 bash ./scripts/cai-dat.sh   # Node vào ~/.redsun-reels, thư viện, plugin HyperFrames, trình duyệt render, render thử
-cp .env.example .env        # điền VIENEU_API_KEY (giọng đọc AI); không commit .env
+cp .env.example .env        # điền VIENEU_API_KEY (giọng đọc), OPENROUTER_API_KEY (cảnh AI); không commit .env
 ./reel doctor
 ./reel test && ./reel typecheck
 ```
@@ -205,6 +205,7 @@ Không cần Node hệ thống: `./reel <lệnh>` tự dùng Node trong `~/.reds
 | `./reel hinh <tên> [file…]` | Nhận hình/clip MKT gửi, đổi HEIC → JPG, liệt kê |
 | `./reel quay-san <tên> […] / --tai-lai` | Nhận, tự cắt clip người thật quay sẵn (Pexels/Pixabay) + sổ nguồn; `--tai-lai` tải lại theo sổ |
 | `./reel giong <tên> [--cau=<id>] [--lai] [--cho=<giây>]` | Tạo giọng VieNeu theo `dung-rieng/loi-doc.json`, kiểm từng bản trên máy |
+| `./reel ai <tên> [--canh=<id>] [--video] [--lai]` | Cảnh người thật do AI (OpenRouter) theo `ai/canh-ai.json` và `cachTaoAi` của brief: ảnh vai → khung đầu → clip Kling, hoặc clip Seedance tạo từ chữ; trần 50.000đ/video |
 | `./reel validate <tên>` | Kiểm brief + kịch bản: luật 3 giây đầu, nỗi đau → giải pháp, 15–30 giây, thời lượng đọc, số liệu, tiếng động, giọng, nhãn AI |
 | `./reel snap <tên> [--at=…]` | Dựng + kiểm bố cục/tương phản + so nền các cảnh + chụp khung `out/snap/<tên>/` |
 | `./reel bang <tên>` | Bảng khung chính có số (`dung-rieng/bang-canh.txt` → `out/snap/<tên>/bang/bang-canh.png`) |

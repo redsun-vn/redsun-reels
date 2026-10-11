@@ -2,13 +2,15 @@
  * Frontmatter của briefs/<slug>/brief.md (REQUIREMENTS v0.4 §6.1).
  */
 import { z } from 'zod';
-import { KIEU_HINH } from './ai-video.ts';
+import { CACH_TAO_AI, KIEU_HINH } from './ai-video.ts';
 import { PRODUCT_IDS, TEMPLATE_IDS } from './video-types.ts';
 
 export const BriefSchema = z.object({
   product: z.enum(PRODUCT_IDS),
   /** Kiểu hình (REQUIREMENTS v0.5 §7.4): MKT chọn, Claude không tự chọn (skill chon-kieu-hinh). */
   kieuHinh: z.enum(KIEU_HINH),
+  /** Video người thật do AI tạo: cách tạo người (`anh-vai` | `tu-chu`), MKT chọn (skill chon-kieu-hinh). */
+  cachTaoAi: z.enum(CACH_TAO_AI).nullish(),
   videoType: z.string().min(1),
   style: z.string().nullish(),
   occasion: z.string().nullish(),

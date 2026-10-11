@@ -40,7 +40,11 @@
  * khung đen kiểu phụ đề YouTube (Nam 2026-10-10), chữ trắng có bóng tối để đọc được trên mọi nền. Mỗi dòng một <div>.
  */
 .rs-sub.rs-loi span { padding: 0; border-radius: 0; background: none; font-size: calc(var(--type-caption) * 0.78); font-weight: 700; text-shadow: 0 0 3px var(--color-black), 0 0 10px color-mix(in srgb, var(--color-black) 85%, transparent), 0 2px 16px color-mix(in srgb, var(--color-black) 70%, transparent); }
-.rs-sub.rs-loi span div { white-space: nowrap; }
+/* Một dòng mỗi lúc, sát đáy vùng an toàn (Nam 2026-10-11: "phụ đề cao quá, che mất hình"): các dòng chồng cùng ô lưới,
+   RS.loiSubs bật từng dòng theo giờ đọc. Không hạ thấp hơn vùng an toàn: dưới đó là tên tài khoản, mô tả của TikTok/Reels. */
+.rs-sub.rs-loi { bottom: var(--safe-bottom); }
+.rs-sub.rs-loi span { display: grid; align-items: end; }
+.rs-sub.rs-loi span div { white-space: nowrap; grid-area: 1 / 1; }
 
 /* Bong bóng thoại: .left / .right là phía đuôi */
 .rs-bubble { position: absolute; padding: 28px 36px; border-radius: 40px; background: var(--prop-bubble); color: var(--prop-bubble-ink); font-weight: 800; font-size: var(--type-h3); line-height: 1.2; box-shadow: 0 24px 50px var(--prop-shadow); white-space: nowrap; }

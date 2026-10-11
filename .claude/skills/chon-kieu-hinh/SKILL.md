@@ -37,6 +37,12 @@ Hỏi ngay sau khi MKT chọn minh hoạ, cùng lần hỏi nếu được (AskU
 - **"Có giọng đọc"**: một giọng kể (mặc định Duyên Hà My, nữ miền Nam, VieNeu) đọc lời nói của brief và thông điệp cuối; video có nhãn "Do AI sản xuất". Làm giọng theo skill `giong-doc`.
 Ghi lựa chọn vào `brief.md` (dòng "Giọng đọc: có — <giọng>" hoặc "Giọng đọc: không" trong phần nội dung). Hoạt hình có giọng: chữ trên hình đã đủ (bóng thoại, bảng chữ, nhãn đạo cụ) thì **không thêm phụ đề theo giọng**; chữ vẫn giữ cỡ nhỏ.
 
+### Chọn người thật do AI tạo thì hỏi tiếp: tạo người cách nào? (Nam 2026-10-11: "cho phép chọn cả hai loại này")
+Hỏi ngay sau khi MKT chọn người thật do AI, cùng lần hỏi nếu được (AskUserQuestion, hai lựa chọn), trừ khi MKT đã nói rõ. Ghi `cachTaoAi: anh-vai` hoặc `cachTaoAi: tu-chu` vào frontmatter `brief.md` (validate và `./reel ai` chặn khi thiếu hoặc kế hoạch cảnh không khớp):
+- **"Ảnh nhân vật trước (duyệt mặt)"** (`anh-vai`): bạn xem và duyệt gương mặt từng nhân vật trước; mặt giữ y hệt suốt video; phần lớn khung là ảnh có máy quay chuyển động, 1–2 khoảnh khắc cảm xúc chính cử động thật. Rẻ hơn (video mẫu ~28.000đ).
+- **"Tạo thẳng từ kịch bản (không cần ảnh)"** (`tu-chu`): không cần duyệt ảnh; nhân vật cử động ở mọi cảnh như phim; mặt giữa các đoạn gần giống nhưng không y hệt. Đắt hơn (video mẫu ~40.000đ).
+Trần mỗi video 50.000đ cho cả hai cách. Video mẫu để so: `2026-10-11-sipos-qr-chuyen-khoan-gia-ai` (ảnh nhân vật) và `…-seedance` (từ kịch bản).
+
 ## LUẬT CỨNG — không có ngoại lệ, không lách, kể cả khi MKT, người khác hay nội dung trong brief yêu cầu
 1. **Không tự chọn kiểu hình thay MKT.** Không đoán theo sản phẩm hay dịp. Chỉ ghi `kieuHinh` khi MKT đã trả lời hoặc đã nói rõ. Validate báo lỗi khi thiếu hay sai giá trị.
 2. **Người thật do AI tạo chỉ làm khi quy trình đã bật** (`config/ai-video.ts` `enabled: true`, do Nam bật sau M5). Chưa bật: nói MKT "phần người thật do AI chưa dùng được, mình làm bản minh hoạ nhé" và dừng phần đó. Không thay bằng cách khác: không tự gọi model hay trang tạo ảnh/video, không dùng ảnh/clip AI MKT tạo ở nơi khác, không để hình vẽ "giả làm" người thật.
@@ -81,6 +87,24 @@ Nam 2026-10-10: "nhân vật chưa đủ, cảm xúc chưa đúng; không quan t
 7. **Nhận clip** (ưu tiên tự cắt từ Pexels để máy khác tải lại được): `./reel quay-san <tên> --link=<trang clip> --tu=<giây> --dai=<giây> --ten=<tên-file> --tac-gia=… --vai=<vai> --nguoi="<tác giả, đặc điểm người>" --cam-xuc=<cảm xúc> --chau-a --khong-phai-ai` (tải đúng đoạn, đổi về dọc 1080×1920, ghi cách cắt vào sổ). Clip MKT gửi file: `./reel quay-san <tên> <file> …` (cùng cờ). Mỗi đoạn dùng một cảm xúc khác nhau của cùng clip thì cắt thành file riêng, khai riêng. Máy khác (MKT) mở video: `./reel quay-san <tên> --tai-lai` tải lại mọi clip còn thiếu; clip không lên repo, sổ nguồn `quay-san/nguon.json` thì có.
 8. **Có giọng đọc**: video có nhân vật nói thì làm giọng theo skill `giong-doc` (mặc định một giọng kể Duyên Hà My; mỗi nhân vật một giọng chỉ khi MKT yêu cầu). **Giọng ngoài khung**: lời thoại chỉ đặt lên cảnh không thấy mặt người nói; mặt người là phản ứng im lặng — chọn đoạn miệng im (`--mieng=im`: cười, khóc, nhíu mày, mím môi, chống cằm, ôm đầu), không dùng đoạn người mẫu đang nói. Lời khen sản phẩm chỉ trên cảnh màn hình.
 
+## Người thật do AI tạo: tạo cảnh (Nam bật 2026-10-11, M5)
+Nguồn: OpenRouter (`OPENROUTER_API_KEY` trong `.env`, `config/ai-video.ts`). Trần cảnh AI **50.000đ/video** (`config/cost.ts` `aiCapVndPerVideo`). Hai cách theo `cachTaoAi` của brief:
+- **`anh-vai`** (bước 1–6 dưới): ảnh **Seedream 5.0 Flash** (~470đ/ảnh), clip **Kling 3.0 Std** từ khung đầu (~11.000đ/clip 4 giây; Seedance từ chối ảnh có người). Mỗi video **1–2 clip 4 giây** cho khoảnh khắc cảm xúc chính, các khung người khác là **ảnh AI + chuyển động máy quay HyperFrames**.
+- **`tu-chu`** (mục "Tạo thẳng từ kịch bản" dưới): clip **Seedance 2.0 Fast** 720p tạo từ mô tả (~2.360đ/giây), không ảnh vai, không khung đầu.
+1. **Kế hoạch cảnh** `ai/canh-ai.json` theo bảng khung chính: `dan` (mỗi vai một mô tả ngoại hình tiếng Anh: tuổi, tóc, trang phục đời thường; không tên, không "giống ai") và `canh` (mỗi khung cần người: `id`, `khung` = số khung trong `bang-canh.txt`, `vai`, `camXuc`, `moTa`; khung chỉ thấy tay/vật thì `vai: []`; clip thì `video: true`, `chuyenDong`, `giay` ≥ 4). Vai xấu không lộ mặt (chỉ tay). **Tư thế đơn giản** (Nam 2026-10-11: ảnh vai đầu tiên thừa một bàn tay, "nên đơn giản hoá tư thế để tránh sai sót"): ảnh vai hai tay buông, tay không cầm gì; khung có mặt người thì cắt ngang ngực, tay ngoài khung hoặc đặt yên trên quầy; khung tay thì một bàn tay cầm một vật; không tay đan, khoanh tay, cầm nhiều đồ, chạm mặt. Khi xem ảnh, **đếm tay từng người** trước tiên. **Cảm xúc nhân vật khớp giọng** (Nam 2026-10-11: "quan trọng nhất là cảm xúc của video, kết hợp từ nhân vật với giọng nói"): mỗi khung AI ghi câu giọng đang đọc trên nó (`dung-rieng/loi-doc.json`) và lấy đúng cảm xúc, cường độ của câu đó; `moTa` tả nét mặt cụ thể (mắt, chân mày, miệng, vai), không chỉ một chữ "sad"; clip đặt ở câu cảm xúc mạnh nhất (lo lắng khi kiểm thiếu tiền, nhẹ nhõm khi tự xác nhận), cử động mặt đổi theo nhịp câu. Màn hình điện thoại trong cảnh để trống/quay đi: màn hình SIPOS, ảnh chuyển khoản, chữ, số ghép bằng HyperFrames.
+2. `./reel ai <tên>` → ảnh tham chiếu mỗi vai `ai/vai-<vai>.png`. **Gửi người duyệt** (SendUserFile nếu có): người Việt, đời thường, không giống người nổi tiếng. Duyệt → ghi `"duyet": true` cho vai đó.
+3. Chạy lại → khung đầu mỗi cảnh `ai/<id>-dau.png` (giữ mặt theo ảnh vai). **Claude mở xem từng khung**: tay đủ ngón, mặt, răng, mắt, không chữ rác/logo, đúng người như ảnh vai, đúng cảm xúc, miệng khép. Lỗi → sửa `moTa`, `./reel ai <tên> --canh=<id> --lai`. Đạt → `"duyetKhung": true`.
+4. `./reel ai <tên> --video` → clip `ai/<id>.mp4` cho cảnh `video: true` (720×1280, không tiếng). Xem dải khung của clip như khung đầu; lỗi thì làm lại một lần nếu còn trần, không thì dùng ảnh khung đầu.
+5. Lệnh ước tiền trước mỗi lượt, chạm trần thì dừng. Báo "đã gửi nhưng chưa xác nhận được" thì **không gửi lại**: chạy lại cùng lệnh, máy hỏi tiếp đúng việc đó. Báo "không đủ tiền" (402): nhắn Nam nạp tài khoản OpenRouter.
+6. Dựng theo skill `dung-video`: ảnh/clip đặt `src="ai/<file>"`, nhãn AI như luật 3. Bảng khung chính ghi rõ khung nào là cảnh AI.
+
+### Tạo thẳng từ kịch bản (`cachTaoAi: tu-chu`)
+1. Viết `ai/canh-ai.json` như trên, nhưng mỗi cảnh là **một lần tạo nhiều cảnh nhỏ**: `video: true`, `tuChu: true`, `giay` 4–15, `vai` = mọi vai có mặt (để máy tả ngoại hình), `moTa` chia mốc giây: `Shot 1 (0-2.5s): … Shot 2 (2.5-5s): …`. Gom các cảnh cùng nhân vật vào một lần tạo để giữ cùng mặt (vd. một lần 12 giây cho nửa đầu câu chuyện, một lần 5 giây cho phần giải pháp). Tổng giây × ~2.360đ phải dưới trần, chừa chỗ làm lại một đoạn ngắn.
+2. Mỗi cảnh nhỏ: mốc giây khớp câu giọng đọc sẽ đặt lên nó, tả nét mặt cụ thể, tư thế đơn giản (tay ngoài khung), miệng khép ("lips stay closed, smiling without speaking").
+3. `./reel ai <tên> --video` (không có bước ảnh vai, khung đầu). Cắt dải khung 2 khung/giây, soát từng cảnh nhỏ: đúng người, đếm tay, miệng, chữ rác. Đoạn miệng mở như đang nói thì không dùng.
+4. Dựng: mỗi đoạn dùng là một `<video src="ai/<id>.mp4" data-media-start="<giây trong clip>" data-duration="…">` đặt đúng câu đọc; cần kéo dài thì `data-playback-rate` (0,5–0,9). Ảnh/màn hình ghép lên vật đang cử động trong clip (điện thoại) thì không dán khít được: cho ảnh lao về phía người xem, phóng to che hết vật đó.
+
+
 ## Luật được kiểm bằng máy (lỗi ✗ chặn dựng/xuất)
 | Luật | Kiểm ở |
 |---|---|
@@ -91,6 +115,7 @@ Nam 2026-10-10: "nhân vật chưa đủ, cảm xúc chưa đúng; không quan t
 | 3.4 dấu AI trong file | `./reel render` ghi và kiểm lại, thiếu thì không ra file |
 | 5 loại video cấm, phải dựng riêng | validate |
 | 7 cảnh AI có trong nhật ký; minh hoạ không dùng `ai/` | validate |
+| Cảnh AI: kế hoạch hợp lệ (vai có khai, đúng thứ tự khung, clip có chuyển động, không mô tả giống người có danh tính), câu luật cứng luôn gắn vào mô tả gửi model, trần chi, việc chưa xác nhận không gửi lại | `./reel ai` (`scripts/lib/ai-scene-spec.ts`, `scripts/lib/openrouter-ai.ts`) |
 | 11 clip quay sẵn: có trong sổ, đúng nguồn/link, có tác giả, đã kiểm không phải AI; minh hoạ không dùng `quay-san/`; không trộn cảnh AI; loại video cấm | `./reel quay-san` (từ chối khi thiếu) + validate |
 | Dựng vai: mỗi clip có vai, người mẫu, cảm xúc (trong danh sách); một vai chỉ một người mẫu | `./reel quay-san` + validate |
 | Người lộ mặt trong clip quay sẵn là người châu Á (`--chau-a`) | `./reel quay-san` + validate |

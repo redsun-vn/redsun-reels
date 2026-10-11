@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
 import { AI_LABEL_ON_SCREEN, AI_VIDEO, aiLabelFor } from '../config/ai-video.ts';
 import type { Script } from '../config/script.schema.ts';
-import { aiRefs, aiRuleIssues, kieuHinhIssue, labelIssues, stockLog } from '../scripts/lib/kieu-hinh-rules.ts';
+import { aiRefs, methodIssues, aiRuleIssues, kieuHinhIssue, labelIssues, stockLog } from '../scripts/lib/kieu-hinh-rules.ts';
 import { checkStockLink } from '../scripts/lib/stock-footage.ts';
 import { REPO_ROOT } from '../scripts/lib/hyperframes-env.ts';
 import { buildPost } from '../scripts/lib/post-caption.ts';
@@ -81,6 +81,18 @@ describe('luật cứng kiểu hình', () => {
     expect(ok).not.toContain('Caption');
     const badPost = buildPost({ script: script(), hashtags: ['#SIPOS'] });
     expect(msgs(aiRuleIssues({ dir: briefDir(LOG, badPost), kieuHinh: 'nguoi-that-ai', script: script(), html: page(LABEL) }))).toContain('Caption');
+  });
+
+  it('người thật AI: bắt buộc chọn cách tạo; kế hoạch cảnh phải khớp cách tạo', () => {
+    const dir = briefDir(LOG);
+    expect(msgs(aiRuleIssues({ dir, kieuHinh: 'nguoi-that-ai', script: script(), html: page(LABEL) }))).toContain('cách tạo người AI');
+    const spec = (canh: object[]) => writeFileSync(join(dir, 'ai', 'canh-ai.json'), JSON.stringify({ dan: {}, canh }));
+    spec([{ id: 'a', video: true, tuChu: true }, { id: 'b', video: false }]);
+    expect(methodIssues(dir, 'tu-chu').join()).toContain('cảnh b');
+    expect(methodIssues(dir, 'anh-vai').join()).toContain('cảnh a');
+    spec([{ id: 'a', video: true, tuChu: true }]);
+    expect(methodIssues(dir, 'tu-chu')).toEqual([]);
+    expect(msgs(aiRuleIssues({ dir, kieuHinh: 'nguoi-that-ai', cachTaoAi: 'tu-chu', script: script(), html: page(LABEL) }))).not.toContain('cách tạo');
   });
 
   it('link clip quay sẵn: chỉ trang một clip trên Pexels/Pixabay', () => {

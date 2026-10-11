@@ -163,12 +163,27 @@
     if (i < 0) throw new Error("Câu \"" + id + "\" không có cụm \"" + cum + "\".");
     return L.at + (i / Math.max(1, text.length)) * L.dur;
   };
-  /** Phụ đề lời đọc: mỗi <div class="rs-sub rs-loi" data-loi="<id>"> hiện đúng lúc câu bắt đầu, tắt khi đọc xong. */
+  /**
+   * Phụ đề lời đọc: mỗi <div class="rs-sub rs-loi" data-loi="<id>"> hiện đúng lúc câu bắt đầu, tắt khi đọc xong; câu nhiều
+   * dòng (<div> mỗi dòng) hiện từng dòng một, chồng cùng chỗ, nên phụ đề luôn chỉ cao một dòng.
+   */
   RS.loiSubs = function (tl) {
     document.querySelectorAll(".rs-sub.rs-loi[data-loi]").forEach(function (el) {
       var L = RS.loi(el.getAttribute("data-loi"));
       tl.fromTo(el, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.12, ease: "power2.out" }, L.at);
       tl.to(el, { opacity: 0, duration: 0.12, ease: "power1.in" }, L.end + 0.12);
+      // Câu nhiều dòng: hiện từng dòng một, chia giờ theo số chữ (Nam 2026-10-11: phụ đề cao quá, che mất hình)
+      var lines = el.querySelectorAll("span > div");
+      if (lines.length < 2) return;
+      var lens = [], total = 0;
+      lines.forEach(function (d) { var n = Math.max(1, d.textContent.trim().length); lens.push(n); total += n; });
+      var t = L.at;
+      tl.set(lines, { opacity: 0 }, 0);
+      lines.forEach(function (d, i) {
+        tl.set(d, { opacity: 1 }, t);
+        t += (L.dur * lens[i]) / total;
+        if (i < lines.length - 1) tl.set(d, { opacity: 0 }, t);
+      });
     });
   };
 
