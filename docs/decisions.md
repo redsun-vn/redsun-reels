@@ -484,3 +484,5 @@ Nam: "1 giọng tốt hơn nhiều giọng, nhưng vấn đề lớn nhất đâ
 - **Kịch bản mẫu của bài kiểm** (`tests/fixtures/briefs`, 21 bản) sửa theo các luật trên: cảnh hook cắt còn 3,5–3,7 giây (phần dư dồn sang cảnh sau), video dưới 15 giây kéo lên 15, 3 hook quá 8 từ viết gọn, khai điểm hấp dẫn và nỗi đau/giải pháp. Trần cảnh hook = max(3,5 giây, thời gian đọc chữ hook) để hook 8 từ không giọng (3,7 giây) không bị hai luật chặn nhau.
 - **Video mẫu** (Nam duyệt cả hai, 2026-10-10): `briefs/2026-10-10-sipos-chuyen-khoan-gia-hook` (người thật quay sẵn) và `…-hook-hoat-hinh` (hoạt hình), cùng brief "Ảnh chuyển khoản giả", mở bằng dấu GIẢ dập lên ảnh ở giây 0,7 (điểm hấp dẫn 24/25), 29,5 giây.
 
+## 31. Câu định vị SIPOS và Webino (2026-10-11)
+Nam: "cập nhật lại thông tin brand product cho đúng". `brand/products.json` `tagline` và REQUIREMENTS §1.1: SIPOS → "Giải pháp quản lý bán hàng trong thời đại AI" (thay "Không chỉ là phần mềm, là Trợ lý tăng trưởng"), Webino → "Nền tảng AI Web Builder" (thay "Color Your Web, Create Your World"). REDSUN BOS, REDSUN giữ nguyên. Brief cũ trích tagline cũ giữ nguyên (lịch sử).

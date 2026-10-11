@@ -1,10 +1,10 @@
 {
-  "$comment": "Cấu hình theo sản phẩm (REQUIREMENTS v0.4 §5.3). Tagline/URL lấy từ profile 2026 và website chính thức. CTA và hashtag là đề xuất mặc định, chưa chạy thử: Nam/MKT lead duyệt rồi đổi `reviewed` thành true.",
+  "$comment": "Cấu hình theo sản phẩm (REQUIREMENTS v0.4 §5.3). Tagline/URL lấy từ profile 2026 và website chính thức; tagline SIPOS, Webino do Nam sửa 2026-10-11. CTA và hashtag là đề xuất mặc định, chưa chạy thử: Nam/MKT lead duyệt rồi đổi `reviewed` thành true.",
   "products": {
     "sipos": {
       "displayName": "SIPOS",
       "url": "sipos.vn",
-      "tagline": "Không chỉ là phần mềm, là Trợ lý tăng trưởng",
+      "tagline": "Giải pháp quản lý bán hàng trong thời đại AI",
       "logos": {
         "onDark": "brand/logos/sipos/sipos-logo-trang.png",
         "onLight": "brand/logos/sipos/sipos-logo-chuan.svg",
@@ -35,7 +35,7 @@
     "webino": {
       "displayName": "Webino",
       "url": "webino.vn",
-      "tagline": "Color Your Web, Create Your World",
+      "tagline": "Nền tảng AI Web Builder",
       "logos": {
         "onDark": "brand/logos/webino/webino-logo-trang.png",
         "onLight": "brand/logos/webino/webino-logo-chuan.png",

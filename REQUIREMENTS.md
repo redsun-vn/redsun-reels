@@ -42,9 +42,9 @@
 
 ### 1.1 Bối cảnh
 Redsun Ecosys có 3 sản phẩm:
-- **SIPOS**: SaaS quản lý bán hàng cho F&B, bán lẻ, dịch vụ.
+- **SIPOS**: Giải pháp quản lý bán hàng trong thời đại AI (F&B, bán lẻ, dịch vụ).
 - **Redsun BOS**: phần mềm vận hành doanh nghiệp, tự gọi là "hệ điều hành doanh nghiệp". Không gọi là "ERP" trong nội dung video.
-- **Webino**: AI website builder.
+- **Webino**: Nền tảng AI Web Builder.
 
 Team MKT cần sản xuất đều đặn video ngắn dọc 9:16 cho Facebook Reels, TikTok, YouTube Shorts, Instagram Reels. Video **chỉ đăng tự nhiên (organic)**, không chạy quảng cáo trả tiền. Hiện làm thủ công bằng CapCut, chậm, không đồng nhất brand.
 

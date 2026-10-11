@@ -3,6 +3,8 @@
 Đánh số `MAJOR.MINOR.PATCH`. Trước 1.0: MINOR tăng khi có tính năng mới, PATCH khi chỉ sửa lỗi. Mỗi bản gắn tag git `vX.Y.Z` và có trang Release trên GitHub. Số bản nằm ở `package.json` (`./reel doctor` in ra).
 
 ## Chưa phát hành
+- Câu định vị sản phẩm (`brand/products.json` `tagline`): SIPOS "Giải pháp quản lý bán hàng trong thời đại AI", Webino "Nền tảng AI Web Builder".
+- Video mẫu luồng đầy đủ từ brief ra video người thật có giọng: `briefs/2026-10-10-sipos-qr-chuyen-khoan-gia`.
 
 ## 0.2.0 — 2026-10-11
 Video có giọng đọc AI và hai luật kịch bản chặn từ đầu: 3 giây đầu mạnh nhất, nỗi đau → giải pháp.
