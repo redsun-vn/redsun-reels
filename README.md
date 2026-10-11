@@ -111,7 +111,7 @@ Sổ tay [`docs/huong-dan-mkt.md`](docs/huong-dan-mkt.md) có đủ: chỗ để
 |---|---|---|
 | Minh hoạ | Nhân vật Việt vẽ phẳng, bối cảnh vẽ sẵn (quán, nhà, tạp hoá, văn phòng, kho, phố, livestream), nét mặt theo cảm xúc | Dùng được |
 | Người thật quay sẵn | Clip người châu Á từ Pexels/Pixabay, mỗi vai một người, đúng cảm xúc từng khung; Claude tự cắt đoạn và ghi sổ nguồn | Dùng được |
-| Người thật do AI tạo | Nhân vật trông như thật do AI tạo, luôn gắn nhãn AI, tốn phí (trần 50.000đ/video). Hai cách: **ảnh nhân vật trước** (duyệt mặt, mặt giữ y hệt, Kling) hoặc **tạo thẳng từ kịch bản** (không cần ảnh, cử động mọi cảnh, Seedance 2.0 Fast) | Dùng được |
+| Người thật do AI tạo | Nhân vật trông như thật do AI tạo, luôn gắn nhãn AI, tốn phí (trần 50.000đ/video). Hai cách: **ảnh nhân vật trước** (duyệt mặt, mặt giữ y hệt, Kling) hoặc **tạo thẳng từ kịch bản** (không cần ảnh, cử động mọi cảnh, 1080p, mặc định Veo 3.1 Lite, dự phòng Seedance 2.0 Fast) | Dùng được |
 
 Hình, clip của chính bạn (ảnh quán, màn hình phần mềm, người thật đã đồng ý): kéo vào khung chat, hoặc bỏ vào `briefs/<tên-video>/hinh/`.
 

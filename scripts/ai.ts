@@ -4,7 +4,7 @@
  *   1. ảnh tham chiếu mỗi vai (ai/vai-<vai>.png) → người duyệt ghi `duyet: true`;
  *   2. khung đầu mỗi cảnh (ai/<id>-dau.png) từ ảnh vai → Claude xem, ghi `duyetKhung: true`;
  *   3. có --video: clip (ai/<id>.mp4) cho cảnh `video: true` từ khung đầu; cảnh `tuChu: true` tạo thẳng từ chữ
- *      (bỏ bước 1–2, model textVideoModel).
+ *      (bỏ bước 1–2, model theo `mohinh` của kế hoạch: seedance | veo).
  * File đã có thì bỏ qua (--lai: làm lại các cảnh trong --canh). Mỗi lượt ước tiền trước, vượt trần config/cost.ts thì dừng.
  * Việc clip đã gửi mà chưa xác nhận được: giữ mã việc (dangCho), lần sau hỏi tiếp, không gửi lại.
  * Sổ nguồn gốc: ai/nhat-ky.json (file, model, prompt, ảnh tham chiếu, seed, mã việc, thời lượng, chi phí, thời điểm).
@@ -83,10 +83,11 @@ await runCommand(async () => {
   const log: AiLog = existsSync(logPath) ? { ...emptyLog(), ...JSON.parse(readFileSync(logPath, 'utf8')) } : emptyLog();
   const save = () => writeFileSync(logPath, JSON.stringify(log, null, 2) + '\n');
   const key = openrouterKey();
-  const capUsd = COST.aiCapVndPerVideo / COST.vndPerUsd;
+  const capVnd = COST.aiCapVndOverride[slug] ?? COST.aiCapVndPerVideo;
+  const capUsd = capVnd / COST.vndPerUsd;
   const ensure = (usd: number, what: string) => {
-    if (usd > budgetLeftUsd(log, COST.aiCapVndPerVideo, COST.vndPerUsd))
-      throw new CapError(`${what} ước ${vnd(usd)}, vượt phần trần còn lại ${vnd(Math.max(0, capUsd - log.chiPhi.usd))} (trần ${COST.aiCapVndPerVideo.toLocaleString('vi-VN')}đ/video, config/cost.ts). Nhắn Nam nếu cần nâng trần.`);
+    if (usd > budgetLeftUsd(log, capVnd, COST.vndPerUsd))
+      throw new CapError(`${what} ước ${vnd(usd)}, vượt phần trần còn lại ${vnd(Math.max(0, capUsd - log.chiPhi.usd))} (trần ${capVnd.toLocaleString('vi-VN')}đ/video, config/cost.ts). Nhắn Nam nếu cần nâng trần.`);
   };
   const record = (item: AiLog['items'][number]) => {
     log.items = [...log.items.filter((x) => x.file !== item.file), item];
@@ -99,7 +100,17 @@ await runCommand(async () => {
   const finishClip = async (p: AiPending) => {
     if (!p.urls) {
       console.log(`… hỏi kết quả clip ${p.canh} (mã việc ${p.maViec})`);
-      const done = await waitVideo({ id: p.maViec, pollingUrl: p.pollingUrl }, key);
+      let done;
+      try {
+        done = await waitVideo({ id: p.maViec, pollingUrl: p.pollingUrl }, key);
+      } catch (e) {
+        // Việc hỏng hẳn (failed/bị lọc): bỏ khỏi danh sách chờ để lần sau không hỏi lại mãi
+        if (e instanceof RejectedError) {
+          log.dangCho = log.dangCho.filter((x) => x.maViec !== p.maViec);
+          save();
+        }
+        throw e;
+      }
       p.urls = done.urls;
       p.chiPhiUsd = done.costUsd ?? p.uocUsd;
       save();
@@ -161,17 +172,18 @@ await runCommand(async () => {
     };
     for (const c of spec.canh) {
       if (!c.video || !want(c.id) || has(clipFile(c.id)) || log.dangCho.some((p) => p.canh === c.id)) continue;
-      const model = modelOf(c.tuChu ? OR.textVideoModel : OR.videoModel);
+      const tv = OR.textVideoModels[spec.mohinh];
+      const model = modelOf(c.tuChu ? tv.id : OR.videoModel), size = c.tuChu ? tv.size : OR.videoSize;
       if (!c.tuChu && !c.duyetKhung) {
         console.log(`! ${c.id}: khung đầu chưa duyệt (duyetKhung), bỏ qua clip.`);
         continue;
       }
-      const issues = videoRequestIssues(model, c.giay, OR.videoSize, !c.tuChu);
+      const issues = videoRequestIssues(model, c.giay, size, !c.tuChu);
       if (issues.length) throw new Error(issues.join('\n'));
-      const uocUsd = estimateVideoUsd(model, c.giay, OR.videoSize);
+      const uocUsd = estimateVideoUsd(model, c.giay, size);
       ensure(uocUsd, `Clip ${c.id} (${c.giay}s)`);
       const prompt = c.tuChu ? textVideoPrompt(spec, c) : motionPrompt(spec, c), seed = seedOf(`clip-${c.id}`);
-      const job = await submitVideo(model.id, prompt, c.tuChu ? undefined : dataUrl(join(aiDir, frameFile(c.id))), c.giay, seed, key);
+      const job = await submitVideo(model.id, prompt, c.tuChu ? undefined : dataUrl(join(aiDir, frameFile(c.id))), c.giay, seed, key, size, c.tuChu ? tv.provider : undefined);
       const p: AiPending = { canh: c.id, maViec: job.id, pollingUrl: job.pollingUrl, model: model.id, prompt, anhThamChieu: c.tuChu ? [] : [frameFile(c.id)], seed, giay: c.giay, uocUsd, guiLuc: new Date().toISOString() };
       log.dangCho.push(p);
       save();
@@ -184,7 +196,7 @@ await runCommand(async () => {
     else throw e;
   } finally {
     save();
-    console.log(`\nChi cảnh AI của video: ${vnd(log.chiPhi.usd)} / trần ${COST.aiCapVndPerVideo.toLocaleString('vi-VN')}đ (${log.chiPhi.luot} lượt).${log.dangCho.length ? ` Còn ${log.dangCho.length} việc clip đang chờ: chạy lại lệnh để hỏi tiếp.` : ''}`);
+    console.log(`\nChi cảnh AI của video: ${vnd(log.chiPhi.usd)} / trần ${capVnd.toLocaleString('vi-VN')}đ (${log.chiPhi.luot} lượt).${log.dangCho.length ? ` Còn ${log.dangCho.length} việc clip đang chờ: chạy lại lệnh để hỏi tiếp.` : ''}`);
     if (stopped) console.log(`! Dừng: ${stopped}`);
   }
 });

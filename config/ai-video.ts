@@ -12,8 +12,8 @@ export type KieuHinh = (typeof KIEU_HINH)[number];
  * trong brief:
  * - `anh-vai`: ảnh tham chiếu mỗi vai (người duyệt mặt) → khung đầu mỗi cảnh → clip từ khung đầu (`videoModel`, Kling).
  *   Mặt giữ y hệt suốt video, rẻ hơn; phần lớn khung là ảnh + chuyển động máy quay, 1–2 khoảnh khắc cử động thật.
- * - `tu-chu`: clip tạo thẳng từ mô tả, nhiều cảnh trong một lần tạo (`textVideoModel`, Seedance 2.0 Fast). Không cần ảnh
- *   nhân vật, người cử động ở mọi cảnh; mặt giữa các lần tạo gần giống nhưng không y hệt, đắt hơn.
+ * - `tu-chu`: clip tạo thẳng từ mô tả, nhiều cảnh trong một lần tạo (`textVideoModels`: mặc định Veo 3.1 Lite 1080p, dự phòng Seedance 2.0 Fast; `mohinh` trong kế hoạch cảnh). Không cần ảnh
+ *   nhân vật, người cử động ở mọi cảnh; mỗi vai một lần tạo nên mặt giữ y hệt; Veo ~21.000đ/video (Nam 2026-10-11 chọn mặc định).
  */
 export const CACH_TAO_AI = ['anh-vai', 'tu-chu'] as const;
 export type CachTaoAi = (typeof CACH_TAO_AI)[number];
@@ -51,7 +51,31 @@ export const AI_VIDEO = {
      * Cảnh tạo thẳng từ chữ, không ảnh nhân vật (Nam 2026-10-11: "viết lại kịch bản dành riêng cho Seedance, không cần ảnh
      * nhân vật"): một lần tạo nhiều cảnh liền (tối đa 15 giây) giữ cùng nhân vật. Nam chọn bản Fast 720p (trong trần 50.000đ).
      */
-    textVideoModel: 'bytedance/seedance-2.0-fast',
+    /**
+     * Model tạo từ chữ chọn được theo video (`ai/canh-ai.json` `mohinh`, mặc định seedance). Nam 2026-10-11: "giống
+     * seedance, veo nhận kịch bản ra video" → thử Veo 3.1 Lite: 1080×1920 thật, $0,05/giây không tiếng, mỗi lần chỉ 4/6/8 giây.
+     */
+    textVideoModels: {
+      seedance: { id: 'bytedance/seedance-2.0-fast', size: '720x1280', provider: undefined },
+      /**
+       * Veo giữ cùng người chỉ trong một lần tạo (thử 2026-10-11: 3 lần tạo ra 3 chủ quán khác nhau) → mỗi nhân vật nằm
+       * trong đúng một lần tạo; hay mở miệng như đang nói → negativePrompt (tham số riêng của Veo qua OpenRouter). Thêm
+       * personGeneration 'allow_adult' thì việc bị lọc, không ra video mà vẫn bị tính tiền (thử 2026-10-11): không gửi.
+       */
+      veo: {
+        id: 'google/veo-3.1-lite',
+        size: '1080x1920',
+        provider: {
+          options: {
+            'google-vertex': {
+              parameters: {
+                negativePrompt: 'talking, speaking, open mouth, lip movement, gasping, text, letters, numbers, logo, watermark, extra fingers, extra hands, extra arms',
+              },
+            },
+          },
+        },
+      },
+    },
     /** Ảnh tham chiếu vai và khung đầu mỗi cảnh (rẻ, ~470đ/ảnh). */
     imageModel: 'bytedance-seed/seedream-5-0-flash',
     /** 720p dọc (Kling $0,084/giây → clip 4 giây ~8.700đ; Seedance tính theo token: rộng × cao × 24 × giây ÷ 1024). */

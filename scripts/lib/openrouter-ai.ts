@@ -129,14 +129,16 @@ export interface VideoJob {
 }
 
 /** Gửi việc tạo clip không tiếng (từ ảnh khung đầu, hoặc chỉ từ chữ khi không có ảnh). Trả mã việc ngay (chưa có clip). */
-export async function submitVideo(model: string, prompt: string, firstFrame: string | undefined, sec: number, seed: number, key = openrouterKey()): Promise<VideoJob> {
+/** `provider`: tham số riêng của nhà cung cấp (OpenRouter `provider.options`), vd. negativePrompt của Veo. */
+export async function submitVideo(model: string, prompt: string, firstFrame: string | undefined, sec: number, seed: number, key = openrouterKey(), size: string = OR.videoSize, provider?: unknown): Promise<VideoJob> {
   const body = {
     model,
     prompt,
     duration: sec,
-    size: OR.videoSize,
+    size,
     generate_audio: false,
     seed,
+    ...(provider ? { provider } : {}),
     ...(firstFrame ? { frame_images: [{ ...imagePart(firstFrame), frame_type: 'first_frame' }] } : {}),
   };
   const r = await post('/videos', body, key, 120_000);

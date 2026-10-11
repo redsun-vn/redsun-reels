@@ -3,6 +3,8 @@
 Đánh số `MAJOR.MINOR.PATCH`. Trước 1.0: MINOR tăng khi có tính năng mới, PATCH khi chỉ sửa lỗi. Mỗi bản gắn tag git `vX.Y.Z` và có trang Release trên GitHub. Số bản nằm ở `package.json` (`./reel doctor` in ra).
 
 ## Chưa phát hành
+- Người thật AI tạo từ kịch bản: **mặc định Veo 3.1 Lite** (1080×1920 thật, khoảng 21.000đ/video), dự phòng Seedance 2.0 Fast.
+- Video vượt trần dung lượng (clip AI 1080p) được nén lại phần hình cho vừa chuẩn.
 
 ## 0.3.0 — 2026-10-11
 Video người thật do AI tạo, MKT chọn kiểu hình kèm số tiền trước khi viết kịch bản.

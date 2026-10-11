@@ -12,6 +12,8 @@ import { CAM_XUC } from '../../config/stock-footage.ts';
 const slug = z.string().regex(/^[a-z0-9][a-z0-9-]*$/, 'chỉ chữ thường không dấu, số, "-"');
 
 export const AiSpecSchema = z.object({
+  /** Model cho cảnh tạo từ chữ (`config/ai-video.ts` `textVideoModels`); mặc định Veo (Nam 2026-10-11), Seedance khi một vai cần quá 8 giây. */
+  mohinh: z.enum(['seedance', 'veo']).default('veo'),
   /** Mô tả chung bối cảnh/ánh sáng (tiếng Anh), gắn vào mọi cảnh. */
   chung: z.string().default(''),
   dan: z.record(
@@ -39,7 +41,7 @@ export const AiSpecSchema = z.object({
         /** Chuyển động trong clip (tiếng Anh). */
         chuyenDong: z.string().default(''),
         giay: z.number().int().min(1).default(4),
-        /** Clip tạo thẳng từ chữ (không ảnh vai, không khung đầu), model `textVideoModel`; `moTa` tả từng cảnh nhỏ theo giây (Shot 1 (0–2.5s): …). */
+        /** Clip tạo thẳng từ chữ (không ảnh vai, không khung đầu), model theo `mohinh` (`textVideoModels`); `moTa` tả từng cảnh nhỏ theo giây (Shot 1 (0–2.5s): …). */
         tuChu: z.boolean().default(false),
         /** Claude đã xem khung đầu (tay, mặt, chữ rác…) và thấy đạt. Chưa đạt thì không làm clip. */
         duyetKhung: z.boolean().default(false),

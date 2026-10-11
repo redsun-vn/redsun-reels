@@ -4,7 +4,7 @@
 import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { BuiltVideo } from './build-video.ts';
-import { REPO_ROOT, runFfprobe, runHyperframes, stripAnsi } from './hyperframes-env.ts';
+import { REPO_ROOT, runFfmpeg, runFfprobe, runHyperframes, stripAnsi } from './hyperframes-env.ts';
 import { normalizeAudio, type Loudness } from './loudness.ts';
 import { AI_VIDEO } from '../../config/ai-video.ts';
 import { CUSTOM_DIR } from './custom-video.ts';
@@ -26,6 +26,21 @@ export interface RenderResult {
 }
 
 export const DURATION_TOLERANCE_SEC = 0.2;
+/** Trần dung lượng (REQUIREMENTS §9.1): 50 MB cho 60 giây. */
+export const maxSizeMB = (sec: number) => (50 * sec) / 60;
+
+/**
+ * Hình nhiều chi tiết (clip AI 1080p) làm file vượt trần dung lượng: nén lại luồng hình H.264 theo bitrate vừa trần,
+ * giữ nguyên luồng tiếng và siêu dữ liệu (dấu nội dung AI). File đã vừa trần thì không đụng tới.
+ */
+export function fitSize(file: string, sec: number): void {
+  if (statSync(file).size / 1024 / 1024 <= maxSizeMB(sec)) return;
+  const kbps = Math.floor(((maxSizeMB(sec) * 0.92 * 8 * 1024) / sec) - 192);
+  const out = `${file}.nen.mp4`;
+  const r = runFfmpeg(['-y', '-loglevel', 'error', '-i', file, '-map', '0', '-map_metadata', '0', '-c:v', 'libx264', '-preset', 'slow', '-b:v', `${kbps}k`, '-maxrate', `${Math.round(kbps * 1.5)}k`, '-bufsize', `${kbps * 2}k`, '-pix_fmt', 'yuv420p', '-r', '30', '-c:a', 'copy', '-movflags', '+faststart', out]);
+  if (r.status !== 0 || !existsSync(out)) throw new Error(`Nén lại hình cho vừa dung lượng lỗi: ${(r.stderr || '').slice(-800)}`);
+  renameSync(out, file);
+}
 
 export function renderVideo(built: BuiltVideo, opts: { briefDir?: string; quality?: 'draft' | 'standard'; out?: string } = {}): RenderResult {
   mkdirSync(join(REPO_ROOT, 'out'), { recursive: true });
@@ -55,6 +70,8 @@ function renderInner(built: BuiltVideo, opts: { briefDir?: string; quality?: 'dr
   // Video có người thật do AI tạo: ghi dấu AI máy đọc được vào siêu dữ liệu (REQUIREMENTS §7.4)
   const loudness = normalizeAudio(rawFile, tmpFile, built.props.totalSec, built.aiLabel ? { comment: AI_VIDEO.metadataComment, description: built.aiLabel.label } : {});
 
+  fitSize(tmpFile, built.props.totalSec);
+
   const probe = runFfprobe(['-v', 'error', '-show_entries', 'stream=codec_type,codec_name,width,height,r_frame_rate,pix_fmt,sample_rate:format=duration:format_tags=comment', '-of', 'json', tmpFile]);
   const info = JSON.parse(probe.stdout) as { streams: Array<Record<string, string | number>>; format: { duration: string; tags?: { comment?: string } } };
   const v = info.streams.find((s) => s.codec_type === 'video');
@@ -69,7 +86,7 @@ function renderInner(built: BuiltVideo, opts: { briefDir?: string; quality?: 'dr
   if (Math.abs(durationSec - built.props.totalSec) > DURATION_TOLERANCE_SEC) problems.push(`thời lượng ${durationSec.toFixed(2)}s lệch kịch bản ${built.props.totalSec}s`);
   if (Math.abs(loudness.integrated - -14) > 1) problems.push(`độ to ${loudness.integrated} LUFS (cần −14 ±1)`);
   if (loudness.truePeak > -1) problems.push(`đỉnh âm ${loudness.truePeak} dBTP (cần ≤ −1)`);
-  if (sizeMB > (50 * durationSec) / 60 + 1) problems.push(`dung lượng ${sizeMB.toFixed(1)} MB vượt mục tiêu 50 MB/60 giây`);
+  if (sizeMB > maxSizeMB(durationSec) + 1) problems.push(`dung lượng ${sizeMB.toFixed(1)} MB vượt mục tiêu 50 MB/60 giây`);
   if (built.aiLabel && info.format.tags?.comment !== AI_VIDEO.metadataComment) problems.push('thiếu dấu nội dung AI trong siêu dữ liệu file');
   if (problems.length) throw new Error(`Video ra chưa đúng chuẩn: ${problems.join('; ')}.`);
   renameSync(tmpFile, finalFile); // chỉ thay file cuối khi đã đạt chuẩn
