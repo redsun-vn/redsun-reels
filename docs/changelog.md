@@ -3,13 +3,21 @@
 Đánh số `MAJOR.MINOR.PATCH`. Trước 1.0: MINOR tăng khi có tính năng mới, PATCH khi chỉ sửa lỗi. Mỗi bản gắn tag git `vX.Y.Z` và có trang Release trên GitHub. Số bản nằm ở `package.json` (`./reel doctor` in ra).
 
 ## Chưa phát hành
-- Trước khi viết kịch bản, Claude tả video MKT sẽ nhận và số tiền từng kiểu hình để MKT chọn.
-- Phụ đề lời đọc hiện từng dòng một, sát đáy vùng an toàn (không che mặt nhân vật).
-- Người thật do AI: MKT chọn **ảnh nhân vật trước** (duyệt mặt, Kling) hoặc **tạo thẳng từ kịch bản** (không cần ảnh, Seedance 2.0 Fast, nhiều cảnh trong một lần tạo).
-- **Người thật do AI tạo** (`./reel ai`, OpenRouter): ảnh tham chiếu mỗi vai → khung đầu mỗi cảnh → clip Seedance 2.0; sổ nguồn gốc, trần 50.000đ/video, không gửi lại việc chưa xác nhận.
-- Câu định vị sản phẩm (`brand/products.json` `tagline`): SIPOS "Giải pháp quản lý bán hàng trong thời đại AI", Webino "Nền tảng AI Web Builder".
-- Video mẫu luồng đầy đủ từ brief ra video người thật có giọng: `briefs/2026-10-10-sipos-qr-chuyen-khoan-gia`.
+
+## 0.3.0 — 2026-10-11
+Video người thật do AI tạo, MKT chọn kiểu hình kèm số tiền trước khi viết kịch bản.
+
+- **Người thật do AI tạo** (`./reel ai`, OpenRouter, trần 50.000đ/video), MKT chọn một trong hai cách (`cachTaoAi` trong brief):
+  - **ảnh nhân vật trước**: ảnh tham chiếu mỗi vai (duyệt mặt) → khung đầu mỗi cảnh → clip Kling 3.0 Std; mặt giữ y hệt;
+  - **tạo thẳng từ kịch bản**: clip Seedance 2.0 Fast, nhiều cảnh trong một lần tạo, không cần ảnh nhân vật.
+  Sổ nguồn gốc, ước tiền trước mỗi lượt, không gửi lại việc chưa xác nhận, che key; câu luật cứng (người thường, miệng khép, đúng hai tay, không chữ/logo) gắn vào mọi mô tả; đủ 4 lớp nhãn AI.
+- **Hỏi MKT trước khi viết kịch bản**: Claude tả video sẽ nhận và số tiền từng kiểu hình (hoạt hình 0đ, người thật quay sẵn 0đ, người thật AI khoảng 28.000đ hoặc 40.000đ) để MKT chọn.
+- **Phụ đề lời đọc** hiện từng dòng một, sát đáy vùng an toàn, không che mặt nhân vật.
 - **Brief không lên GitHub nữa**: `briefs/` chỉ nằm trên máy (repo giữ mẫu `_example`). Brief cũ xem lại trong lịch sử git (commit `a0d4558`).
+- Câu định vị sản phẩm (`brand/products.json` `tagline`): SIPOS "Giải pháp quản lý bán hàng trong thời đại AI", Webino "Nền tảng AI Web Builder".
+- README viết lại theo hệ thống hiện tại.
+
+Video mẫu (trên máy Nam): `briefs/2026-10-10-sipos-qr-chuyen-khoan-gia` (người thật quay sẵn), `briefs/2026-10-11-sipos-qr-chuyen-khoan-gia-ai` (người thật AI, ảnh nhân vật), `briefs/2026-10-11-sipos-qr-chuyen-khoan-gia-seedance` (người thật AI, từ kịch bản).
 
 ## 0.2.0 — 2026-10-11
 Video có giọng đọc AI và hai luật kịch bản chặn từ đầu: 3 giây đầu mạnh nhất, nỗi đau → giải pháp.
