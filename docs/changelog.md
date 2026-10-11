@@ -3,12 +3,17 @@
 Đánh số `MAJOR.MINOR.PATCH`. Trước 1.0: MINOR tăng khi có tính năng mới, PATCH khi chỉ sửa lỗi. Mỗi bản gắn tag git `vX.Y.Z` và có trang Release trên GitHub. Số bản nằm ở `package.json` (`./reel doctor` in ra).
 
 ## Chưa phát hành
+
+## 0.2.0 — 2026-10-11
+Video có giọng đọc AI và hai luật kịch bản chặn từ đầu: 3 giây đầu mạnh nhất, nỗi đau → giải pháp.
+
 - **Giọng đọc AI VieNeu** (skill `giong-doc`, `./reel giong`): mặc định một giọng kể (Duyên Hà My), giọng ngoài khung, mặt người phản ứng im lặng, cảnh kết được đọc, trần 20.000 token/video, nhãn "Do AI sản xuất".
 - **Người thật quay sẵn**: người châu Á, khai miệng im/nói, tự cắt đoạn, máy khác tải lại theo sổ nguồn (`./reel quay-san --tai-lai`).
 - **LUẬT SỐ 1 — 3 giây đầu**: chọn điểm hấp dẫn nhất của brief (bảng 5 tiêu chí), mở bằng nó; chặn từ bước kịch bản.
 - **LUẬT SỐ 2 — nỗi đau → giải pháp**: video phải nêu nỗi đau cụ thể của khách và cho thấy sản phẩm giải quyết nó thế nào; chặn từ bước kịch bản.
 - **Chủ động hỏi MKT** khi brief chưa đủ để viết kịch bản đạt luật (hook, nỗi đau, tính năng giải quyết, số liệu).
 - **Reel 15–30 giây** là luật cứng.
+- Hồ sơ sản phẩm ghi tính năng đã xác nhận (`brand/products.json` `tinhNang`): SIPOS, Webino, REDSUN BOS tự động xác nhận thanh toán khi khách quét mã QR của từng đơn.
 - Cách đọc tên sản phẩm cho giọng VieNeu: SIPOS "Xi pốt", Webino "Web-bi-nô", REDSUN BOS "Redsun bê ô ét".
 - Bàn tay bấm nút (`RS.tayBam`, `RS.bam`), phụ đề theo giờ giọng thật (`RS.loiSubs`).
 
