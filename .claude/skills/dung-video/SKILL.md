@@ -146,6 +146,7 @@ Máy quay: mỗi kiểu chuyển động máy (lùi ra, đẩy vào, lao vào v�
 - **Một thứ để mắt bám** suốt video: nhân vật chính (cùng dàn nhân vật), hoặc một vật (cuốn sổ, điện thoại).
 - **Một màu một nghĩa** suốt video (vd. đỏ = rủi ro/ảnh giả, teal = SIPOS). Không dùng màu đó để trang trí chỗ khác.
 - **Lặng trước, to nhất lúc vỡ lẽ**: 0.5–2 giây lặng (khai `lang`) giữ hình, rồi tiếng nhấn to nhất đúng khoảnh khắc vỡ lẽ. Đoạn dày hình nhất nằm ngay trước khoảng lặng, không trùng điểm vỡ lẽ.
+- **Thông tin không lặp lại, thông điệp xuyên suốt** (Nam 2026-10-11, skill `tao-reel`): không dựng lại cùng một khoảnh khắc hai lần (vd. dấu GIẢ dập ở hook rồi dập lại lúc vỡ lẽ); lúc vỡ lẽ ở giữa video cho thấy điều mới (dòng "Ảnh · Thư viện": ảnh có sẵn, không phải giao dịch). Mỗi cảnh nối về `concept.thongDiep`.
 - **Kết là mở đầu đã đổi khác**: cảnh cuối gọi lại hình mở đầu với điều câu chuyện mang lại (quầy quán ban đầu → cùng quầy, giờ có SIPOS, hai người cười).
 - **Mỗi lần chuyển cảnh nói được lý do** (ghi ở cột "chuyển sang khung sau"): bước tiếp theo · nối hình (vật cuối cảnh trước = vật đầu cảnh sau) · biến hình (vật này thành vật kia) · mở/đóng tròn vào nhân vật · phóng vào bên trong / lùi ra toàn cảnh · nhìn thấy gì (góc nhìn nhân vật) · nguyên nhân → kết quả · thời gian trôi (kim quay, trời tối) · gọi lại cảnh trước.
 - **Diễn ý bằng hình, không dán nhãn**: "kiểm tiền thiếu" = ngón tay dò từng dòng, một dòng đỏ "Không thấy"; chữ chỉ gọi tên.

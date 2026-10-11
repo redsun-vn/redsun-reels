@@ -40,6 +40,7 @@ Kiểm kê skill đã cài (danh sách skill của runtime + `.claude/skills/` +
 ## Quy tắc kịch bản (REQUIREMENTS §6.2)
 - **LUẬT SỐ 1 — 3 giây đầu, mạnh nhất**: chọn điểm hấp dẫn nhất của brief (bảng 5 tiêu chí, ≥ 20/25, `concepts.md` mục `## Điểm hấp dẫn`, `script.json` `concept.diemHapDan`), mở bằng nó rồi kể lại. Validate chặn ngay ở bước kịch bản.
 - **LUẬT SỐ 2 — nỗi đau → giải pháp**: nêu nỗi đau cụ thể của khách (từ brief, có hậu quả) và cho thấy sản phẩm giải quyết nó thế nào (`concept.noiDau`, `concept.giaiPhap`). Validate chặn từ bước kịch bản.
+- **Thông tin không lặp lại, thông điệp xuyên suốt**: mỗi thông tin nói một lần (lời hay hình); kể lại sau hook phải thêm điều mới; một câu thông điệp ở `concept.thongDiep`, cảnh kết khép vòng với nỗi đau ở đầu. Validate cảnh báo khi thiếu thông điệp hoặc hai cảnh trùng chữ.
 - **Brief thiếu thông tin để kịch bản đạt luật** (hook, nỗi đau, tính năng giải quyết, số liệu) → chủ động hỏi MKT một lần (≤ 5 câu, có lựa chọn), skill `tao-reel` mục "Brief đủ chưa".
 - **Reel dài 15–30 giây** (luật cứng, validate chặn).
 - Viết 3 concept với 3 góc hook khác nhau, chờ MKT chọn, rồi mới viết kịch bản.

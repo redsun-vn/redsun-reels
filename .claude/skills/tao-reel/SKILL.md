@@ -21,6 +21,13 @@ Nam 2026-10-10: "phải nổi bật được nỗi đau của khách hàng và c
 - **Sản phẩm giải quyết thế nào**: cho thấy **sản phẩm làm gì** với chính nỗi đau đó (thao tác trên màn hình sản phẩm, trước → sau, cùng người/cùng vật của cảnh nỗi đau), không chỉ tên sản phẩm hay câu chung chung ("quản lý dễ hơn"). Chỉ tính năng có trong brief/hồ sơ sản phẩm; brief chưa xác nhận tính năng giải quyết thẳng nỗi đau thì hỏi MKT/team, không hứa vượt.
 - `script.json` khai `concept.noiDau { khach, canh }` (cảnh hook/problem) và `concept.giaiPhap { cach, canh }` (cảnh solution). Validate chặn: thiếu, sai vai trò cảnh, giải pháp trước nỗi đau, giải pháp bắt đầu sau 70% video, cảnh giải pháp < 20% video.
 
+## Thông tin không lặp lại, thông điệp xuyên suốt (Nam 2026-10-11)
+Nam: "quy tắc là thông tin không lặp lại, thông điệp phải xuyên suốt" (video "Ảnh chuyển khoản giả": hook "…là GIẢ!" rồi giây 14 lại nói "ảnh không phải chuyển khoản thật", dấu GIẢ dập hai lần, "bỏ sót tiền" và "thiếu một khoản").
+- **Mỗi thông tin chỉ nói một lần**, bằng lời hay bằng hình (không dập lại cùng dấu, không đọc lại cùng ý). Mở bằng điểm mạnh nhất rồi kể lại (LUẬT SỐ 1) thì phần kể lại phải **thêm điều mới**: vì sao, thế nào, hậu quả cụ thể hơn, nối vào nhân vật/vật đã thấy. Không thay hook để tránh lặp: hook giữ mạnh nhất, cảnh sau đổi.
+- **Một câu thông điệp xuyên suốt** ghi ở `concept.thongDiep` (vd. "Đừng tin ảnh chụp chuyển khoản: SIPOS tự xác nhận tiền vào, không còn sót tiền"). Mỗi cảnh nối về câu đó; cảnh kết **khép vòng** với nỗi đau ở đầu (đầu "bỏ sót tiền" → kết "không còn sót tiền").
+- **Khi tự chấm**: lập bảng `Cảnh · Thông tin mới của cảnh`; hai cảnh cùng một thông tin thì viết lại cảnh sau. Lời nói của brief bị lặp do mình thêm hook thì đổi lời của cảnh sau và báo MKT (nêu câu cũ → câu mới).
+- Máy: validate cảnh báo (!) khi thiếu `concept.thongDiep` và khi hai cảnh trùng phần lớn chữ có nghĩa (`scripts/lib/info-repeat.ts`; trùng ý khác chữ máy không bắt được, Claude soát theo bảng trên).
+
 ## Người dùng và cách nói chuyện
 - Người dùng là nhân viên marketing, **không biết kỹ thuật**. Nói tiếng Việt, câu ngắn, thân thiện.
 - Không nói tên file kỹ thuật, JSON, lệnh, lỗi stack trace. Nói "kịch bản", "bản xem thử", "video".

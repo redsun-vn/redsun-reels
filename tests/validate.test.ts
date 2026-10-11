@@ -222,3 +222,19 @@ describe('validateVideo', () => {
     expect(errorsOf(s).join(' ')).toMatch(/NFC/);
   });
 });
+
+describe('thông tin không lặp lại', () => {
+  it('bắt hai cảnh trùng phần lớn chữ có nghĩa, bỏ chữ đệm và tên sản phẩm, bỏ qua câu quá ngắn', async () => {
+    const { repeatedInfo } = await import('../scripts/lib/info-repeat.ts');
+    const r = repeatedInfo([
+      { scene: 'hook', text: 'Ảnh chuyển khoản này… là GIẢ!' },
+      { scene: 'lo', text: 'Ảnh chuyển khoản mà không phải chuyển khoản thật.' },
+      { scene: 'qr', text: 'Khách quét trả tiền là SIPOS tự xác nhận.' },
+      { scene: 'cta', text: 'SIPOS. Nhắn tin để được tư vấn.' },
+      { scene: 'ok', text: 'Đã thanh toán' },
+      { scene: 'ok2', text: 'Đã thanh toán' },
+    ]);
+    expect(r.map((x) => `${x.a.scene}-${x.b.scene}`)).toEqual(['hook-lo']);
+    expect(r[0].shared).toEqual(['ảnh', 'chuyển', 'khoản']);
+  });
+});

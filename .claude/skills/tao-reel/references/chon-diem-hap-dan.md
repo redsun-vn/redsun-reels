@@ -34,7 +34,7 @@ Ví dụ chấm:
 
 ## 3. Dựng câu chuyện quanh điểm hấp dẫn
 - **Xương sống: nỗi đau → sản phẩm giải quyết** (LUẬT SỐ 2, skill `tao-reel`): điểm hấp dẫn thường chính là nỗi đau hoặc khoảnh khắc vỡ lẽ của nó; câu chuyện phải dẫn tới cảnh sản phẩm làm gì với chính nỗi đau đó.
-- **Mở bằng điểm mạnh nhất, kể lại sau** (cold open): thường là khoảnh khắc vỡ lẽ hoặc hậu quả, rồi "chuyện là…" tua lại từ đầu. Không mở bằng phần dạo đầu êm (khách bước vào, chào hỏi, bối cảnh chậm).
+- **Mở bằng điểm mạnh nhất, kể lại sau** (cold open): thường là khoảnh khắc vỡ lẽ hoặc hậu quả, rồi "chuyện là…" tua lại từ đầu. Phần kể lại **không nói lại** điều hook đã nói (bằng lời hay hình): khoảnh khắc vỡ lẽ ở giữa video phải thêm điều mới (vì sao, thế nào), không đọc lại "là giả", không dập lại cùng dấu (tao-reel mục "Thông tin không lặp lại"). Không mở bằng phần dạo đầu êm (khách bước vào, chào hỏi, bối cảnh chậm).
 - **Thứ tự cảnh trong brief là nội dung, không phải thứ tự bắt buộc**: được đảo để có hook, nhưng giữ đủ ý, lời nói, chữ và điều cấm của brief; ghi việc đảo vào `concepts.md` mục `## Lựa chọn`.
 - Mỗi 3–5 giây có một nhịp mới (câu hỏi mới hoặc câu trả lời) để người xem không lướt đi giữa chừng; giải pháp đến **sau** khi nỗi đau đã rõ, không quá giây 20 với video 30 giây.
 

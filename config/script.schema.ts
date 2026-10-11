@@ -95,6 +95,8 @@ export const ScriptSchema = z.object({
     noiDau: z.object({ khach: z.string().min(1), canh: z.string().min(1) }).optional(),
     /** Sản phẩm giải quyết nỗi đau đó thế nào (chỉ điều brief/hồ sơ sản phẩm có) và cảnh cho thấy (vai trò solution). */
     giaiPhap: z.object({ cach: z.string().min(1), canh: z.string().min(1) }).optional(),
+    /** Thông điệp xuyên suốt (một câu): mọi cảnh nối về nó, cảnh kết khép vòng với nỗi đau ở đầu (Nam 2026-10-11). */
+    thongDiep: z.string().min(1).optional(),
   }),
   videoType: z.string().min(1),
   style: z.enum(STYLE_IDS),

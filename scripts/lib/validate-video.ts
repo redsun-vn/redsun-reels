@@ -6,6 +6,7 @@ import { existsSync, readFileSync, statSync } from 'node:fs';
 import { extname, isAbsolute, join, normalize } from 'node:path';
 import type { z } from 'zod';
 import { BriefSchema, type Brief } from '../../config/brief.schema.ts';
+import { repeatedInfo } from './info-repeat.ts';
 import { aiRuleIssues, kieuHinhIssue } from './kieu-hinh-rules.ts';
 import { checkTrack, findTrack, MusicManifestSchema, type MusicPurpose, usableSec } from '../../config/music-manifest.ts';
 import { countWords, sceneDurationSec } from '../../config/scene-timing.ts';
@@ -148,6 +149,12 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose; v
       if (solSec + 1e-6 < len * 0.2) issues.push(err(`Nỗi đau → giải pháp: cảnh giải pháp chỉ ${solSec.toFixed(1)} giây; cần ≥ 20% video (${(len * 0.2).toFixed(1)} giây) để thấy rõ sản phẩm giải quyết thế nào.`));
     }
   }
+
+  // Thông tin không lặp lại, thông điệp xuyên suốt (Nam 2026-10-11)
+  if (!script.concept.thongDiep) issues.push(warn('Thông điệp xuyên suốt: script.json chưa có concept.thongDiep (một câu mọi cảnh nối về; cảnh kết khép vòng với nỗi đau ở đầu).'));
+  const sceneTexts = script.scenes.flatMap((s) => [s.onScreenText, s.subText].filter((t): t is string => !!t).map((text) => ({ scene: s.id, text })));
+  for (const r of repeatedInfo(sceneTexts))
+    issues.push(warn(`Thông tin lặp lại: cảnh "${r.a.scene}" ("${r.a.text}") và cảnh "${r.b.scene}" ("${r.b.text}") trùng chữ ${r.shared.join(', ')}. Kể lại phải thêm điều mới, không nói lại.`));
 
   // Hook, vai trò cảnh, CTA
   issues.push(...hookIssues(script.hook));

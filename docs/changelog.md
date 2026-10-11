@@ -3,6 +3,7 @@
 Đánh số `MAJOR.MINOR.PATCH`. Trước 1.0: MINOR tăng khi có tính năng mới, PATCH khi chỉ sửa lỗi. Mỗi bản gắn tag git `vX.Y.Z` và có trang Release trên GitHub. Số bản nằm ở `package.json` (`./reel doctor` in ra).
 
 ## Chưa phát hành
+- Luật kịch bản **thông tin không lặp lại, thông điệp xuyên suốt**: kể lại sau hook phải thêm điều mới; câu thông điệp `concept.thongDiep`; validate cảnh báo khi hai cảnh trùng chữ.
 
 ## 0.4.0 — 2026-10-11
 Người thật AI tạo từ kịch bản chuyển sang Veo 3.1 Lite: nét 1080p, rẻ gần một nửa.
