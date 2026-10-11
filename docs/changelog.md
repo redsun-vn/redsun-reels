@@ -9,6 +9,7 @@
 - **LUẬT SỐ 2 — nỗi đau → giải pháp**: video phải nêu nỗi đau cụ thể của khách và cho thấy sản phẩm giải quyết nó thế nào; chặn từ bước kịch bản.
 - **Chủ động hỏi MKT** khi brief chưa đủ để viết kịch bản đạt luật (hook, nỗi đau, tính năng giải quyết, số liệu).
 - **Reel 15–30 giây** là luật cứng.
+- Cách đọc tên sản phẩm cho giọng VieNeu: SIPOS "Xi pốt", Webino "Web-bi-nô", REDSUN BOS "Redsun bê ô ét".
 - Bàn tay bấm nút (`RS.tayBam`, `RS.bam`), phụ đề theo giờ giọng thật (`RS.loiSubs`).
 
 Video mẫu: `briefs/2026-10-10-sipos-chuyen-khoan-gia-hook`, `briefs/2026-10-10-sipos-chuyen-khoan-gia-hook-hoat-hinh`.

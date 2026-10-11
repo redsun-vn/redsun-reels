@@ -48,6 +48,9 @@ describe('lời đọc', () => {
   it('lời gửi VieNeu: thẻ đổi sang thẻ VieNeu hiểu, thẻ lạ bỏ; token tính tối thiểu 50 ký tự', () => {
     expect(spokenText('[cười lớn] Woa!  [cười] Lẹ quá!')).toBe('Woa! Lẹ quá!');
     expect(vieneuText('[cười lớn] Woa! [thở gấp] Trời ơi [thở phào] Phù')).toBe('[cười] Woa! Trời ơi [thở dài] Phù');
+    expect(vieneuText('Webino. Tạo web với WEBINO nha, webinoxyz')).toBe('Web-bi-nô. Tạo web với Web-bi-nô nha, webinoxyz');
+    expect(vieneuText('SIPOS. Nhắn tin, sipos tự xác nhận')).toBe('Xi pốt. Nhắn tin, Xi pốt tự xác nhận');
+    expect(vieneuText('REDSUN BOS là hệ điều hành doanh nghiệp')).toBe('REDSUN bê ô ét là hệ điều hành doanh nghiệp');
     expect(vieneuTokens('Ủa?')).toBe(Math.ceil(50 * VOICE.vieneu.tokenPerChar));
     expect(vieneuTokens('x'.repeat(100))).toBe(Math.ceil(100 * VOICE.vieneu.tokenPerChar));
   });

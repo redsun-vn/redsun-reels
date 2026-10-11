@@ -25,7 +25,10 @@ export function vieneuKey(): string {
 
 /** Lời gửi VieNeu: thẻ của mình đổi sang 3 thẻ VieNeu hiểu, thẻ khác bỏ (không thì bị đọc thành chữ). */
 export function vieneuText(loi: string): string {
+  const names = Object.keys(VOICE.vieneu.phatAm);
+  const byName = new RegExp(`(?<![\\p{L}\\p{N}])(${names.join('|')})(?![\\p{L}\\p{N}])`, 'giu');
   return loi
+    .replace(names.length ? byName : /$^/, (m) => VOICE.vieneu.phatAm[names.find((n) => n.toLowerCase() === m.toLowerCase())!])
     .replace(/\[([^\]]*)\]/g, (_, t: string) => VOICE.vieneu.tags[t.trim().toLowerCase()] ?? ' ')
     .replace(/\s+/g, ' ')
     .trim();

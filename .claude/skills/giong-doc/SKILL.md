@@ -47,7 +47,7 @@ Bài học bản 3–4 (Nam: "nếu không có giọng nói, mọi thứ đều 
 Mỗi câu trong `cau`: `id`, `vai`, `at` (giây), `loi`, `camXuc` (để kiểm mặt người phản ứng), tuỳ chọn `cuongDo` (1–5), `boiCanh`, `dienXuat` (ghi cho người viết/nghe duyệt), `phongCach` (`natural` thoại, `storytelling` kể — mặc định người dẫn kể chuyện).
 - **Bám lời nói của brief**: lời dẫn lấy đúng câu brief ghi ("Lời nói: …"); thoại nhân vật ngắn (≤ 8 từ), đời thường.
 - VieNeu **không nhận ghi chú đạo diễn**: cảm xúc đến từ chọn giọng, kiểu đọc, **từ cảm thán và dấu câu** ("Trời đất ơi!", "Ủa?!", "…vậy nè?!", "Woa!") và 3 thẻ chèn: `[cười]`, `[thở dài]`, `[hắng giọng]` (thẻ khác bị bỏ khi gửi; `[cười lớn]`→`[cười]`, `[thở phào]`/`[nghẹn]`→`[thở dài]`).
-- **Giọng miền Nam thật**: "nè", "nha", "luôn á", "quá trời", "lẹ", "hông"; không "vâng", "nhé", "thế". VieNeu đọc chữ như gửi: nghe lại tên thương hiệu ("SIPOS").
+- **Giọng miền Nam thật**: "nè", "nha", "luôn á", "quá trời", "lẹ", "hông"; không "vâng", "nhé", "thế". VieNeu đọc chữ như gửi: nghe lại tên thương hiệu. **Cách đọc tên sản phẩm** (Nam nghe duyệt 2026-10-10) nằm ở `config/voice.ts` `VOICE.vieneu.phatAm`, máy tự thay khi gửi VieNeu, phụ đề vẫn ghi đúng tên: SIPOS → "Xi pốt", Webino → "Web-bi-nô", BOS (REDSUN BOS) → "bê ô ét". Trong `loi-doc.json` cứ viết đúng tên; tên mới đọc sai thì báo dev thêm vào bảng (tạo mẫu cho người duyệt nghe chọn).
 - **Không bịa** (như kịch bản): số, giá, ưu đãi, tính năng chỉ từ brief/kịch bản (validate chặn số lạ). Lời khen sản phẩm chỉ trên cảnh màn hình/logo (giấy phép Pexels: không ngụ ý người mẫu ủng hộ).
 
 ## 3. Tạo giọng

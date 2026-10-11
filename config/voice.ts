@@ -18,6 +18,11 @@ export const VOICE = {
     tokenPerChar: 3 * 1.3,
     /** Thẻ của mình → thẻ VieNeu hiểu; thẻ khác bị bỏ (VieNeu đọc thành chữ). */
     tags: { 'cười': '[cười]', 'cười lớn': '[cười]', 'thở dài': '[thở dài]', 'thở phào': '[thở dài]', 'thở phào thật dài': '[thở dài]', 'nghẹn': '[thở dài]', 'hắng giọng': '[hắng giọng]' } as Record<string, string>,
+    /**
+     * Cách đọc tên sản phẩm (Nam nghe duyệt): chỉ thay trong lời gửi VieNeu, phụ đề và chữ trên hình giữ đúng tên.
+     * VieNeu đọc sai tên viết nguyên dạng (Nam 2026-10-10: "SIPOS vẫn đọc sai" → chọn mẫu "Xi pốt"; "webino đọc là web-bi-nô"; "Redsun bos thì đọc là Redsun bê ô ét").
+     */
+    phatAm: { SIPOS: 'Xi pốt', Webino: 'Web-bi-nô', BOS: 'bê ô ét' } as Record<string, string>,
   },
   /** Mỗi câu tạo lại tối đa chừng này lần khi bản tạo ra hỏng (câm, quá dài so với chỗ trống…), kiểm trên máy. */
   maxTries: 3,
