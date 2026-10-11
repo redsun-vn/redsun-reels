@@ -3,6 +3,7 @@
 Đánh số `MAJOR.MINOR.PATCH`. Trước 1.0: MINOR tăng khi có tính năng mới, PATCH khi chỉ sửa lỗi. Mỗi bản gắn tag git `vX.Y.Z` và có trang Release trên GitHub. Số bản nằm ở `package.json` (`./reel doctor` in ra).
 
 ## Chưa phát hành
+- Trước khi viết kịch bản, Claude tả video MKT sẽ nhận và số tiền từng kiểu hình để MKT chọn.
 - Phụ đề lời đọc hiện từng dòng một, sát đáy vùng an toàn (không che mặt nhân vật).
 - Người thật do AI: MKT chọn **ảnh nhân vật trước** (duyệt mặt, Kling) hoặc **tạo thẳng từ kịch bản** (không cần ảnh, Seedance 2.0 Fast, nhiều cảnh trong một lần tạo).
 - **Người thật do AI tạo** (`./reel ai`, OpenRouter): ảnh tham chiếu mỗi vai → khung đầu mỗi cảnh → clip Seedance 2.0; sổ nguồn gốc, trần 50.000đ/video, không gửi lại việc chưa xác nhận.

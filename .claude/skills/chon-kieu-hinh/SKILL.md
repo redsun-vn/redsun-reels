@@ -17,28 +17,33 @@ Nam chốt 2026-10-10 (REQUIREMENTS v0.5 §7.4–7.5, `docs/decisions.md` §22�
 Nói với MKT tiếng Việt, câu ngắn, không thuật ngữ. Chỉ ghi file trong `briefs/<tên-video>/`.
 
 ## Khi nào hỏi
-- Video mới, sau `./reel new`: **luôn hỏi**, kể cả ở luồng tự động. Đây là câu hỏi bắt buộc duy nhất ngoài thông tin mà tự đặt sẽ là bịa. Gộp vào cùng lần hỏi đó nếu có.
-- Không hỏi khi lời MKT đã nói rõ ("làm bản minh hoạ", "dùng người thật do AI"): ghi luôn, nhắc lại một câu để MKT biết.
-- MKT muốn đổi kiểu hình của video đang làm: hỏi xác nhận một lần rồi đổi.
+- Video mới, sau `./reel new`, **trước khi viết concept và kịch bản**: **luôn hỏi**, kể cả ở luồng tự động (Nam 2026-10-11: "yêu cầu hỏi MKT trước khi bắt đầu viết kịch bản, giải thích rõ về video output, số tiền để MKT chọn"). Chưa có câu trả lời thì **không viết concept, kịch bản**, không tạo gì tốn tiền. Gộp vào cùng lần hỏi những câu brief còn thiếu (mục "Brief đủ chưa" của `tao-reel`).
+- Không hỏi khi lời MKT đã nói rõ ("làm bản hoạt hình có giọng", "người thật AI, tạo từ kịch bản"): ghi luôn, nhắc lại một câu kèm số tiền dự kiến để MKT biết.
+- MKT muốn đổi kiểu hình của video đang làm: báo số tiền của kiểu mới, hỏi xác nhận một lần rồi đổi.
 
-## Cách hỏi
-Dùng AskUserQuestion, một câu, ba lựa chọn:
-- **"Minh hoạ (như hiện nay)"**: nhân vật vẽ thân thiện, bối cảnh quán xá Việt, làm ngay được, không tốn phí.
-- **"Người thật quay sẵn (Pexels, Pixabay)"**: clip người thật miễn phí, không phải AI. Bạn tải clip (nên chọn clip dọc), gửi file kèm link trang clip. Clip bối cảnh Việt ít; người trong clip là người lạ nên không được làm khách hàng, nhân viên hay người khen sản phẩm. Không dùng cho video lời khách hàng, người nói trước camera, tổng kết sự kiện, tuyển dụng, giới thiệu công ty.
-- **"Người thật do AI tạo"**: người trông như thật. Video và caption luôn có dòng "{nhãn AI}". Không dùng được cho video lời khách hàng, người nói trước camera, tổng kết sự kiện, tuyển dụng, giới thiệu công ty. Tốn phí tạo hình.
+## Cách hỏi: tả video sẽ nhận + số tiền, rồi mới hỏi
+**1. Một đoạn ngắn tả video MKT sẽ nhận** (viết trong tin nhắn, ngay trước câu hỏi; lấy số từ brief, không bịa):
+> Bạn sẽ nhận một file video dọc 9:16 dài khoảng {duration} giây, có nhạc nền, chữ nhấn, phụ đề, logo {sản phẩm} và lời kêu gọi "{cta}" ở cuối, kèm caption + hashtag soạn sẵn và một ảnh bảng khung chính để góp ý theo số khung. Một video mất khoảng 10–15 phút (người thật AI lâu hơn 5–10 phút). Mình hỏi bạn chọn kiểu hình trước khi viết kịch bản, vì kịch bản viết khác nhau cho từng kiểu.
 
-Trong câu hỏi, lấy câu chữ nhãn từ `config/ai-video.ts` (`label`), không tự viết. Quy trình người thật AI chưa bật (`enabled: false`) thì ghi ở lựa chọn này "(chưa dùng được, đang làm)" và đặt "Minh hoạ" lên đầu, có "(khuyên dùng)".
+**2. AskUserQuestion, một lượt** (không quá 4 câu, gộp câu brief còn thiếu):
+- Câu 1 "Kiểu hình" (4 lựa chọn; mỗi lựa chọn ghi **trông thế nào · số tiền · lưu ý**):
+  - **"Hoạt hình (khuyên dùng)"** → `minh-hoa`: nhân vật Việt vẽ phẳng, bối cảnh quán xá vẽ sẵn, tiếng động, chuyển cảnh theo nhạc. **0đ.** Làm được mọi loại video.
+  - **"Người thật quay sẵn"** → `nguoi-that-quay-san`: clip người châu Á thật (Pexels/Pixabay, miễn phí), Claude tìm và cắt, ghép với màn hình sản phẩm. **0đ.** Người trong clip là người lạ: không làm khách hàng, nhân viên, người khen sản phẩm; bối cảnh có thể nước ngoài.
+  - **"Người thật AI · duyệt ảnh nhân vật"** → `nguoi-that-ai` + `cachTaoAi: anh-vai`: bạn duyệt gương mặt trước, mặt giữ y hệt suốt video; phần lớn khung là ảnh có máy quay chuyển động, 1–2 khoảnh khắc cử động thật. **Khoảng 28.000đ** (tối đa 50.000đ). Luôn có nhãn "Do AI sản xuất".
+  - **"Người thật AI · tạo từ kịch bản"** → `nguoi-that-ai` + `cachTaoAi: tu-chu`: không cần duyệt ảnh, nhân vật cử động ở mọi cảnh như phim; mặt giữa các đoạn gần giống nhưng không y hệt. **Khoảng 40.000đ** (tối đa 50.000đ). Luôn có nhãn "Do AI sản xuất".
+- Câu 2 "Giọng đọc" (chỉ dùng khi chọn hoạt hình; video người thật mặc định có giọng): **"Không giọng (chữ + nhạc)"** · **"Có giọng đọc"** (giọng kể nữ miền Nam Duyên Hà My đọc lời của brief; dùng token gói giọng đọc, ~1.500 token/video trong trần 20.000, không tốn thêm tiền; video có nhãn "Do AI sản xuất").
+- Loại video cấm người thật (`forbiddenVideoTypes`: lời khách hàng, người nói trước camera, tổng kết sự kiện, tuyển dụng, giới thiệu công ty): bỏ các lựa chọn người thật, nói lý do một câu.
+- Số tiền: lấy từ video mẫu gần nhất (`ai/nhat-ky.json` `chiPhi`) và trần `config/cost.ts` `aiCapVndPerVideo`; giá model đổi thì nói "khoảng". Quy trình người thật AI tắt (`enabled: false`): ghi "(chưa dùng được)" ở hai lựa chọn AI.
 
-Ghi `kieuHinh: minh-hoa`, `kieuHinh: nguoi-that-quay-san` hoặc `kieuHinh: nguoi-that-ai` vào `brief.md`. Chạy `./reel validate <tên-video>` để chắc luật đã nhận.
+**3. Ghi lựa chọn** vào `brief.md`: frontmatter `kieuHinh` (và `cachTaoAi` khi người thật AI); phần nội dung một dòng `Lựa chọn MKT: <kiểu hình> — chi phí dự kiến <số>đ` (và "Giọng đọc: có — <giọng>" / "Giọng đọc: không" với hoạt hình). Chạy `./reel validate <tên-video>` để chắc luật đã nhận. Hết lượt hỏi mới viết concept.
 
-### Chọn minh hoạ (hoạt hình) thì hỏi tiếp: có giọng đọc không? (Nam 2026-10-10)
-Hỏi ngay sau khi MKT chọn minh hoạ, cùng lần hỏi nếu được (AskUserQuestion, hai lựa chọn), trừ khi MKT đã nói rõ:
+### Hoạt hình: có giọng đọc không? (Nam 2026-10-10; hỏi trong lượt trên, câu 2)
 - **"Không giọng (chữ + nhạc)"**: như các video hoạt hình hiện nay; lời thoại bằng bóng thoại, chữ trên hình.
 - **"Có giọng đọc"**: một giọng kể (mặc định Duyên Hà My, nữ miền Nam, VieNeu) đọc lời nói của brief và thông điệp cuối; video có nhãn "Do AI sản xuất". Làm giọng theo skill `giong-doc`.
 Ghi lựa chọn vào `brief.md` (dòng "Giọng đọc: có — <giọng>" hoặc "Giọng đọc: không" trong phần nội dung). Hoạt hình có giọng: chữ trên hình đã đủ (bóng thoại, bảng chữ, nhãn đạo cụ) thì **không thêm phụ đề theo giọng**; chữ vẫn giữ cỡ nhỏ.
 
-### Chọn người thật do AI tạo thì hỏi tiếp: tạo người cách nào? (Nam 2026-10-11: "cho phép chọn cả hai loại này")
-Hỏi ngay sau khi MKT chọn người thật do AI, cùng lần hỏi nếu được (AskUserQuestion, hai lựa chọn), trừ khi MKT đã nói rõ. Ghi `cachTaoAi: anh-vai` hoặc `cachTaoAi: tu-chu` vào frontmatter `brief.md` (validate và `./reel ai` chặn khi thiếu hoặc kế hoạch cảnh không khớp):
+### Người thật AI: hai cách tạo (Nam 2026-10-11: "cho phép chọn cả hai loại này"; hỏi trong lượt trên, câu 1)
+Ghi `cachTaoAi: anh-vai` hoặc `cachTaoAi: tu-chu` vào frontmatter `brief.md` (validate và `./reel ai` chặn khi thiếu hoặc kế hoạch cảnh không khớp):
 - **"Ảnh nhân vật trước (duyệt mặt)"** (`anh-vai`): bạn xem và duyệt gương mặt từng nhân vật trước; mặt giữ y hệt suốt video; phần lớn khung là ảnh có máy quay chuyển động, 1–2 khoảnh khắc cảm xúc chính cử động thật. Rẻ hơn (video mẫu ~28.000đ).
 - **"Tạo thẳng từ kịch bản (không cần ảnh)"** (`tu-chu`): không cần duyệt ảnh; nhân vật cử động ở mọi cảnh như phim; mặt giữa các đoạn gần giống nhưng không y hệt. Đắt hơn (video mẫu ~40.000đ).
 Trần mỗi video 50.000đ cho cả hai cách. Video mẫu để so: `2026-10-11-sipos-qr-chuyen-khoan-gia-ai` (ảnh nhân vật) và `…-seedance` (từ kịch bản).
