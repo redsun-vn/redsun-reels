@@ -180,6 +180,8 @@ Máy quay: mỗi kiểu chuyển động máy (lùi ra, đẩy vào, lao vào v�
 - [ ] Khác hẳn video gần đây cùng sản phẩm/dịp.
 
 ## Mẫu (đọc để lấy chuẩn chất lượng)
+Brief không lên GitHub (Nam 2026-10-11), nên mẫu chỉ có trên máy đã làm video đó. Không có trong `briefs/` thì đọc từ lịch sử git: `git show a0d4558:briefs/<tên>/dung-rieng/index.html` (cả `storyboard.md`, `tieng-dong.txt`, `bang-canh.txt`).
+- `briefs/2026-10-10-sipos-qr-chuyen-khoan-gia/dung-rieng/index.html` — **mới nhất**, 29,9s, người thật quay sẵn + một giọng: dấu GIẢ dập ở 0,88s → "chuyện là…" quầy đông, tối kiểm thiếu tiền → lộ ảnh giả sau khoảng lặng → điện thoại SIPOS mỗi đơn một mã QR, khách quét là tự xác nhận → thông báo đã thanh toán → CTA.
 - `briefs/2026-10-09-sipos-anh-chuyen-khoan-gia/dung-rieng/index.html` — **chuẩn mới**, 31s: mở bằng cận mặt khách + điện thoại → lùi ra quầy đông → đẩy vào đồng hồ, nối sang đồng hồ đêm → chèn cận sổ tiền → cận mặt chủ quán → lao vào điện thoại → ảnh giả trên nền đỏ mận, kính lúp, nhiễu, dấu GIẢ, xé đôi → mở tròn sang buổi sáng SIPOS → mở tròn teal CTA, hai người vẫy chào. 5 nền khác nhau (bối cảnh `quan` ngày → `nha` đêm → `bao-dong` → `sang` → `thuong-hieu`), 71 tiếng động trong `tieng-dong.txt`, lặng 13.55–14.09 trước dấu GIẢ, bảng khung chính 12 khung (`bang-canh.txt`).
 - `briefs/2026-10-20-sipos-phu-nu-20-10/dung-rieng/index.html` — 15s: đêm, cuốn sổ, giấy nhớ vây, nét bút chém → điện thoại đổi ô "kho / thu chi / khách quen" → hồng 20/10, hoa nở, con dấu -20% → CTA.
 

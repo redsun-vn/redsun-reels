@@ -486,3 +486,6 @@ Nam: "1 giọng tốt hơn nhiều giọng, nhưng vấn đề lớn nhất đâ
 
 ## 31. Câu định vị SIPOS và Webino (2026-10-11)
 Nam: "cập nhật lại thông tin brand product cho đúng". `brand/products.json` `tagline` và REQUIREMENTS §1.1: SIPOS → "Giải pháp quản lý bán hàng trong thời đại AI" (thay "Không chỉ là phần mềm, là Trợ lý tăng trưởng"), Webino → "Nền tảng AI Web Builder" (thay "Color Your Web, Create Your World"). REDSUN BOS, REDSUN giữ nguyên. Brief cũ trích tagline cũ giữ nguyên (lịch sử).
+
+## 32. Brief không lên GitHub (2026-10-11)
+Nam: "chỉ giữ lại briefs gần nhất, briefs không nên commit lên github". `.gitignore` bỏ qua `briefs/*` trừ `briefs/_example/` (`./reel new` chép từ đây, `tests/post-caption.test.ts` đọc kịch bản mẫu). Brief đã commit trước đó gỡ khỏi repo (còn trong lịch sử git, bản cuối ở commit `a0d4558`). Trên máy Nam, `briefs/` chỉ giữ video gần nhất `2026-10-10-sipos-qr-chuyen-khoan-gia`; 11 brief cũ chuyển sang `../redsun-reels-briefs-luu/` (không xoá). Hệ quả: máy MKT tải bản mới không còn video mẫu; skill `dung-video` mục "Mẫu" đọc mẫu từ lịch sử git khi máy không có. Lưu ý cũ "giọng/sổ nguồn commit để máy khác dựng lại" không còn áp dụng: chuyển video sang máy khác thì chép cả thư mục brief (README "Cập nhật bản mới").

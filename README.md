@@ -210,7 +210,7 @@ templates/        _shared/ (kit-core, kit-motion, kit-blocks, scene-kit .js + ki
 scripts/          lệnh pnpm + lib/ (validate, build-props, stage-project, render-video, loudness, lint-brand…)
 runtime/gsap/     GSAP local
 nhac-tu-tim/      (gitignore) nhạc MKT tự tải + ảnh chụp license, dùng với pnpm music:add
-briefs/<slug>/    brief.md, concepts.md, script.json, props.json, review.md, cost.json, post.md
+briefs/<slug>/    brief.md, concepts.md, script.json, props.json, review.md, cost.json, post.md  (chỉ trên máy, không lên GitHub; repo chỉ giữ _example)
                   hinh/ (gitignore) hình/clip MKT gửi cho video đó
 tests/            unit test, fixtures/briefs/ (21 brief mẫu), baseline/ (ảnh chuẩn render test)
 docs/             decisions, spike-report, video-type-guide, video-style-catalog, music-sources
