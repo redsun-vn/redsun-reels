@@ -6,14 +6,20 @@ Sổ tay này dành cho người làm video, không cần biết lập trình. M
 1. Mở Claude Code, mở thư mục dự án (`Documents/redsun-reels`).
 2. Nói việc bạn muốn làm, ví dụ:
    > làm reel mẹo cho SIPOS về cảnh báo tồn kho thấp, khoảng 20 giây, cho chủ tiệm tạp hoá
-3. Claude tự làm hết: chọn ý tưởng, viết kịch bản, chọn hiệu ứng, xuất video. Claude chỉ hỏi khi thiếu thông tin thật (số liệu, ưu đãi, lời khách, ảnh). Xong, Claude gửi đường dẫn video và caption.
+3. Claude hỏi bạn **hai việc**: chọn kiểu hình (hoạt hình hay người thật, kèm số tiền), rồi **chọn 1 trong 3 ý tưởng**. Ba ý tưởng là ba cách kể khác nhau:
+   - **Tiểu phẩm hài**: một tình huống quen ở quán, có người phản ứng và chỗ gây cười.
+   - **POV "khi bạn là chủ quán…"**: người xem nhìn qua mắt chủ quán, sống lại một khoảnh khắc khó.
+   - **Chuyện có cú lật**: người xem đoán một hướng, rồi bị lật ngược.
+   - **Mẹo / số liệu**: mở bằng một con số hay mẹo thật làm chủ quán giật mình (chỉ khi bạn đưa số hay mẹo thật).
+
+   Sau đó Claude tự làm hết: viết kịch bản, dựng, xuất video. Claude chỉ hỏi thêm khi thiếu thông tin thật (số liệu, ưu đãi, lời khách, ảnh). Xong, Claude gửi đường dẫn video và caption.
 4. Xem video, muốn sửa gì cứ nói: "đổi câu mở đầu thành…", "nhạc vui hơn", "hiệu ứng mạnh hơn"…
 
-Muốn tự chọn ý tưởng và duyệt kịch bản trước khi xuất: nói **"làm từng bước"**.
+Muốn duyệt cả kịch bản và bảng khung hình trước khi xuất: nói **"làm từng bước"**.
 
 Làm nhiều video một lúc (vd. "làm 3 video 20/10 cho SIPOS, Webino, REDSUN BOS") thì Claude tự làm mỗi video một kiểu khác nhau: phong cách, bố cục, hiệu ứng, để các video không trùng nhau.
 
-Một video từ lúc có nội dung tới lúc có file MP4 mất khoảng 10–15 phút.
+Máy làm một video trong khoảng 15 phút, không tính lúc chờ bạn trả lời. Video xuất xong, Claude báo số phút máy đã chạy.
 
 ## 2. Thư mục bạn cần biết
 | Thư mục | Để làm gì |
@@ -136,6 +142,7 @@ Mọi video dài **15–30 giây**: video ngắn dễ được xem hết, nền 
 - **Chỉ đăng tự nhiên** (organic) lên Facebook, Instagram, TikTok, YouTube. **Không chạy quảng cáo trả tiền** với các video này: license nhạc chưa được kiểm cho quảng cáo.
 - Không gắn thêm nhạc trong app TikTok/Instagram đè lên video (video đã có nhạc).
 - Bị báo bản quyền nhạc (Content ID claim): chụp màn hình thông báo, gửi Nam. Không tự xoá hay kháng nghị.
+- **Ghi số liệu sau đăng** vào Google Sheet chung [Research database](https://docs.google.com/spreadsheets/d/1W0QxJa_YThp2Z_Vjd7OFNNvRnZeYcCEk8jU60XZBPkM), tab **"Số liệu video"**: mỗi video một dòng (mã lịch, tên video = tên thư mục trong `briefs`, sản phẩm, luồng cũ/mới, kiểu kể, kiểu hình, kênh, ngày đăng). **7 ngày sau khi đăng** điền ngày đo, lượt xem, % xem qua 3 giây, % xem hết (lấy trong phần thống kê của app). Số phút máy chạy Claude báo khi xuất video. Số liệu này cho biết cách kể nào giữ người xem tốt hơn.
 
 ## 9. Khi có lỗi
 - Dự án tự dùng model **Claude Opus 5.5** (tốt nhất cho việc làm video). Đừng đổi model bằng `/model`. Claude báo lỗi model hoặc hết lượt dùng: nhắn Nam.

@@ -18,6 +18,7 @@
     "giong": "node scripts/giong.ts",
     "ai": "node scripts/ai.ts",
     "validate": "node scripts/validate.ts",
+    "moc": "node scripts/moc.ts",
     "build": "node scripts/build.ts",
     "preview": "node scripts/preview.ts",
     "render": "node scripts/render.ts",

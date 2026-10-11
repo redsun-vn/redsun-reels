@@ -3,6 +3,13 @@
 Đánh số `MAJOR.MINOR.PATCH`. Trước 1.0: MINOR tăng khi có tính năng mới, PATCH khi chỉ sửa lỗi. Mỗi bản gắn tag git `vX.Y.Z` và có trang Release trên GitHub. Số bản nằm ở `package.json` (`./reel doctor` in ra).
 
 ## Chưa phát hành
+Reel hấp dẫn hơn và làm nhanh hơn (dự kiến bản 0.6.0).
+
+- **4 kiểu kể**: tiểu phẩm hài, POV "khi bạn là chủ quán…", chuyện có cú lật, mẹo / số liệu. Ba ý tưởng của một video thuộc ba kiểu kể khác nhau.
+- **MKT chọn 1 trong 3 ý tưởng** trước khi máy viết kịch bản; sau đó máy làm tới hết.
+- Sản phẩm được vào như cú chốt cuối chuyện (cảnh giải pháp ≥ 12% video, bắt đầu trước 85%), vẫn phải cho thấy sản phẩm gỡ đúng nỗi đau.
+- Kịch bản kèm bảng nhịp (ai phản ứng gì, chỗ cười, chỗ lật); tự chấm thêm điểm hấp dẫn.
+- **Nhanh hơn**: clip người thật AI và giọng đọc tạo song song, trần tiền vẫn giữ; video ghi lại số phút máy chạy (mục tiêu ≤ 15 phút, không tính lúc chờ bạn trả lời).
 
 ## 0.5.0 — 2026-10-11
 Luật kịch bản mới: thông tin không lặp lại, thông điệp xuyên suốt.

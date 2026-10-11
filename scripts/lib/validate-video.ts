@@ -12,7 +12,7 @@ import { checkTrack, findTrack, MusicManifestSchema, type MusicPurpose, usableSe
 import { countWords, sceneDurationSec } from '../../config/scene-timing.ts';
 import { availableStylePresets, hasStylePreset } from '../../config/style-preset.schema.ts';
 import { resolveStyle } from './resolve-style.ts';
-import { factIssues } from './fact-check.ts';
+import { factIssues, numberTokens } from './fact-check.ts';
 import { assetPaths } from './build-props.ts';
 import { clipIssues } from './clip-check.ts';
 import { mediaWarnings } from './brief-media.ts';
@@ -22,6 +22,7 @@ import { motionIssues, repetitionIssues } from './motion-check.ts';
 import { recentForBrief } from './recent-videos.ts';
 import { getOccasion, OCCASIONS } from '../../config/occasions.ts';
 import { ScriptSchema, type Script } from '../../config/script.schema.ts';
+import { GIAI_PHAP_MIN, GIAI_PHAP_MIN_CU, GIAI_PHAP_TRUOC, GIAI_PHAP_TRUOC_CU, KIEU_KE, KIEU_KE_IDS } from '../../config/kieu-ke.ts';
 import { NO_PAIN_TYPES, REEL_SEC, getVideoType, reelRange, type SceneRole, type VideoType } from '../../config/video-types.ts';
 import { readBriefFile, readScriptFile } from './brief.ts';
 import { REPO_ROOT } from './hyperframes-env.ts';
@@ -130,6 +131,10 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose; v
   if (countWords(script.hook.replace(/\n/g, ' ')) > 8) issues.push(err(`LUẬT SỐ 1 — 3 giây đầu: hook "${script.hook}" quá 8 từ.`));
 
   // NỖI ĐAU → GIẢI PHÁP (Nam 2026-10-10: "phải nổi bật được nỗi đau của khách hàng và cách sản phẩm giải quyết nó"), chặn ở bước kịch bản
+  // Kiểu kể có thì nới hình thức (giải pháp được là cú chốt), không có thì giữ ngưỡng cũ (decisions §34)
+  const kieuKe = script.concept.kieuKe ? KIEU_KE[script.concept.kieuKe] : undefined;
+  const solMin = kieuKe ? GIAI_PHAP_MIN : GIAI_PHAP_MIN_CU, solBefore = kieuKe ? GIAI_PHAP_TRUOC : GIAI_PHAP_TRUOC_CU;
+  const pct = (x: number) => `${Math.round(x * 100)}%`;
   if (!NO_PAIN_TYPES.has(type.id)) {
     const { noiDau, giaiPhap } = script.concept;
     const at = (id: string) => script.scenes.findIndex((s) => s.id === id);
@@ -144,11 +149,13 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose; v
       if (g < 0) issues.push(err(`Nỗi đau → giải pháp: không có cảnh "${giaiPhap.canh}" (concept.giaiPhap.canh).`));
       else if (script.scenes[g].role !== 'solution') issues.push(err(`Nỗi đau → giải pháp: cảnh giải pháp "${giaiPhap.canh}" phải là solution.`));
       if (p >= 0 && g >= 0 && g <= p) issues.push(err('Nỗi đau → giải pháp: cảnh giải pháp phải đến sau cảnh nỗi đau.'));
-      if (g >= 0 && startOf(g) > len * 0.7 + 1e-6) issues.push(err(`Nỗi đau → giải pháp: giải pháp bắt đầu ở giây ${startOf(g).toFixed(1)}, quá muộn (phải trước 70% video, ${(len * 0.7).toFixed(1)} giây) để người xem kịp thấy sản phẩm giải quyết.`));
+      if (g >= 0 && startOf(g) > len * solBefore + 1e-6) issues.push(err(`Nỗi đau → giải pháp: giải pháp bắt đầu ở giây ${startOf(g).toFixed(1)}, quá muộn (phải trước ${pct(solBefore)} video, ${(len * solBefore).toFixed(1)} giây) để người xem kịp thấy sản phẩm giải quyết.`));
       const solSec = script.scenes.filter((s) => s.role === 'solution').reduce((sum, s) => sum + s.durationSec, 0);
-      if (solSec + 1e-6 < len * 0.2) issues.push(err(`Nỗi đau → giải pháp: cảnh giải pháp chỉ ${solSec.toFixed(1)} giây; cần ≥ 20% video (${(len * 0.2).toFixed(1)} giây) để thấy rõ sản phẩm giải quyết thế nào.`));
+      if (solSec + 1e-6 < len * solMin) issues.push(err(`Nỗi đau → giải pháp: cảnh giải pháp chỉ ${solSec.toFixed(1)} giây; cần ≥ ${pct(solMin)} video (${(len * solMin).toFixed(1)} giây) để thấy rõ sản phẩm giải quyết thế nào.`));
     }
   }
+
+  issues.push(...kieuKeIssues(dir, script, brief, readBriefFile(dir).body));
 
   // Thông tin không lặp lại, thông điệp xuyên suốt (Nam 2026-10-11)
   if (!script.concept.thongDiep) issues.push(warn('Thông điệp xuyên suốt: script.json chưa có concept.thongDiep (một câu mọi cảnh nối về; cảnh kết khép vòng với nỗi đau ở đầu).'));
@@ -159,7 +166,11 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose; v
   // Hook, vai trò cảnh, CTA
   issues.push(...hookIssues(script.hook));
   const roles = script.scenes.map((s) => s.role);
-  if (!rolesMatch(roles, type.roles, type.repeatRole)) {
+  if (kieuKe) {
+    // Có kiểu kể: thứ tự cảnh theo kiểu kể (gợi ý), không theo mẫu của loại video
+    if (!rolesMatch(roles, kieuKe.vaiTro, kieuKe.lap))
+      issues.push(warn(`Thứ tự cảnh ${roles.join(' → ')} khác gợi ý của kiểu kể "${kieuKe.ten}": ${kieuKe.vaiTro.join(' → ')}${kieuKe.lap ? ` (được lặp "${kieuKe.lap}")` : ''}.`));
+  } else if (!rolesMatch(roles, type.roles, type.repeatRole)) {
     // Dựng riêng tự kể chuyện theo cảnh của brief: thứ tự mẫu chỉ là gợi ý
     issues.push((script.build === 'custom' ? warn : err)(`Thứ tự cảnh ${roles.join(' → ')} chưa đúng mẫu của "${type.name}": ${type.roles.join(' → ')}${type.repeatRole ? ` (được lặp "${type.repeatRole}")` : ''}.`));
   }
@@ -300,4 +311,27 @@ export function hasErrors(issues: Issue[]): boolean {
 
 export function formatIssues(issues: Issue[]): string {
   return issues.map((i) => `${i.level === 'error' ? '✗' : '!'} ${i.message}`).join('\n');
+}
+
+/** Kiểu kể: số thật cho mẹo/số liệu, kiểu hình hợp, 3 concept khác kiểu kể và lựa chọn của MKT (decisions §34). */
+export function kieuKeIssues(dir: string, script: Script, brief: Brief, briefBody: string): Issue[] {
+  const out: Issue[] = [];
+  const id = script.concept.kieuKe;
+  if (!id) {
+    if (script.build === 'custom') out.push(warn(`Kiểu kể: kịch bản chưa chọn concept.kieuKe (${KIEU_KE_IDS.join(' | ')}); video mới nên mở bằng một trong 4 kiểu kể để không giống quảng cáo.`));
+    return out;
+  }
+  const k = KIEU_KE[id];
+  if (k.canSoThat && !numberTokens(briefBody).length && !/mẹo/i.test(briefBody))
+    out.push(err(`Kiểu kể "${k.ten}": brief không có con số hay mẹo nào do MKT đưa. Hỏi MKT số liệu/mẹo thật (kèm nguồn) hoặc chọn kiểu kể khác; không tự đặt.`));
+  if (!k.kieuHinh.includes(brief.kieuHinh))
+    out.push(warn(`Kiểu kể "${k.ten}" không hợp kiểu hình "${brief.kieuHinh}" (hợp: ${k.kieuHinh.join(', ')}): clip quay sẵn không diễn theo kịch bản được.`));
+  const file = join(dir, 'concepts.md');
+  const text = existsSync(file) ? readFileSync(file, 'utf8') : '';
+  if (!/^##\s*Lựa chọn của MKT/m.test(text)) out.push(warn('Kiểu kể: concepts.md chưa có mục "## Lựa chọn của MKT" (MKT chọn 1 trong 3 concept).'));
+  const listed = [...text.matchAll(/Kiểu kể:\s*`?([a-z-]+)`?/g)].map((m) => m[1]);
+  const known = listed.filter((x) => (KIEU_KE_IDS as readonly string[]).includes(x));
+  if (new Set(known).size < 3) out.push(warn(`Kiểu kể: 3 concept trong concepts.md phải thuộc 3 kiểu kể khác nhau (mỗi concept một dòng "Kiểu kể: <mã>"; đang thấy ${known.length ? [...new Set(known)].join(', ') : 'không có'}).`));
+  if (known.length && !known.includes(id)) out.push(warn(`Kiểu kể: kịch bản dùng "${id}" nhưng concepts.md không có concept nào kiểu này.`));
+  return out;
 }

@@ -14,7 +14,8 @@ export class CostCapError extends Error {}
 export class DailyQuotaError extends Error {}
 
 /** Token VieNeu đã dùng trong lần chạy này; `limit` = phần trần còn lại của video (người gọi đặt trước khi chạy). */
-export const spend = { tokens: 0, calls: 0, limit: Number.POSITIVE_INFINITY };
+/** `dangGiu`: token của các lượt đang gọi (chạy song song) — giữ chỗ trong trần trước khi gọi. */
+export const spend = { tokens: 0, calls: 0, limit: Number.POSITIVE_INFINITY, dangGiu: 0 };
 
 export function vieneuKey(): string {
   const env = join(REPO_ROOT, '.env');
@@ -54,8 +55,9 @@ export async function synthesizeVieneu(text: string, voice: string, style: 'natu
   const tokens = vieneuTokens(text);
   let last = '';
   for (let attempt = 0; attempt < 5; attempt++) {
-    if (spend.tokens + tokens > spend.limit) throw new CostCapError(`Chạm trần ${COST.vieneuTokenCapPerVideo.toLocaleString('vi-VN')} token VieNeu/video (config/cost.ts).`);
+    if (spend.tokens + spend.dangGiu + tokens > spend.limit) throw new CostCapError(`Chạm trần ${COST.vieneuTokenCapPerVideo.toLocaleString('vi-VN')} token VieNeu/video (config/cost.ts).`);
     let r: Response;
+    spend.dangGiu += tokens;
     try {
       r = await fetch(`${VOICE.vieneu.base}/audio/speech`, {
         method: 'POST',
@@ -64,10 +66,12 @@ export async function synthesizeVieneu(text: string, voice: string, style: 'natu
         signal: AbortSignal.timeout(120_000),
       });
     } catch (e) {
+      spend.dangGiu -= tokens;
       last = `mạng lỗi (${hide(String((e as { cause?: { code?: string } }).cause?.code ?? (e as Error).message))})`;
       await new Promise((res) => setTimeout(res, 2000 * 2 ** attempt));
       continue;
     }
+    spend.dangGiu -= tokens;
     if (r.ok) {
       spend.tokens += tokens;
       spend.calls++;

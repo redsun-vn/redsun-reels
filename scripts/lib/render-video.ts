@@ -12,6 +12,8 @@ import { BEAT_WINDOW_SEC, beatsOfFile } from './music-beats.ts';
 import { CUE_FILE, parseCues } from './sfx-cues.ts';
 import { arcCheck, beatCheck, loudnessWindows, transitions } from './sound-arc.ts';
 import { frameDiffs, motionPerSecond, stillRuns } from './video-liveliness.ts';
+import { tenLenh } from './cli.ts';
+import { docThoiGian, dongMayChay, tongMayChay, type TongThoiGian } from './thoi-gian.ts';
 
 export interface RenderResult {
   file: string;
@@ -23,6 +25,8 @@ export interface RenderResult {
   stills: Array<[number, number]>;
   /** Bản dựng riêng: kết quả đo sau khi xuất (dòng bắt đầu "!" là cần sửa). */
   notes: string[];
+  /** Thời gian máy chạy brief → MP4 (khi có briefDir). */
+  thoiGian?: TongThoiGian;
 }
 
 export const DURATION_TOLERANCE_SEC = 0.2;
@@ -91,10 +95,12 @@ function renderInner(built: BuiltVideo, opts: { briefDir?: string; quality?: 'dr
   if (problems.length) throw new Error(`Video ra chưa đúng chuẩn: ${problems.join('; ')}.`);
   renameSync(tmpFile, finalFile); // chỉ thay file cuối khi đã đạt chuẩn
 
+  // Thời gian máy chạy brief → MP4, tính cả lệnh xuất đang chạy (process bắt đầu ở performance.timeOrigin)
+  const thoiGian = opts.briefDir ? tongMayChay(docThoiGian(opts.briefDir), { lenh: tenLenh(), batDau: Math.round(performance.timeOrigin), ketThuc: Date.now() }) : undefined;
   if (opts.briefDir) {
     writeFileSync(
       join(opts.briefDir, 'cost.json'),
-      JSON.stringify({ renderedAt: new Date().toISOString(), renderSec: Math.round(renderSec), music: built.script.music, durationSec, sizeMB: Math.round(sizeMB * 10) / 10 }, null, 2) + '\n',
+      JSON.stringify({ renderedAt: new Date().toISOString(), renderSec: Math.round(renderSec), music: built.script.music, durationSec, sizeMB: Math.round(sizeMB * 10) / 10, thoiGian }, null, 2) + '\n',
     );
   }
   const custom = built.script.build === 'custom';
@@ -103,7 +109,8 @@ function renderInner(built: BuiltVideo, opts: { briefDir?: string; quality?: 'dr
   const notes = custom ? customNotes(built, finalFile, diffs, stills, opts.briefDir) : [];
   // LUẬT SỐ 1 — 3 giây đầu: phải có biến động mạnh (dập, cắt, rung) trong giây đầu
   if (custom && !transitions(diffs).some((m) => m.start <= 1.0)) notes.unshift('✗ LUẬT SỐ 1 — 3 giây đầu: không có biến động mạnh nào trong giây đầu (dập, cắt, rung, chớp). Mở bằng hình mạnh nhất của hook rồi xuất lại.');
-  return { file: finalFile, durationSec, sizeMB, renderSec, loudness, stills, notes };
+  if (thoiGian) notes.push(dongMayChay(thoiGian));
+  return { file: finalFile, durationSec, sizeMB, renderSec, loudness, stills, notes, thoiGian };
 }
 
 /** Đứng hình, lặng trước vỡ lẽ, cắt trên phách — đo trên file đã xuất. */

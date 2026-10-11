@@ -13,6 +13,7 @@ import { VOICE } from '../config/voice.ts';
 import { CUSTOM_DIR } from './lib/custom-video.ts';
 import { stockLog } from './lib/kieu-hinh-rules.ts';
 import { buildPost } from './lib/post-caption.ts';
+import { docThoiGian, tongMayChay } from './lib/thoi-gian.ts';
 
 const a = parseCli('post');
 await runCommand(() => {
@@ -26,4 +27,7 @@ await runCommand(() => {
   const stockCredits = kieuHinh === 'nguoi-that-quay-san' ? [...stockLog(a.dir).valid.values()] : [];
   writeFileSync(out, buildPost({ script, hashtags: products.products[script.product].hashtags, track: findTrack(manifest, script.music), aiLabel: aiLabelFor(kieuHinh === 'nguoi-that-ai', existsSync(join(a.dir, CUSTOM_DIR, VOICE.file))), stockCredits }));
   console.log(`Đã soạn nội dung đăng bài: briefs/${a.slug}/post.md`);
+  // Dòng cho tab "Số liệu video" của Google Sheet chung (docs/huong-dan-mkt.md mục Đăng bài); MKT điền phần đo sau 7 ngày
+  const phut = (tongMayChay(docThoiGian(a.dir)).mayChaySec / 60).toFixed(1).replace('.', ',');
+  console.log(`Sau khi đăng, thêm một dòng vào tab "Số liệu video": tên video ${a.slug} · sản phẩm ${script.product} · kiểu kể ${script.concept.kieuKe ?? '(chưa có)'} · kiểu hình ${String(kieuHinh)} · máy chạy ${phut} phút. 7 ngày sau điền lượt xem, % xem qua 3 giây, % xem hết.`);
 });

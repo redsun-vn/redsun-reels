@@ -7,6 +7,7 @@
  *      (bỏ bước 1–2, model theo `mohinh` của kế hoạch: seedance | veo).
  * File đã có thì bỏ qua (--lai: làm lại các cảnh trong --canh). Mỗi lượt ước tiền trước, vượt trần config/cost.ts thì dừng.
  * Việc clip đã gửi mà chưa xác nhận được: giữ mã việc (dangCho), lần sau hỏi tiếp, không gửi lại.
+ * Chạy song song: ảnh tối đa IMAGE_CONCURRENCY cùng lúc; clip gửi hết rồi chờ cùng lúc. Trần tính cả việc đang chờ.
  * Sổ nguồn gốc: ai/nhat-ky.json (file, model, prompt, ảnh tham chiếu, seed, mã việc, thời lượng, chi phí, thời điểm).
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -17,6 +18,7 @@ import { briefDir, readBriefFile } from './lib/brief.ts';
 import { runCommand } from './lib/cli.ts';
 import { probeClip } from './lib/clip-check.ts';
 import { methodIssues } from './lib/kieu-hinh-rules.ts';
+import { ChuaChayError, chayGioiHan } from './lib/song-song.ts';
 import {
   type AiLog,
   type AiPending,
@@ -56,6 +58,7 @@ const redo = args.includes('--lai');
 const vnd = (usd: number) => `${toVnd(usd).toLocaleString('vi-VN')}đ`;
 
 class CapError extends Error {}
+const IMAGE_CONCURRENCY = 3;
 
 await runCommand(async () => {
   if (!slug) throw new Error('Cách dùng: ./reel ai <tên-video> [--canh=<id>,…] [--video] [--lai]');
@@ -85,14 +88,37 @@ await runCommand(async () => {
   const key = openrouterKey();
   const capVnd = COST.aiCapVndOverride[slug] ?? COST.aiCapVndPerVideo;
   const capUsd = capVnd / COST.vndPerUsd;
+  // Tiền ước của ảnh đang tạo (chưa ghi sổ): giữ chỗ trong trần khi chạy song song
+  let giuChoUsd = 0;
   const ensure = (usd: number, what: string) => {
-    if (usd > budgetLeftUsd(log, capVnd, COST.vndPerUsd))
-      throw new CapError(`${what} ước ${vnd(usd)}, vượt phần trần còn lại ${vnd(Math.max(0, capUsd - log.chiPhi.usd))} (trần ${capVnd.toLocaleString('vi-VN')}đ/video, config/cost.ts). Nhắn Nam nếu cần nâng trần.`);
+    if (usd > budgetLeftUsd(log, capVnd, COST.vndPerUsd) - giuChoUsd)
+      throw new CapError(`${what} ước ${vnd(usd)}, vượt phần trần còn lại ${vnd(Math.max(0, budgetLeftUsd(log, capVnd, COST.vndPerUsd) - giuChoUsd))} (trần ${capVnd.toLocaleString('vi-VN')}đ/video, config/cost.ts). Nhắn Nam nếu cần nâng trần.`);
   };
   const record = (item: AiLog['items'][number]) => {
     log.items = [...log.items.filter((x) => x.file !== item.file), item];
     log.chiPhi = { usd: log.chiPhi.usd + item.chiPhiUsd, luot: log.chiPhi.luot + 1 };
     save();
+  };
+  const taoAnh = async (what: string, prompt: string, refs: string[], seed: number) => {
+    ensure(OR.imageEstimateUsd, what);
+    giuChoUsd += OR.imageEstimateUsd;
+    try {
+      const img = await generateImage(prompt, refs, seed, key);
+      giuChoUsd -= OR.imageEstimateUsd;
+      return img;
+    } catch (e) {
+      // Có thể đã bị tính tiền: giữ chỗ trong trần tới hết lần chạy, không nhả cho ảnh khác
+      if (!(e instanceof UnconfirmedError)) giuChoUsd -= OR.imageEstimateUsd;
+      throw e;
+    }
+  };
+  /** Ném lỗi sau khi mọi việc song song đã xong; lỗi trần/chưa xác nhận/bị từ chối gom thành thông báo dừng. */
+  const gomLoi = (rs: PromiseSettledResult<unknown>[]) => {
+    const errs = rs.flatMap((r) => (r.status === 'rejected' && !(r.reason instanceof ChuaChayError) ? [r.reason] : []));
+    const isStop = (e: unknown) => e instanceof CapError || e instanceof UnconfirmedError || e instanceof RejectedError;
+    const other = errs.find((e) => !isStop(e));
+    if (other) throw other;
+    if (errs.length) throw new CapError(errs.map((e) => (e as Error).message).join('\n'));
   };
   const want = (id: string) => !only || only.includes(id);
   const has = (file: string) => existsSync(join(aiDir, file)) && !(redo && only);
@@ -130,20 +156,19 @@ await runCommand(async () => {
   let stopped = '';
   try {
     // 0. Việc clip còn treo từ lần trước: hỏi tiếp / tải tiếp, không gửi lại
-    for (const p of [...log.dangCho]) await finishClip(p);
+    gomLoi(await chayGioiHan([...log.dangCho], Infinity, finishClip));
 
     // 1. Ảnh tham chiếu mỗi vai
     const roles = [...new Set([...spec.canh.filter((c) => want(c.id) && !c.tuChu).flatMap((c) => c.vai), ...Object.keys(spec.dan).filter((v) => only?.includes(v))])];
-    for (const vai of roles) {
+    const roleTodo = roles.filter((vai) => !(existsSync(join(aiDir, roleFile(vai))) && !(redo && only?.includes(vai))));
+    gomLoi(await chayGioiHan(roleTodo, IMAGE_CONCURRENCY, async (vai) => {
       const name = roleFile(vai);
-      if (existsSync(join(aiDir, name)) && !(redo && only?.includes(vai))) continue;
-      ensure(OR.imageEstimateUsd, `Ảnh vai ${vai}`);
       const prompt = rolePrompt(spec, vai), seed = seedOf(`vai-${vai}`);
-      const img = await generateImage(prompt, [], seed, key);
+      const img = await taoAnh(`Ảnh vai ${vai}`, prompt, [], seed);
       writeFileSync(join(aiDir, name), img.png);
       record({ file: name, loai: 'anh-vai', vai: [vai], nhaCungCap: 'openrouter', model: OR.imageModel, prompt, anhThamChieu: [], seed, chiPhiUsd: img.costUsd, taoLuc: new Date().toISOString() });
       console.log(`✓ ảnh vai ${name} (${vnd(img.costUsd)}) — cần người duyệt: ghi "duyet": true cho vai "${vai}" trong ${AI_VIDEO.specFile}.`);
-    }
+    }));
     const waitRoles = roles.filter((v) => !spec.dan[v].duyet);
     if (waitRoles.length) {
       stopped = `Chờ duyệt ảnh vai: ${waitRoles.map((v) => `${AI_VIDEO.dir}/${roleFile(v)}`).join(', ')}. Duyệt xong thì chạy lại lệnh.`;
@@ -151,16 +176,15 @@ await runCommand(async () => {
     }
 
     // 2. Khung đầu mỗi cảnh
-    for (const c of spec.canh) {
-      if (c.tuChu || !want(c.id) || has(frameFile(c.id))) continue;
-      ensure(OR.imageEstimateUsd, `Khung đầu ${c.id}`);
+    const frameTodo = spec.canh.filter((c) => !c.tuChu && want(c.id) && !has(frameFile(c.id)));
+    gomLoi(await chayGioiHan(frameTodo, IMAGE_CONCURRENCY, async (c) => {
       const refs = c.vai.map(roleFile);
       const prompt = framePrompt(spec, c), seed = seedOf(`khung-${c.id}`);
-      const img = await generateImage(prompt, refs.map((f) => dataUrl(join(aiDir, f))), seed, key);
+      const img = await taoAnh(`Khung đầu ${c.id}`, prompt, refs.map((f) => dataUrl(join(aiDir, f))), seed);
       writeFileSync(join(aiDir, frameFile(c.id)), img.png);
       record({ file: frameFile(c.id), loai: 'khung-dau', canh: c.id, vai: c.vai, nhaCungCap: 'openrouter', model: OR.imageModel, prompt, anhThamChieu: refs, seed, chiPhiUsd: img.costUsd, taoLuc: new Date().toISOString() });
       console.log(`✓ khung đầu ${frameFile(c.id)} (khung ${c.khung}, ${vnd(img.costUsd)}) — Claude xem rồi ghi "duyetKhung": true.`);
-    }
+    }));
 
     // 3. Clip từ khung đầu
     if (!withVideo) return;
@@ -170,26 +194,37 @@ await runCommand(async () => {
       if (!m) throw new Error(`OpenRouter không còn model ${id}. Cần dev chọn model khác (config/ai-video.ts).`);
       return m;
     };
+    // Gửi hết các clip trước (mỗi lần gửi ghi sổ ngay), rồi chờ tất cả cùng lúc
+    const sent: AiPending[] = [];
+    let submitErr: unknown;
     for (const c of spec.canh) {
       if (!c.video || !want(c.id) || has(clipFile(c.id)) || log.dangCho.some((p) => p.canh === c.id)) continue;
-      const tv = OR.textVideoModels[spec.mohinh];
-      const model = modelOf(c.tuChu ? tv.id : OR.videoModel), size = c.tuChu ? tv.size : OR.videoSize;
-      if (!c.tuChu && !c.duyetKhung) {
-        console.log(`! ${c.id}: khung đầu chưa duyệt (duyetKhung), bỏ qua clip.`);
-        continue;
+      try {
+        const tv = OR.textVideoModels[spec.mohinh];
+        const model = modelOf(c.tuChu ? tv.id : OR.videoModel), size = c.tuChu ? tv.size : OR.videoSize;
+        if (!c.tuChu && !c.duyetKhung) {
+          console.log(`! ${c.id}: khung đầu chưa duyệt (duyetKhung), bỏ qua clip.`);
+          continue;
+        }
+        const issues = videoRequestIssues(model, c.giay, size, !c.tuChu);
+        if (issues.length) throw new Error(issues.join('\n'));
+        const uocUsd = estimateVideoUsd(model, c.giay, size);
+        ensure(uocUsd, `Clip ${c.id} (${c.giay}s)`);
+        const prompt = c.tuChu ? textVideoPrompt(spec, c) : motionPrompt(spec, c), seed = seedOf(`clip-${c.id}`);
+        const job = await submitVideo(model.id, prompt, c.tuChu ? undefined : dataUrl(join(aiDir, frameFile(c.id))), c.giay, seed, key, size, c.tuChu ? tv.provider : undefined);
+        const p: AiPending = { canh: c.id, maViec: job.id, pollingUrl: job.pollingUrl, model: model.id, prompt, anhThamChieu: c.tuChu ? [] : [frameFile(c.id)], seed, giay: c.giay, uocUsd, guiLuc: new Date().toISOString() };
+        log.dangCho.push(p);
+        save();
+        console.log(`→ đã gửi clip ${c.id} (${c.giay}s, ước ${vnd(uocUsd)}), mã việc ${job.id}`);
+        sent.push(p);
+      } catch (e) {
+        submitErr = e; // không gửi thêm, nhưng vẫn chờ các clip đã gửi
+        break;
       }
-      const issues = videoRequestIssues(model, c.giay, size, !c.tuChu);
-      if (issues.length) throw new Error(issues.join('\n'));
-      const uocUsd = estimateVideoUsd(model, c.giay, size);
-      ensure(uocUsd, `Clip ${c.id} (${c.giay}s)`);
-      const prompt = c.tuChu ? textVideoPrompt(spec, c) : motionPrompt(spec, c), seed = seedOf(`clip-${c.id}`);
-      const job = await submitVideo(model.id, prompt, c.tuChu ? undefined : dataUrl(join(aiDir, frameFile(c.id))), c.giay, seed, key, size, c.tuChu ? tv.provider : undefined);
-      const p: AiPending = { canh: c.id, maViec: job.id, pollingUrl: job.pollingUrl, model: model.id, prompt, anhThamChieu: c.tuChu ? [] : [frameFile(c.id)], seed, giay: c.giay, uocUsd, guiLuc: new Date().toISOString() };
-      log.dangCho.push(p);
-      save();
-      console.log(`→ đã gửi clip ${c.id} (${c.giay}s, ước ${vnd(uocUsd)}), mã việc ${job.id}`);
-      await finishClip(p);
     }
+    const rs = await chayGioiHan(sent, Infinity, finishClip);
+    if (submitErr) rs.push({ status: 'rejected', reason: submitErr });
+    gomLoi(rs);
   } catch (e) {
     save();
     if (e instanceof CapError || e instanceof UnconfirmedError || e instanceof RejectedError) stopped = e.message;

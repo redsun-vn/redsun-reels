@@ -39,11 +39,13 @@ Kiểm kê skill đã cài (danh sách skill của runtime + `.claude/skills/` +
 
 ## Quy tắc kịch bản (REQUIREMENTS §6.2)
 - **LUẬT SỐ 1 — 3 giây đầu, mạnh nhất**: chọn điểm hấp dẫn nhất của brief (bảng 5 tiêu chí, ≥ 20/25, `concepts.md` mục `## Điểm hấp dẫn`, `script.json` `concept.diemHapDan`), mở bằng nó rồi kể lại. Validate chặn ngay ở bước kịch bản.
-- **LUẬT SỐ 2 — nỗi đau → giải pháp**: nêu nỗi đau cụ thể của khách (từ brief, có hậu quả) và cho thấy sản phẩm giải quyết nó thế nào (`concept.noiDau`, `concept.giaiPhap`). Validate chặn từ bước kịch bản.
+- **LUẬT SỐ 2 — nỗi đau → giải pháp**: nêu nỗi đau cụ thể của khách (từ brief, có hậu quả) và cho thấy sản phẩm giải quyết nó thế nào (`concept.noiDau`, `concept.giaiPhap`). Validate chặn từ bước kịch bản. Có kiểu kể (`concept.kieuKe`): giải pháp ≥ 12% video, bắt đầu trước 85% (sản phẩm được là cú chốt); chưa có kiểu kể: ≥ 20%, trước 70%.
+- Luật đầy đủ một nơi: `.claude/skills/tao-reel/references/luat-kich-ban.md`.
 - **Thông tin không lặp lại, thông điệp xuyên suốt**: mỗi thông tin nói một lần (lời hay hình); kể lại sau hook phải thêm điều mới; một câu thông điệp ở `concept.thongDiep`, cảnh kết khép vòng với nỗi đau ở đầu. Validate cảnh báo khi thiếu thông điệp hoặc hai cảnh trùng chữ.
 - **Brief thiếu thông tin để kịch bản đạt luật** (hook, nỗi đau, tính năng giải quyết, số liệu) → chủ động hỏi MKT một lần (≤ 5 câu, có lựa chọn), skill `tao-reel` mục "Brief đủ chưa".
 - **Reel dài 15–30 giây** (luật cứng, validate chặn).
-- Viết 3 concept với 3 góc hook khác nhau, chờ MKT chọn, rồi mới viết kịch bản.
+- Viết 3 concept thuộc **3 kiểu kể khác nhau** (tiểu phẩm hài, POV, twist, mẹo/số liệu: `config/kieu-ke.ts`, `tao-reel/references/kieu-ke.md`), **MKT chọn 1 trong 3** (cả luồng tự động; điểm dừng duy nhất sau kiểu hình), rồi mới viết kịch bản kèm bảng nhịp.
+- Mục tiêu ≤ 15 phút máy chạy mỗi video (không tính lúc chờ người): `./reel moc <tên> hoi` ngay trước mỗi câu hỏi MKT; render in "Máy chạy N phút".
 - Hook: tối đa 2 dòng, mỗi dòng ≤ 40 ký tự, con số viết bằng chữ số.
 - Video ≤ 45 giây chỉ 1–2 ý chính, dài hơn thì tối đa 3 ý. Mỗi cảnh một ý, nên ≤ 10 từ.
 - Thời lượng cảnh ≥ max(1.5, số từ × 0.4) + 0.5 giây. Tính nhanh: `./reel info thoi-luong "<chữ>"`.
@@ -81,6 +83,7 @@ Kiểm kê skill đã cài (danh sách skill của runtime + `.claude/skills/` +
 | `./reel new <tên-video>` | Tạo brief mới |
 | `./reel hinh <tên-video> [file…]` | Nhận hình/clip MKT gửi (kéo vào chat hoặc bỏ vào `briefs/<tên-video>/hinh/`), đổi HEIC → JPG, liệt kê để xếp vào cảnh |
 | `./reel validate <tên-video>` | Kiểm brief + kịch bản (cả bản dựng riêng) |
+| `./reel moc <tên-video> hoi` | Đánh dấu bắt đầu chờ người trả lời (khoảng chờ không tính vào máy chạy; mỗi lệnh `./reel` tự ghi giờ vào `briefs/<tên>/thoi-gian.jsonl`) |
 | `./reel snap <tên-video> [--at=1.2,3.4]` | Dựng + kiểm bố cục + so nền các cảnh + chụp khung hình để tự soát (`out/snap/<tên>/`) |
 | `./reel quay-san <tên-video> [file \| --tu= --dai= --ten=] --link=… --tac-gia=… --chau-a --khong-phai-ai` / `--tai-lai` | Nhận/tự cắt/liệt kê clip người thật quay sẵn (Pexels/Pixabay, người châu Á) cho kiểu hình `nguoi-that-quay-san`, ghi sổ nguồn (có cách cắt); máy khác `--tai-lai` tải đúng đoạn |
 | `./reel bang <tên-video>` | Bảng khung chính có số khung (`dung-rieng/bang-canh.txt` → `out/snap/<tên>/bang/bang-canh.png`) để MKT duyệt/góp ý theo số khung |

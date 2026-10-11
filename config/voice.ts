@@ -26,6 +26,8 @@ export const VOICE = {
   },
   /** Mỗi câu tạo lại tối đa chừng này lần khi bản tạo ra hỏng (câm, quá dài so với chỗ trống…), kiểm trên máy. */
   maxTries: 3,
+  /** Số câu tạo cùng lúc (VieNeu cho 300 lượt/phút); nhà cung cấp chặn chạy cùng lúc thì máy tự hạ về 1. */
+  concurrency: 3,
   sampleRate: 24000,
   /** Đường dẫn trong briefs/<tên>/dung-rieng/. */
   file: 'loi-doc.json',

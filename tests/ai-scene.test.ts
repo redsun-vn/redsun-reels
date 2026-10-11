@@ -87,4 +87,15 @@ describe('kế hoạch cảnh AI', () => {
     log.chiPhi.usd = 1;
     expect(budgetLeftUsd(log, 52_000, 26_000)).toBeCloseTo(1, 6);
   });
+
+  it('gửi song song: clip đang chờ tính vào trần, clip thứ 3 bị chặn', () => {
+    const log = emptyLog();
+    const cho = (canh: string) => ({ canh, maViec: canh, pollingUrl: '', model: 'm', prompt: 'p', anhThamChieu: [], seed: 1, giay: 8, uocUsd: 0.8, guiLuc: '' });
+    log.dangCho.push(cho('a'), cho('b'));
+    const left = budgetLeftUsd(log, 52_000, 26_000); // trần 2 USD, đang giữ 1,6
+    expect(left).toBeCloseTo(0.4, 6);
+    expect(0.8 > left).toBe(true);
+    log.dangCho[0].chiPhiUsd = 0.5; // đã biết giá thật thì dùng giá thật
+    expect(budgetLeftUsd(log, 52_000, 26_000)).toBeCloseTo(0.7, 6);
+  });
 });

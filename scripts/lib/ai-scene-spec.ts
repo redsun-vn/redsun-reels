@@ -144,4 +144,6 @@ export function specIssues(spec: AiSpec): string[] {
 }
 
 /** Tiền còn được tiêu (USD) trước trần của video. */
-export const budgetLeftUsd = (log: AiLog, capVnd: number, vndPerUsd: number) => capVnd / vndPerUsd - log.chiPhi.usd;
+/** Phần trần còn lại: trừ cả tiền đã chi và tiền ước của các clip đã gửi còn đang chờ (gửi song song vẫn không vượt trần). */
+export const budgetLeftUsd = (log: AiLog, capVnd: number, vndPerUsd: number) =>
+  capVnd / vndPerUsd - log.chiPhi.usd - log.dangCho.reduce((s, p) => s + (p.chiPhiUsd ?? p.uocUsd), 0);

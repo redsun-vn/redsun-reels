@@ -8,11 +8,11 @@ model: claude-opus-5-5
 
 Nam chốt 2026-10-10 (REQUIREMENTS v0.5 §7.4–7.5, `docs/decisions.md` §22–24). Mỗi video có **một** kiểu hình, ghi ở frontmatter `brief.md`:
 
-| `kieuHinh` | Là gì | Dựng thế nào |
-|---|---|---|
-| `minh-hoa` | Nhân vật người Việt vẽ phẳng, bối cảnh vẽ sẵn, hình/clip thật MKT gửi (bản hiện tại) | skill `dung-video` như hiện nay |
-| `nguoi-that-quay-san` | Clip/ảnh người thật **quay thật** từ Pexels/Pixabay (không phải AI), dùng theo giấy phép nguồn | `./reel quay-san` nhận clip, skill `dung-video` ghép (REQUIREMENTS §7.5) |
-| `nguoi-that-ai` | Cảnh có người trông như thật do AI tạo, ghép vào video dựng riêng, **luôn có nhãn AI** | skill `dung-video` + quy trình REQUIREMENTS §7.4 (cần dev bật, xem luật 2) |
+| `kieuHinh` | Là gì | Dựng thế nào | Kiểu kể hợp (`config/kieu-ke.ts`) |
+|---|---|---|---|
+| `minh-hoa` | Nhân vật người Việt vẽ phẳng, bối cảnh vẽ sẵn, hình/clip thật MKT gửi (bản hiện tại) | skill `dung-video` như hiện nay | cả 4: tiểu phẩm, POV, twist, mẹo/số liệu |
+| `nguoi-that-quay-san` | Clip/ảnh người thật **quay thật** từ Pexels/Pixabay (không phải AI), dùng theo giấy phép nguồn | `./reel quay-san` nhận clip, skill `dung-video` ghép (REQUIREMENTS §7.5) | POV, mẹo/số liệu (clip quay sẵn không diễn theo kịch bản: không tiểu phẩm, không twist) |
+| `nguoi-that-ai` | Cảnh có người trông như thật do AI tạo, ghép vào video dựng riêng, **luôn có nhãn AI** | skill `dung-video` + quy trình REQUIREMENTS §7.4 (cần dev bật, xem luật 2) | cả 4 |
 
 Nói với MKT tiếng Việt, câu ngắn, không thuật ngữ. Chỉ ghi file trong `briefs/<tên-video>/`.
 
@@ -23,7 +23,7 @@ Nói với MKT tiếng Việt, câu ngắn, không thuật ngữ. Chỉ ghi file
 
 ## Cách hỏi: tả video sẽ nhận + số tiền, rồi mới hỏi
 **1. Một đoạn ngắn tả video MKT sẽ nhận** (viết trong tin nhắn, ngay trước câu hỏi; lấy số từ brief, không bịa):
-> Bạn sẽ nhận một file video dọc 9:16 dài khoảng {duration} giây, có nhạc nền, chữ nhấn, phụ đề, logo {sản phẩm} và lời kêu gọi "{cta}" ở cuối, kèm caption + hashtag soạn sẵn và một ảnh bảng khung chính để góp ý theo số khung. Một video mất khoảng 10–15 phút (người thật AI lâu hơn 5–10 phút). Mình hỏi bạn chọn kiểu hình trước khi viết kịch bản, vì kịch bản viết khác nhau cho từng kiểu.
+> Bạn sẽ nhận một file video dọc 9:16 dài khoảng {duration} giây, có nhạc nền, chữ nhấn, phụ đề, logo {sản phẩm} và lời kêu gọi "{cta}" ở cuối, kèm caption + hashtag soạn sẵn và một ảnh bảng khung chính để góp ý theo số khung. Máy làm một video trong khoảng 15 phút, không tính lúc chờ bạn trả lời. Mình hỏi bạn chọn kiểu hình trước khi viết kịch bản, vì kịch bản viết khác nhau cho từng kiểu; sau đó bạn chọn 1 trong 3 ý tưởng (3 cách kể khác nhau) rồi máy làm tới hết.
 
 **2. AskUserQuestion, một lượt** (không quá 4 câu, gộp câu brief còn thiếu):
 - Câu 1 "Kiểu hình" (4 lựa chọn; mỗi lựa chọn ghi **trông thế nào · số tiền · lưu ý**):

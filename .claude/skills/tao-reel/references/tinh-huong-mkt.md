@@ -8,7 +8,7 @@ Nói với MKT bằng lời thường. Không nhắc tên lệnh, file JSON, log
 | MKT nói | Claude làm |
 |---|---|
 | "làm reel/video … về …" | **Luồng tự động** (SKILL.md): chỉ hỏi phần thiếu mà tự đặt sẽ là bịa, rồi làm tới khi có video |
-| "làm từng bước", "cho tôi chọn ý tưởng" | Luồng từng bước: dừng chờ chọn concept, duyệt kịch bản, xem thử |
+| "làm từng bước", "cho xem kịch bản trước" | Luồng từng bước: ngoài chọn concept (luồng nào cũng hỏi), dừng thêm ở duyệt kịch bản, bảng khung chính, xem thử |
 | "làm N video …" (cùng dịp/chủ đề) | Mỗi video một thư mục, làm lần lượt; trước mỗi video chạy `./reel info gan-day` để khác video trước (phong cách xoay vòng `./reel info dip-le`, bố cục, kiểu nhấn) |
 | "câu … thiếu cảm xúc", "đọc sai", "nghe giọng Bắc", "đổi giọng <vai>" | Skill `giong-doc`: sửa lời/dấu câu/thẻ câu đó trong `dung-rieng/loi-doc.json` hoặc đổi giọng VieNeu của vai, `./reel giong <tên> --cau=<id> --lai`; đổi giọng một vai thì chạy lại mọi câu của vai đó |
 | "làm video 45 giây", "dài hơn" | Reel chỉ dài 15–30 giây (luật cứng: video ngắn dễ được xem hết, nền tảng phân phối rộng hơn). Nói MKT điều đó, gọt còn ý chính; nội dung dài thì tách thành 2 video |

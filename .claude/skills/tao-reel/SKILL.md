@@ -6,27 +6,12 @@ model: claude-opus-5-5
 
 # Tạo reel
 
-## LUẬT SỐ 1 — 3 giây đầu (mạnh nhất, đứng trên mọi luật khác)
-Nam 2026-10-10: "đây là video reel, chúng ta chỉ có 03s đầu tiên để thu hút người xem"; "luật 3 giây đầu phải là mạnh nhất". Mọi lựa chọn khác (thứ tự cảnh của brief, nhịp, phong cách, chữ) nhường cho luật này:
-- **Chọn điểm hấp dẫn nhất trong brief** theo `tao-reel/references/chon-diem-hap-dan.md` (bảng ứng viên + điểm 5 tiêu chí ghi ở mục `## Điểm hấp dẫn` của `concepts.md`); hook ≥ 20/25, ghi `Hook N/25` trong `selfScore.notes`.
-- **Mở bằng điểm mạnh nhất, kể lại sau**: khung ở giây 0 đã là hình mạnh nhất; không logo, không chào, không dạo đầu chậm; được đảo thứ tự cảnh của brief (giữ đủ ý, lời nói và điều cấm).
-- **Biến động trong 1 giây đầu** (dập, cắt, rung, chớp) trên phách, kèm tiếng nhấn.
-- **Có giọng**: câu hook bắt đầu ≤ 0,3 giây, ≤ 8 từ, đọc xong trước giây 2,5.
-- **Máy chặn từ bước kịch bản** (`./reel validate`, trước khi dựng): thiếu `concept.diemHapDan` hoặc dưới 20/25, `concepts.md` thiếu `## Điểm hấp dẫn`, cảnh hook dài hơn 3,5 giây, hook quá 8 từ, thiếu `Hook N/25` trong `selfScore.notes`. Sau đó: câu giọng đầu > 0,3 giây (validate), giây đầu không có biến động mạnh (render). Không báo "xong" khi còn ✗ LUẬT SỐ 1.
-- **Luật cứng reel 15–30 giây** (Nam 2026-10-10: tỷ lệ xem hết cao hơn, thuật toán phân phối rộng hơn): brief và tổng kịch bản phải trong 15–30 giây (khoảng của loại video giao với 15–30); validate chặn.
-
-## LUẬT SỐ 2 — Nỗi đau của khách → sản phẩm giải quyết (chặn từ kịch bản)
-Nam 2026-10-10: "phải nổi bật được nỗi đau của khách hàng và cách sản phẩm chúng ta giải quyết nó". Mọi video (trừ lời chúc, teaser, tổng kết, tuyển dụng, thông báo, không khí quán, khoe số: `NO_PAIN_TYPES`):
-- **Nỗi đau nổi bật**: một nỗi đau **cụ thể** của đúng khán giả brief, lấy từ brief (vd. "bán cả ngày, tối kiểm tiền mới thấy thiếu"); cho thấy **hậu quả** (mất tiền, mất giờ, mất khách) bằng hình và người phản ứng, không chỉ bằng chữ. Hook nên là nỗi đau hoặc khoảnh khắc vỡ lẽ của nỗi đau đó (LUẬT SỐ 1).
-- **Sản phẩm giải quyết thế nào**: cho thấy **sản phẩm làm gì** với chính nỗi đau đó (thao tác trên màn hình sản phẩm, trước → sau, cùng người/cùng vật của cảnh nỗi đau), không chỉ tên sản phẩm hay câu chung chung ("quản lý dễ hơn"). Chỉ tính năng có trong brief/hồ sơ sản phẩm; brief chưa xác nhận tính năng giải quyết thẳng nỗi đau thì hỏi MKT/team, không hứa vượt.
-- `script.json` khai `concept.noiDau { khach, canh }` (cảnh hook/problem) và `concept.giaiPhap { cach, canh }` (cảnh solution). Validate chặn: thiếu, sai vai trò cảnh, giải pháp trước nỗi đau, giải pháp bắt đầu sau 70% video, cảnh giải pháp < 20% video.
-
-## Thông tin không lặp lại, thông điệp xuyên suốt (Nam 2026-10-11)
-Nam: "quy tắc là thông tin không lặp lại, thông điệp phải xuyên suốt" (video "Ảnh chuyển khoản giả": hook "…là GIẢ!" rồi giây 14 lại nói "ảnh không phải chuyển khoản thật", dấu GIẢ dập hai lần, "bỏ sót tiền" và "thiếu một khoản").
-- **Mỗi thông tin chỉ nói một lần**, bằng lời hay bằng hình (không dập lại cùng dấu, không đọc lại cùng ý). Mở bằng điểm mạnh nhất rồi kể lại (LUẬT SỐ 1) thì phần kể lại phải **thêm điều mới**: vì sao, thế nào, hậu quả cụ thể hơn, nối vào nhân vật/vật đã thấy. Không thay hook để tránh lặp: hook giữ mạnh nhất, cảnh sau đổi.
-- **Một câu thông điệp xuyên suốt** ghi ở `concept.thongDiep` (vd. "Đừng tin ảnh chụp chuyển khoản: SIPOS tự xác nhận tiền vào, không còn sót tiền"). Mỗi cảnh nối về câu đó; cảnh kết **khép vòng** với nỗi đau ở đầu (đầu "bỏ sót tiền" → kết "không còn sót tiền").
-- **Khi tự chấm**: lập bảng `Cảnh · Thông tin mới của cảnh`; hai cảnh cùng một thông tin thì viết lại cảnh sau. Lời nói của brief bị lặp do mình thêm hook thì đổi lời của cảnh sau và báo MKT (nêu câu cũ → câu mới).
-- Máy: validate cảnh báo (!) khi thiếu `concept.thongDiep` và khi hai cảnh trùng phần lớn chữ có nghĩa (`scripts/lib/info-repeat.ts`; trùng ý khác chữ máy không bắt được, Claude soát theo bảng trên).
+## Luật kịch bản (đọc đủ: [references/luat-kich-ban.md](references/luat-kich-ban.md))
+Ba luật cho mọi video, đọc file trên trước khi viết concept. Tóm tắt:
+- **LUẬT SỐ 1 — 3 giây đầu, mạnh nhất**: mở bằng điểm hấp dẫn nhất của brief (≥ 20/25, `concept.diemHapDan`, `concepts.md` mục `## Điểm hấp dẫn`, `Hook N/25` trong `selfScore.notes`); hook ≤ 3,5 giây, ≤ 8 từ; biến động mạnh trong giây đầu; giọng hook bắt đầu ≤ 0,3 giây. Reel 15–30 giây (luật cứng).
+- **LUẬT SỐ 2 — nỗi đau → sản phẩm giải quyết**: nỗi đau cụ thể có hậu quả (`concept.noiDau`), sản phẩm làm gì với chính nỗi đau đó (`concept.giaiPhap`). Có kiểu kể (`concept.kieuKe`): giải pháp ≥ 12% video, bắt đầu trước 85% (sản phẩm được là cú chốt); chưa có kiểu kể: ≥ 20%, trước 70%.
+- **Thông tin không lặp lại, thông điệp xuyên suốt**: mỗi ý nói một lần, kể lại phải thêm điều mới; một câu `concept.thongDiep`, cảnh kết khép vòng với nỗi đau.
+- **Kiểu kể** (tiểu phẩm hài, POV, twist, mẹo/số liệu): [references/kieu-ke.md](references/kieu-ke.md).
 
 ## Người dùng và cách nói chuyện
 - Người dùng là nhân viên marketing, **không biết kỹ thuật**. Nói tiếng Việt, câu ngắn, thân thiện.
@@ -46,20 +31,22 @@ Nam: "quy tắc là thông tin không lặp lại, thông điệp phải xuyên 
 - Yêu cầu cần sửa mẫu video, thêm phong cách hoặc loại video chưa có → nói rõ "việc này cần dev", ghi vào `briefs/<tên-video>/review.md` mục `## Cần dev`.
 
 ## Luồng mặc định: TỰ ĐỘNG từ brief đến video
-Nam chốt 2026-10-09: "MKT chỉ cần đưa brief, sau đó đợi output video". MKT nói/dán brief (một câu cũng được) → Claude làm hết rồi đưa video. **Không dừng chờ chọn concept, duyệt kịch bản, xem thử** như luồng từng bước.
+Nam chốt 2026-10-09: "MKT chỉ cần đưa brief, sau đó đợi output video". MKT nói/dán brief (một câu cũng được) → Claude làm hết rồi đưa video. Chỉ dừng ở **hai câu hỏi**: kiểu hình (skill `chon-kieu-hinh`) và **chọn 1 trong 3 concept** (Nam 2026-10-11, decisions §34: concept quyết định video hấp dẫn hay không). Không dừng chờ duyệt kịch bản, bảng khung, xem thử như luồng từng bước.
+
+**Đo thời gian máy chạy** (mục tiêu ≤ 15 phút mỗi video, không tính lúc chờ người): mọi lệnh `./reel` tự ghi giờ vào `briefs/<tên>/thoi-gian.jsonl`. **Ngay trước mỗi lần hỏi MKT** (AskUserQuestion, gửi bảng khung chờ duyệt, gửi video hỏi góp ý) chạy `./reel moc <tên-video> hoi` để khoảng chờ người không bị tính vào máy chạy. Bản xuất in "Máy chạy N phút" và ghi `cost.json` `thoiGian`.
 
 1. **Brief** (bước 1): tạo `./reel new <tên-video>`, điền từ lời MKT. **Gọi skill `chon-kieu-hinh` ngay sau đó, trước khi viết concept/kịch bản**: tả rõ video MKT sẽ nhận và **số tiền từng lựa chọn** (hoạt hình 0đ, người thật quay sẵn 0đ, người thật AI duyệt ảnh ~28.000đ, người thật AI từ kịch bản ~21.000đ, trần 50.000đ), để MKT chọn kiểu hình (câu hỏi bắt buộc, kể cả luồng tự động; chưa trả lời thì không viết kịch bản; không tự chọn). Phần MKT không nói thì tự đặt mặc định hợp lý: thời lượng = giữa khoảng của loại video giao với 15–30 giây (luật cứng reel), người xem theo sản phẩm, CTA = `defaultCta`, nhạc `auto`.
    - **Chỉ hỏi** khi thiếu thông tin mà tự đặt sẽ là **bịa**: con số, giá, ưu đãi, hạn chót, lời khách, tên người, tính năng chưa có trong brief/profile. Gom vào **một lần hỏi** (tối đa 5 câu), có lựa chọn sẵn.
    - **Chấm brief đủ chưa** (mục "Brief đủ chưa — chủ động hỏi MKT" dưới), cả luồng tự động: thiếu thứ kịch bản cần để đạt luật thì hỏi trước khi viết, không viết kịch bản yếu rồi mới báo.
    - Hình ảnh: chạy `./reel hinh <tên-video>`. MKT có kéo hình/clip vào thư mục `hinh` của video thì xem từng hình và xếp vào cảnh (bước 4). Không có thì làm bản chỉ có chữ (cảnh `text`), không hỏi. Riêng loại bắt buộc ảnh/clip thật (khách hàng nói, tổng kết sự kiện, người nói trước camera, trước/sau có ảnh) thì hỏi.
 2. **Loại video + phong cách** (bước 2): tự chọn. Chạy `./reel info gan-day` trước: **video mới phải khác** các video gần đây cùng dịp hoặc cùng sản phẩm — đổi phong cách (dịp lễ: xoay vòng theo `./reel info dip-le`), đổi loại video nếu hợp. Ghi phong cách đã chọn vào `style` của brief.
-3. **Concept** (bước 3): chọn điểm hấp dẫn trong brief (`references/chon-diem-hap-dan.md`), viết 3 concept vào `concepts.md`, **tự chọn** concept tốt nhất theo thang tự chấm, ghi lý do ở mục `## Lựa chọn`.
-4. **Kịch bản** (bước 5): viết, `./reel validate`, tự chấm ≥ 85.
+3. **Concept** (bước 3) — **DỪNG chờ MKT chọn**: chọn điểm hấp dẫn trong brief (`references/chon-diem-hap-dan.md`), viết 3 concept vào `concepts.md`, mỗi concept **một kiểu kể khác nhau** ([references/kieu-ke.md](references/kieu-ke.md); chỉ kiểu hợp kiểu hình đã chọn, `meo-so-lieu` chỉ khi brief có số/mẹo thật), mỗi concept một dòng `Kiểu kể: <mã>`, một dòng câu chuyện và câu hook. Đánh dấu concept mình khuyên (theo thang tự chấm). `./reel moc <tên-video> hoi` rồi hỏi MKT bằng AskUserQuestion (3 lựa chọn, mỗi lựa chọn: tên kiểu kể + câu chuyện một dòng + hook). Ghi `## Lựa chọn của MKT` vào cuối `concepts.md`. Từ đây tự động tới hết.
+4. **Bảng nhịp + kịch bản** (bước 5): viết `## Bảng nhịp` trong `concepts.md` (kieu-ke.md mục "Bảng nhịp"), rồi `script.json` có `concept.kieuKe`; `./reel validate`, tự chấm ≥ 85 (gồm 4 tiêu chí hấp dẫn của `references/script-format.md`).
 5. **Dựng video**: mặc định **dựng riêng** — ghi `"build": "custom"` vào `script.json` rồi gọi skill `dung-video` (thiết kế + viết composition riêng, tự soát khung hình bằng `./reel snap`); có giọng đọc thì làm theo skill `giong-doc` (người thật: mặc định có giọng khi có lời nói; hoạt hình: theo câu trả lời "có giọng đọc không" của skill `chon-kieu-hinh`). Nam chốt 2026-10-09 (decisions §18). Chỉ dùng mẫu có sẵn (bỏ `build`, gọi `dao-dien-chuyen-dong`) khi MKT cần gấp hoặc dựng riêng lỗi mãi không qua.
 6. **Xuất** (bước 8): `./reel render <tên-video>` rồi `./reel post <tên-video>`. Lỗi kịch bản/nhạc thì tự sửa và xuất lại; lỗi máy thì theo mục "Khi có lỗi".
 7. **Báo MKT**: đường dẫn video `out/<tên-video>.mp4`, thời lượng; ảnh bảng khung chính `out/snap/<tên-video>/bang/bang-canh.png` (MKT góp ý theo số khung); bảng ngắn **Cảnh · Chữ trên màn hình** + concept đã chọn, phong cách, nhạc; caption trong `post.md`. Hỏi: "Bạn xem video, muốn sửa gì cứ nói." Sửa theo góp ý (bước 7) rồi xuất lại.
 
-**Luồng từng bước** (dừng chờ chọn concept, duyệt kịch bản, duyệt bảng khung chính, xem thử): chỉ dùng khi MKT nói "làm từng bước", "cho tôi chọn ý tưởng", "cho xem kịch bản trước", hoặc brief là chiến dịch lớn MKT muốn duyệt kỹ. Khi đó theo đủ các điểm DỪNG bên dưới.
+**Luồng từng bước** (ngoài chọn concept, dừng thêm ở duyệt kịch bản, duyệt bảng khung chính, xem thử): chỉ dùng khi MKT nói "làm từng bước", "cho xem kịch bản trước", hoặc brief là chiến dịch lớn MKT muốn duyệt kỹ. Khi đó theo đủ các điểm DỪNG bên dưới.
 
 Làm nhiều video một lúc (vd. "làm 3 video 20/10 cho SIPOS, Webino, BOS"): mỗi video một thư mục; làm lần lượt, video sau chạy `./reel info gan-day` để khác video trước (phong cách, bố cục, kiểu nhấn, loại video).
 
@@ -98,12 +85,13 @@ Nam: "nếu đánh giá kịch bản chưa đủ thông tin, chưa đủ yêu c�
 - Chỉ dùng loại video có ✓ và phong cách có ✓ trong `./reel info`. Cái chưa dựng thì nói "phong cách này sẽ có ở bản sau" và gợi ý cái gần nhất.
 - Phong cách nằm trong "Nên tránh" của loại đó: hỏi lại MKT một câu, họ vẫn được giữ.
 
-### 3. Concept — **DỪNG chờ MKT chọn**
+### 3. Concept — **DỪNG chờ MKT chọn** (cả hai luồng)
+- **Kiểu kể**: ba concept thuộc ba kiểu kể khác nhau (tiểu phẩm hài, POV, twist, mẹo/số liệu), theo [references/kieu-ke.md](references/kieu-ke.md); mỗi concept ghi `Kiểu kể: <mã>`.
 - **Trước tiên chọn điểm hấp dẫn trong brief** theo [references/chon-diem-hap-dan.md](references/chon-diem-hap-dan.md): liệt kê ứng viên (vỡ lẽ, hậu quả, nỗi đau, vật gây tò mò, đối lập, con số thật, lời đắt giá), chấm 5 tiêu chí, ghi bảng chấm vào đầu `concepts.md`. Ba concept = ba ứng viên mạnh nhất; concept chọn mở bằng ứng viên mạnh nhất trong **3 giây đầu** (được đảo thứ tự cảnh của brief, giữ đủ ý và điều cấm).
 - Viết 3 concept vào `briefs/<tên-video>/concepts.md`. Mỗi concept: tên, big idea (1 câu), câu hook, góc hook, phong cách gợi ý. Ba concept dùng **ba góc hook khác nhau** (con số, lật ngược định kiến, trước/sau, thương hiệu, sắp thay đổi, câu hỏi nỗi đau). Không dùng góc "thú nhận thất bại".
 - Hook: tối đa 2 dòng, mỗi dòng ≤ 40 ký tự, con số viết bằng chữ số. Không viết nhãn của loại video (vd. "Bạn có biết?", "Hướng dẫn") vào hook: mẫu video tự gắn nhãn đó.
 - Góc "con số" chỉ dùng khi brief có con số thật do MKT đưa. Không có thì chọn góc khác, hoặc hỏi MKT có số liệu không. Không tự nghĩ ra "3 ngày", "50%", "1000 cửa hàng"…
-- Trình bày 3 concept ngắn gọn, hỏi MKT chọn số mấy. Ghi lựa chọn vào cuối `concepts.md`.
+- Trình bày 3 concept ngắn gọn (kiểu kể, câu chuyện một dòng, hook), chạy `./reel moc <tên-video> hoi`, hỏi MKT chọn số mấy. Ghi `## Lựa chọn của MKT` vào cuối `concepts.md`.
 
 ### 4. Hình ảnh
 Nam chốt 2026-10-09: hình minh hoạ, yếu tố con người lấy từ hình/clip **MKT kéo vào thư mục `hinh` của video** (`briefs/<tên-video>/hinh/`, `./reel new` tạo sẵn). Có thì dùng, không có thì làm bản chỉ có chữ — không dừng chờ, không nhắc đi nhắc lại.
@@ -148,7 +136,8 @@ Nam chốt 2026-10-09: hình minh hoạ, yếu tố con người lấy từ hìn
 
 ### 5. Kịch bản — **DỪNG chờ MKT duyệt**
 - **Luật chặn bắt đầu từ kịch bản** (`./reel validate` chặn trước khi dựng): `concept.diemHapDan` ≥ 20/25, `concepts.md` có `## Điểm hấp dẫn`, cảnh hook ≤ 3,5 giây và ≤ 8 từ, `Hook N/25` trong `selfScore.notes`, **tổng 15–30 giây** (luật cứng reel). Kịch bản mở bằng điểm hấp dẫn nhất (đảo thứ tự cảnh của brief được), không viết theo thứ tự brief rồi mới sửa ở bước dựng.
-- Viết `briefs/<tên-video>/script.json` theo [references/script-format.md](references/script-format.md).
+- Viết `## Bảng nhịp` (Giây · Ai · Phản ứng/hành động · Ngắt) trong `concepts.md` trước, theo [references/kieu-ke.md](references/kieu-ke.md); kịch bản và bản dựng đi theo bảng này.
+- Viết `briefs/<tên-video>/script.json` theo [references/script-format.md](references/script-format.md), có `concept.kieuKe` của concept MKT chọn.
 - Kiểm: `./reel validate <tên-video>`. Sửa đến khi không còn dòng lỗi ✗. Các dòng cảnh báo (bắt đầu bằng dấu chấm than) thì xử lý hoặc báo MKT.
 - Tự chấm theo thang trong script-format.md; ghi `selfScore`. Dưới 85 thì sửa (tối đa 3 vòng), không nâng điểm. Điểm mất vì **brief thiếu thông tin** (nỗi đau mơ hồ, tính năng chưa xác nhận, không có hook ≥ 20) thì **hỏi MKT** theo mục "Brief đủ chưa", không tự lấp.
 - Chọn nhạc: `./reel info nhac <phong-cách>`. Reel cần bắt tai: ưu tiên bài có nhịp rõ, năng lượng hợp phong cách; MKT thấy nhạc nhạt thì đổi bài khác cùng phong cách. Brief để `music: auto` thì lấy bài **đăng được**, dài hơn video, hợp mood; mỗi video nên khác bài với video trước của cùng sản phẩm. Bài "chỉ xem thử" không đăng được.

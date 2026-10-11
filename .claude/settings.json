@@ -9,6 +9,8 @@
       "Skill(dao-dien-chuyen-dong)",
       "Skill(dung-video)",
       "Skill(cai-dat)",
+      "Skill(chon-kieu-hinh)",
+      "Skill(giong-doc)",
       "Bash(./reel:*)",
       "Bash(bash ./scripts/cai-dat.sh)",
       "Edit(briefs/**)",

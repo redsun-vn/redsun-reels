@@ -94,6 +94,48 @@ describe('validateVideo', () => {
     expect(msgs).toContain('≥ 20% video');
   });
 
+  it('kiểu kể: LUẬT SỐ 2 nới 12% / 85%; kịch bản không có kiểu kể giữ 20% / 70%', () => {
+    const withKieuKe = (problem: number, solution: number, cta = 2.5) => {
+      const s = baseScript();
+      s.concept.kieuKe = 'twist';
+      s.scenes[1].durationSec = problem;
+      s.scenes[2].onScreenText = 'SIPOS quét mã';
+      s.scenes[2].durationSec = solution;
+      s.scenes[3].durationSec = cta;
+      return s;
+    };
+    const ok = withKieuKe(13, 3); // giải pháp 13,6%, bắt đầu 75%
+    expect(errorsOf(ok)).toEqual([]);
+    const oldRule = withKieuKe(13, 3);
+    delete oldRule.concept.kieuKe;
+    expect(errorsOf(oldRule).join()).toContain('≥ 20% video');
+    expect(errorsOf(withKieuKe(13.6, 2.2, 2.7)).join()).toContain('≥ 12% video'); // 10%
+    const late = withKieuKe(15.5, 3); // bỏ cảnh CTA để giải pháp bắt đầu ở 19 / 22 giây = 86%
+    late.scenes.pop();
+    expect(errorsOf(late).join()).toContain('trước 85% video');
+  });
+
+  it('kiểu kể mẹo/số liệu cần số hay mẹo thật trong brief', () => {
+    const s = baseScript();
+    s.concept.kieuKe = 'meo-so-lieu';
+    expect(errorsOf(s).join()).toContain('không có con số hay mẹo');
+    expect(errorsOf(s, BRIEF + 'Mẹo: quét mã khi nhập hàng.\n').join()).not.toContain('không có con số hay mẹo');
+  });
+
+  it('kiểu kể: cảnh báo khi concepts.md thiếu lựa chọn của MKT, 3 kiểu kể trùng, kiểu hình không hợp', () => {
+    const s = baseScript();
+    s.concept.kieuKe = 'tieu-pham';
+    const warnsOf = (concepts: string, brief = BRIEF) =>
+      validateVideo(makeDir(s, brief, concepts), { musicPurpose: 'test' }).issues.filter((i) => i.level === 'warning').map((i) => i.message).join('\n');
+    const head = '## Điểm hấp dẫn\n| a | 21 |\n';
+    const bad = warnsOf(head + 'Kiểu kể: tieu-pham\nKiểu kể: tieu-pham\nKiểu kể: pov\n', BRIEF.replace('kieuHinh: minh-hoa', 'kieuHinh: nguoi-that-quay-san'));
+    expect(bad).toContain('Lựa chọn của MKT');
+    expect(bad).toContain('3 kiểu kể khác nhau');
+    expect(bad).toContain('không hợp kiểu hình');
+    const good = warnsOf(head + 'Kiểu kể: tieu-pham\nKiểu kể: pov\nKiểu kể: twist\n\n## Lựa chọn của MKT\nConcept 1\n');
+    expect(good).not.toMatch(/Kiểu kể:/);
+  });
+
   it('LUẬT CỨNG reel 15–30 giây', () => {
     const long = baseScript();
     long.scenes[2].durationSec = 20;

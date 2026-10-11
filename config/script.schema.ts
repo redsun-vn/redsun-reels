@@ -1,6 +1,7 @@
 /**
  * briefs/<slug>/script.json do Claude viết (REQUIREMENTS v0.4 §6.2). Không lồng tiếng: chữ trên màn hình là kênh chính.
  */
+import { KIEU_KE_IDS } from './kieu-ke.ts';
 import { z } from 'zod';
 import { STYLE_IDS } from './styles.ts';
 import { TEXT_ENTERS, TRANSITIONS } from './style-preset.schema.ts';
@@ -97,6 +98,8 @@ export const ScriptSchema = z.object({
     giaiPhap: z.object({ cach: z.string().min(1), canh: z.string().min(1) }).optional(),
     /** Thông điệp xuyên suốt (một câu): mọi cảnh nối về nó, cảnh kết khép vòng với nỗi đau ở đầu (Nam 2026-10-11). */
     thongDiep: z.string().min(1).optional(),
+    /** Kiểu kể (config/kieu-ke.ts, Nam 2026-10-11): có thì LUẬT SỐ 2 dùng ngưỡng nới 12% / 85%; kịch bản cũ không có vẫn đọc được. */
+    kieuKe: z.enum(KIEU_KE_IDS).optional(),
   }),
   videoType: z.string().min(1),
   style: z.enum(STYLE_IDS),

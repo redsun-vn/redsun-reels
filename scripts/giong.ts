@@ -13,9 +13,10 @@ import { COST } from '../config/cost.ts';
 import { VOICE } from '../config/voice.ts';
 import { briefDir } from './lib/brief.ts';
 import { runCommand } from './lib/cli.ts';
+import { ChuaChayError, chayGioiHan } from './lib/song-song.ts';
 import { CUSTOM_DIR } from './lib/custom-video.ts';
 import { CUE_FILE, parseCues, rootDuration, wavDuration } from './lib/sfx-cues.ts';
-import { CostCapError, DailyQuotaError, spend, synthesizeVieneu, vieneuKey, vieneuText, vieneuVoices } from './lib/vieneu-voice.ts';
+import { CostCapError, DailyQuotaError, spend, synthesizeVieneu, vieneuKey, vieneuText, vieneuTokens, vieneuVoices } from './lib/vieneu-voice.ts';
 import { lineStyle, voiceScriptIssues, VoiceScriptSchema } from './lib/voice-script.ts';
 import { measureTake, takeAudioIssues, toMono24k, trimSilence } from './lib/voice-wav.ts';
 
@@ -76,56 +77,69 @@ await runCommand(async () => {
   const tokensBefore = log.chiPhi?.vieneuToken ?? 0, callsBefore = log.chiPhi?.luot ?? 0;
   spend.limit = COST.vieneuTokenCapPerVideo - tokensBefore;
   if (spend.limit <= 0) throw new Error(`Video đã dùng ${tokensBefore.toLocaleString('vi-VN')} token VieNeu, chạm trần ${COST.vieneuTokenCapPerVideo.toLocaleString('vi-VN')} (config/cost.ts). Nhắn Nam nếu cần nâng trần.`);
+  const order = (id: string) => vs.cau.findIndex((c) => c.id === id);
   const save = () => {
+    log.items.sort((a, b) => order(a.id) - order(b.id)); // giữ thứ tự câu dù tạo song song
     log.chiPhi = { vieneuToken: tokensBefore + spend.tokens, luot: callsBefore + spend.calls };
     writeFileSync(logPath, JSON.stringify(log, null, 2) + '\n');
   };
 
-  let stopped = '';
-  try {
-    for (const c of vs.cau) {
-      if (only && !only.includes(c.id)) continue;
-      const giong = vs.dan[c.vai].giong, style = lineStyle(c), prompt = vieneuText(c.loi);
-      const promptHash = createHash('sha256').update(`${VOICE.vieneu.model}|${giong}|${style}|${prompt}`).digest('hex').slice(0, 16);
-      const prev = log.items.find((x) => x.id === c.id);
-      if (!redo && prev?.dat && prev.promptHash === promptHash && existsSync(join(out, prev.file))) {
-        console.log(`✓ ${c.id} (${c.vai}) đã có, bỏ qua.`);
-        continue;
-      }
-      // Chỗ trống: đến câu kế tiếp, khoảng lặng trước vỡ lẽ (dành cho im) hoặc cuối video
-      const silenceFrom = silence && silence.from > c.at ? silence.from : Number.POSITIVE_INFINITY;
-      const slot = choArg > 0 ? choArg : Math.min(total, silenceFrom, ...vs.cau.filter((x) => x.at > c.at).map((x) => x.at)) - c.at;
-      const lineStart = spend.tokens;
-      let wav: Buffer | undefined, why: string[] = [], tries = 0;
-      for (tries = 1; tries <= VOICE.maxTries; tries++) {
-        const take = trimSilence(toMono24k(await synthesizeVieneu(prompt, giong, style, key)));
-        why = takeAudioIssues(measureTake(take), c.loi, slot);
-        wav = take;
-        if (!why.length) break;
-        console.log(`  ${c.id} lần ${tries}: ${why.join(', ')}`);
-      }
-      // Làm lại (--lai) mà bản mới hỏng: giữ bản cũ đã đạt
-      if (why.length && prev?.dat && existsSync(join(out, prev.file))) {
-        console.log(`! ${c.id}: bản mới chưa đạt (${why.join(', ')}), giữ bản cũ.`);
-        continue;
-      }
-      const name = `${c.id}.wav`;
-      writeFileSync(join(out, name), wav!);
-      const item: VoiceLogItem = {
-        id: c.id, vai: c.vai, giong, model: VOICE.vieneu.model, file: name, promptHash, prompt, phongCach: style, soBan: Math.min(tries, VOICE.maxTries),
-        dat: !why.length, chuaDat: why, thoiLuong: Number(wavDuration(join(out, name)).toFixed(2)), token: (prev?.token ?? 0) + spend.tokens - lineStart, taoLuc: new Date().toISOString(),
-      };
-      log.items = [...log.items.filter((x) => x.id !== c.id), item];
-      save();
-      console.log(`${item.dat ? '✓' : '!'} ${c.id} (${c.vai}, ${giong}, ${style}): ${item.thoiLuong}s${item.dat ? '' : ' · CHƯA ĐẠT: ' + why.join(', ')}`);
+  const makeLine = async (c: (typeof vs.cau)[number]) => {
+    const giong = vs.dan[c.vai].giong, style = lineStyle(c), prompt = vieneuText(c.loi);
+    const promptHash = createHash('sha256').update(`${VOICE.vieneu.model}|${giong}|${style}|${prompt}`).digest('hex').slice(0, 16);
+    const prev = log.items.find((x) => x.id === c.id);
+    if (!redo && prev?.dat && prev.promptHash === promptHash && existsSync(join(out, prev.file))) {
+      console.log(`✓ ${c.id} (${c.vai}) đã có, bỏ qua.`);
+      return;
     }
-  } catch (e) {
-    if (!(e instanceof DailyQuotaError) && !(e instanceof CostCapError)) {
-      save();
-      throw e;
+    // Chỗ trống: đến câu kế tiếp, khoảng lặng trước vỡ lẽ (dành cho im) hoặc cuối video
+    const silenceFrom = silence && silence.from > c.at ? silence.from : Number.POSITIVE_INFINITY;
+    const slot = choArg > 0 ? choArg : Math.min(total, silenceFrom, ...vs.cau.filter((x) => x.at > c.at).map((x) => x.at)) - c.at;
+    let lineTokens = 0; // đếm riêng từng câu (các câu chạy song song cùng cộng vào spend)
+    let wav: Buffer | undefined, why: string[] = [], tries = 0;
+    for (tries = 1; tries <= VOICE.maxTries; tries++) {
+      const take = trimSilence(toMono24k(await synthesizeVieneu(prompt, giong, style, key)));
+      lineTokens += vieneuTokens(prompt);
+      why = takeAudioIssues(measureTake(take), c.loi, slot);
+      wav = take;
+      if (!why.length) break;
+      console.log(`  ${c.id} lần ${tries}: ${why.join(', ')}`);
     }
-    stopped = e.message;
+    // Làm lại (--lai) mà bản mới hỏng: giữ bản cũ đã đạt
+    if (why.length && prev?.dat && existsSync(join(out, prev.file))) {
+      console.log(`! ${c.id}: bản mới chưa đạt (${why.join(', ')}), giữ bản cũ.`);
+      return;
+    }
+    const name = `${c.id}.wav`;
+    writeFileSync(join(out, name), wav!);
+    const item: VoiceLogItem = {
+      id: c.id, vai: c.vai, giong, model: VOICE.vieneu.model, file: name, promptHash, prompt, phongCach: style, soBan: Math.min(tries, VOICE.maxTries),
+      dat: !why.length, chuaDat: why, thoiLuong: Number(wavDuration(join(out, name)).toFixed(2)), token: (prev?.token ?? 0) + lineTokens, taoLuc: new Date().toISOString(),
+    };
+    log.items = [...log.items.filter((x) => x.id !== c.id), item];
+    save();
+    console.log(`${item.dat ? '✓' : '!'} ${c.id} (${c.vai}, ${giong}, ${style}): ${item.thoiLuong}s${item.dat ? '' : ' · CHƯA ĐẠT: ' + why.join(', ')}`);
+  };
+
+  // Tạo các câu cùng lúc (VOICE.concurrency); nhà cung cấp chặn chạy cùng lúc (429) thì làm lại tuần tự
+  const todo = vs.cau.filter((c) => !only || only.includes(c.id));
+  const isStop = (e: unknown) => e instanceof DailyQuotaError || e instanceof CostCapError;
+  const is429 = (e: unknown) => /lỗi 429/.test(String(e));
+  // Lỗi khác 429 thì ngừng nhận câu mới (như chạy tuần tự: không tốn token cho câu sau khi máy đang hỏng)
+  let rs = await chayGioiHan(todo, VOICE.concurrency, makeLine, (e) => !is429(e));
+  const busy = todo.filter((_, i) => rs[i].status === 'rejected' && is429((rs[i] as PromiseRejectedResult).reason));
+  if (busy.length && VOICE.concurrency > 1) {
+    console.log(`! Nhà cung cấp giới hạn chạy cùng lúc: làm lại tuần tự ${busy.length} câu.`);
+    const again = await chayGioiHan(busy, 1, makeLine);
+    rs = rs.map((r, i) => (busy.includes(todo[i]) ? again[busy.indexOf(todo[i])] : r));
   }
+  const errs = rs.flatMap((r) => (r.status === 'rejected' && !(r.reason instanceof ChuaChayError) ? [r.reason] : []));
+  const other = errs.find((e) => !isStop(e));
+  if (other) {
+    save();
+    throw other;
+  }
+  const stopped = errs.length ? (errs[0] as Error).message : '';
   save();
   console.log(`\nLần chạy này: ${spend.tokens.toLocaleString('vi-VN')} token VieNeu (${spend.calls} lượt). Cả video: ${log.chiPhi!.vieneuToken.toLocaleString('vi-VN')} / trần ${COST.vieneuTokenCapPerVideo.toLocaleString('vi-VN')} token.`);
   if (stopped) {

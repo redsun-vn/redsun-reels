@@ -1,11 +1,12 @@
 /**
  * Đọc tham số chung cho các lệnh pnpm build/preview/render/make.
  */
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { basename, join } from 'node:path';
 import type { MusicPurpose } from '../../config/music-manifest.ts';
-import { briefDir } from './brief.ts';
+import { briefDir, SLUG_PATTERN } from './brief.ts';
 import { REPO_ROOT } from './hyperframes-env.ts';
+import { ghiThoiGian } from './thoi-gian.ts';
 
 export interface CliArgs {
   slug: string;
@@ -47,9 +48,12 @@ const MAX_LINES_FOR_MKT = 12;
  * được ghi đủ vào out/last-error.log để gửi dev.
  */
 export async function runCommand(fn: () => void | Promise<void>): Promise<void> {
+  const batDau = Math.round(performance.timeOrigin); // lúc process bắt đầu: tính cả thời gian nạp module
   try {
     await fn();
+    ghiLenh(batDau, true);
   } catch (e) {
+    ghiLenh(batDau, false);
     const msg = (e as Error).message;
     const lines = msg.split('\n');
     if (lines.length > MAX_LINES_FOR_MKT) {
@@ -58,5 +62,22 @@ export async function runCommand(fn: () => void | Promise<void>): Promise<void> 
       console.error(`${lines.slice(0, MAX_LINES_FOR_MKT).join('\n')}\n…\nChi tiết kỹ thuật đã lưu ở out/last-error.log (gửi file này cho dev nếu cần).`);
     } else console.error(msg);
     process.exit(1);
+  }
+}
+
+/** Tên lệnh đang chạy (./reel render → "render"). */
+export function tenLenh(): string {
+  return process.env.npm_lifecycle_event || basename(process.argv[1] ?? '', '.ts');
+}
+
+/** Ghi thời gian lệnh vào briefs/<tên>/thoi-gian.jsonl; chỉ khi đối số đầu là tên một video đã có. */
+function ghiLenh(batDau: number, ok: boolean): void {
+  const slug = process.argv.slice(2).find((a) => !a.startsWith('--'));
+  if (!slug || slug.startsWith('_') || !SLUG_PATTERN.test(slug)) return; // bỏ mẫu _example
+  try {
+    const dir = briefDir(slug);
+    if (existsSync(dir)) ghiThoiGian(dir, tenLenh(), batDau, Date.now(), ok);
+  } catch {
+    // không ghi được thời gian thì bỏ qua, không làm hỏng lệnh chính
   }
 }

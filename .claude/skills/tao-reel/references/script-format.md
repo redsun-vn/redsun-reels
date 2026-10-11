@@ -6,7 +6,7 @@ Schema chuẩn: `config/script.schema.ts`. `./reel validate <tên-video>` kiểm
 
 | Trường | Ý nghĩa |
 |---|---|
-| `concept` | `{ title, bigIdea, hookAngle, diemHapDan: { ungVien, diem } }`. `noiDau: { khach, canh }`, `thongDiep` (một câu thông điệp xuyên suốt; thiếu thì validate cảnh báo). `giaiPhap: { cach, canh }` **bắt buộc** (LUẬT SỐ 2, trừ loại video miễn): nỗi đau cụ thể của khách + cảnh hook/problem làm nó nổi bật; sản phẩm giải quyết thế nào + cảnh solution cho thấy. `diemHapDan` **bắt buộc** (LUẬT SỐ 1): ứng viên mạnh nhất chọn từ brief và điểm 5 tiêu chí (≥ 20/25), khớp bảng `## Điểm hấp dẫn` của `concepts.md`. `hookAngle` là một trong: `con-so`, `lat-nguoc`, `truoc-sau`, `thuong-hieu`, `sap-thay-doi`, `cau-hoi-noi-dau`, `quote` |
+| `concept` | `{ title, bigIdea, hookAngle, diemHapDan: { ungVien, diem } }`. `noiDau: { khach, canh }`, `thongDiep` (một câu thông điệp xuyên suốt; thiếu thì validate cảnh báo). `giaiPhap: { cach, canh }` **bắt buộc** (LUẬT SỐ 2, trừ loại video miễn): nỗi đau cụ thể của khách + cảnh hook/problem làm nó nổi bật; sản phẩm giải quyết thế nào + cảnh solution cho thấy. `diemHapDan` **bắt buộc** (LUẬT SỐ 1): ứng viên mạnh nhất chọn từ brief và điểm 5 tiêu chí (≥ 20/25), khớp bảng `## Điểm hấp dẫn` của `concepts.md`. `kieuKe` (kiểu kể của concept MKT chọn): `tieu-pham`, `pov`, `twist`, `meo-so-lieu` (references/kieu-ke.md); có kiểu kể thì giải pháp ≥ 12% video, bắt đầu trước 85%. `hookAngle` là một trong: `con-so`, `lat-nguoc`, `truoc-sau`, `thuong-hieu`, `sap-thay-doi`, `cau-hoi-noi-dau`, `quote` |
 | `videoType` | id loại video (`./reel info`) |
 | `style` | id phong cách đã dựng được (`./reel info`) |
 | `template` | Template của loại video (`./reel info <loại>`); với dựng riêng chỉ để quy định thứ tự cảnh gợi ý |
@@ -81,12 +81,15 @@ Tổng thời lượng phải đạt cả hai điều kiện:
 | Tiêu chí | Điểm | Đạt khi |
 |---|---|---|
 | Hook | 25 | Tổng điểm của điểm hấp dẫn đã chọn (`chon-diem-hap-dan.md`: thấy ngay, thấy mình, tò mò, cụ thể, đúng/nối sản phẩm), trừ 3 mỗi luật 3 giây đầu bị vi phạm; < 20 thì chọn lại |
-| Một thông điệp rõ | 20 | `concept.thongDiep` có, mọi cảnh nối về, cảnh kết khép vòng với nỗi đau ở đầu; **không cảnh nào lặp thông tin của cảnh khác** (bằng lời hay hình), trừ 5 mỗi lần lặp; 1–2 ý chính nếu ≤ 45 giây |
-| Đọc kịp | 20 | Mọi cảnh đạt công thức thời lượng; chữ ngắn, một ý mỗi cảnh |
-| Đúng brand, đúng sự thật | 20 | Không con số, giá, ưu đãi ngoài brief; đúng tên sản phẩm; BOS không gọi "ERP" |
-| CTA | 15 | Rõ việc cần làm; khớp CTA của brief |
+| Hấp dẫn | 25 | Bốn tiêu chí (Nam 2026-10-11): **bất ngờ** 7 (người xem không đoán được nhịp sau từ giây 3), **cảm xúc / hài** 6 (có người phản ứng thật: giật mình, méo mặt, bật cười; hài nằm ở phản ứng, không ở chơi chữ), **không giống quảng cáo** 6 (không câu khen sản phẩm chung chung, sản phẩm vào như câu chốt của chuyện), **nhịp** 6 (bảng nhịp có ngắt/lật/lặng, không đoạn nào kể đều đều) |
+| Một thông điệp rõ | 15 | `concept.thongDiep` có, mọi cảnh nối về, cảnh kết khép vòng với nỗi đau ở đầu; **không cảnh nào lặp thông tin của cảnh khác** (bằng lời hay hình), trừ 4 mỗi lần lặp; 1–2 ý chính nếu ≤ 45 giây |
+| Đọc kịp | 10 | Mọi cảnh đạt công thức thời lượng; chữ ngắn, một ý mỗi cảnh |
+| Đúng brand, đúng sự thật | 15 | Không con số, giá, ưu đãi ngoài brief; đúng tên sản phẩm; BOS không gọi "ERP" |
+| CTA | 10 | Rõ việc cần làm; khớp CTA của brief |
 
-Ghi `notes` dạng: `"Hook 22/25 (…). Thông điệp 18/20 (…). …"`. Mỗi điểm có lý do cụ thể.
+Điểm "Hấp dẫn" là **bước lọc** trước khi đưa MKT, không thay phép thử thật: so mù bản cũ/mới và số liệu sau đăng (tab "Số liệu video" của Google Sheet chung, `docs/huong-dan-mkt.md`).
+
+Ghi `notes` dạng: `"Hook 22/25 (…). Hấp dẫn 20/25 (bất ngờ 6, cảm xúc 5, không quảng cáo 5, nhịp 4: …). Thông điệp 13/15 (…). …"`. Mỗi điểm có lý do cụ thể.
 
 ## Ví dụ
 Xem `briefs/_example/script.json` (SIPOS, ra mắt tính năng, FeatureLaunch, tối giản) và các brief mẫu trong `tests/fixtures/briefs/` (mỗi loại video một brief). Mẫu M3: `truoc-sau`, `so-sanh` (BeforeAfter), `khach-hang-noi` (Testimonial), `khuyen-mai`, `dem-nguoc`, `chuc-mung-dip-le`, `su-kien-webinar`, `thu-gian-asmr` (Promo). Mẫu M4: `tong-ket-su-kien`, `gioi-thieu-cong-ty`, `tuyen-dung` (EventRecap), `so-lieu-thanh-tich` (Stats), `video-co-nguoi-noi` (TalkingHead).

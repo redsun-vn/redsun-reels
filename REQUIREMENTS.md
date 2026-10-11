@@ -294,12 +294,13 @@ Rule kịch bản (đưa vào CLAUDE.md):
   - câu hỏi đánh vào nỗi đau
 
   MKT chọn 1 concept rồi mới viết `script.json`. Không dùng góc "thú nhận thất bại".
+- **4 kiểu kể** (Nam 2026-10-11, decisions §34): ba concept thuộc ba kiểu kể khác nhau — tiểu phẩm hài đời thường, POV "khi bạn là chủ quán…", kể chuyện có cú lật, mẹo / số liệu gây sốc (`config/kieu-ke.ts`). MKT chọn 1 trong 3 concept ở cả luồng tự động (điểm dừng duy nhất sau câu hỏi kiểu hình). Kịch bản ghi `concept.kieuKe`; mẹo / số liệu chỉ khi brief có số hay mẹo thật. `concepts.md` có `## Bảng nhịp` (giây · ai · phản ứng · ngắt).
 - **LUẬT SỐ 1 — 3 giây đầu** (Nam 2026-10-10: "chỉ có 03s đầu tiên để thu hút người xem"; "luật 3 giây đầu phải là mạnh nhất"), đứng trên mọi luật khác:
   - Chọn **điểm hấp dẫn nhất trong brief** bằng bảng chấm 5 tiêu chí (thấy ngay, người xem thấy mình, tò mò, cụ thể, đúng và nối được sản phẩm; mỗi tiêu chí 1–5, tổng 25) ghi ở `concepts.md` mục `## Điểm hấp dẫn` (skill `tao-reel`, `references/chon-diem-hap-dan.md`). Hook ≥ 20/25.
   - **Mở bằng điểm mạnh nhất, kể lại sau** (được đảo thứ tự cảnh của brief, giữ đủ ý, lời nói và điều cấm). Khung giây 0 là hình mạnh nhất; biến động trong 1 giây đầu trên phách; có giọng thì câu hook bắt đầu ≤ 0,3 giây.
   - Chữ hook: **≤ 8 từ, ≤ 40 ký tự mỗi dòng, tối đa 2 dòng**; có con số thì viết bằng chữ số. Cảnh hook ≤ 3,5 giây.
   - **Chặn từ bước kịch bản**: `script.json` khai `concept.diemHapDan { ungVien, diem }`; validate chặn khi thiếu, dưới 20, thiếu bảng chấm, cảnh hook dài, hook quá 8 từ, thiếu "Hook N/25" trong tự chấm.
-- **LUẬT SỐ 2 — nỗi đau → giải pháp** (Nam 2026-10-10: "phải nổi bật được nỗi đau của khách hàng và cách sản phẩm chúng ta giải quyết nó"): mọi video bán giải pháp nêu một nỗi đau cụ thể của khách (từ brief, có hậu quả) và cho thấy sản phẩm giải quyết nó thế nào (chỉ tính năng có trong brief/hồ sơ). `concept.noiDau { khach, canh }`, `concept.giaiPhap { cach, canh }`; validate chặn khi thiếu, sai thứ tự, giải pháp bắt đầu sau 70% video hoặc ngắn hơn 20% video. Miễn: lời chúc, teaser, tổng kết, tuyển dụng, thông báo, không khí quán, khoe số (`NO_PAIN_TYPES`).
+- **LUẬT SỐ 2 — nỗi đau → giải pháp** (Nam 2026-10-10: "phải nổi bật được nỗi đau của khách hàng và cách sản phẩm chúng ta giải quyết nó"): mọi video bán giải pháp nêu một nỗi đau cụ thể của khách (từ brief, có hậu quả) và cho thấy sản phẩm giải quyết nó thế nào (chỉ tính năng có trong brief/hồ sơ). `concept.noiDau { khach, canh }`, `concept.giaiPhap { cach, canh }`; validate chặn khi thiếu, sai thứ tự, giải pháp bắt đầu quá muộn hoặc quá ngắn: có `concept.kieuKe` thì giải pháp ≥ 12% video, bắt đầu trước 85% (giữ ý, nới hình thức: sản phẩm được là cú chốt, Nam 2026-10-11); chưa có kiểu kể thì ≥ 20%, trước 70%. Miễn: lời chúc, teaser, tổng kết, tuyển dụng, thông báo, không khí quán, khoe số (`NO_PAIN_TYPES`).
 - **Thông tin không lặp lại, thông điệp xuyên suốt** (Nam 2026-10-11): mỗi thông tin chỉ nói một lần, bằng lời hay bằng hình; phần kể lại sau hook phải thêm điều mới (vì sao, thế nào). Một câu thông điệp xuyên suốt (`concept.thongDiep`), mọi cảnh nối về, cảnh kết khép vòng với nỗi đau ở đầu. Validate cảnh báo khi thiếu thông điệp hoặc hai cảnh trùng phần lớn chữ có nghĩa.
 - **Chủ động hỏi MKT** (Nam 2026-10-10): trước khi viết concept và sau khi tự chấm, brief thiếu thông tin để đạt LUẬT SỐ 1/2 (hook, nỗi đau, tính năng giải quyết) hoặc thiếu số liệu thì hỏi một lần (≤ 5 câu, có lựa chọn), không tự lấp; MKT được chọn làm bản tạm.
 - **Vai trò cảnh** theo khung Hook → Problem → Solution → (Proof) → CTA. Thứ tự mặc định theo loại video ở `config/video-types.ts`, ví dụ Khuyến mãi bỏ Problem.
@@ -315,10 +316,11 @@ Rule kịch bản (đưa vào CLAUDE.md):
   | Tiêu chí | Điểm |
   |---|---|
   | Hook | 25 |
-  | Một thông điệp rõ | 20 |
-  | Chữ đọc kịp theo công thức thời lượng | 20 |
-  | Đúng brand và đúng sự thật trong brief | 20 |
-  | CTA rõ | 15 |
+  | Hấp dẫn: bất ngờ, cảm xúc / hài, không giống quảng cáo, nhịp (2026-10-11) | 25 |
+  | Một thông điệp rõ | 15 |
+  | Chữ đọc kịp theo công thức thời lượng | 10 |
+  | Đúng brand và đúng sự thật trong brief | 15 |
+  | CTA rõ | 10 |
 
   Mỗi điểm phải kèm bằng chứng. Sửa và chấm lại tối đa 3 vòng. **Ngưỡng ≥ 85/100.** Chưa đạt thì báo rõ lý do, không nâng điểm.
 - Phong cách `vui-nhon` hoặc kịch bản có chơi chữ: luôn ghi chú MKT đọc lại câu chữ, vì hài kiểu Việt cần người Việt chỉnh.

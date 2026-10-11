@@ -8,14 +8,12 @@ model: claude-opus-5-5
 
 Nam chốt 2026-10-09 (docs/decisions.md §18, §19): mỗi video được **thiết kế riêng** như một đoạn phim ngắn, không đổ chữ vào khuôn. Chuẩn chất lượng: "Ảnh chuyển khoản giả" (xem mục Mẫu). Chất lượng là ưu tiên, không tiết kiệm công; chỉ cần nội dung chính xác.
 
-## LUẬT SỐ 1 — 3 giây đầu (mạnh nhất, đứng trên mọi luật khác)
-Nam 2026-10-10: "đây là video reel, chúng ta chỉ có 03s đầu tiên để thu hút người xem"; "luật 3 giây đầu phải là mạnh nhất". Mọi lựa chọn khác (thứ tự cảnh của brief, nhịp, phong cách, chữ) nhường cho luật này:
-- **Chọn điểm hấp dẫn nhất trong brief** theo `tao-reel/references/chon-diem-hap-dan.md` (bảng ứng viên + điểm 5 tiêu chí ghi ở mục `## Điểm hấp dẫn` của `concepts.md`); hook ≥ 20/25, ghi `Hook N/25` trong `selfScore.notes`.
-- **Mở bằng điểm mạnh nhất, kể lại sau**: khung ở giây 0 đã là hình mạnh nhất; không logo, không chào, không dạo đầu chậm; được đảo thứ tự cảnh của brief (giữ đủ ý, lời nói và điều cấm).
-- **Biến động trong 1 giây đầu** (dập, cắt, rung, chớp) trên phách, kèm tiếng nhấn.
-- **Có giọng**: câu hook bắt đầu ≤ 0,3 giây, ≤ 8 từ, đọc xong trước giây 2,5.
-- **Máy chặn từ bước kịch bản** (`./reel validate`, trước khi dựng): thiếu `concept.diemHapDan` hoặc dưới 20/25, `concepts.md` thiếu `## Điểm hấp dẫn`, cảnh hook dài hơn 3,5 giây, hook quá 8 từ, thiếu `Hook N/25` trong `selfScore.notes`. Sau đó: câu giọng đầu > 0,3 giây (validate), giây đầu không có biến động mạnh (render). Không báo "xong" khi còn ✗ LUẬT SỐ 1.
-- **Luật cứng reel 15–30 giây** (Nam 2026-10-10: tỷ lệ xem hết cao hơn, thuật toán phân phối rộng hơn): brief và tổng kịch bản phải trong 15–30 giây (khoảng của loại video giao với 15–30); validate chặn.
+## Luật kịch bản (đọc đủ: [tao-reel/references/luat-kich-ban.md](../tao-reel/references/luat-kich-ban.md))
+Ba luật cho mọi video, đọc file trên trước khi dựng; luật đứng trên mọi lựa chọn dựng (thứ tự cảnh, nhịp, phong cách). Tóm tắt:
+- **LUẬT SỐ 1 — 3 giây đầu, mạnh nhất**: mở bằng điểm hấp dẫn nhất của brief (≥ 20/25, `concept.diemHapDan`, `concepts.md` mục `## Điểm hấp dẫn`, `Hook N/25` trong `selfScore.notes`); hook ≤ 3,5 giây, ≤ 8 từ; biến động mạnh trong giây đầu; giọng hook bắt đầu ≤ 0,3 giây. Reel 15–30 giây (luật cứng).
+- **LUẬT SỐ 2 — nỗi đau → sản phẩm giải quyết**: nỗi đau cụ thể có hậu quả (`concept.noiDau`), sản phẩm làm gì với chính nỗi đau đó (`concept.giaiPhap`). Có kiểu kể (`concept.kieuKe`): giải pháp ≥ 12% video, bắt đầu trước 85% (sản phẩm được là cú chốt); chưa có kiểu kể: ≥ 20%, trước 70%.
+- **Thông tin không lặp lại, thông điệp xuyên suốt**: mỗi ý nói một lần, kể lại phải thêm điều mới; một câu `concept.thongDiep`, cảnh kết khép vòng với nỗi đau.
+- **Kiểu kể** (tiểu phẩm hài, POV, twist, mẹo/số liệu): [tao-reel/references/kieu-ke.md](../tao-reel/references/kieu-ke.md).
 
 Năm yêu cầu của Nam (đo được, lệnh kiểm báo khi vi phạm):
 1. **Con người đẹp, thân thiện với người Việt**: nhân vật `RS.person` (mắt hạnh nhân, tóc đen, áo dài/áo bà ba/tạp dề quán…) hoặc hình người thật MKT gửi. Nhân vật **to** (đầu ≥ 180px), có cận mặt ở khoảnh khắc cảm xúc.
@@ -25,12 +23,6 @@ Năm yêu cầu của Nam (đo được, lệnh kiểm báo khi vi phạm):
 5. **Có tiếng động** khớp hành động (khai trong `tieng-dong.txt`, validate báo khi thiếu), **cắt/nhấn theo phách nhạc** (`./reel info nhip <id-nhạc>`).
 
 Nói với MKT tiếng Việt, câu ngắn, không thuật ngữ. Chỉ ghi file trong `briefs/<tên-video>/`.
-
-## LUẬT SỐ 2 — Nỗi đau của khách → sản phẩm giải quyết (chặn từ kịch bản)
-Nam 2026-10-10: "phải nổi bật được nỗi đau của khách hàng và cách sản phẩm chúng ta giải quyết nó". Mọi video (trừ lời chúc, teaser, tổng kết, tuyển dụng, thông báo, không khí quán, khoe số: `NO_PAIN_TYPES`):
-- **Nỗi đau nổi bật**: một nỗi đau **cụ thể** của đúng khán giả brief, lấy từ brief (vd. "bán cả ngày, tối kiểm tiền mới thấy thiếu"); cho thấy **hậu quả** (mất tiền, mất giờ, mất khách) bằng hình và người phản ứng, không chỉ bằng chữ. Hook nên là nỗi đau hoặc khoảnh khắc vỡ lẽ của nỗi đau đó (LUẬT SỐ 1).
-- **Sản phẩm giải quyết thế nào**: cho thấy **sản phẩm làm gì** với chính nỗi đau đó (thao tác trên màn hình sản phẩm, trước → sau, cùng người/cùng vật của cảnh nỗi đau), không chỉ tên sản phẩm hay câu chung chung ("quản lý dễ hơn"). Chỉ tính năng có trong brief/hồ sơ sản phẩm; brief chưa xác nhận tính năng giải quyết thẳng nỗi đau thì hỏi MKT/team, không hứa vượt.
-- `script.json` khai `concept.noiDau { khach, canh }` (cảnh hook/problem) và `concept.giaiPhap { cach, canh }` (cảnh solution). Validate chặn: thiếu, sai vai trò cảnh, giải pháp trước nỗi đau, giải pháp bắt đầu sau 70% video, cảnh giải pháp < 20% video.
 
 ## Đầu vào
 - `briefs/<tên>/brief.md` (đọc kỹ phần "Không được", người xem, giọng điệu) và `script.json` **đã duyệt**: đây là nguồn chữ duy nhất.
@@ -45,14 +37,22 @@ Skill kỹ thuật của plugin HyperFrames (chỉ đọc, **không** chạy cre
 - `hyperframes:hyperframes-animation` → `blueprints-index.md`, chọn 1–3 blueprint hợp cảnh (vd. `kinetic-type-beats`, `overwhelm-surround`, `device-surface-showcase`).
 
 ## Quy trình
+**Nhịp làm nhanh** (mục tiêu ≤ 15 phút máy chạy mỗi video, `./reel render` in "Máy chạy N phút"): việc chờ mạng chạy nền, việc kiểm không lặp thừa.
+- Có giọng: viết `loi-doc.json` trước, chạy `./reel giong <tên>` **nền** (Bash `run_in_background`) rồi mới viết `index.html`; dựng hình theo độ dài giọng khi giọng xong.
+- Người thật AI: chạy `./reel ai <tên> --video` **nền** ngay khi khung đầu / kế hoạch cảnh đã duyệt, viết composition trong lúc chờ clip.
+- `./reel snap` vòng 1 chụp đủ khung; vòng sau chỉ `--at=` chỗ vừa sửa; tối đa 3 vòng.
+- `./reel render` **đúng một lần**, sau khi snap sạch (render tốn ~3 phút).
+- Trước khi gửi bảng khung hay video để chờ MKT trả lời: `./reel moc <tên> hoi`.
+
 1. **Ý tưởng hình** (ghi vào `briefs/<tên>/dung-rieng/storyboard.md`): mỗi cảnh của kịch bản là một **thế giới**, không phải một slide. Với từng cảnh trả lời: người xem đang ở đâu, thấy ai, vật gì tượng trưng cho ý (cuốn sổ = cộng sổ, kính lúp = soi ảnh giả, con dấu = ưu đãi…), chữ nào là điểm nhìn, động từ chuyển động (dập, trượt, vẽ, rơi, nở…), chuyển cảnh. Ghi nhịp cả video (vd. chậm–dồn–CHÉM–sáng–giữ). Xem `storyboard.md` của các video gần đây cùng sản phẩm/dịp để **không lặp lại** thế giới, phép ẩn dụ, bố cục.
+   - **Dựng theo bảng nhịp** (`concepts.md` mục `## Bảng nhịp`, kiểu kể ở `tao-reel/references/kieu-ke.md`): mỗi dòng bảng là một nhịp diễn — ai phản ứng gì, mặt ra sao; cú ngắt hài / cú lật đặt đúng giây của bảng, có lặng ngắn trước nó và tiếng nhấn ngay lúc đó. Tiểu phẩm: hài nằm ở phản ứng nhân vật (nét mặt, tư thế, khoảng dừng), không ở chữ. Twist: không lộ cú lật trước giây của bảng.
    - Lấy nhịp: `./reel info nhip <id-nhạc>` → đặt điểm cắt cảnh/nhấn mạnh (chữ dập, dấu, bật) lên **phách mạnh**, hành động nhỏ lên phách thường. Ghi các phách vào chú thích đầu composition.
    - Mỗi cảnh: chọn nền riêng (bối cảnh `RS.set`, đổi nơi/ánh sáng/tông giữa các cảnh); cỡ cảnh xen kẽ (toàn → chèn cận vật → trung → cận mặt); nối hình giữa các cảnh (vật cuối cảnh trước = vật đầu cảnh sau: đồng hồ quán → đồng hồ đêm; điện thoại → ảnh trên màn hình).
 2. **Dựng thô + bảng khung chính** (luồng từng bước của `tao-reel`: **DỪNG chờ MKT duyệt**; luồng tự động: tự soát bảng theo "Luật kể chuyện", sửa, rồi làm tiếp và gửi bảng kèm video). Viết `briefs/<tên>/dung-rieng/index.html` theo khung dưới đủ để từng khoảnh khắc chính đúng hình: bối cảnh, nhân vật đúng nét mặt/tư thế, chữ, đạo cụ (chuyển động kỹ, tiếng động làm sau). Thời lượng gốc = tổng `durationSec` của kịch bản; cảnh kịch bản có thể chia nhiều nhịp nhỏ. Khai `bang-canh.txt` (mỗi nhịp một khung, 4–18 khung): `giây | điều xảy ra | tiếng | chuyển sang khung sau`. Chạy `./reel bang <tên>` → `out/snap/<tên>/bang/bang-canh.png`, tự soát bảng theo "Luật kể chuyện" rồi gửi MKT ảnh bảng (SendUserFile nếu có) và hỏi: **"đạt" hay "sửa khung số …"**. Sửa đến khi MKT duyệt; ghi kết quả vào `review.md`. Ở luồng từng bước, không làm bước 3 khi bảng chưa duyệt: sai câu chuyện hay hình thì sửa ở đây rẻ hơn sửa cả video.
 3. **Làm kỹ**: chuyển động đầy đủ (máy quay, nhân vật, nền sống), `tieng-dong.txt` (tiếng động theo giây + một khoảng lặng `lang` ngay trước khoảnh khắc vỡ lẽ), điểm cắt/nhấn theo phách.
 3b. **Giọng đọc** (video có lời nói): gọi skill `giong-doc` — dàn giọng VieNeu (người duyệt nghe thử chọn), tạo giọng trước rồi dựng hình theo độ dài giọng, thoại ngoài khung, người dẫn kể trên mặt người phản ứng và đọc thông điệp cuối, chữ nhỏ, nhãn "Do AI sản xuất". Nút bấm dùng bàn tay `RS.tayBam`/`RS.bam`.
-4. **Kiểm**: `./reel validate <tên>` (không còn ✗), rồi `./reel snap <tên>` (dựng + kiểm bố cục/tương phản + so nền các cảnh + chụp khung). Xem khung hình và **tự soát** theo danh sách dưới. Sửa đến khi đạt (thường 2–3 vòng). Soát riêng **mọi khoảnh khắc cảm xúc** và chỗ chuyển cảnh: `./reel snap <tên> --at=…`.
-5. **Xuất**: `./reel render <tên>`. Bước xuất đo trên file thật và in: đoạn gần như đứng hình, "Lặng trước vỡ lẽ" (khoảng lặng thấp hơn ≥ 8 dB, tiếng to nhất video rơi ngay lúc vỡ lẽ), "Chuyển hình trên phách" (≥ 70% cú chuyển bắt đầu hoặc dừng đúng phách). Dòng nào bắt đầu bằng "!" thì sửa rồi xuất lại. Rồi `./reel post <tên>` (brief có caption sẵn thì thay `post.md` bằng caption của brief).
+4. **Kiểm**: `./reel validate <tên>` (không còn ✗), rồi `./reel snap <tên>` (dựng + kiểm bố cục/tương phản + so nền các cảnh + chụp khung). Xem khung hình và **tự soát** theo danh sách dưới. Sửa đến khi đạt (tối đa 3 vòng; vòng 2–3 chỉ `--at=` chỗ đã sửa). Soát riêng **mọi khoảnh khắc cảm xúc** và chỗ chuyển cảnh: `./reel snap <tên> --at=…`.
+5. **Xuất**: `./reel render <tên>` (một lần, khi snap đã sạch). Bước xuất đo trên file thật và in: đoạn gần như đứng hình, "Lặng trước vỡ lẽ" (khoảng lặng thấp hơn ≥ 8 dB, tiếng to nhất video rơi ngay lúc vỡ lẽ), "Chuyển hình trên phách" (≥ 70% cú chuyển bắt đầu hoặc dừng đúng phách). Dòng nào bắt đầu bằng "!" thì sửa rồi xuất lại. Rồi `./reel post <tên>` (brief có caption sẵn thì thay `post.md` bằng caption của brief).
 
 ## Khung composition
 ```html
