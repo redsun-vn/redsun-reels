@@ -3,7 +3,14 @@
 Đánh số `MAJOR.MINOR.PATCH`. Trước 1.0: MINOR tăng khi có tính năng mới, PATCH khi chỉ sửa lỗi. Mỗi bản gắn tag git `vX.Y.Z` và có trang Release trên GitHub. Số bản nằm ở `package.json` (`./reel doctor` in ra).
 
 ## Chưa phát hành
-- Luật kịch bản **thông tin không lặp lại, thông điệp xuyên suốt**: kể lại sau hook phải thêm điều mới; câu thông điệp `concept.thongDiep`; validate cảnh báo khi hai cảnh trùng chữ.
+
+## 0.5.0 — 2026-10-11
+Luật kịch bản mới: thông tin không lặp lại, thông điệp xuyên suốt.
+
+- **Mỗi thông tin chỉ nói một lần**, bằng lời hay bằng hình. Mở bằng điểm mạnh nhất rồi kể lại thì phần kể lại phải thêm điều mới (vì sao, thế nào); hook giữ mạnh nhất, khi lặp thì sửa cảnh sau.
+- **Một câu thông điệp xuyên suốt** (`concept.thongDiep`): mọi cảnh nối về, cảnh kết khép vòng với nỗi đau ở đầu.
+- Tự chấm kịch bản lập bảng "thông tin mới của cảnh", trừ 5 điểm mỗi lần lặp.
+- Validate cảnh báo khi thiếu câu thông điệp, hoặc hai cảnh trùng phần lớn chữ có nghĩa.
 
 ## 0.4.0 — 2026-10-11
 Người thật AI tạo từ kịch bản chuyển sang Veo 3.1 Lite: nét 1080p, rẻ gần một nửa.
