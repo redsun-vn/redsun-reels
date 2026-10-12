@@ -6,13 +6,13 @@ Sổ tay này dành cho người làm video, không cần biết lập trình. M
 1. Mở Claude Code, mở thư mục dự án (`Documents/redsun-reels`).
 2. Nói việc bạn muốn làm, ví dụ:
    > làm reel mẹo cho SIPOS về cảnh báo tồn kho thấp, khoảng 20 giây, cho chủ tiệm tạp hoá
-3. Claude hỏi bạn **một việc**: chọn kiểu hình (hoạt hình hay người thật, kèm số tiền). Claude viết 3 ý tưởng theo 3 cách kể khác nhau rồi **tự chọn ý tưởng tốt nhất**, không hỏi bạn. Muốn một cách kể cụ thể thì nói ngay từ đầu (vd. "làm drama văn phòng"); xem video xong muốn đổi sang ý tưởng khác thì cứ nói. Các cách kể:
+3. Claude hỏi bạn **một việc**: chọn kiểu hình (hoạt hình hay người thật, kèm số tiền). Video người thật do AI tạo có thêm **một lần duyệt kịch bản và bảng thoại** trước khi tạo clip (mục 4b). Claude viết 3 ý tưởng theo 3 cách kể khác nhau rồi **tự chọn ý tưởng tốt nhất**, không hỏi bạn. Muốn một cách kể cụ thể thì nói ngay từ đầu (vd. "làm drama văn phòng"); xem video xong muốn đổi sang ý tưởng khác thì cứ nói. Các cách kể:
    - **Tiểu phẩm hài**: một tình huống quen ở quán, có người phản ứng và chỗ gây cười.
    - **POV "khi bạn là chủ quán…"**: người xem nhìn qua mắt chủ quán, sống lại một khoảnh khắc khó.
    - **Chuyện có cú lật**: người xem đoán một hướng, rồi bị lật ngược.
    - **Mẹo / số liệu**: mở bằng một con số hay mẹo thật làm chủ quán giật mình (chỉ khi bạn đưa số hay mẹo thật).
-   - **Drama văn phòng**: khoảnh khắc căng ở công ty hoặc ở quán, cả nhóm phản ứng như phim, sản phẩm gỡ nút thắt. Có nhiều giọng đọc.
-   - **Drama tổng tài**: nhại phim ngắn tổng tài, sếp uy lực, cú lật là sản phẩm. Có nhiều giọng đọc.
+   - **Drama văn phòng**: khoảnh khắc căng ở công ty hoặc ở quán, cả nhóm phản ứng như phim, sản phẩm gỡ nút thắt. Có nhiều giọng (mỗi nhân vật một giọng).
+   - **Drama tổng tài**: nhại phim ngắn tổng tài, sếp uy lực, cú lật là sản phẩm. Có nhiều giọng (mỗi nhân vật một giọng).
 
    Người trong video đúng người xem của sản phẩm: SIPOS là chủ quán, REDSUN BOS là công ty, Webino là chủ website.
 
@@ -63,8 +63,8 @@ Tên file gì cũng được, ảnh iPhone (HEIC) cũng được: máy tự đ�
 - Chuyển file từ điện thoại qua **AirDrop** hoặc cáp. Đừng gửi qua Zalo, Messenger: các app này nén làm mờ hình.
 
 **Quy định**
-- Trước khi viết kịch bản, Claude tả video bạn sẽ nhận (dài bao lâu, có gì trong video, mất bao lâu) và **số tiền từng lựa chọn** để bạn chọn: hoạt hình 0đ, người thật quay sẵn 0đ, người thật AI khoảng 28.000đ (duyệt ảnh nhân vật) hoặc 21.000đ (tạo từ kịch bản), tối đa 50.000đ/video. Bạn chọn xong Claude mới viết.
-- Các lựa chọn: làm **minh hoạ** (nhân vật vẽ, như hiện nay), **người thật quay sẵn** (clip miễn phí từ pexels.com, pixabay.com) hay **người thật do AI tạo** (luôn có nhãn "Do AI sản xuất" trên video và dòng nhãn ở đầu caption; tốn phí, tối đa 50.000đ/video). Chọn người thật do AI thì Claude hỏi thêm: **ảnh nhân vật trước** (bạn duyệt gương mặt, mặt giữ y hệt, phần lớn là ảnh có máy quay chuyển động, rẻ hơn) hay **tạo thẳng từ kịch bản** (không cần duyệt ảnh, nhân vật cử động mọi cảnh như phim, hình nét 1080p).
+- Trước khi viết kịch bản, Claude tả video bạn sẽ nhận (dài bao lâu, có gì trong video, mất bao lâu) và **số tiền từng lựa chọn** để bạn chọn: hoạt hình 0đ, người thật quay sẵn 0đ, người thật AI khoảng 28.000đ (duyệt ảnh nhân vật) hoặc khoảng 33.000đ (tạo từ kịch bản, hai clip 8 giây có tiếng nói), tối đa 50.000đ/video. Bạn chọn xong Claude mới viết.
+- Các lựa chọn: làm **minh hoạ** (nhân vật vẽ, như hiện nay), **người thật quay sẵn** (clip miễn phí từ pexels.com, pixabay.com) hay **người thật do AI tạo** (luôn có nhãn "Do AI sản xuất" trên video và dòng nhãn ở đầu caption; tốn phí, tối đa 50.000đ/video). Chọn người thật do AI thì Claude hỏi thêm: **ảnh nhân vật trước** (bạn duyệt gương mặt, mặt giữ y hệt, phần lớn là ảnh có máy quay chuyển động, rẻ hơn) hay **tạo thẳng từ kịch bản** (không cần duyệt ảnh, nhân vật cử động và nói thoại như phim, hình nét 1080p).
 - Người thật quay sẵn: vào pexels.com hoặc pixabay.com, tìm clip (gõ tiếng Anh, vd. "shop owner", "cashier"), nên chọn clip **dọc**, bấm tải về. Kéo file vào khung chat **kèm link trang clip**. Người trong clip là người lạ: không làm vai xấu, không làm khách hàng hay người khen sản phẩm.
 - Chỉ dùng ảnh, clip của công ty hoặc tự chụp. Không lấy ảnh trên mạng, không gửi ảnh/clip tự tạo bằng AI ở nơi khác. Video có người thật do AI tạo làm qua quy trình riêng của dự án, luôn có nhãn nội dung AI.
 - Người trong hình (khách, nhân viên) phải **đồng ý** xuất hiện. Muốn ghi là khách hàng, ghi tên, lời khách: phải nói rõ với Claude, Claude không tự gán.
@@ -72,6 +72,14 @@ Tên file gì cũng được, ảnh iPhone (HEIC) cũng được: máy tự đ�
 - Clip người nói trước camera: cách quay ở [hướng dẫn thử nghiệm, mục 4](huong-dan-thu-nghiem-mkt.md#4-quay-clip-người-nói-cho-tình-huống-7).
 
 Muốn biết nên chụp gì cho đúng kịch bản: nói "gợi ý cảnh cần chụp", Claude viết **danh sách cảnh cần quay**.
+
+### 4b. Video người thật do AI tạo (tạo từ kịch bản)
+- Video là **một mạch phim**: một bối cảnh chung (vd. phòng họp), nhân vật **tự nói thoại trong clip**, khớp miệng, không có người dẫn chuyện. Mỗi câu thoại có cách nói hợp lúc căng (sếp quát lớn, nhân viên lắp bắp…).
+- **Trước khi tạo clip, Claude gửi bạn duyệt kịch bản và bảng thoại**: ai nói câu gì, nói thế nào, ở giây nào. Duyệt rồi Claude mới tạo clip (tạo clip là tốn tiền). Muốn sửa câu: nói "câu … đổi thành …", "sếp nói to hơn".
+- Câu thoại ngắn (tối đa khoảng 6 tiếng) để máy nói tiếng Việt rõ. Nên **2 nhân vật**: 3 người trở lên máy hay đổi mặt, thêm người lạ.
+- Video trước / sau: phân cảnh "trước khi có AI", rồi một nhịp chuyển khoảng 1,5 giây (cửa màu sản phẩm, chữ "SAU KHI DÙNG …"), rồi phân cảnh "sau", cuối cùng là đoạn chốt riêng 3 giây (logo, câu tổng kết, nút).
+- Xem video xong, góp ý cụ thể giúp Claude sửa đúng: "phân đoạn 2 giọng khác phân đoạn 1", "có người lạ ở giây 13", "tiếng Việt nghe không rõ câu …".
+- Mỗi lần tạo lại một clip tốn thêm khoảng 16.600đ; chạm trần 50.000đ thì Claude dừng và báo.
 
 ## 5. Chọn loại video và phong cách
 Không chắc loại nào? Cứ kể việc muốn làm, Claude sẽ đề xuất.
@@ -118,7 +126,8 @@ Mọi video dài **15–30 giây**: video ngắn dễ được xem hết, nền 
 - Video có người nói hoặc khách hàng nói: giữ tiếng gốc, nhạc tự nhỏ lại khi có người nói.
 
 ### Giọng đọc AI
-- Video có lời nói được **lồng giọng đọc AI VieNeu**: giọng tiếng Việt chuẩn miền Nam. Mặc định **một giọng kể** (Duyên Hà My) đọc cả chuyện và thông điệp cuối; muốn mỗi nhân vật một giọng thì nói "mỗi nhân vật một giọng". Giọng nhân vật đặt lúc không thấy miệng người nói (bàn tay, màn hình…), nên không bị lệch miệng.
+- Video người thật do AI tạo: nhân vật tự nói trong clip (mục 4b), không dùng giọng đọc dưới đây.
+- Video hoạt hình, người thật quay sẵn có lời nói được **lồng giọng đọc AI VieNeu**: giọng tiếng Việt chuẩn miền Nam. Mặc định **một giọng kể** (Duyên Hà My) đọc cả chuyện và thông điệp cuối; muốn mỗi nhân vật một giọng thì nói "mỗi nhân vật một giọng". Giọng nhân vật đặt lúc không thấy miệng người nói (bàn tay, màn hình…), nên không bị lệch miệng.
 - Video có giọng AI luôn có chữ nhỏ **"Do AI sản xuất"** ở góc trên trái và dòng nhãn ở đầu caption. Giữ nguyên khi đăng, bật thêm mục khai báo nội dung AI của nền tảng nếu có.
 - Claude gửi file nghe thử giọng để bạn chọn giọng cho từng vai, và gửi video để bạn nghe lại. Câu nào chưa ưng: nói "câu <lời> đọc chưa hay" hoặc "đổi giọng <vai>".
 - Video hoạt hình đã nhiều chữ nên không có phụ đề theo giọng; video người thật có phụ đề nhỏ.
@@ -130,6 +139,7 @@ Mọi video dài **15–30 giây**: video ngắn dễ được xem hết, nền 
 |---|---|
 | "làm reel/video … cho SIPOS về …" | Bắt đầu một video mới |
 | "chọn ý 2" | Viết kịch bản theo ý tưởng số 2 |
+| "duyệt", "câu … đổi thành …", "sếp nói to hơn" | Duyệt hoặc sửa bảng thoại video người thật AI trước khi tạo clip |
 | "cảnh 3 đổi chữ thành …", "bỏ cảnh 4", "ngắn lại còn 15 giây" | Sửa kịch bản |
 | "đổi phong cách sang …", "đổi nhạc" | Đổi kiểu hiệu ứng, đổi bài |
 | "sửa khung 3, 5: …" | Sửa đúng các khung trên **bảng khung chính** (ảnh Claude gửi kèm video, mỗi khung một số) |
