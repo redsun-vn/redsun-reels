@@ -52,6 +52,7 @@ Lưu ý phạm vi: "Redsun BOS/ERP" KHÔNG có profile riêng. Trong 3 PDF, "BOS
 - Logo files: `Logos/Sipos_Logo/` có icon tách nền (webp), logo trắng, logo tách nền, `Logo_green-01.png`, `Logo_white-01.png`, PDF.
 
 **Sản phẩm (10 module, mỗi module có "Lợi ích" + "Chức năng chính")**
+- **Cập nhật 2026-10-12 (rút từ code, Nam xác nhận):** danh sách tính năng đang chạy nằm ở `brand/products.json` mục `tinhNang`, ưu tiên hơn profile này. SIPOS bán cho mọi ngành nghề. AI Hub dùng credit: gói có sẵn credit, mua thêm riêng. TikTok Shop, Lazada đã có khách dùng. **Shopee chưa ra mắt** (profile dưới đây có nêu, không dùng trong reel).
 - Quản lý bán hàng: báo giá/đơn hàng, công nợ (cảnh báo quá hạn), doanh số & KPI, hợp đồng, tích hợp CRM.
 - Quản lý kho: nhập-xuất-tồn, vị trí hàng, cảnh báo tồn thấp, liên kết đơn hàng/vận đơn.
 - Tài chính: thu chi, công nợ phải thu/trả, báo cáo lãi lỗ/cân đối/dòng tiền, kết nối ngân hàng, ví điện tử.
