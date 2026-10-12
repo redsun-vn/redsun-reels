@@ -1,7 +1,7 @@
 /**
  * Sinh bộ tiếng động (SFX) cho video dựng riêng bằng ffmpeg: âm tổng hợp từ sóng sin + nhiễu, tự tạo nên không
  * vướng bản quyền và được commit vào repo (brand/sfx/*.wav, mono 48 kHz). Composition đặt
- * <audio src="sfx/<tên>.wav" data-start=… data-volume=…>. Chạy lại khi sửa công thức: pnpm gen:sfx
+ * <audio src="sfx/<tên>.wav" data-start=… data-volume=…>. Chạy lại khi sửa công thức: pnpm gen:sfx [tên…]
  */
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -12,6 +12,12 @@ const PI2 = '2*PI';
 const sweep = (f0: number, f1: number, tau: number) => `sin(${PI2}*(${f1}*t+${f0 - f1}*${tau}*(1-exp(-t/${tau}))))`;
 const bell = (f: number, decay: number, at = 0) => `if(gte(t,${at}),sin(${PI2}*${f}*(t-${at}))*exp(-(t-${at})/${decay}),0)`;
 const noise = '(random(0)*2-1)';
+/** Nốt kèn trầm (3 hoạ âm) bắt đầu ở giây `at`, tắt dần theo `decay`. */
+const brass = (f: number, decay: number, at = 0) => `if(gte(t,${at}),(sin(${PI2}*${f}*(t-${at}))+0.5*sin(${PI2}*${2 * f}*(t-${at}))+0.3*sin(${PI2}*${3 * f}*(t-${at})))*exp(-(t-${at})/${decay}),0)`;
+/** Thịch trầm ở giây `at` (nhịp tim). */
+const beat = (f: number, decay: number, at = 0) => `if(gte(t,${at}),sin(${PI2}*${f}*(t-${at}))*exp(-(t-${at})/${decay}),0)`;
+/** Tiếng gót giày gõ sàn ở giây `at`. */
+const heel = (at: number) => `if(gte(t,${at}),0.7*${noise}*exp(-(t-${at})/0.007)+0.5*sin(${PI2}*1150*(t-${at}))*exp(-(t-${at})/0.02),0)`;
 
 interface Sfx { expr: string; dur: number; filters?: string; note: string }
 
@@ -30,16 +36,26 @@ export const SFX: Record<string, Sfx> = {
   sparkle: { dur: 0.9, note: 'lấp lánh (giải pháp, nhẹ nhõm)', expr: [0, 0.06, 0.13, 0.19, 0.27, 0.34].map((at, i) => `0.3*${bell([2637, 3136, 3520, 4186, 3951, 5274][i], 0.16, at)}`).join('+') },
   riser: { dur: 0.9, note: 'dâng lên trước khi lật tẩy', expr: `(0.25*${noise}+0.75*sin(${PI2}*(200*t+500*t*t)))*pow(t/0.9,2)`, filters: 'highpass=f=250,lowpass=f=2800,volume=0.9' },
   boom: { dur: 0.9, note: 'ầm trầm (khoảnh khắc lớn)', expr: `${sweep(90, 38, 0.08)}*exp(-t/0.35)+0.3*${noise}*exp(-t/0.02)`, filters: 'lowpass=f=900,volume=1.2' },
+  // Bộ drama (Nam 2026-10-12, kiểu kể drama văn phòng / tổng tài)
+  'dun-dun': { dur: 1.7, note: 'tèn tèn tén (cú lật, câu chốt hạ của phim ngắn)', expr: `0.45*${brass(196, 0.16)}+0.45*${brass(196, 0.16, 0.3)}+0.55*${brass(155.6, 0.55, 0.6)}+0.35*${beat(77.8, 0.6, 0.6)}`, filters: 'lowpass=f=2200,volume=1.1' },
+  'tim-dap': { dur: 0.9, note: 'nhịp tim (khoảng lặng trước cú lật, để nhỏ)', expr: `${beat(58, 0.06)}+0.75*${beat(52, 0.07, 0.22)}`, filters: 'lowpass=f=320,volume=1.6' },
+  'buoc-chan': { dur: 0.75, note: 'hai bước giày da (sếp bước vào)', expr: `${heel(0)}+0.85*${heel(0.36)}`, filters: 'highpass=f=250,lowpass=f=5000' },
+  'whoosh-tram': { dur: 1.1, note: 'vút trầm, chậm (quay chậm, sếp xuất hiện)', expr: `0.7*${noise}*pow(sin(PI*t/1.1),2)+0.4*${sweep(120, 45, 0.5)}*pow(sin(PI*t/1.1),2)`, filters: 'highpass=f=60,lowpass=f=900,volume=1.5' },
+  'dung-hinh': { dur: 0.5, note: 'đĩa xước, cả phòng đứng hình', expr: `(0.5*${noise}+0.6*sin(${PI2}*(950*t-900*t*t)))*exp(-t/0.2)`, filters: 'highpass=f=350,lowpass=f=4200,volume=0.9' },
   'hoi-tho': { dur: 0.8, note: 'thở phào', expr: `${noise}*pow(sin(PI*t/0.8),2)*0.5`, filters: 'highpass=f=400,lowpass=f=1300,lowpass=f=1300,volume=1.8' },
 };
 
 if (process.argv[1]?.endsWith('gen-sfx.ts')) {
   const dir = join(REPO_ROOT, 'brand', 'sfx');
   mkdirSync(dir, { recursive: true });
-  for (const [name, s] of Object.entries(SFX)) {
+  // Có tên trong tham số thì chỉ tạo các tiếng đó (không tạo lại file cũ): pnpm gen:sfx dun-dun tim-dap
+  const only = process.argv.slice(2);
+  const bad = only.filter((n) => !SFX[n]);
+  if (bad.length) { console.error(`Không có tiếng động: ${bad.join(', ')}`); process.exit(1); }
+  for (const [name, s] of Object.entries(SFX).filter(([n]) => !only.length || only.includes(n))) {
     const af = ['afade=t=out:st=' + (s.dur * 0.8).toFixed(3) + ':d=' + (s.dur * 0.2).toFixed(3), s.filters, 'alimiter=limit=0.7:level=0'].filter(Boolean).join(',');
     const r = runFfmpeg(['-v', 'error', '-y', '-f', 'lavfi', '-i', `aevalsrc='${s.expr}':s=48000:d=${s.dur}`, '-af', af, '-ac', '1', '-c:a', 'pcm_s16le', join(dir, `${name}.wav`)]);
     if (r.status !== 0) { console.error(`Không tạo được ${name}: ${r.stderr}`); process.exit(1); }
   }
-  console.log(`Đã tạo ${Object.keys(SFX).length} tiếng động trong brand/sfx/`);
+  console.log(`Đã tạo ${only.length || Object.keys(SFX).length} tiếng động trong brand/sfx/`);
 }

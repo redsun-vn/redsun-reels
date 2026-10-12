@@ -30,7 +30,7 @@ Bài học bản 3–4 (Nam: "nếu không có giọng nói, mọi thứ đều 
 - **Không có cảnh mặt người trơn**: khi mặt người phản ứng, **người dẫn** (`nguoi-dan`) kể tiếp (lời nói của brief) — giọng dẫn không phải người trong hình nên không thành lồng tiếng. Ngoại lệ: khoảng lặng ngắn trước vỡ lẽ (`lang`, ≤ 0,6 giây).
 - **Cảnh kết có giọng**: người dẫn đọc thông điệp sản phẩm + lời kêu gọi (theo brief, vd. "SIPOS. Nhắn tin để được tư vấn nha!"). Validate chặn khi cảnh CTA không có câu nào.
 - **Giới tính giọng khớp người trên hình**: vai lộ mặt dùng giọng cùng giới với người mẫu; vai không lộ mặt (bàn tay, người dẫn) chọn tự do — xen giọng nam/nữ cho sinh động.
-- **Phụ đề theo giọng**: video người thật (ít chữ) thì có phụ đề; **video hoạt hình đã nhiều chữ** (bóng thoại, bảng chữ, nhãn đạo cụ) thì **không thêm phụ đề theo giọng** (Nam 2026-10-10). Video hoạt hình có giọng: một giọng kể (mặc định Duyên Hà My), nhân vật vẽ không mấp máy miệng (`RS.talk`) khi người kể đọc.
+- **Phụ đề theo giọng**: video người thật (ít chữ) thì có phụ đề; **video hoạt hình đã nhiều chữ** (bóng thoại, bảng chữ, nhãn đạo cụ) thì **không thêm phụ đề theo giọng** (Nam 2026-10-10). Video hoạt hình có giọng: một giọng kể (mặc định Duyên Hà My; kiểu kể drama thì nhiều giọng), nhân vật vẽ không mấp máy miệng (`RS.talk`) khi người kể đọc.
 - **Chữ nhỏ, ít**: không chữ to (validate cảnh báo `--type-hero/h1/h2`); chữ nhấn là **nhãn nhỏ gắn vào vật** (`.tag`, `--type-caption`) bật đúng lúc giọng tới chữ đó: `RS.loiAt("<id>", "<cụm chữ>")`. Phụ đề: `<div class="rs-sub rs-loi" data-loi="<id>">` + `RS.loiSubs(tl)` (giờ lấy từ giọng thật lúc dựng); câu dài chia `<div>` từng dòng cân nhau; máy hiện **từng dòng một** sát đáy vùng an toàn (Nam 2026-10-11: "phụ đề cao quá, che mất hình"), nên đặt mặt người và vật chính phía trên dải phụ đề (y < 1400).
 - **Dựng theo giọng**: tạo giọng trước (`./reel giong <tên> --cho=6`), đọc độ dài từ `giong/nhat-ky.json`, rồi mới viết bảng nhịp (giây | hình | giọng) và đặt `at` từng câu; cắt cảnh ở ranh giới câu, trúng phách.
 - **Nhãn AI**: `<div class="rs-nhan-ai" data-nhan-ai>Do AI sản xuất</div>` (con trực tiếp của gốc; nhỏ, mờ, sát góc trên trái). Caption tự mở đầu "⚠️ Video có giọng đọc do AI tạo." (`./reel post`).
@@ -38,6 +38,8 @@ Bài học bản 3–4 (Nam: "nếu không có giọng nói, mọi thứ đều 
 
 ## 1. Dàn giọng (một lần mỗi video)
 **Mặc định một giọng**: một vai `nguoi-dan` = **Duyên Hà My** (nữ miền Nam, `gioi: "nu"`) kể toàn bộ, kể cả lời thoại của brief (vd. "Chuyện là, khách chìa ảnh: “Em chuyển rồi nha.” Nhân viên: “Dạ vâng ạ.”"). Nam so 1 giọng với 4 giọng (2026-10-10): 1 giọng tốt hơn. Dàn nhiều giọng (mỗi nhân vật một giọng, như dưới) chỉ khi MKT nói "mỗi nhân vật một giọng".
+
+**Ngoại lệ — kiểu kể drama** (`drama-van-phong`, `tong-tai`; Nam 2026-10-12: "2 loại video mới phải có giọng đa dạng"): **bắt buộc có giọng và nhiều giọng**, không hỏi MKT. Dàn tối thiểu: mỗi nhân vật chính một giọng (tổng tài/sếp, nhân viên, đồng nghiệp…) + người dẫn nếu cần kể trên mặt người phản ứng; **xen nam và nữ**; tính cách giọng khớp vai (sếp: trầm, chậm, chắc; nhân viên: nhanh, lo; người dẫn: kể chuyện). Validate chặn khi ít hơn 2 giọng có câu đọc, cảnh báo khi mọi giọng cùng giới. Luật ngoài khung giữ nguyên: câu chốt hạ của tổng tài đặt lên cảnh sau lưng, bàn tay, bước chân, hoặc cảnh mặt người khác đang nghe (phản ứng). Video hoạt hình drama cũng nhiều giọng (nhân vật vẽ không mấp máy miệng).
 
 `briefs/<tên>/dung-rieng/loi-doc.json` mục `dan`: mỗi vai `{ giong, gioi: "nu"|"nam", hoSo }`, mỗi vai một giọng **khác nhau** (validate chặn trùng). Tên giọng lấy từ danh mục VieNeu v4 (`./reel giong` kiểm tên trước khi tạo): `curl -s "https://api.vieneu.io/api/v1/voices?engine=v4"` — mỗi giọng có giới tính, vùng (`south`/`north`/`central`) và mô tả.
 - Chọn giọng **đúng vùng** (`giongVung` của video, mặc định miền Nam) và hợp tính cách vai (mô tả "Cảm xúc", "Truyền cảm", "Vui nhộn", "Kể chuyện"…).
@@ -47,7 +49,7 @@ Bài học bản 3–4 (Nam: "nếu không có giọng nói, mọi thứ đều 
 Mỗi câu trong `cau`: `id`, `vai`, `at` (giây), `loi`, `camXuc` (để kiểm mặt người phản ứng), tuỳ chọn `cuongDo` (1–5), `boiCanh`, `dienXuat` (ghi cho người viết/nghe duyệt), `phongCach` (`natural` thoại, `storytelling` kể — mặc định người dẫn kể chuyện).
 - **Bám lời nói của brief**: lời dẫn lấy đúng câu brief ghi ("Lời nói: …"); thoại nhân vật ngắn (≤ 8 từ), đời thường.
 - VieNeu **không nhận ghi chú đạo diễn**: cảm xúc đến từ chọn giọng, kiểu đọc, **từ cảm thán và dấu câu** ("Trời đất ơi!", "Ủa?!", "…vậy nè?!", "Woa!") và 3 thẻ chèn: `[cười]`, `[thở dài]`, `[hắng giọng]` (thẻ khác bị bỏ khi gửi; `[cười lớn]`→`[cười]`, `[thở phào]`/`[nghẹn]`→`[thở dài]`).
-- **Giọng miền Nam thật**: "nè", "nha", "luôn á", "quá trời", "lẹ", "hông"; không "vâng", "nhé", "thế". VieNeu đọc chữ như gửi: nghe lại tên thương hiệu. **Cách đọc tên sản phẩm** (Nam nghe duyệt 2026-10-10) nằm ở `config/voice.ts` `VOICE.vieneu.phatAm`, máy tự thay khi gửi VieNeu, phụ đề vẫn ghi đúng tên: SIPOS → "Xi pốt", Webino → "Web-bi-nô", BOS (REDSUN BOS) → "bê ô ét". Trong `loi-doc.json` cứ viết đúng tên; tên mới đọc sai thì báo dev thêm vào bảng (tạo mẫu cho người duyệt nghe chọn).
+- **Giọng miền Nam thật**: "nè", "nha", "luôn á", "quá trời", "lẹ", "hông"; không "vâng", "nhé", "thế". VieNeu đọc chữ như gửi: nghe lại tên thương hiệu. **Cách đọc tên sản phẩm** (Nam nghe duyệt 2026-10-10) nằm ở `config/voice.ts` `VOICE.vieneu.phatAm`, máy tự thay khi gửi VieNeu, phụ đề vẫn ghi đúng tên: SIPOS → "Xi pốt", Webino → "Web-bi-nô", BOS (REDSUN BOS) → "bi-ô-ét" (Nam 2026-10-12). Trong `loi-doc.json` cứ viết đúng tên; tên mới đọc sai thì báo dev thêm vào bảng (tạo mẫu cho người duyệt nghe chọn).
 - **Không bịa** (như kịch bản): số, giá, ưu đãi, tính năng chỉ từ brief/kịch bản (validate chặn số lạ). Lời khen sản phẩm chỉ trên cảnh màn hình/logo (giấy phép Pexels: không ngụ ý người mẫu ủng hộ).
 
 ## 3. Tạo giọng
@@ -65,6 +67,7 @@ Mỗi câu trong `cau`: `id`, `vai`, `at` (giây), `loi`, `camXuc` (để kiểm
 | Luật | Chặn ở |
 |---|---|
 | Mỗi vai một giọng, có trong danh mục VieNeu, khai giới tính | validate, `./reel giong` |
+| Kiểu kể drama: có `loi-doc.json`, ≥ 2 giọng có câu đọc (cảnh báo khi cùng giới) | validate (`voiceVarietyIssues`) |
 | Mọi câu có file giọng (bản soát hình được thiếu) | validate, bước dựng |
 | Câu không đè câu trước (lưu ý), không quá cuối video, không rơi vào khoảng lặng (lưu ý) | validate |
 | Số trong lời đọc có trong brief/kịch bản | validate |

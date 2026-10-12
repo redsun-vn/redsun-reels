@@ -41,10 +41,11 @@ Kiểm kê skill đã cài (danh sách skill của runtime + `.claude/skills/` +
 - **LUẬT SỐ 1 — 3 giây đầu, mạnh nhất**: chọn điểm hấp dẫn nhất của brief (bảng 5 tiêu chí, ≥ 20/25, `concepts.md` mục `## Điểm hấp dẫn`, `script.json` `concept.diemHapDan`), mở bằng nó rồi kể lại. Validate chặn ngay ở bước kịch bản.
 - **LUẬT SỐ 2 — nỗi đau → giải pháp**: nêu nỗi đau cụ thể của khách (từ brief, có hậu quả) và cho thấy sản phẩm giải quyết nó thế nào (`concept.noiDau`, `concept.giaiPhap`). Validate chặn từ bước kịch bản. Có kiểu kể (`concept.kieuKe`): giải pháp ≥ 12% video, bắt đầu trước 85% (sản phẩm được là cú chốt); chưa có kiểu kể: ≥ 20%, trước 70%.
 - Luật đầy đủ một nơi: `.claude/skills/tao-reel/references/luat-kich-ban.md`.
+- **Người xem theo sản phẩm** (luật cứng, Nam 2026-10-12): SIPOS nói với **chủ quán**, REDSUN BOS nói với **công ty** (giám đốc, trưởng phòng, đội sale), Webino nói với **chủ website**. Nhân vật, bối cảnh, nỗi đau, hook đúng người xem đó, mọi kiểu kể. Bảng đầy đủ: `luat-kich-ban.md` mục "Người xem theo sản phẩm".
 - **Thông tin không lặp lại, thông điệp xuyên suốt**: mỗi thông tin nói một lần (lời hay hình); kể lại sau hook phải thêm điều mới; một câu thông điệp ở `concept.thongDiep`, cảnh kết khép vòng với nỗi đau ở đầu. Validate cảnh báo khi thiếu thông điệp hoặc hai cảnh trùng chữ.
 - **Brief thiếu thông tin để kịch bản đạt luật** (hook, nỗi đau, tính năng giải quyết, số liệu) → chủ động hỏi MKT một lần (≤ 5 câu, có lựa chọn), skill `tao-reel` mục "Brief đủ chưa".
 - **Reel dài 15–30 giây** (luật cứng, validate chặn).
-- Viết 3 concept thuộc **3 kiểu kể khác nhau** (tiểu phẩm hài, POV, twist, mẹo/số liệu: `config/kieu-ke.ts`, `tao-reel/references/kieu-ke.md`), **MKT chọn 1 trong 3** (cả luồng tự động; điểm dừng duy nhất sau kiểu hình), rồi mới viết kịch bản kèm bảng nhịp.
+- Viết 3 concept thuộc **3 kiểu kể khác nhau** (tiểu phẩm hài, POV, twist, mẹo/số liệu, drama văn phòng, drama tổng tài: `config/kieu-ke.ts`, `tao-reel/references/kieu-ke.md`), **Claude tự chọn concept theo gợi ý, không hỏi MKT** (Nam 2026-10-12; điểm dừng duy nhất là kiểu hình), rồi mới viết kịch bản kèm bảng nhịp.
 - Mục tiêu ≤ 15 phút máy chạy mỗi video (không tính lúc chờ người): `./reel moc <tên> hoi` ngay trước mỗi câu hỏi MKT; render in "Máy chạy N phút".
 - Hook: tối đa 2 dòng, mỗi dòng ≤ 40 ký tự, con số viết bằng chữ số.
 - Video ≤ 45 giây chỉ 1–2 ý chính, dài hơn thì tối đa 3 ý. Mỗi cảnh một ý, nên ≤ 10 từ.

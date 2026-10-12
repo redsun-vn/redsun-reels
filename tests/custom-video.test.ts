@@ -106,4 +106,17 @@ describe('video dựng riêng', () => {
     const w = issues(page(OK_BODY.replace('<i>kho</i>', ''))).map((i) => i.message).join('\n');
     expect(w).toContain('SIPOS lo kho');
   });
+
+  it('kiểu kể drama bắt buộc có giọng đọc nhiều giọng', () => {
+    mkdirSync(tmpRoot, { recursive: true });
+    const dir = mkdtempSync(join(tmpRoot, 'drama-'));
+    mkdirSync(join(dir, 'dung-rieng'));
+    writeFileSync(join(dir, 'dung-rieng', 'index.html'), page(OK_BODY));
+    writeFileSync(join(dir, 'dung-rieng', 'tieng-dong.txt'), 'lang 5 6\n1.00 dun-dun 0.5\n');
+    writeFileSync(join(dir, 'dung-rieng', 'bang-canh.txt'), '0.5 | mở | bụp | cắt\n3 | sổ\n6 | điện thoại\n9 | kết\n');
+    const drama = { ...script, concept: { kieuKe: 'tong-tai' } } as unknown as Script;
+    expect(customIssues(dir, drama, brief, 12).map((i) => i.message).join()).toContain('bắt buộc có giọng đọc nhiều giọng');
+    expect(customIssues(dir, script, brief, 12)).toEqual([]);
+  });
 });
+

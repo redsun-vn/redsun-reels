@@ -5,8 +5,10 @@
 ## Chưa phát hành
 Reel hấp dẫn hơn và làm nhanh hơn (dự kiến bản 0.6.0).
 
-- **4 kiểu kể**: tiểu phẩm hài, POV "khi bạn là chủ quán…", chuyện có cú lật, mẹo / số liệu. Ba ý tưởng của một video thuộc ba kiểu kể khác nhau.
-- **MKT chọn 1 trong 3 ý tưởng** trước khi máy viết kịch bản; sau đó máy làm tới hết.
+- **6 kiểu kể**: tiểu phẩm hài, POV "khi bạn là chủ quán…", chuyện có cú lật, mẹo / số liệu, drama văn phòng, drama tổng tài. Ba ý tưởng của một video thuộc ba kiểu kể khác nhau.
+- Hai kiểu drama có thêm tiếng động phim ngắn (tèn tèn tén, nhịp tim, bước giày, đứng hình) và nhân vật mặc vest.
+- **Claude tự chọn ý tưởng tốt nhất** trong 3 ý tưởng, không hỏi MKT; MKT chỉ chọn kiểu hình. Muốn đổi ý tưởng thì nói sau khi xem video.
+- **Người trong video đúng người xem của sản phẩm**: SIPOS là chủ quán, REDSUN BOS là công ty, Webino là chủ website.
 - Sản phẩm được vào như cú chốt cuối chuyện (cảnh giải pháp ≥ 12% video, bắt đầu trước 85%), vẫn phải cho thấy sản phẩm gỡ đúng nỗi đau.
 - Kịch bản kèm bảng nhịp (ai phản ứng gì, chỗ cười, chỗ lật); tự chấm thêm điểm hấp dẫn.
 - **Nhanh hơn**: clip người thật AI và giọng đọc tạo song song, trần tiền vẫn giữ; video ghi lại số phút máy chạy (mục tiêu ≤ 15 phút, không tính lúc chờ bạn trả lời).

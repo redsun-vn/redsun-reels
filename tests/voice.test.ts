@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { VOICE } from '../config/voice.ts';
 import { vieneuText, vieneuTokens } from '../scripts/lib/vieneu-voice.ts';
-import { lineStyle, spokenText, voiceScriptIssues, VoiceScriptSchema } from '../scripts/lib/voice-script.ts';
+import { lineStyle, spokenText, voiceScriptIssues, VoiceScriptSchema, voiceVarietyIssues } from '../scripts/lib/voice-script.ts';
 import { injectMusicAutomation, musicLevelPoints, voiceTags, voiceTimingScript } from '../scripts/lib/voice-stage.ts';
 import { faceClips, voiceFaceIssues } from '../scripts/lib/voice-sync.ts';
 import { measureTake, pcmToWav, takeAudioIssues, toMono24k, trimSilence } from '../scripts/lib/voice-wav.ts';
@@ -50,7 +50,7 @@ describe('lời đọc', () => {
     expect(vieneuText('[cười lớn] Woa! [thở gấp] Trời ơi [thở phào] Phù')).toBe('[cười] Woa! Trời ơi [thở dài] Phù');
     expect(vieneuText('Webino. Tạo web với WEBINO nha, webinoxyz')).toBe('Web-bi-nô. Tạo web với Web-bi-nô nha, webinoxyz');
     expect(vieneuText('SIPOS. Nhắn tin, sipos tự xác nhận')).toBe('Xi pốt. Nhắn tin, Xi pốt tự xác nhận');
-    expect(vieneuText('REDSUN BOS là hệ điều hành doanh nghiệp')).toBe('REDSUN bê ô ét là hệ điều hành doanh nghiệp');
+    expect(vieneuText('REDSUN BOS là hệ điều hành doanh nghiệp')).toBe('REDSUN bi-ô-ét là hệ điều hành doanh nghiệp');
     expect(vieneuTokens('Ủa?')).toBe(Math.ceil(50 * VOICE.vieneu.tokenPerChar));
     expect(vieneuTokens('x'.repeat(100))).toBe(Math.ceil(100 * VOICE.vieneu.tokenPerChar));
   });
@@ -143,5 +143,25 @@ describe('luật cứng reel 15–30 giây', () => {
     expect(reelRange({ minSec: 10, maxSec: 20 })).toEqual({ min: 15, max: 20 });
     expect(reelRange({ minSec: 7, maxSec: 15 })).toEqual({ min: 15, max: 15 });
     expect(reelRange({ minSec: 20, maxSec: 40 })).toEqual({ min: 20, max: 30 });
+  });
+});
+
+describe('giọng đa dạng cho kiểu kể drama', () => {
+  const vs = (dan: Record<string, [string, 'nu' | 'nam']>, vais: string[]) =>
+    VoiceScriptSchema.parse({
+      dan: Object.fromEntries(Object.entries(dan).map(([k, [giong, gioi]]) => [k, { giong, gioi, hoSo: k }])),
+      cau: vais.map((vai, i) => ({ id: `c${i}`, vai, at: i * 3, loi: 'Báo cáo đâu?', camXuc: 'nghi' })),
+    });
+
+  it('một giọng là lỗi; giọng khai mà không đọc câu nào không tính', () => {
+    const one = voiceVarietyIssues(vs({ sep: ['A', 'nam'], nv: ['B', 'nu'] }, ['sep', 'sep']), 2, 'Drama tổng tài');
+    expect(one.errors.join()).toContain('ít nhất 2 giọng');
+  });
+
+  it('hai giọng khác giới đạt; cùng giới chỉ cảnh báo', () => {
+    expect(voiceVarietyIssues(vs({ sep: ['A', 'nam'], nv: ['B', 'nu'] }, ['sep', 'nv']), 2, 'x')).toEqual({ errors: [], warnings: [] });
+    const same = voiceVarietyIssues(vs({ sep: ['A', 'nam'], nv: ['B', 'nam'] }, ['sep', 'nv']), 2, 'x');
+    expect(same.errors).toEqual([]);
+    expect(same.warnings.join()).toContain('cùng giới');
   });
 });

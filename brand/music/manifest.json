@@ -681,6 +681,114 @@
       "sha256": "c69dc74479239f63442a369891a57c7f9a05236a7090e4b694057c13f3843cf9",
       "startSec": 3,
       "notes": "Mixkit item 834; thẻ: Corporate Music, Electronica, Uplifting, Bass, Drums. Ứng viên đợt 4 (2026-10-09, chill nhưng có groove), Nam nghe 2026-10-09: giữ. Gắn thêm thu-gian (Mixkit xếp Relaxed) vì thư giãn thiếu bài."
+    },
+    {
+      "id": "mixkit-i-wont-surrender-846",
+      "file": "mixkit-i-wont-surrender-846.mp3",
+      "title": "I Won't Surrender",
+      "author": "Michael Ramir C.",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/tag/drama/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-12",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-12/ (chuyển lên Drive)",
+      "mood": [
+        "dien-anh",
+        "hanh-dong"
+      ],
+      "bpm": null,
+      "durationSec": 114,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "blocked": false,
+      "downloadUrl": "https://assets.mixkit.co/music/846/846.mp3",
+      "sha256": "f808de57c5ac1da5b5272c982e86a50b6ef8d2a0948e87a60eb03b0f7705fb2a",
+      "startSec": 0,
+      "notes": "Mixkit item 846; Drama tổng tài: kèn đồng + trống, căng (thẻ Mixkit: Film Score, Trailer Music, Serious, Tension, Brass, Drums, Dramedy). Nam nghe duyệt 2026-10-12. Đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-training-53",
+      "file": "mixkit-training-53.mp3",
+      "title": "Training",
+      "author": "Ahjay Stelino",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/tag/drama/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-12",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-12/ (chuyển lên Drive)",
+      "mood": [
+        "dien-anh",
+        "hanh-dong"
+      ],
+      "bpm": null,
+      "durationSec": 101,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "blocked": false,
+      "downloadUrl": "https://assets.mixkit.co/music/53/53.mp3",
+      "sha256": "1290ad7da3f501e98ae35ffa5204119e5af74f7413adf0988565daa41f694e38",
+      "startSec": 0,
+      "notes": "Mixkit item 53; Drama tổng tài: dây kịch tính kiểu trailer, to ngay từ đầu (thẻ: Film Score, Dramatic, Serious, Strings, Trailer). Nam nghe duyệt 2026-10-12. Đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-thunder-318",
+      "file": "mixkit-thunder-318.mp3",
+      "title": "Thunder",
+      "author": "Arulo",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/tag/drama/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-12",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-12/ (chuyển lên Drive)",
+      "mood": [
+        "bi-an",
+        "hanh-dong"
+      ],
+      "bpm": null,
+      "durationSec": 101,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "blocked": false,
+      "downloadUrl": "https://assets.mixkit.co/music/318/318.mp3",
+      "sha256": "a19b06b5e93305d0fadb3080c4e2556bffd9ae647149a5e81ab3aced0d03b881",
+      "startSec": 0,
+      "notes": "Mixkit item 318; Drama văn phòng: trap u ám kiểu reality TV (thẻ: Hip Hop, Trap, Disturbing, Ominous, Bass, Drums, Reality TV). Nam nghe duyệt 2026-10-12. Đăng thử riêng tư để kiểm Content ID."
+    },
+    {
+      "id": "mixkit-complicated-281",
+      "file": "mixkit-complicated-281.mp3",
+      "title": "Complicated",
+      "author": "Arulo",
+      "source": "mixkit",
+      "sourceUrl": "https://mixkit.co/free-stock-music/tag/drama/",
+      "license": "Mixkit Stock Music Free License",
+      "attributionRequired": false,
+      "attributionText": null,
+      "downloadedAt": "2026-10-12",
+      "evidence": "~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-12/ (chuyển lên Drive)",
+      "mood": [
+        "bi-an",
+        "hanh-dong"
+      ],
+      "bpm": null,
+      "durationSec": 109,
+      "allowedUse": [
+        "social-organic"
+      ],
+      "blocked": false,
+      "downloadUrl": "https://assets.mixkit.co/music/281/281.mp3",
+      "sha256": "f0ef745dcf71f9795f3d69126b3b112e2854083470a644a036afe9639d3e126f",
+      "startSec": 0,
+      "notes": "Mixkit item 281; Drama văn phòng (dự phòng): trap nghiêm, căng (thẻ: Hip Hop, Trap, Serious, Tension, Bass, Drums). Nam nghe duyệt 2026-10-12. Đăng thử riêng tư để kiểm Content ID."
     }
   ]
 }

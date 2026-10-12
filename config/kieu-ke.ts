@@ -1,12 +1,12 @@
 /**
  * Kiểu kể của reel (Nam 2026-10-11, docs/decisions.md §34): video qua luật nhưng giống quảng cáo → mỗi concept chọn một
- * trong 4 kiểu kể; MKT chọn 1 trong 3 concept thuộc 3 kiểu kể khác nhau. Cách kể từng kiểu:
+ * trong 6 kiểu kể (thêm drama văn phòng, drama tổng tài: Nam 2026-10-12, §36); 3 concept thuộc 3 kiểu kể khác nhau, Claude tự chọn concept khuyên (Nam 2026-10-12, §38). Cách kể từng kiểu:
  * .claude/skills/tao-reel/references/kieu-ke.md. Chỉ dev sửa file này.
  */
 import type { KieuHinh } from './ai-video.ts';
 import type { SceneRole } from './video-types.ts';
 
-export const KIEU_KE_IDS = ['tieu-pham', 'pov', 'twist', 'meo-so-lieu'] as const;
+export const KIEU_KE_IDS = ['tieu-pham', 'pov', 'twist', 'meo-so-lieu', 'drama-van-phong', 'tong-tai'] as const;
 export type KieuKe = (typeof KIEU_KE_IDS)[number];
 
 export interface KieuKeInfo {
@@ -19,6 +19,11 @@ export interface KieuKeInfo {
   kieuHinh: readonly KieuHinh[];
   /** Cần con số hay mẹo thật do MKT đưa (không bịa). */
   canSoThat: boolean;
+  /**
+   * Bắt buộc có giọng đọc với ít nhất N giọng khác nhau (Nam 2026-10-12: "2 loại video mới phải có giọng đa dạng"),
+   * thay cho mặc định một giọng kể của skill giong-doc.
+   */
+  nhieuGiong?: number;
 }
 
 export const KIEU_KE: Record<KieuKe, KieuKeInfo> = {
@@ -53,6 +58,24 @@ export const KIEU_KE: Record<KieuKe, KieuKeInfo> = {
     lap: 'problem',
     kieuHinh: ['minh-hoa', 'nguoi-that-ai', 'nguoi-that-quay-san'],
     canSoThat: true,
+  },
+  'drama-van-phong': {
+    ten: 'Drama văn phòng',
+    moTa: 'Một khoảnh khắc căng ở công sở (deadline, họp, số liệu sai), cả phòng phản ứng phóng đại; sản phẩm gỡ nút thắt cho cả phòng.',
+    vaiTro: ['hook', 'problem', 'solution', 'cta'],
+    lap: 'problem',
+    kieuHinh: ['minh-hoa', 'nguoi-that-ai'],
+    canSoThat: false,
+    nhieuGiong: 2,
+  },
+  'tong-tai': {
+    ten: 'Drama tổng tài',
+    moTa: 'Nhại phim ngắn tổng tài: sếp xuất hiện đầy uy lực, câu chốt hạ, cả phòng nín thở; cú lật là sản phẩm, trước mặt tổng tài.',
+    vaiTro: ['hook', 'problem', 'solution', 'cta'],
+    lap: 'problem',
+    kieuHinh: ['minh-hoa', 'nguoi-that-ai'],
+    canSoThat: false,
+    nhieuGiong: 2,
   },
 };
 

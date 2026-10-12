@@ -522,3 +522,23 @@ Nam (ak:advise): video qua luật nhưng giống quảng cáo (đoán trước, 
 
 ## 35. Kế hoạch không lên repo (2026-10-11)
 Nam: "loại bỏ plan khỏi repo, chỉ commit thay đổi code". `.gitignore` bỏ qua `plans/` (kế hoạch, báo cáo của dev chỉ nằm trên máy); toàn bộ file đã commit trước đó gỡ khỏi repo, vẫn còn trên máy Nam và trong lịch sử git. Hồ sơ công ty và sản phẩm (trước ở `plans/reports/brand-261008-1606-company-product-profiles.md`) chuyển sang `docs/ho-so-cong-ty-san-pham.md`, vì skill `tao-reel` đọc làm nguồn thông tin sản phẩm (chống bịa) và máy MKT cần có. Đường dẫn `plans/…` nhắc trong các mục cũ của file này là lịch sử.
+
+## 36. Hai kiểu kể drama: drama văn phòng, drama tổng tài; giọng đa dạng; ngôn ngữ máy quay (2026-10-12)
+Nam: "thêm phần kịch bản reel theo phong cách drama văn phòng, tổng tài"; "drama văn phòng và drama tổng tài, 2 loại"; "2 loại video mới phải có giọng đa dạng".
+- **Kiểu kể thứ 5 và 6** (`config/kieu-ke.ts`, `tao-reel/references/kieu-ke.md` mục 5–6): `drama-van-phong` (khoảnh khắc căng ở công sở, cả phòng phản ứng, sản phẩm gỡ nút thắt) và `tong-tai` (nhại phim ngắn tổng tài, cú lật là sản phẩm). Kiểu hình hợp: minh hoạ, người thật AI. Dùng cho cả 4 sản phẩm.
+- **Luật cứng của hai kiểu drama**: chỉ drama công việc, không lãng mạn; vai tổng tài linh hoạt theo brief (người gây áp lực hoặc người được cứu); không làm nhục, không quấy rối nhân viên; không gọi tên phim, diễn viên, nhân vật có bản quyền.
+- **Giọng đa dạng bắt buộc** (thay cho mặc định một giọng kể của §27–29 với riêng hai kiểu này): validate chặn khi video drama dựng riêng không có `loi-doc.json` hoặc có ít hơn 2 giọng đọc câu (`KIEU_KE[…].nhieuGiong`, `voiceVarietyIssues`); cảnh báo khi mọi giọng cùng giới. Luật thoại ngoài khung giữ nguyên.
+- **Tiếng động drama** tự tổng hợp (`scripts/gen-sfx.ts`, không bản quyền): `dun-dun`, `tim-dap`, `buoc-chan`, `whoosh-tram`, `dung-hinh`. `pnpm gen:sfx <tên…>` chỉ tạo tiếng được nêu, không tạo lại file cũ.
+- **Nhân vật vẽ mặc vest** (`RS.person({ outfit: "vest" })`): thân và tay áo màu `--prop-suit`, sơ mi `--prop-suit-shirt`, cà vạt theo màu `shirt` a|b|c.
+- **Skill [cinematic-video-prompt](https://github.com/Rylaispirit/cinematic-video-prompt-skill) (MIT) không cài nguyên** (theo §6 kiểm kê skill): mô tả của nó tự kích hoạt với mọi câu "viết prompt video", phiên MKT sẽ chạy ngoài quy trình (cùng lý do cấm creation workflow của HyperFrames); khoảng một nửa bài học về lỗi model đã có trong ghi chú Veo của `chon-kieu-hinh`; nhiều combo màu không hợp thương hiệu. Rút phần cần thành `dung-video/references/ngon-ngu-may-quay.md` (ghi nguồn), dùng chung cho `moTa` cảnh AI và chuyển động máy quay HyperFrames.
+- **Nhạc**: dùng bài sẵn có mood `dien-anh` / `bi-an` / `hanh-dong`, thêm 4 bài drama Mixkit Nam nghe duyệt 2026-10-12: `mixkit-i-wont-surrender-846`, `mixkit-training-53` (tổng tài), `mixkit-thunder-318`, `mixkit-complicated-281` (drama văn phòng). Gắn mood có sẵn, không thêm phong cách mới. Bằng chứng license: `~/Documents/redsun-reels-bang-chung-nhac/mixkit-2026-10-12/` (chuyển lên Drive).
+- Nam nghe duyệt 5 tiếng động drama (2026-10-12).
+
+## 37. Người xem theo sản phẩm (2026-10-12)
+Nam: "chủ quán cho SIPOS, công ty cho bos, chủ website cho webino, ghi rõ luật này". Luật cứng cho mọi kiểu kể: nhân vật chính, bối cảnh, nỗi đau, hook của video SIPOS nói với chủ quán; REDSUN BOS nói với công ty (giám đốc, trưởng phòng, đội sale, kế toán, nhân sự); Webino nói với chủ website (người bán online, chủ shop). Bảng ở `tao-reel/references/luat-kich-ban.md` mục "Người xem theo sản phẩm", tóm tắt trong CLAUDE.md và `tao-reel`. Máy chưa kiểm; Claude soát ở bước concept.
+
+## 38. Claude tự chọn concept, không hỏi MKT (2026-10-12)
+Nam: "ghi skill chọn kịch bản theo gợi ý, không cần hỏi". Đổi phần "MKT chọn 1 trong 3 concept" của §34: Claude vẫn viết 3 concept thuộc 3 kiểu kể khác nhau, rồi tự chọn concept khuyên (điểm hấp dẫn cao nhất, rồi thang tự chấm), ghi `## Lựa chọn` trong `concepts.md` kèm lý do. MKT nói rõ kiểu kể từ đầu thì dùng kiểu đó. Câu hỏi bắt buộc duy nhất của luồng tự động là kiểu hình (`chon-kieu-hinh`). Khi báo video, Claude kể tên 2 concept còn lại để MKT đổi nếu muốn. Validate nhận cả `## Lựa chọn` và `## Lựa chọn của MKT` (video cũ).
+
+## 39. REDSUN BOS đọc "Redsun bi-ô-ét" (2026-10-12)
+Nam nghe video drama CRM: "đọc không đúng redsun bos => redsun bi-ô-ét". `VOICE.vieneu.phatAm.BOS` đổi từ "bê ô ét" sang "bi-ô-ét" (thay §32 phần BOS). Video cũ có giọng nhắc REDSUN BOS cần `./reel giong <tên> --cau=<id> --lai` để đọc lại.

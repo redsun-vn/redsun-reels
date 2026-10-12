@@ -13,7 +13,8 @@ import { CUE_FILE, CUE_MARKER, cueIssues, parseCues, SFX_TRACK_START } from './s
 import { BOARD_FILE, boardIssues, parseBoard } from './storyboard-board.ts';
 import { VOICE } from '../../config/voice.ts';
 import { readVoice } from './voice-stage.ts';
-import { spokenText, voiceScriptIssues } from './voice-script.ts';
+import { spokenText, voiceScriptIssues, voiceVarietyIssues } from './voice-script.ts';
+import { KIEU_KE } from '../../config/kieu-ke.ts';
 import { faceClips, voiceFaceIssues } from './voice-sync.ts';
 import { stockLog } from './kieu-hinh-rules.ts';
 
@@ -131,6 +132,8 @@ export function customIssues(dir: string, script: Script, briefBody: string, tot
 
   // Giọng đọc AI (loi-doc.json, ./reel giong): hợp lệ, mọi câu có bản đạt máy chấm, có chỗ gắn, chống bịa số
   const voiceFile = join(dir, CUSTOM_DIR, VOICE.file);
+  const kieuKe = script.concept?.kieuKe ? KIEU_KE[script.concept.kieuKe] : undefined;
+  if (kieuKe?.nhieuGiong && !existsSync(voiceFile)) err(`Kiểu kể "${kieuKe.ten}" bắt buộc có giọng đọc nhiều giọng: viết ${CUSTOM_DIR}/${VOICE.file} theo skill giong-doc rồi chạy ./reel giong <tên-video>.`);
   if (existsSync(voiceFile)) {
     let voice: ReturnType<typeof readVoice>;
     try {
@@ -140,6 +143,11 @@ export function customIssues(dir: string, script: Script, briefBody: string, tot
     }
     if (voice) {
       for (const m of voiceScriptIssues(voice.vs, Number.isFinite(d) ? d : Infinity)) err(m);
+      if (kieuKe?.nhieuGiong) {
+        const v = voiceVarietyIssues(voice.vs, kieuKe.nhieuGiong, kieuKe.ten);
+        for (const m of v.errors) err(m);
+        for (const message of v.warnings) out.push({ level: 'warning', message });
+      }
       const gap = voiceDraft ? (message: string) => out.push({ level: 'warning', message }) : err;
       if (voice.missing.length) gap(`Câu ${voice.missing.join(', ')} chưa có giọng đọc: chạy ./reel giong <tên-video>.`);
       const weak = voice.placed.filter((p) => !p.dat).map((p) => p.id);

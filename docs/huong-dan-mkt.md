@@ -6,11 +6,15 @@ Sổ tay này dành cho người làm video, không cần biết lập trình. M
 1. Mở Claude Code, mở thư mục dự án (`Documents/redsun-reels`).
 2. Nói việc bạn muốn làm, ví dụ:
    > làm reel mẹo cho SIPOS về cảnh báo tồn kho thấp, khoảng 20 giây, cho chủ tiệm tạp hoá
-3. Claude hỏi bạn **hai việc**: chọn kiểu hình (hoạt hình hay người thật, kèm số tiền), rồi **chọn 1 trong 3 ý tưởng**. Ba ý tưởng là ba cách kể khác nhau:
+3. Claude hỏi bạn **một việc**: chọn kiểu hình (hoạt hình hay người thật, kèm số tiền). Claude viết 3 ý tưởng theo 3 cách kể khác nhau rồi **tự chọn ý tưởng tốt nhất**, không hỏi bạn. Muốn một cách kể cụ thể thì nói ngay từ đầu (vd. "làm drama văn phòng"); xem video xong muốn đổi sang ý tưởng khác thì cứ nói. Các cách kể:
    - **Tiểu phẩm hài**: một tình huống quen ở quán, có người phản ứng và chỗ gây cười.
    - **POV "khi bạn là chủ quán…"**: người xem nhìn qua mắt chủ quán, sống lại một khoảnh khắc khó.
    - **Chuyện có cú lật**: người xem đoán một hướng, rồi bị lật ngược.
    - **Mẹo / số liệu**: mở bằng một con số hay mẹo thật làm chủ quán giật mình (chỉ khi bạn đưa số hay mẹo thật).
+   - **Drama văn phòng**: khoảnh khắc căng ở công ty hoặc ở quán, cả nhóm phản ứng như phim, sản phẩm gỡ nút thắt. Có nhiều giọng đọc.
+   - **Drama tổng tài**: nhại phim ngắn tổng tài, sếp uy lực, cú lật là sản phẩm. Có nhiều giọng đọc.
+
+   Người trong video đúng người xem của sản phẩm: SIPOS là chủ quán, REDSUN BOS là công ty, Webino là chủ website.
 
    Sau đó Claude tự làm hết: viết kịch bản, dựng, xuất video. Claude chỉ hỏi thêm khi thiếu thông tin thật (số liệu, ưu đãi, lời khách, ảnh). Xong, Claude gửi đường dẫn video và caption.
 4. Xem video, muốn sửa gì cứ nói: "đổi câu mở đầu thành…", "nhạc vui hơn", "hiệu ứng mạnh hơn"…

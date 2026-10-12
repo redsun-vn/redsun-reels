@@ -129,11 +129,13 @@ describe('validateVideo', () => {
       validateVideo(makeDir(s, brief, concepts), { musicPurpose: 'test' }).issues.filter((i) => i.level === 'warning').map((i) => i.message).join('\n');
     const head = '## Điểm hấp dẫn\n| a | 21 |\n';
     const bad = warnsOf(head + 'Kiểu kể: tieu-pham\nKiểu kể: tieu-pham\nKiểu kể: pov\n', BRIEF.replace('kieuHinh: minh-hoa', 'kieuHinh: nguoi-that-quay-san'));
-    expect(bad).toContain('Lựa chọn của MKT');
+    expect(bad).toContain('## Lựa chọn');
     expect(bad).toContain('3 kiểu kể khác nhau');
     expect(bad).toContain('không hợp kiểu hình');
-    const good = warnsOf(head + 'Kiểu kể: tieu-pham\nKiểu kể: pov\nKiểu kể: twist\n\n## Lựa chọn của MKT\nConcept 1\n');
+    const good = warnsOf(head + 'Kiểu kể: tieu-pham\nKiểu kể: pov\nKiểu kể: twist\n\n## Lựa chọn\nConcept 1\n');
     expect(good).not.toMatch(/Kiểu kể:/);
+    s.concept.kieuKe = 'tong-tai';
+    expect(warnsOf(head + 'Kiểu kể: tong-tai\nKiểu kể: pov\nKiểu kể: twist\n\n## Lựa chọn\nConcept 1\n', BRIEF.replace('kieuHinh: minh-hoa', 'kieuHinh: nguoi-that-quay-san'))).toContain('"Drama tổng tài" không hợp kiểu hình');
   });
 
   it('LUẬT CỨNG reel 15–30 giây', () => {

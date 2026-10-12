@@ -91,6 +91,13 @@
 .rs-person svg { display: block; overflow: visible; }
 .rs-person.shirt-b { --shirt: var(--prop-shirt-b); }
 .rs-person.shirt-c { --shirt: var(--prop-shirt-c); }
+/* Vest: thân và tay áo màu vest; cà vạt theo màu áo shirt a|b|c đã chọn */
+.rs-person.outfit-vest { --shirt: var(--prop-suit); }
+.rs-person .vest-shirt { fill: var(--prop-suit-shirt); }
+.rs-person .vest-tie { fill: var(--tie, var(--color-accent)); }
+.rs-person.outfit-vest.shirt-a { --tie: var(--prop-shirt-a); }
+.rs-person.outfit-vest.shirt-b { --tie: var(--prop-shirt-b); }
+.rs-person.outfit-vest.shirt-c { --tie: var(--prop-shirt-c); }
 .rs-person.skin-2 { --skin: var(--prop-skin-2); --skin-d: var(--prop-skin-2-shade); }
 .rs-person.hair-2 { --hair: var(--prop-hair-2); }
 .rs-person .skin { fill: var(--skin); }

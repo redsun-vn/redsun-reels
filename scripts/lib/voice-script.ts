@@ -59,3 +59,15 @@ export const lineStyle = (c: VoiceLine): 'natural' | 'storytelling' => c.phongCa
 export function spokenText(loi: string): string {
   return loi.replace(/\[[^\]]*\]/g, ' ').replace(/\s+/g, ' ').trim();
 }
+
+/**
+ * Kiểu kể cần giọng đa dạng (drama): đếm giọng thật sự có câu đọc. Thiếu số giọng → lỗi; mọi giọng cùng giới → cảnh báo
+ * (drama cần đối thoại nam/nữ xen nhau cho rõ ai đang nói).
+ */
+export function voiceVarietyIssues(vs: VoiceScript, minVoices: number, kieuKeTen: string): { errors: string[]; warnings: string[] } {
+  const used = [...new Set(vs.cau.map((c) => c.vai))].map((v) => vs.dan[v]).filter(Boolean);
+  const voices = new Set(used.map((d) => d.giong));
+  const errors = voices.size < minVoices ? [`Kiểu kể "${kieuKeTen}" cần ít nhất ${minVoices} giọng khác nhau có câu đọc (đang có ${voices.size}): mỗi nhân vật chính một giọng, xem skill giong-doc mục "Dàn nhiều giọng".`] : [];
+  const warnings = voices.size >= 2 && new Set(used.map((d) => d.gioi)).size < 2 ? [`Kiểu kể "${kieuKeTen}": mọi giọng cùng giới, nên xen giọng nam và nữ để người xem phân biệt ai đang nói.`] : [];
+  return { errors, warnings };
+}

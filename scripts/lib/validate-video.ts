@@ -318,7 +318,7 @@ export function kieuKeIssues(dir: string, script: Script, brief: Brief, briefBod
   const out: Issue[] = [];
   const id = script.concept.kieuKe;
   if (!id) {
-    if (script.build === 'custom') out.push(warn(`Kiểu kể: kịch bản chưa chọn concept.kieuKe (${KIEU_KE_IDS.join(' | ')}); video mới nên mở bằng một trong 4 kiểu kể để không giống quảng cáo.`));
+    if (script.build === 'custom') out.push(warn(`Kiểu kể: kịch bản chưa chọn concept.kieuKe (${KIEU_KE_IDS.join(' | ')}); video mới nên mở bằng một trong ${KIEU_KE_IDS.length} kiểu kể để không giống quảng cáo.`));
     return out;
   }
   const k = KIEU_KE[id];
@@ -328,7 +328,7 @@ export function kieuKeIssues(dir: string, script: Script, brief: Brief, briefBod
     out.push(warn(`Kiểu kể "${k.ten}" không hợp kiểu hình "${brief.kieuHinh}" (hợp: ${k.kieuHinh.join(', ')}): clip quay sẵn không diễn theo kịch bản được.`));
   const file = join(dir, 'concepts.md');
   const text = existsSync(file) ? readFileSync(file, 'utf8') : '';
-  if (!/^##\s*Lựa chọn của MKT/m.test(text)) out.push(warn('Kiểu kể: concepts.md chưa có mục "## Lựa chọn của MKT" (MKT chọn 1 trong 3 concept).'));
+  if (!/^##\s*Lựa chọn/m.test(text)) out.push(warn('Kiểu kể: concepts.md chưa có mục "## Lựa chọn" (concept Claude chọn trong 3 concept và vì sao).'));
   const listed = [...text.matchAll(/Kiểu kể:\s*`?([a-z-]+)`?/g)].map((m) => m[1]);
   const known = listed.filter((x) => (KIEU_KE_IDS as readonly string[]).includes(x));
   if (new Set(known).size < 3) out.push(warn(`Kiểu kể: 3 concept trong concepts.md phải thuộc 3 kiểu kể khác nhau (mỗi concept một dòng "Kiểu kể: <mã>"; đang thấy ${known.length ? [...new Set(known)].join(', ') : 'không có'}).`));

@@ -293,8 +293,8 @@ Rule kịch bản (đưa vào CLAUDE.md):
   - dự báo "sắp thay đổi"
   - câu hỏi đánh vào nỗi đau
 
-  MKT chọn 1 concept rồi mới viết `script.json`. Không dùng góc "thú nhận thất bại".
-- **4 kiểu kể** (Nam 2026-10-11, decisions §34): ba concept thuộc ba kiểu kể khác nhau — tiểu phẩm hài đời thường, POV "khi bạn là chủ quán…", kể chuyện có cú lật, mẹo / số liệu gây sốc (`config/kieu-ke.ts`). MKT chọn 1 trong 3 concept ở cả luồng tự động (điểm dừng duy nhất sau câu hỏi kiểu hình). Kịch bản ghi `concept.kieuKe`; mẹo / số liệu chỉ khi brief có số hay mẹo thật. `concepts.md` có `## Bảng nhịp` (giây · ai · phản ứng · ngắt).
+  Claude tự chọn concept khuyên (Nam 2026-10-12, decisions §38) rồi mới viết `script.json`. Không dùng góc "thú nhận thất bại".
+- **6 kiểu kể** (Nam 2026-10-11, decisions §34; thêm hai kiểu drama 2026-10-12, §36): ba concept thuộc ba kiểu kể khác nhau — tiểu phẩm hài đời thường, POV "khi bạn là chủ quán…", kể chuyện có cú lật, mẹo / số liệu gây sốc, drama văn phòng, drama tổng tài (`config/kieu-ke.ts`). Hai kiểu drama chỉ drama công việc, không lãng mạn. Claude tự chọn concept khuyên, không hỏi MKT (Nam 2026-10-12, §38). Kịch bản ghi `concept.kieuKe`; mẹo / số liệu chỉ khi brief có số hay mẹo thật. `concepts.md` có `## Bảng nhịp` (giây · ai · phản ứng · ngắt).
 - **LUẬT SỐ 1 — 3 giây đầu** (Nam 2026-10-10: "chỉ có 03s đầu tiên để thu hút người xem"; "luật 3 giây đầu phải là mạnh nhất"), đứng trên mọi luật khác:
   - Chọn **điểm hấp dẫn nhất trong brief** bằng bảng chấm 5 tiêu chí (thấy ngay, người xem thấy mình, tò mò, cụ thể, đúng và nối được sản phẩm; mỗi tiêu chí 1–5, tổng 25) ghi ở `concepts.md` mục `## Điểm hấp dẫn` (skill `tao-reel`, `references/chon-diem-hap-dan.md`). Hook ≥ 20/25.
   - **Mở bằng điểm mạnh nhất, kể lại sau** (được đảo thứ tự cảnh của brief, giữ đủ ý, lời nói và điều cấm). Khung giây 0 là hình mạnh nhất; biến động trong 1 giây đầu trên phách; có giọng thì câu hook bắt đầu ≤ 0,3 giây.
@@ -330,7 +330,7 @@ Rule kịch bản (đưa vào CLAUDE.md):
 briefs/2026-10-08-sipos-tinh-nang-kho/
 ├── brief.md          # MKT viết
 ├── script.json       # Claude viết, MKT duyệt
-├── concepts.md       # 3 concept Claude đề xuất + concept MKT chọn
+├── concepts.md       # 3 concept Claude đề xuất + concept Claude chọn
 ├── shotlist.md       # chỉ khi thiếu asset: danh sách cần quay/chụp
 ├── props.json        # dữ liệu cuối cho template (variables)
 ├── post.md           # caption + hashtag + credit nhạc (nếu cần), soạn khi xuất
@@ -547,7 +547,7 @@ Ràng buộc:
 File `.claude/skills/tao-reel/SKILL.md`. Khi MKT gõ `/tao-reel` hoặc "làm reel…", Claude phải:
 1. Hỏi hoặc đọc brief. Nếu chưa có → chạy `pnpm new`, hỏi tối đa 5 câu để điền frontmatter.
 2. Nếu `videoType: auto` → đề xuất 1 loại video + lý do 1 câu. Nếu `style` trống → dùng mặc định của loại và nói cho MKT biết. Nếu MKT chọn phong cách "nên tránh" → hỏi lại một câu.
-3. **Concept**: đưa 3 concept (mục 6.2), ghi `concepts.md`, **dừng chờ MKT chọn**.
+3. **Concept**: viết 3 concept (mục 6.2) vào `concepts.md`, **Claude tự chọn concept khuyên** (không hỏi MKT, decisions §38).
 4. **Thiếu asset** (quay màn hình, ảnh quán, clip khách, ảnh sự kiện, người nói trước camera):
    - Xuất `shotlist.md`, gồm số shot, cảnh, địa điểm, mô tả, đạo cụ, ánh sáng, thời lượng.
    - Khung dọc 9:16, chừa safe zone. Nhóm theo địa điểm để quay nhanh.

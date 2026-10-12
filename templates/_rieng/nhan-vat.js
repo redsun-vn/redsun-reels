@@ -118,6 +118,10 @@
     else if (outfit === "tap-de") s += c("apron", "M214 620 L 386 620 L 404 900 L 196 900 Z") + c("apron-d", "M214 620 L 386 620 L 385 646 L 215 646 Z") + c("apron-tie", "M238 620 L 226 548 M362 620 L 374 548") + c("shirt-l", "M262 530 Q 300 576 338 530 Z");
     else if (outfit === "ao-dai") s += c("shirt", "M262 470 L 338 470 L 344 540 Q 300 552 256 540 Z") + c("shirt-l", "M262 470 L 338 470 L 339 484 L 261 484 Z") +
       c("seam", "M300 546 Q 360 552 410 596") + c("sheen", "M150 900 C 150 760, 170 660, 214 600");
+    else if (outfit === "vest") s += c("vest-shirt", "M258 530 L 300 650 L 342 530 Z") +
+      c("vest-tie", "M290 546 L 310 546 L 316 562 L 307 642 L 300 656 L 293 642 L 284 562 Z") +
+      c("shirt-d", "M254 530 L 300 652 L 286 664 L 226 554 Z") + c("shirt-d", "M346 530 L 300 652 L 314 664 L 374 554 Z") +
+      '<circle class="shirt-d" cx="300" cy="730" r="9"/><circle class="shirt-d" cx="300" cy="800" r="9"/>';
     else if (outfit === "ba-ba") s += c("shirt-l", "M260 530 Q 300 568 340 530 Z") + c("seam", "M300 566 L 300 900") + '<circle class="shirt-l" cx="300" cy="620" r="7"/><circle class="shirt-l" cx="300" cy="690" r="7"/><circle class="shirt-l" cx="300" cy="760" r="7"/>' + c("shirt-d", "M190 780 h70 v60 h-70 Z");
     else s += c("shirt-l", "M258 530 Q 300 580 342 530 Z");
     return s;
@@ -184,14 +188,14 @@
   /**
    * Nét người Việt: mắt hạnh nhân, tóc đen, da vàng ấm (skin 1) hoặc rám nắng (skin 2).
    * opts: { hair: "long"|"mai" (tóc dài mái bằng)|"mai-ngan"|"bob"|"bun"|"ponytail"|"short",
-   *         outfit: "ao"|"so-mi"|"tap-de" (tạp dề quán)|"ao-dai"|"ba-ba", hat: "non-la", shirt: "a"|"b"|"c",
+   *         outfit: "ao"|"so-mi"|"tap-de" (tạp dề quán)|"ao-dai"|"ba-ba"|"vest" (vest + cà vạt màu shirt), hat: "non-la", shirt: "a"|"b"|"c",
    *         skin: 1|2, hairColor: 1|2, lashes (mặc định: có trừ tóc short), glasses, longSleeve,
    *         phone, phoneOk (dấu tick xanh trên màn hình), width (px), pose, mood }
    */
   RS.person = function (opts) {
     opts = opts || {};
     var hair = opts.hair || "short";
-    if (opts.outfit === "ao-dai" || opts.outfit === "ba-ba") opts.longSleeve = opts.longSleeve !== false;
+    if (opts.outfit === "ao-dai" || opts.outfit === "ba-ba" || opts.outfit === "vest") opts.longSleeve = opts.longSleeve !== false;
     if (opts.lashes == null) opts.lashes = hair !== "short";
     var hp = hairParts(hair);
     var w = opts.width || 520;
@@ -203,7 +207,7 @@
       arm("L", opts) + arm("R", opts) +
       "</g></svg>";
     var el = document.createElement("div");
-    el.className = "rs-person shirt-" + (opts.shirt || "a") + " skin-" + (opts.skin || 1) + " hair-" + (opts.hairColor || 1);
+    el.className = "rs-person shirt-" + (opts.shirt || "a") + (opts.outfit === "vest" ? " outfit-vest" : "") + " skin-" + (opts.skin || 1) + " hair-" + (opts.hairColor || 1);
     el.innerHTML = svg;
     el._rig = { pose: angles(opts.pose || "xuoi"), mood: "binh-thuong", look: [0, 0], tilt: 0 };
     var q = function (s) { return el.querySelector(s); };

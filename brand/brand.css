@@ -128,6 +128,8 @@
   --prop-shirt-a: #3A7CA5;
   --prop-shirt-b: #E07A5F;
   --prop-shirt-c: #81B29A;
+  --prop-suit: #232C33; /* vest tổng tài, sếp văn phòng */
+  --prop-suit-shirt: #F7F7F5;
   --prop-bubble: #FFFFFF;
   --prop-bubble-ink: #10232A;
   --prop-shadow: rgba(0, 0, 0, 0.45);
