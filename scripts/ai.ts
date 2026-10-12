@@ -1,5 +1,6 @@
 /**
- * ./reel ai <tên-video> [--canh=<id>,…] [--video] [--lai]
+ * ./reel ai <tên-video> [--canh=<id>,…] [--video] [--lai] [--xem-prompt]
+ *   --xem-prompt: ghi ai/prompt.md với đúng prompt sẽ gửi (không gọi model, không tốn tiền); mỗi lần gửi thật máy ghi thêm lịch sử vào file đó.
  * Tạo cảnh người thật do AI (REQUIREMENTS §7.4, OpenRouter) theo briefs/<tên>/ai/canh-ai.json, đúng thứ tự:
  *   1. ảnh tham chiếu mỗi vai (ai/vai-<vai>.png) → người duyệt ghi `duyet: true`;
  *   2. khung đầu mỗi cảnh (ai/<id>-dau.png) từ ảnh vai → Claude xem, ghi `duyetKhung: true`;
@@ -34,6 +35,10 @@ import {
   roleFile,
   rolePrompt,
   seedOf,
+  mergePromptFile,
+  PROMPT_FILE,
+  promptLogEntry,
+  promptPreview,
   scriptGateIssues,
   specIssues,
   textVideoPrompt,
@@ -58,6 +63,7 @@ const slug = args.find((a) => !a.startsWith('--'));
 const only = args.find((a) => a.startsWith('--canh='))?.slice(7).split(',').filter(Boolean);
 const withVideo = args.includes('--video');
 const redo = args.includes('--lai');
+const previewOnly = args.includes('--xem-prompt');
 const vnd = (usd: number) => `${toVnd(usd).toLocaleString('vi-VN')}đ`;
 
 class CapError extends Error {}
@@ -80,6 +86,16 @@ await runCommand(async () => {
   const spec = AiSpecSchema.parse(JSON.parse(readFileSync(specPath, 'utf8')));
   const bad = specIssues(spec);
   if (bad.length) throw new Error(bad.join('\n'));
+  const aiDirP = join(dir, AI_VIDEO.dir), promptPath = join(aiDirP, PROMPT_FILE);
+  const readPromptFile = () => (existsSync(promptPath) ? readFileSync(promptPath, 'utf8') : '');
+  if (previewOnly) {
+    const tv = OR.textVideoModels[spec.mohinh];
+    writeFileSync(promptPath, mergePromptFile(readPromptFile(), { preview: promptPreview(spec, { video: tv.id, image: OR.imageModel }) }));
+    console.log(`Đã ghi prompt sẽ gửi vào ${AI_VIDEO.dir}/${PROMPT_FILE} (chưa gửi model, không tốn tiền).`);
+    return;
+  }
+  const logPrompt = (viec: string, model: string, prompt: string, uocUsd: number, giay?: number) =>
+    writeFileSync(promptPath, mergePromptFile(readPromptFile(), { entry: promptLogEntry({ at: new Date().toISOString(), viec, model, giay, uocVnd: vnd(uocUsd), prompt }) }));
   if (spec.coTieng && spec.canh.some((c) => c.video)) {
     const conceptsFile = join(dir, 'concepts.md');
     const gate = scriptGateIssues(existsSync(conceptsFile) ? readFileSync(conceptsFile, 'utf8') : '');
@@ -111,6 +127,7 @@ await runCommand(async () => {
     ensure(OR.imageEstimateUsd, what);
     giuChoUsd += OR.imageEstimateUsd;
     try {
+      logPrompt(what, OR.imageModel, prompt, OR.imageEstimateUsd);
       const img = await generateImage(prompt, refs, seed, key);
       giuChoUsd -= OR.imageEstimateUsd;
       return img;
@@ -230,6 +247,7 @@ await runCommand(async () => {
         const uocUsd = estimateVideoUsd(model, c.giay, size, audio);
         ensure(uocUsd, `Clip ${c.id} (${c.giay}s)`);
         const prompt = c.tuChu ? textVideoPrompt(spec, c) : motionPrompt(spec, c), seed = seedOf(`clip-${c.id}`);
+        logPrompt(`Clip ${c.id}`, model.id, prompt, uocUsd, c.giay);
         const job = await submitVideo(model.id, prompt, firstFrame ? dataUrl(join(aiDir, frameFile(c.id))) : undefined, c.giay, seed, key, size, c.tuChu ? tv.provider : undefined, audio);
         const p: AiPending = { canh: c.id, maViec: job.id, pollingUrl: job.pollingUrl, model: model.id, prompt, anhThamChieu: firstFrame ? [frameFile(c.id)] : [], seed, giay: c.giay, uocUsd, guiLuc: new Date().toISOString() };
         log.dangCho.push(p);

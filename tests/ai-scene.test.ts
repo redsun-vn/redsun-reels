@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { AI_VIDEO } from '../config/ai-video.ts';
-import { AiSpecSchema, budgetLeftUsd, emptyLog, framePrompt, rolePrompt, scriptGateIssues, seedOf, specIssues, textVideoPrompt } from '../scripts/lib/ai-scene-spec.ts';
+import { AiSpecSchema, budgetLeftUsd, emptyLog, framePrompt, mergePromptFile, promptLogEntry, promptPreview, rolePrompt, scriptGateIssues, seedOf, specIssues, textVideoPrompt } from '../scripts/lib/ai-scene-spec.ts';
 import { estimateVideoUsd, hideKey, videoRequestIssues, type VideoModel } from '../scripts/lib/openrouter-ai.ts';
 
 const seedance: VideoModel = {
@@ -143,6 +143,20 @@ describe('kế hoạch cảnh AI', () => {
     expect(scriptGateIssues(head + row).join()).toContain('chưa được duyệt');
     expect(scriptGateIssues(head + '| 0,0 | 1 | Sếp | Khách cần gì? |  | |\nĐã duyệt: Nam, 2026-10-12\n').join()).toContain('thiếu cột');
     expect(scriptGateIssues(head + row + '\nĐã duyệt: Nam, 2026-10-12\n')).toEqual([]);
+  });
+
+  it('prompt.md: bản xem trước thay mới, lịch sử gửi chỉ thêm', () => {
+    const s = spec({ canh: [{ id: 'hop', khung: 1, vai: ['chu-quan'], camXuc: 'cuoi', moTa: 'Shot 1 (0-4s): wide, she smiles warmly: "Chào"', video: true, tuChu: true, toanCanh: true, giay: 4 }] });
+    const pv = promptPreview(s, { video: 'veo', image: 'img' });
+    expect(pv).toContain('Clip hop (4 giây, có tiếng)');
+    expect(pv).toContain(textVideoPrompt(s, s.canh[0]));
+    let f = mergePromptFile('', { preview: pv });
+    f = mergePromptFile(f, { entry: promptLogEntry({ at: 't1', viec: 'Clip hop', model: 'veo', giay: 4, uocVnd: '1đ', prompt: 'P1' }) });
+    f = mergePromptFile(f, { preview: '## Bản xem trước (chưa gửi)\nmới' });
+    f = mergePromptFile(f, { entry: promptLogEntry({ at: 't2', viec: 'Clip hop', model: 'veo', uocVnd: '1đ', prompt: 'P2' }) });
+    expect(f).toContain('mới');
+    expect(f).not.toContain('Clip hop (4 giây');
+    expect(f.indexOf('P1')).toBeLessThan(f.indexOf('P2'));
   });
 });
 

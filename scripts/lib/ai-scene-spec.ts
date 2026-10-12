@@ -257,3 +257,32 @@ export function scriptGateIssues(concepts: string): string[] {
   return out;
 }
 
+/** File prompt dễ đọc trong brief (Nam 2026-10-12: "trong brief lưu lại prompt để theo dõi"): ai/prompt.md. */
+export const PROMPT_FILE = 'prompt.md';
+
+/** Bản xem trước: đúng prompt sẽ gửi cho từng ảnh/clip, chưa tốn tiền (./reel ai <tên> --xem-prompt). */
+export function promptPreview(spec: AiSpec, model: { video: string; image: string }): string {
+  const parts = ['## Bản xem trước (chưa gửi)', ''];
+  const tuChuOnly = spec.canh.every((c) => !c.video || c.tuChu);
+  if (!tuChuOnly) for (const v of Object.keys(spec.dan)) parts.push(`### Ảnh vai ${v} · ${model.image}`, '', '```', rolePrompt(spec, v), '```', '');
+  for (const c of spec.canh) {
+    if (!c.tuChu) parts.push(`### Khung đầu ${c.id} (khung ${c.khung}) · ${model.image}`, '', '```', framePrompt(spec, c), '```', '');
+    if (c.video) parts.push(`### Clip ${c.id} (${c.giay} giây${spec.coTieng ? ', có tiếng' : ''}${c.noiTiep ? `, nối tiếp ${c.noiTiep}` : ''}) · ${c.tuChu ? model.video : 'clip từ khung đầu'}`, '', '```', c.tuChu ? textVideoPrompt(spec, c) : motionPrompt(spec, c), '```', '');
+  }
+  return parts.join('\n');
+}
+
+/** Một mục lịch sử: mỗi lần gửi model ghi thêm vào ai/prompt.md (giờ, việc, model, giây, tiền ước, prompt nguyên văn). */
+export function promptLogEntry(e: { at: string; viec: string; model: string; giay?: number; uocVnd: string; prompt: string }): string {
+  return [`### ${e.at} · ${e.viec} · ${e.model}${e.giay ? ` · ${e.giay} giây` : ''} · ước ${e.uocVnd}`, '', '```', e.prompt, '```', ''].join('\n');
+}
+
+/** Ghép file prompt.md: phần xem trước (thay mới mỗi lần --xem-prompt) + lịch sử gửi (chỉ thêm, không xoá). */
+export function mergePromptFile(old: string, opts: { preview?: string; entry?: string }): string {
+  const HIST = '## Lịch sử gửi model';
+  const [head, hist = ''] = old.includes(HIST) ? old.split(HIST) : [old, ''];
+  const preview = opts.preview ?? (head.includes('## Bản xem trước') ? head.slice(head.indexOf('## Bản xem trước')).trim() : '');
+  const title = '# Prompt cảnh AI\n\nPhần xem trước: `./reel ai <tên> --xem-prompt` (chưa tốn tiền). Lịch sử: mỗi lần gửi model máy ghi thêm, mới nhất ở cuối.\n';
+  return [title, preview, `${HIST}\n${hist.trim() ? `\n${hist.trim()}\n` : ''}${opts.entry ? `\n${opts.entry}` : ''}`].filter(Boolean).join('\n') + '\n';
+}
+

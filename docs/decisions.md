@@ -559,4 +559,4 @@ Nam: "tất cả yêu cầu phải thành skill để tất cả video sau này 
 - **Giọng theo độ căng từng câu**: mỗi câu thoại ghi cách nói (âm lượng, cảm xúc, nhịp); máy chặn câu thiếu cách nói (`dialogueIssues`).
 - **Kịch bản trước, clip sau**: `concepts.md` mục `## Bảng thoại` (giây · shot · nhân vật · câu · cách nói · vì sao) + `Đã duyệt: <ai>, <ngày>`; `./reel ai` từ chối tạo clip có thoại khi thiếu (`scriptGateIssues`). Video AI có thêm một điểm dừng: duyệt kịch bản + bảng thoại.
 - **Khuôn 8 thành phần** trong kế hoạch cảnh (`phongCach`, `anhSang`, `amThanh` bắt buộc khi tạo từ chữ), prompt ghép theo nhãn từng phần.
-
+- **Prompt lưu trong brief** (Nam: "tôi muốn trong brief lưu lại prompt để theo dõi"): `ai/prompt.md` — phần xem trước (`./reel ai <tên> --xem-prompt`, không gọi model) + lịch sử mỗi lần gửi (giờ, việc, model, giây, tiền ước, prompt nguyên văn), chỉ thêm không xoá.

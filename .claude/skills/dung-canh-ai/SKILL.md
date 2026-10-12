@@ -65,6 +65,7 @@ Mẫu và thuật ngữ: [../dung-video/references/ngon-ngu-may-quay.md](../dung
 - Câu phủ định cụ thể: no subtitles, no on-screen text, no watermark, no distorted hands, natural skin with no exaggerated sweat.
 
 ## 4. Tạo clip
+- **Prompt lưu trong brief** (Nam 2026-10-12: "trong brief lưu lại prompt để theo dõi"): `./reel ai <tên> --xem-prompt` ghi `ai/prompt.md` với đúng prompt sẽ gửi (không tốn tiền) — gửi kèm bảng thoại khi xin duyệt; mỗi lần gửi model thật máy ghi thêm mục lịch sử (giờ, việc, model, giây, tiền ước, prompt nguyên văn) vào cùng file. Sửa prompt thì sửa `ai/canh-ai.json`, không sửa tay `prompt.md`.
 - `./reel ai <tên> --video` **chạy nền** (Bash `run_in_background`), viết composition trong lúc chờ. Máy chặn trước khi tốn tiền khi kế hoạch thiếu luật (bảng "Máy kiểm" dưới). Lệnh ước tiền trước, chạm trần 50.000đ/video thì dừng; báo "đã gửi nhưng chưa xác nhận được" thì **không gửi lại**, chạy lại cùng lệnh; lỗi "Internal error" của nhà cung cấp thì chạy lại một lần.
 - Chuỗi `noiTiep`: chạy lại lệnh sau khi clip trước xong (máy tự lấy khung cuối làm khung đầu).
 - Cách `anh-vai` (duyệt mặt trước): `./reel ai <tên>` → ảnh vai `ai/vai-<vai>.png` gửi người duyệt (`"duyet": true`) → khung đầu `ai/<id>-dau.png` (Claude soát, `"duyetKhung": true`) → `--video`. Khung đầu cảnh toàn có đủ mọi vai (tối đa 3 ảnh tham chiếu). Tư thế đơn giản, đếm tay từng người.
