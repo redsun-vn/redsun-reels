@@ -50,7 +50,8 @@ describe('lời đọc', () => {
     expect(vieneuText('[cười lớn] Woa! [thở gấp] Trời ơi [thở phào] Phù')).toBe('[cười] Woa! Trời ơi [thở dài] Phù');
     expect(vieneuText('Webino. Tạo web với WEBINO nha, webinoxyz')).toBe('Web-bi-nô. Tạo web với Web-bi-nô nha, webinoxyz');
     expect(vieneuText('SIPOS. Nhắn tin, sipos tự xác nhận')).toBe('Xi pốt. Nhắn tin, Xi pốt tự xác nhận');
-    expect(vieneuText('REDSUN BOS là hệ điều hành doanh nghiệp')).toBe('REDSUN bi-ô-ét là hệ điều hành doanh nghiệp');
+    expect(vieneuText('REDSUN BOS là hệ điều hành doanh nghiệp')).toBe('Red sun bi-ô-ét là hệ điều hành doanh nghiệp');
+    expect(vieneuText('Tư vấn tại redsun.vn nha')).toBe('Tư vấn tại Red sun.vn nha');
     expect(vieneuTokens('Ủa?')).toBe(Math.ceil(50 * VOICE.vieneu.tokenPerChar));
     expect(vieneuTokens('x'.repeat(100))).toBe(Math.ceil(100 * VOICE.vieneu.tokenPerChar));
   });

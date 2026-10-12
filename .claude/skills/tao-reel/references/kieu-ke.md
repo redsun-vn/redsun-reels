@@ -81,6 +81,7 @@ Một khoảnh khắc căng ở công sở, nhiều người cùng phản ứng 
   - **Hậu quả thấy được ngay trên hình**: khách bỏ đi, việc hỏng ("Thôi em hỏi bên khác vậy."), sếp chốt một câu lạnh. Không dừng ở "khách chờ".
   - **Nhịp cắt nhanh dần**: 1,2 giây → 0,6 giây mỗi mặt trước cú vỡ; máy rung tay, dutch tilt, crash zoom; rồi lặng 0,5 giây và cú lật to nhất.
   - **Gọi lại cùng khoảnh khắc**: nửa sau lặp đúng câu hỏi mở đầu, lần này có câu trả lời.
+  - **Một bối cảnh chung**: mở bằng cảnh toàn thấy cả phòng (họp, quầy, kho…) và mọi người trong đó, hành động chính (đập bàn, ném hồ sơ xuống) quay đủ rộng để thấy người làm và cả phòng phản ứng (luật chung cảnh AI, `chon-kieu-hinh`).
 - **Giọng đa dạng (bắt buộc)**: mỗi nhân vật chính một giọng, xen nam nữ (sếp, nhân viên kinh doanh, kế toán…), skill `giong-doc` mục "Ngoại lệ — kiểu kể drama".
 - **Máy quay, tiếng**: cầm tay hơi rung, lia nhanh giữa các gương mặt, cận phản ứng; `dung-hinh`, `tim-dap` trong khoảng lặng, `hoi-tho` khi gỡ xong. Xem [ngon-ngu-may-quay.md](../../dung-video/references/ngon-ngu-may-quay.md).
 - **Lỗi hay gặp**: đổ lỗi cho một người cụ thể (biến nhân viên thành trò cười); căng thẳng chỉ bằng chữ, không có mặt người phản ứng; sản phẩm vào trước khi cả phòng thật sự kẹt.
@@ -94,7 +95,7 @@ Nhại phim ngắn tổng tài: sếp xuất hiện đầy uy lực, câu chốt
 - **Sản phẩm vào ở đâu**: đúng cú lật, câu "hoá ra…" của phim; sau cú lật vẫn cho thấy sản phẩm làm gì.
 - **Tổng tài theo sản phẩm**: REDSUN BOS là giám đốc công ty, SIPOS là chủ chuỗi quán, Webino là chủ shop online (luật "Người xem theo sản phẩm").
 - **Ví dụ SIPOS**: tổng tài chuỗi cửa hàng đập tập hoá đơn xuống bàn "Sao tiền chuyển khoản không khớp?"; cả phòng nín thở; lặng; `dun-dun`: thu ngân mở SIPOS, mỗi đơn một mã QR, tiền vào là tự xác nhận; tổng tài nheo mắt, gật đầu một cái.
-- **Giọng đa dạng (bắt buộc)**: tổng tài một giọng trầm, chậm, chắc; nhân viên một giọng khác giới; người dẫn nếu cần. Câu chốt hạ đặt ngoài khung (sau lưng, bước chân, mặt người nghe).
+- **Giọng đa dạng (bắt buộc)**: tổng tài một giọng trầm, chậm, chắc; nhân viên một giọng khác giới; người dẫn chỉ ở video hoạt hình (video người thật AI không có người dẫn). Câu chốt hạ đặt ngoài khung (sau lưng, bước chân, mặt người nghe).
 - **Máy quay, tiếng**: hero shot góc thấp, slow dolly-in vào mặt, crash zoom ở cú lật, dutch tilt khi căng; `buoc-chan`, `whoosh-tram`, `dap-dau` (đập bàn), `dun-dun`.
 - **Luật cứng cho cả hai kiểu drama** (Nam 2026-10-12):
   - **Không lãng mạn**: không cặp đôi, không ánh mắt tình cảm, không đụng chạm, không "tổng tài bá đạo yêu tôi". Chỉ drama công việc.

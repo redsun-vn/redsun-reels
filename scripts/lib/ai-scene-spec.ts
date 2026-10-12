@@ -14,13 +14,20 @@ const slug = z.string().regex(/^[a-z0-9][a-z0-9-]*$/, 'chỉ chữ thường kh�
 export const AiSpecSchema = z.object({
   /** Model cho cảnh tạo từ chữ (`config/ai-video.ts` `textVideoModels`); mặc định Veo (Nam 2026-10-11), Seedance khi một vai cần quá 8 giây. */
   mohinh: z.enum(['seedance', 'veo']).default('veo'),
-  /** Mô tả chung bối cảnh/ánh sáng (tiếng Anh), gắn vào mọi cảnh. */
+  /**
+   * Bối cảnh chung (tiếng Anh): một nơi duy nhất mọi nhân vật cùng có mặt (phòng, đồ đạc, ánh sáng, giờ trong ngày),
+   * gắn vào mọi cảnh. Nam 2026-10-12: video AI phải là một khung hình chung, không ghép người từ các nơi rời nhau.
+   */
   chung: z.string().default(''),
   dan: z.record(
     slug,
     z.object({
       /** Ngoại hình (tiếng Anh): tuổi, giới, tóc, trang phục đời thường. Không tên người thật, không "giống ai". */
       moTa: z.string().min(10),
+      /** Vai trong câu chuyện (tiếng Anh), để model dựng đúng hình vai: vd. "sales director", "sales employee with a headset". */
+      vaiTro: z.string().default(''),
+      /** Vị trí trong bối cảnh chung (tiếng Anh): đứng/ngồi ở đâu, quay về ai, vd. "standing at the head of the table facing the team". */
+      viTri: z.string().default(''),
       /** Người duyệt đã xem ảnh tham chiếu và đồng ý (Nam/MKT). Chưa duyệt thì không làm khung đầu cho vai này. */
       duyet: z.boolean().default(false),
     }),
@@ -41,6 +48,13 @@ export const AiSpecSchema = z.object({
         /** Chuyển động trong clip (tiếng Anh). */
         chuyenDong: z.string().default(''),
         giay: z.number().int().min(1).default(4),
+        /** Cảnh toàn: thấy cả bối cảnh chung và mọi vai trong `vai` cùng lúc (cảnh mở / cảnh hành động chính). */
+        toanCanh: z.boolean().default(false),
+        /**
+         * Nối tiếp lần tạo từ chữ trước (mã cảnh): khung cuối clip đó làm khung đầu clip này, để cả phần AI là một mạch
+         * liền (Nam 2026-10-12: "phải là 1 video xuyên suốt, không phải cảnh ghép cắt từ nhiều phân đoạn").
+         */
+        noiTiep: slug.optional(),
         /** Clip tạo thẳng từ chữ (không ảnh vai, không khung đầu), model theo `mohinh` (`textVideoModels`); `moTa` tả từng cảnh nhỏ theo giây (Shot 1 (0–2.5s): …). */
         tuChu: z.boolean().default(false),
         /** Claude đã xem khung đầu (tay, mặt, chữ rác…) và thấy đạt. Chưa đạt thì không làm clip. */
@@ -102,22 +116,42 @@ export const clipFile = (canh: string) => `${canh}.mp4`;
 /** Seed cố định theo tên (làm lại ra gần như cùng hình). */
 export const seedOf = (name: string) => parseInt(createHash('sha256').update(name).digest('hex').slice(0, 7), 16);
 
+/** Vai: hình đúng vai trò + vị trí trong bối cảnh chung (blocking), để mọi cảnh dựng cùng một không gian. */
+const castLine = (spec: AiSpec, v: string) => {
+  const d = spec.dan[v];
+  return `${v}${d.vaiTro ? ` (${d.vaiTro})` : ''}: ${d.moTa}${d.viTri ? `; position in the shared location: ${d.viTri}` : ''}.`;
+};
+const sharedPlace = (spec: AiSpec) =>
+  spec.chung ? `One shared location for every shot, all characters are in this same place at the same time: ${spec.chung}` : '';
+const establishing = (c: AiSpec['canh'][number]) =>
+  c.toanCanh ? `The first shot is a wide establishing shot that shows the whole location and every character at once in their positions.` : '';
+
 export function rolePrompt(spec: AiSpec, vai: string): string {
+  const d = spec.dan[vai];
   return [
-    `Reference portrait for one character, waist-up, facing camera, neutral friendly expression, both arms relaxed at the sides, hands empty, plain soft background. ${spec.dan[vai].moTa}.`,
+    `Reference portrait for one character, waist-up, facing camera, neutral friendly expression, both arms relaxed at the sides, hands empty, plain soft background. ${d.vaiTro ? `Role: ${d.vaiTro}, dressed and groomed exactly like this role. ` : ''}${d.moTa}.`,
     AI_VIDEO.promptRules,
   ].join(' ');
 }
 
 export function framePrompt(spec: AiSpec, c: AiSpec['canh'][number]): string {
-  const who = c.vai.length ? c.vai.map((v, i) => `Person ${i + 1} (${v}) is exactly the person in reference image ${i + 1}: ${spec.dan[v].moTa}.`).join(' ') : 'No face visible, only hands and objects.';
-  return [`Vertical 9:16 film still. ${c.moTa}.`, who, `Emotion: ${c.camXuc}.`, spec.chung, AI_VIDEO.promptRules].filter(Boolean).join(' ');
+  const who = c.vai.length ? c.vai.map((v, i) => `Person ${i + 1} is exactly the person in reference image ${i + 1}, ${castLine(spec, v)}`).join(' ') : 'No face visible, only hands and objects.';
+  const wide = c.toanCanh ? 'Wide establishing frame showing the whole location and every person in their positions.' : '';
+  return [`Vertical 9:16 film still. ${wide} ${c.moTa}.`, who, `Emotion: ${c.camXuc}.`, sharedPlace(spec), AI_VIDEO.promptRules].filter(Boolean).join(' ');
 }
 
 /** Mô tả clip tạo từ chữ: nhiều cảnh nhỏ trong một lần tạo, cùng nhân vật (tả ngoại hình mọi vai có mặt). */
 export function textVideoPrompt(spec: AiSpec, c: AiSpec['canh'][number]): string {
-  const who = c.vai.map((v) => `${v}: ${spec.dan[v].moTa}.`).join(' ');
-  return [`Vertical 9:16 cinematic short film, multiple shots with hard cuts, the same characters keep the same face, hair and clothes in every shot. ${c.moTa}`, who && `Characters: ${who}`, spec.chung, AI_VIDEO.promptRules].filter(Boolean).join(' ');
+  const who = c.vai.map((v) => castLine(spec, v)).join(' ');
+  return [
+    `Vertical 9:16 cinematic short film, one continuous scene cut into multiple shots with hard cuts, the same characters keep the same face, hair and clothes in every shot.`,
+    sharedPlace(spec),
+    who && `Characters and blocking: ${who}`,
+    establishing(c),
+    c.noiTiep ? 'This clip continues seamlessly from the first frame: same place, same people, same light, the action carries on without a jump.' : '',
+    c.moTa,
+    AI_VIDEO.promptRules,
+  ].filter(Boolean).join(' ');
 }
 
 export function motionPrompt(spec: AiSpec, c: AiSpec['canh'][number]): string {
@@ -138,6 +172,26 @@ export function specIssues(spec: AiSpec): string[] {
     if (c.tuChu && !c.video) out.push(`Cảnh "${c.id}" tạo từ chữ (tuChu) phải là clip (video: true).`);
     if (c.video && !c.tuChu && !c.chuyenDong.trim()) out.push(`Cảnh "${c.id}" làm clip nhưng chưa tả chuyển động (chuyenDong).`);
     if (c.vai.length > 3) out.push(`Cảnh "${c.id}" có ${c.vai.length} vai: tối đa 3 ảnh tham chiếu mỗi cảnh.`);
+    if (c.tuChu && spec.mohinh === 'veo' && c.giay > 8) out.push(`Cảnh "${c.id}" dài ${c.giay} giây: Veo chỉ tạo tối đa 8 giây mỗi lần; dùng "mohinh": "seedance" (tới 15 giây) để mọi nhân vật ở cùng một lần tạo.`);
+  }
+  // Khung hình chung (Nam 2026-10-12): một bối cảnh, vai đúng hình, có cảnh toàn đủ mọi vai, mọi vai lộ mặt cùng một lần tạo
+  if (spec.chung.trim().length < 30) out.push('Thiếu bối cảnh chung ("chung"): tả một nơi duy nhất mọi nhân vật cùng có mặt (không gian, đồ đạc, ánh sáng, giờ).');
+  for (const [v, d] of Object.entries(spec.dan)) {
+    if (!d.vaiTro.trim()) out.push(`Vai "${v}": thiếu vaiTro (vai trong câu chuyện, để model dựng đúng hình vai).`);
+    if (!d.viTri.trim()) out.push(`Vai "${v}": thiếu viTri (đứng/ngồi ở đâu trong bối cảnh chung, quay về ai).`);
+  }
+  const roles = Object.keys(spec.dan);
+  if (roles.length > 1 && !spec.canh.some((c) => c.toanCanh && roles.every((v) => c.vai.includes(v))))
+    out.push(`Chưa có cảnh toàn ("toanCanh": true) thấy đủ mọi vai (${roles.join(', ')}) trong cùng khung: video AI phải là một khung hình chung.`);
+  const faceGens = spec.canh.filter((c) => c.tuChu && c.vai.length);
+  const broken = faceGens.slice(1).filter((c, i) => c.noiTiep !== faceGens[i].id);
+  if (broken.length)
+    out.push(`Lần tạo ${broken.map((c) => `"${c.id}"`).join(', ')} có người nhưng không nối tiếp lần tạo trước ("noiTiep"): phần AI phải là một mạch liền, mọi vai lộ mặt cùng một lần tạo hoặc chuỗi nối tiếp (khung cuối lần trước làm khung đầu lần sau).`);
+  for (const c of spec.canh) {
+    if (!c.noiTiep) continue;
+    const prev = spec.canh.findIndex((x) => x.id === c.noiTiep);
+    if (prev < 0 || prev >= spec.canh.indexOf(c)) out.push(`Cảnh "${c.id}" nối tiếp "${c.noiTiep}": cảnh đó phải có và đứng trước.`);
+    else if (!c.tuChu || !spec.canh[prev].tuChu) out.push(`Cảnh "${c.id}" nối tiếp: cả hai cảnh phải là clip tạo từ chữ (tuChu).`);
   }
   for (const [v, d] of Object.entries(spec.dan)) if (/\b(celebrity|famous|looks like|lookalike|resembl)/i.test(d.moTa)) out.push(`Vai "${v}": không mô tả giống người có danh tính.`);
   return out;

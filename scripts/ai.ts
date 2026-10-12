@@ -3,7 +3,8 @@
  * Tạo cảnh người thật do AI (REQUIREMENTS §7.4, OpenRouter) theo briefs/<tên>/ai/canh-ai.json, đúng thứ tự:
  *   1. ảnh tham chiếu mỗi vai (ai/vai-<vai>.png) → người duyệt ghi `duyet: true`;
  *   2. khung đầu mỗi cảnh (ai/<id>-dau.png) từ ảnh vai → Claude xem, ghi `duyetKhung: true`;
- *   3. có --video: clip (ai/<id>.mp4) cho cảnh `video: true` từ khung đầu; cảnh `tuChu: true` tạo thẳng từ chữ
+ *   3. có --video: clip (ai/<id>.mp4) cho cảnh `video: true` từ khung đầu; cảnh `tuChu: true` tạo thẳng từ chữ;
+ *      cảnh `noiTiep` lấy khung cuối clip trước làm khung đầu (chạy lại lệnh sau khi clip trước xong)
  *      (bỏ bước 1–2, model theo `mohinh` của kế hoạch: seedance | veo).
  * File đã có thì bỏ qua (--lai: làm lại các cảnh trong --canh). Mỗi lượt ước tiền trước, vượt trần config/cost.ts thì dừng.
  * Việc clip đã gửi mà chưa xác nhận được: giữ mã việc (dangCho), lần sau hỏi tiếp, không gửi lại.
@@ -15,6 +16,7 @@ import { join } from 'node:path';
 import { AI_VIDEO } from '../config/ai-video.ts';
 import { COST, toVnd } from '../config/cost.ts';
 import { briefDir, readBriefFile } from './lib/brief.ts';
+import { runFfmpeg } from './lib/hyperframes-env.ts';
 import { runCommand } from './lib/cli.ts';
 import { probeClip } from './lib/clip-check.ts';
 import { methodIssues } from './lib/kieu-hinh-rules.ts';
@@ -206,13 +208,23 @@ await runCommand(async () => {
           console.log(`! ${c.id}: khung đầu chưa duyệt (duyetKhung), bỏ qua clip.`);
           continue;
         }
-        const issues = videoRequestIssues(model, c.giay, size, !c.tuChu);
+        // Nối tiếp: khung cuối clip trước làm khung đầu (mạch liền); clip trước chưa xong thì chờ lần chạy sau
+        if (c.noiTiep) {
+          if (!has(clipFile(c.noiTiep))) {
+            console.log(`… ${c.id}: chờ clip ${c.noiTiep} xong (khung cuối của nó là khung đầu cảnh này), chạy lại lệnh sau.`);
+            continue;
+          }
+          const r = runFfmpeg(['-v', 'error', '-y', '-sseof', '-0.1', '-i', join(aiDir, clipFile(c.noiTiep)), '-frames:v', '1', join(aiDir, frameFile(c.id))]);
+          if (r.status !== 0) throw new Error(`Không lấy được khung cuối của ${clipFile(c.noiTiep)}: ${r.stderr.slice(0, 200)}`);
+        }
+        const firstFrame = !c.tuChu || !!c.noiTiep;
+        const issues = videoRequestIssues(model, c.giay, size, firstFrame);
         if (issues.length) throw new Error(issues.join('\n'));
         const uocUsd = estimateVideoUsd(model, c.giay, size);
         ensure(uocUsd, `Clip ${c.id} (${c.giay}s)`);
         const prompt = c.tuChu ? textVideoPrompt(spec, c) : motionPrompt(spec, c), seed = seedOf(`clip-${c.id}`);
-        const job = await submitVideo(model.id, prompt, c.tuChu ? undefined : dataUrl(join(aiDir, frameFile(c.id))), c.giay, seed, key, size, c.tuChu ? tv.provider : undefined);
-        const p: AiPending = { canh: c.id, maViec: job.id, pollingUrl: job.pollingUrl, model: model.id, prompt, anhThamChieu: c.tuChu ? [] : [frameFile(c.id)], seed, giay: c.giay, uocUsd, guiLuc: new Date().toISOString() };
+        const job = await submitVideo(model.id, prompt, firstFrame ? dataUrl(join(aiDir, frameFile(c.id))) : undefined, c.giay, seed, key, size, c.tuChu ? tv.provider : undefined);
+        const p: AiPending = { canh: c.id, maViec: job.id, pollingUrl: job.pollingUrl, model: model.id, prompt, anhThamChieu: firstFrame ? [frameFile(c.id)] : [], seed, giay: c.giay, uocUsd, guiLuc: new Date().toISOString() };
         log.dangCho.push(p);
         save();
         console.log(`→ đã gửi clip ${c.id} (${c.giay}s, ước ${vnd(uocUsd)}), mã việc ${job.id}`);

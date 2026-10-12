@@ -13,8 +13,8 @@ const seedance: VideoModel = {
 
 const spec = (over: Record<string, unknown> = {}) =>
   AiSpecSchema.parse({
-    chung: 'Small Saigon cafe at night.',
-    dan: { 'chu-quan': { moTa: 'Vietnamese woman about 35, black hair in a bun, plain apron' } },
+    chung: 'Small Saigon cafe at night, wooden counter, warm pendant lamps.',
+    dan: { 'chu-quan': { moTa: 'Vietnamese woman about 35, black hair in a bun, plain apron', vaiTro: 'cafe owner', viTri: 'behind the wooden counter' } },
     canh: [
       { id: 'thieu-tien', khung: 3, vai: ['chu-quan'], camXuc: 'lo-lang', moTa: 'Close-up, she counts cash at the counter, worried' },
       { id: 'nhe-nhom', khung: 9, vai: ['chu-quan'], camXuc: 'nhe-nhom', moTa: 'Medium shot, she smiles, relieved', video: true, chuyenDong: 'She exhales and smiles' },
@@ -76,8 +76,23 @@ describe('kế hoạch cảnh AI', () => {
     const s = spec({ canh: [{ id: 'dem', khung: 2, vai: ['chu-quan'], camXuc: 'lo-lang', moTa: 'Shot 1 (0-3s): she counts cash. Shot 2 (3-6s): close-up, worried.', video: true, tuChu: true, giay: 6 }] });
     expect(specIssues(s)).toEqual([]);
     const p = textVideoPrompt(s, s.canh[0]);
-    for (const t of ['multiple shots', 'same face', 'chu-quan: Vietnamese woman', 'Shot 2', AI_VIDEO.promptRules]) expect(p).toContain(t);
+    for (const t of ['multiple shots', 'same face', 'chu-quan (cafe owner): Vietnamese woman', 'Shot 2', AI_VIDEO.promptRules]) expect(p).toContain(t);
     expect(specIssues(spec({ canh: [{ id: 'x', khung: 1, camXuc: 'cuoi', moTa: 'a smiling person at a counter', tuChu: true }] })).join()).toContain('phải là clip');
+  });
+
+  it('khung hình chung: bối cảnh chung, vai có vai trò + vị trí, cảnh toàn đủ mọi vai, mọi vai lộ mặt cùng một lần tạo', () => {
+    const dan = {
+      sep: { moTa: 'Vietnamese man about 45, charcoal suit', vaiTro: 'sales director', viTri: 'standing at the head of the table' },
+      sale: { moTa: 'Vietnamese woman about 26, navy blazer', vaiTro: 'sales employee', viTri: 'seated at the left side with a laptop' },
+    };
+    const one = { id: 'hop', khung: 1, vai: ['sep', 'sale'], camXuc: 'lo-lang', moTa: 'Shot 1 (0-3s): wide. Shot 2 (3-6s): close-up.', video: true, tuChu: true, toanCanh: true, giay: 6 };
+    expect(specIssues(spec({ dan, canh: [one] }))).toEqual([]);
+    const p = textVideoPrompt(spec({ dan, canh: [one] }), spec({ dan, canh: [one] }).canh[0]);
+    for (const t of ['One shared location', 'Small Saigon cafe', 'sales director', 'head of the table', 'wide establishing shot']) expect(p).toContain(t);
+    const split = specIssues(spec({ dan, canh: [{ ...one, id: 'a', vai: ['sep'], toanCanh: false }, { ...one, id: 'b', khung: 2, vai: ['sale'], toanCanh: false }] })).join('\n');
+    for (const t of ['cảnh toàn', 'cùng một lần tạo']) expect(split).toContain(t);
+    const thin = specIssues(spec({ chung: 'office', dan: { sep: { moTa: 'Vietnamese man about 45, charcoal suit' } }, canh: [{ ...one, vai: ['sep'], giay: 12 }] })).join('\n');
+    for (const t of ['bối cảnh chung', 'vaiTro', 'viTri', 'seedance']) expect(thin).toContain(t);
   });
 
   it('seed cố định theo tên; phần trần còn lại theo sổ', () => {

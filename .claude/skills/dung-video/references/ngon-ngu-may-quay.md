@@ -23,6 +23,26 @@ Rút gọn từ [cinematic-video-prompt-skill](https://github.com/Rylaispirit/ci
 - **Chữ trên hình không tin được**: tên công ty, biển hiệu, màn hình đều ghép bằng HyperFrames.
 - **Không gọi tên phim, diễn viên, nhân vật có bản quyền** ("like a Chinese CEO drama", tên phim cụ thể): tả nhân vật của riêng mình.
 
+## 2b. Cảnh nhiều người: khung hình chung (luật chung Nam 2026-10-12)
+Một lần tạo chứa mọi người lộ mặt, cùng một nơi; prompt viết theo khuôn (máy tự ghép `chung`, `vaiTro`, `viTri` vào trước `moTa`):
+```
+[chung] One shared location for every shot: <phòng, đồ đạc, ánh sáng, giờ>.
+[dan]   sep (sales director): <ngoại hình>; position: standing at the head of the long table, facing the team.
+        sale (sales employee): <ngoại hình>; position: seated at the left side, laptop open, facing the director.
+[moTa]  5 hard-cut shots, total 12s.
+        Shot 1 (0-2.5s): WIDE establishing shot from the far end of the table, the whole meeting room and every character visible in their positions.
+        Shot 2 (2.5-4s): medium shot from behind the director's shoulder, his face turned away; at 3s he slams his palm flat on the table, paper cups jump, everyone flinches.
+        Shot 3 (4-6s): close-up reaction of the sales employee, she freezes, eyes wide, swallows.
+        …
+        Lips stay closed in every shot.
+```
+- **Shot 1 luôn là cảnh toàn** thấy đủ mọi người: người xem hiểu "đang ở đâu, ai với ai" trước khi vào cận.
+- **Hành động chính trong cảnh trung/toàn**, thấy người làm + vật + người phản ứng; tả lực bằng kết quả thấy được (cốc rung, giấy bay, cả phòng giật mình), không chỉ viết "slams angrily".
+- **Ai có lời ở shot nào thì quay lưng/khuất mặt ở shot đó** (sau vai, bóng lưng, tay); mặt người lộ rõ chỉ ở shot phản ứng im lặng.
+- **Hình đúng vai**: tả trang phục và đạo cụ của nghề ("navy blazer, plain staff lanyard without text, laptop"), không để model tự đoán.
+- **Cường điệu bằng diễn và máy quay, không bằng hiệu ứng da mặt** (mồ hôi giọt to, mặt ướt trông giả): ghi rõ "no exaggerated sweat drops, natural skin".
+- Cần dài hơn 8 giây cho mọi người: Seedance (tới 15 giây) thay vì chia Veo nhiều lần.
+
 ## 3. Bảng thuật ngữ gọn
 | Nhóm | Từ khoá | Dùng khi |
 |---|---|---|

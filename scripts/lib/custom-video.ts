@@ -103,6 +103,35 @@ export function backdropNames(): string[] {
 }
 
 /** `voiceDraft`: soát hình khi giọng chưa đủ (./reel snap) — câu thiếu giọng/chưa đạt chỉ là lưu ý; xuất video vẫn chặn. */
+/**
+ * Phần AI là một mạch liền (Nam 2026-10-12: "phải là 1 video xuyên suốt, không phải cảnh ghép cắt từ nhiều phân đoạn"):
+ * mỗi clip trong ai/ chạy tới, không nhảy hay quay lại đoạn đã chiếu (tách thẻ được, miễn đoạn sau nối đúng chỗ đoạn
+ * trước dừng), và các clip nối nhau theo thứ tự, không xen kẽ.
+ */
+export function aiContinuityIssues(html: string): string[] {
+  const attr = (tag: string, a: string) => new RegExp(`\\b${a}="([^"]*)"`).exec(tag)?.[1];
+  const segs = [...html.matchAll(/<video\b[^>]*>/g)]
+    .map((m) => m[0])
+    .filter((t) => /\bsrc="ai\/[^"]+"/.test(t))
+    .map((t) => ({ src: attr(t, 'src')!, start: Number(attr(t, 'data-start') ?? 0), dur: Number(attr(t, 'data-duration') ?? 0), media: Number(attr(t, 'data-media-start') ?? 0), rate: Number(attr(t, 'data-playback-rate') ?? 1) }))
+    .sort((a, b) => a.start - b.start);
+  const out: string[] = [];
+  const seen: string[] = [];
+  const last = new Map<string, (typeof segs)[number]>();
+  for (const s of segs) {
+    const prev = last.get(s.src);
+    if (prev) {
+      const expect = prev.media + prev.dur * prev.rate;
+      if (Math.abs(s.media - expect) > 0.15)
+        out.push(`Clip AI ${s.src} ở giây ${s.start} bắt đầu từ ${s.media}s trong clip, nhưng đoạn trước dừng ở ${expect.toFixed(2)}s: phần AI phải chạy liền mạch, không nhảy hay quay lại đoạn đã chiếu.`);
+      if (seen[seen.length - 1] !== s.src)
+        out.push(`Clip AI ${s.src} chiếu lại ở giây ${s.start} sau khi đã sang clip khác: các clip AI nối nhau theo thứ tự, không xen kẽ.`);
+    } else seen.push(s.src);
+    last.set(s.src, s);
+  }
+  return out;
+}
+
 export function customIssues(dir: string, script: Script, briefBody: string, totalSec: number, voiceDraft = false): CustomIssue[] {
   const out: CustomIssue[] = [];
   const err = (message: string) => out.push({ level: 'error', message });
@@ -127,6 +156,8 @@ export function customIssues(dir: string, script: Script, briefBody: string, tot
   if (!html.includes(`src="${CUSTOM_MUSIC_SRC}"`) || !/<audio\b[^>]*\bid="/.test(html)) err(`Bản dựng riêng cần <audio id="music" src="${CUSTOM_MUSIC_SRC}" …> (nhạc của kịch bản).`);
   if (!/__timelines\[["']main["']\]\s*=/.test(html)) err('Bản dựng riêng phải ghi window.__timelines["main"] = tl; (cuối hàm dựng).');
 
+  for (const m of aiContinuityIssues(html)) err(m);
+
   // Nhân vật nhất quán: khai dàn nhân vật một lần bằng RS.cast, không tạo người lẻ bằng RS.person
   if (/RS\.person\(/.test(html)) warn('Tạo nhân vật qua dàn nhân vật RS.cast({ tên: { tóc, áo… } }) rồi gọi theo tên, để một người giữ nguyên tóc/áo ở mọi cảnh.');
 
@@ -143,6 +174,9 @@ export function customIssues(dir: string, script: Script, briefBody: string, tot
     }
     if (voice) {
       for (const m of voiceScriptIssues(voice.vs, Number.isFinite(d) ? d : Infinity)) err(m);
+      // Video có cảnh người thật AI: một mạch liền, không giọng người dẫn riêng; thông điệp nói qua chính các nhân vật (Nam 2026-10-12)
+      if (/<video\b[^>]*\bsrc="ai\//.test(html) && voice.vs.dan['nguoi-dan'])
+        err(`Video người thật AI không dùng giọng người dẫn ("nguoi-dan" trong ${VOICE.file}): thông điệp và lời kêu gọi do chính các nhân vật nói (lúc mặt người nói khuất), skill giong-doc mục "Video người thật AI".`);
       if (kieuKe?.nhieuGiong) {
         const v = voiceVarietyIssues(voice.vs, kieuKe.nhieuGiong, kieuKe.ten);
         for (const m of v.errors) err(m);

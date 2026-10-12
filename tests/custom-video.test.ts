@@ -2,7 +2,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
 import type { Script } from '../config/script.schema.ts';
-import { backdropNames, customIssues, extractScreenText, unmarkedScriptText } from '../scripts/lib/custom-video.ts';
+import { aiContinuityIssues, backdropNames, customIssues, extractScreenText, unmarkedScriptText } from '../scripts/lib/custom-video.ts';
 import { REPO_ROOT } from '../scripts/lib/hyperframes-env.ts';
 
 const tmpRoot = join(REPO_ROOT, 'out', 'test-custom-video');
@@ -117,6 +117,26 @@ describe('video dựng riêng', () => {
     const drama = { ...script, concept: { kieuKe: 'tong-tai' } } as unknown as Script;
     expect(customIssues(dir, drama, brief, 12).map((i) => i.message).join()).toContain('bắt buộc có giọng đọc nhiều giọng');
     expect(customIssues(dir, script, brief, 12)).toEqual([]);
+  });
+
+  it('phần AI là một mạch liền: không nhảy đoạn, không quay lại, không xen kẽ clip', () => {
+    const v = (src: string, start: number, dur: number, media: number, rate = 1) => `<video id="v${start}" src="ai/${src}.mp4" data-start="${start}" data-duration="${dur}" data-media-start="${media}" data-playback-rate="${rate}"></video>`;
+    expect(aiContinuityIssues(v('a', 0, 2, 0) + v('a', 3, 2, 2) + v('b', 6, 4, 0, 0.5) + v('b', 10, 1, 2))).toEqual([]);
+    const jump = aiContinuityIssues(v('a', 0, 2, 0) + v('a', 2, 1, 5)).join();
+    expect(jump).toContain('liền mạch');
+    const mix = aiContinuityIssues(v('a', 0, 2, 0) + v('b', 2, 1, 0) + v('a', 3, 1, 2)).join();
+    expect(mix).toContain('không xen kẽ');
+  });
+
+  it('video người thật AI: không giọng người dẫn riêng', () => {
+    mkdirSync(tmpRoot, { recursive: true });
+    const dir = mkdtempSync(join(tmpRoot, 'ai-dan-'));
+    mkdirSync(join(dir, 'dung-rieng'));
+    writeFileSync(join(dir, 'dung-rieng', 'index.html'), page(OK_BODY + '<video id="va" src="ai/a.mp4" data-start="0" data-duration="2" data-media-start="0"></video>'));
+    writeFileSync(join(dir, 'dung-rieng', 'tieng-dong.txt'), 'lang 5 6\n1.00 pop 0.5\n');
+    writeFileSync(join(dir, 'dung-rieng', 'bang-canh.txt'), '0.5 | mở | bụp | cắt\n3 | sổ\n6 | điện thoại\n9 | kết\n');
+    writeFileSync(join(dir, 'dung-rieng', 'loi-doc.json'), JSON.stringify({ dan: { 'nguoi-dan': { giong: 'Duyên Hà My', gioi: 'nu', hoSo: 'kể' } }, cau: [{ id: 'a', vai: 'nguoi-dan', at: 0.1, loi: 'Chào', camXuc: 'cuoi' }] }));
+    expect(customIssues(dir, script, brief, 12).map((i) => i.message).join()).toContain('không dùng giọng người dẫn');
   });
 });
 
