@@ -52,14 +52,14 @@ export const AI_VIDEO = {
      * nhân vật"): một lần tạo nhiều cảnh liền (tối đa 15 giây) giữ cùng nhân vật. Nam chọn bản Fast 720p (trong trần 50.000đ).
      */
     /**
-     * Model tạo từ chữ chọn được theo video (`ai/canh-ai.json` `mohinh`, mặc định seedance). Nam 2026-10-11: "giống
+     * Model tạo từ chữ chọn được theo video (`ai/canh-ai.json` `mohinh`, mặc định veo; seedance là dự phòng). Nam 2026-10-11: "giống
      * seedance, veo nhận kịch bản ra video" → thử Veo 3.1 Lite: 1080×1920 thật, $0,05/giây không tiếng, mỗi lần chỉ 4/6/8 giây.
      */
     textVideoModels: {
       seedance: { id: 'bytedance/seedance-2.0-fast', size: '720x1280', provider: undefined },
       /**
        * Veo giữ cùng người chỉ trong một lần tạo (thử 2026-10-11: 3 lần tạo ra 3 chủ quán khác nhau) → mỗi nhân vật nằm
-       * trong đúng một lần tạo; hay mở miệng như đang nói → negativePrompt (tham số riêng của Veo qua OpenRouter). Thêm
+       * trong đúng một lần tạo; negativePrompt chặn chữ/phụ đề/thừa tay (Nam 2026-10-12 bỏ luật "nhân vật AI không nói": nhân vật nói thoại khớp môi trong clip) (tham số riêng của Veo qua OpenRouter). Thêm
        * personGeneration 'allow_adult' thì việc bị lọc, không ra video mà vẫn bị tính tiền (thử 2026-10-11): không gửi.
        */
       veo: {
@@ -69,7 +69,7 @@ export const AI_VIDEO = {
           options: {
             'google-vertex': {
               parameters: {
-                negativePrompt: 'talking, speaking, open mouth, lip movement, gasping, text, letters, numbers, logo, watermark, extra fingers, extra hands, extra arms',
+                negativePrompt: 'subtitles, captions, text, letters, numbers, logo, watermark, extra fingers, extra hands, extra arms',
               },
             },
           },
@@ -94,7 +94,8 @@ export const AI_VIDEO = {
    */
   promptRules:
     'Photorealistic, ordinary Vietnamese people (not celebrities, not any real identifiable person), everyday Vietnamese setting. ' +
-    'Mouth closed, not speaking, no lip movement. No text, no letters, no numbers, no logos, no brand names, no watermark. ' +
+    'People speak only the lines written as: Character says: "…" (lip-synced, in Vietnamese); otherwise lips stay closed. ' +
+    'No subtitles, no captions, no text, no letters, no numbers, no logos, no brand names, no watermark. ' +
     'Any phone or screen is blank or turned away (no readable interface). Natural light, realistic skin, anatomically correct: each person has exactly two arms and two hands, five fingers per hand, no extra or merged limbs.',
 } as const;
 

@@ -129,6 +129,22 @@ export function labelIssues(html: string, label: string = AI_LABEL_ON_SCREEN): s
   return out;
 }
 
+/**
+ * Video có giọng do AI tạo: giọng đọc VieNeu (dung-rieng/loi-doc.json) hoặc thoại/tiếng do model tạo trong clip AI
+ * (ai/canh-ai.json `coTieng`, mặc định có — Nam 2026-10-12 bỏ luật "nhân vật AI không nói").
+ */
+export function hasAiVoice(dir: string): boolean {
+  if (existsSync(join(dir, 'dung-rieng', 'loi-doc.json'))) return true;
+  const spec = join(dir, AI_VIDEO.dir, AI_VIDEO.specFile);
+  if (!existsSync(spec)) return false;
+  try {
+    const s = JSON.parse(readFileSync(spec, 'utf8')) as { coTieng?: boolean; canh?: Array<{ video?: boolean }> };
+    return s.coTieng !== false && !!s.canh?.some((c) => c.video);
+  } catch {
+    return false;
+  }
+}
+
 export interface AiRuleInput {
   /** Thư mục brief. */
   dir: string;

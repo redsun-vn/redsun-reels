@@ -9,6 +9,7 @@ import { readBriefFile, readScriptFile } from './lib/brief.ts';
 import { parseCli, runCommand } from './lib/cli.ts';
 import { REPO_ROOT } from './lib/hyperframes-env.ts';
 import { aiLabelFor } from '../config/ai-video.ts';
+import { hasAiVoice } from './lib/kieu-hinh-rules.ts';
 import { VOICE } from '../config/voice.ts';
 import { CUSTOM_DIR } from './lib/custom-video.ts';
 import { stockLog } from './lib/kieu-hinh-rules.ts';
@@ -25,7 +26,7 @@ await runCommand(() => {
   const out = join(a.dir, 'post.md');
   const kieuHinh = (readBriefFile(a.dir).frontmatter as Record<string, unknown>).kieuHinh;
   const stockCredits = kieuHinh === 'nguoi-that-quay-san' ? [...stockLog(a.dir).valid.values()] : [];
-  writeFileSync(out, buildPost({ script, hashtags: products.products[script.product].hashtags, track: findTrack(manifest, script.music), aiLabel: aiLabelFor(kieuHinh === 'nguoi-that-ai', existsSync(join(a.dir, CUSTOM_DIR, VOICE.file))), stockCredits }));
+  writeFileSync(out, buildPost({ script, hashtags: products.products[script.product].hashtags, track: findTrack(manifest, script.music), aiLabel: aiLabelFor(kieuHinh === 'nguoi-that-ai', hasAiVoice(a.dir)), stockCredits }));
   console.log(`Đã soạn nội dung đăng bài: briefs/${a.slug}/post.md`);
   // Dòng cho tab "Số liệu video" của Google Sheet chung (docs/huong-dan-mkt.md mục Đăng bài); MKT điền phần đo sau 7 ngày
   const phut = (tongMayChay(docThoiGian(a.dir)).mayChaySec / 60).toFixed(1).replace('.', ',');

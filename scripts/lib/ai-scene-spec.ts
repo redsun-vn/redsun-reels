@@ -19,6 +19,17 @@ export const AiSpecSchema = z.object({
    * gắn vào mọi cảnh. Nam 2026-10-12: video AI phải là một khung hình chung, không ghép người từ các nơi rời nhau.
    */
   chung: z.string().default(''),
+  /** Phong cách hình (tiếng Anh): vd. "cinematic corporate drama, 35mm film look, muted teal palette". */
+  phongCach: z.string().default(''),
+  /** Ánh sáng và không khí (tiếng Anh): vd. "cool overcast daylight, tense quiet room". */
+  anhSang: z.string().default(''),
+  /**
+   * Âm thanh trong clip (tiếng Anh): tiếng môi trường, tiếng động, nhạc có hay không (dự án lồng nhạc riêng: "no music").
+   * Lời thoại viết trong `moTa` từng shot: `the director says: "…"` (tiếng Việt, tên thương hiệu viết theo cách đọc).
+   */
+  amThanh: z.string().default(''),
+  /** Clip có tiếng (thoại khớp môi + tiếng môi trường). Nam 2026-10-12 bỏ luật "nhân vật AI không nói". */
+  coTieng: z.boolean().default(true),
   dan: z.record(
     slug,
     z.object({
@@ -28,6 +39,8 @@ export const AiSpecSchema = z.object({
       vaiTro: z.string().default(''),
       /** Vị trí trong bối cảnh chung (tiếng Anh): đứng/ngồi ở đâu, quay về ai, vd. "standing at the head of the table facing the team". */
       viTri: z.string().default(''),
+      /** Chất giọng khi nói (tiếng Anh), giữ cùng một giọng suốt video: vd. "deep, calm, cold male voice, southern Vietnamese accent". */
+      giongNoi: z.string().default(''),
       /** Người duyệt đã xem ảnh tham chiếu và đồng ý (Nam/MKT). Chưa duyệt thì không làm khung đầu cho vai này. */
       duyet: z.boolean().default(false),
     }),
@@ -119,7 +132,7 @@ export const seedOf = (name: string) => parseInt(createHash('sha256').update(nam
 /** Vai: hình đúng vai trò + vị trí trong bối cảnh chung (blocking), để mọi cảnh dựng cùng một không gian. */
 const castLine = (spec: AiSpec, v: string) => {
   const d = spec.dan[v];
-  return `${v}${d.vaiTro ? ` (${d.vaiTro})` : ''}: ${d.moTa}${d.viTri ? `; position in the shared location: ${d.viTri}` : ''}.`;
+  return `${v}${d.vaiTro ? ` (${d.vaiTro})` : ''}: ${d.moTa}${d.viTri ? `; position in the shared location: ${d.viTri}` : ''}${d.giongNoi ? `; voice: ${d.giongNoi}` : ''}.`;
 };
 const sharedPlace = (spec: AiSpec) =>
   spec.chung ? `One shared location for every shot, all characters are in this same place at the same time: ${spec.chung}` : '';
@@ -143,19 +156,36 @@ export function framePrompt(spec: AiSpec, c: AiSpec['canh'][number]): string {
 /** Mô tả clip tạo từ chữ: nhiều cảnh nhỏ trong một lần tạo, cùng nhân vật (tả ngoại hình mọi vai có mặt). */
 export function textVideoPrompt(spec: AiSpec, c: AiSpec['canh'][number]): string {
   const who = c.vai.map((v) => castLine(spec, v)).join(' ');
+  // Khuôn 8 thành phần (Nam 2026-10-12): chủ thể, bối cảnh, hành động + máy quay + bố cục theo từng shot, phong cách, ánh sáng, âm thanh
   return [
-    `Vertical 9:16 cinematic short film, one continuous scene cut into multiple shots with hard cuts, the same characters keep the same face, hair and clothes in every shot.`,
-    sharedPlace(spec),
-    who && `Characters and blocking: ${who}`,
-    establishing(c),
-    c.noiTiep ? 'This clip continues seamlessly from the first frame: same place, same people, same light, the action carries on without a jump.' : '',
-    c.moTa,
+    `Vertical 9:16 cinematic short film, one continuous scene cut into multiple shots with hard cuts, the same characters keep the same face, hair, clothes and voice in every shot.`,
+    who && `SUBJECTS: ${who}`,
+    spec.chung && `CONTEXT: ${sharedPlace(spec)}`,
+    `ACTION, CAMERA AND COMPOSITION (shot by shot): ${[establishing(c), c.noiTiep ? 'This clip continues seamlessly from the first frame: same place, same people, same light, the action carries on without a jump.' : '', c.moTa].filter(Boolean).join(' ')}`,
+    spec.phongCach && `STYLE: ${spec.phongCach}`,
+    spec.anhSang && `AMBIANCE AND LIGHTING: ${spec.anhSang}`,
+    spec.coTieng ? `AUDIO: ${spec.amThanh || 'natural room sound'}. Dialogue is spoken in Vietnamese exactly as written after "says:", lip-synced. No subtitles.` : 'AUDIO: none.',
     AI_VIDEO.promptRules,
   ].filter(Boolean).join(' ');
 }
 
 export function motionPrompt(spec: AiSpec, c: AiSpec['canh'][number]): string {
   return [`${c.chuyenDong || 'Subtle natural movement, gentle handheld camera.'}`, `Keep the same people, faces and clothes as the first frame. Emotion: ${c.camXuc}.`, spec.chung, AI_VIDEO.promptRules].filter(Boolean).join(' ');
+}
+
+/**
+ * Thoại phải có cách nói theo độ căng của cảnh (Nam 2026-10-12: "sếp phải quát lớn khi đưa ra yêu cầu"): trước mỗi
+ * `: "…"` là động từ / trạng từ chỉ âm lượng, cảm xúc, nhịp (shouts loudly, stammers quietly, says confidently…).
+ */
+const DELIVERY = /\b(shout|yell|snap|bark|roar|scream|whisper|mutter|murmur|stammer|stutter|sigh|gasp|growl|hiss|plead|laugh|loud|soft|quiet|angr|furious|nervous|trembl|shak|calm|firm|sharp|cold|confident|relieved|excited|tense|urgent|gentle|warm|proud|satisf|frustrat|panic|hesitant|slow|fast|rapid)/i;
+export function dialogueIssues(c: { id: string; moTa: string }): string[] {
+  const out: string[] = [];
+  for (const m of c.moTa.matchAll(/:\s*"([^"]+)"/g)) {
+    const before = c.moTa.slice(Math.max(0, m.index! - 90), m.index);
+    const lead = before.split(/[.;]\s/).pop() ?? before;
+    if (!DELIVERY.test(lead)) out.push(`Cảnh "${c.id}": câu thoại "${m[1].slice(0, 40)}" chưa ghi cách nói (âm lượng, cảm xúc, nhịp hợp độ căng của shot), vd. 'the director slams the table and shouts loudly, furious: "…"', 'she stammers quietly, voice trembling: "…"'.`);
+  }
+  return out;
 }
 
 /** Lỗi kế hoạch trước khi tốn tiền: vai chưa khai, khung trùng, thứ tự khung, clip chỉ cho cảnh cần. */
@@ -172,9 +202,15 @@ export function specIssues(spec: AiSpec): string[] {
     if (c.tuChu && !c.video) out.push(`Cảnh "${c.id}" tạo từ chữ (tuChu) phải là clip (video: true).`);
     if (c.video && !c.tuChu && !c.chuyenDong.trim()) out.push(`Cảnh "${c.id}" làm clip nhưng chưa tả chuyển động (chuyenDong).`);
     if (c.vai.length > 3) out.push(`Cảnh "${c.id}" có ${c.vai.length} vai: tối đa 3 ảnh tham chiếu mỗi cảnh.`);
+    if (spec.coTieng) out.push(...dialogueIssues(c));
     if (c.tuChu && spec.mohinh === 'veo' && c.giay > 8) out.push(`Cảnh "${c.id}" dài ${c.giay} giây: Veo chỉ tạo tối đa 8 giây mỗi lần; dùng "mohinh": "seedance" (tới 15 giây) để mọi nhân vật ở cùng một lần tạo.`);
   }
   // Khung hình chung (Nam 2026-10-12): một bối cảnh, vai đúng hình, có cảnh toàn đủ mọi vai, mọi vai lộ mặt cùng một lần tạo
+  if (spec.canh.some((c) => c.tuChu))
+    for (const [k, ten] of [['phongCach', 'phong cách'], ['anhSang', 'ánh sáng / không khí'], ['amThanh', 'âm thanh']] as const)
+      if (!spec[k].trim()) out.push(`Thiếu "${k}" (${ten}): prompt tạo từ chữ phải đủ 8 thành phần (dung-canh-ai, ngon-ngu-may-quay.md mục 2c).`);
+  if (spec.coTieng && spec.canh.some((c) => /:\s*"[^"]+"/.test(c.moTa)))
+    for (const [v, d] of Object.entries(spec.dan)) if (!d.giongNoi.trim()) out.push(`Vai "${v}": video có thoại nhưng thiếu giongNoi (chất giọng riêng, giữ suốt video).`);
   if (spec.chung.trim().length < 30) out.push('Thiếu bối cảnh chung ("chung"): tả một nơi duy nhất mọi nhân vật cùng có mặt (không gian, đồ đạc, ánh sáng, giờ).');
   for (const [v, d] of Object.entries(spec.dan)) {
     if (!d.vaiTro.trim()) out.push(`Vai "${v}": thiếu vaiTro (vai trong câu chuyện, để model dựng đúng hình vai).`);
@@ -201,3 +237,23 @@ export function specIssues(spec: AiSpec): string[] {
 /** Phần trần còn lại: trừ cả tiền đã chi và tiền ước của các clip đã gửi còn đang chờ (gửi song song vẫn không vượt trần). */
 export const budgetLeftUsd = (log: AiLog, capVnd: number, vndPerUsd: number) =>
   capVnd / vndPerUsd - log.chiPhi.usd - log.dangCho.reduce((s, p) => s + (p.chiPhiUsd ?? p.uocUsd), 0);
+
+/**
+ * Kịch bản trước, clip sau (Nam 2026-10-12: "phải xong kịch bản, yêu cầu giọng từng phân cảnh, từng nhân vật cho phù hợp
+ * bối cảnh trước"): video có thoại trong clip phải có `## Bảng thoại` trong concepts.md (mỗi câu: giây, shot, nhân vật,
+ * câu, cách nói, vì sao) và dòng `Đã duyệt: <ai>, <ngày>` trước khi tạo clip tốn tiền.
+ */
+export function scriptGateIssues(concepts: string): string[] {
+  const sec = concepts.split(/^##\s*Bảng thoại\s*$/m)[1]?.split(/^##\s/m)[0];
+  if (sec === undefined) return ['concepts.md chưa có mục "## Bảng thoại" (mỗi câu thoại: giây · shot · nhân vật · câu · cách nói · vì sao): viết xong kịch bản và giọng từng phân cảnh trước khi tạo clip.'];
+  const rows = sec.split('\n').filter((l) => /^\|/.test(l) && !/^\|\s*-/.test(l)).slice(1);
+  const out: string[] = [];
+  if (!rows.length) out.push('Bảng thoại chưa có câu nào.');
+  for (const r of rows) {
+    const cells = r.split('|').slice(1, -1).map((c) => c.trim());
+    if (cells.length < 6 || cells.some((c) => !c)) out.push(`Bảng thoại: dòng "${r.slice(0, 60)}" thiếu cột (giây · shot · nhân vật · câu · cách nói · vì sao).`);
+  }
+  if (!/^Đã duyệt:\s*\S+/m.test(sec)) out.push('Bảng thoại chưa được duyệt: gửi kịch bản + bảng thoại cho người duyệt, ghi "Đã duyệt: <ai>, <ngày>" dưới bảng rồi mới tạo clip.');
+  return out;
+}
+

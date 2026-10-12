@@ -11,6 +11,7 @@
       "Skill(cai-dat)",
       "Skill(chon-kieu-hinh)",
       "Skill(giong-doc)",
+      "Skill(dung-canh-ai)",
       "Bash(./reel:*)",
       "Bash(bash ./scripts/cai-dat.sh)",
       "Edit(briefs/**)",

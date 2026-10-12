@@ -32,7 +32,7 @@ Ba luật cho mọi video, đọc file trên trước khi viết concept. Tóm t
 - Yêu cầu cần sửa mẫu video, thêm phong cách hoặc loại video chưa có → nói rõ "việc này cần dev", ghi vào `briefs/<tên-video>/review.md` mục `## Cần dev`.
 
 ## Luồng mặc định: TỰ ĐỘNG từ brief đến video
-Nam chốt 2026-10-09: "MKT chỉ cần đưa brief, sau đó đợi output video". MKT nói/dán brief (một câu cũng được) → Claude làm hết rồi đưa video. Chỉ dừng ở **một câu hỏi**: kiểu hình (skill `chon-kieu-hinh`). Concept **Claude tự chọn** theo gợi ý của mình, không hỏi MKT (Nam 2026-10-12, decisions §38: "chọn kịch bản theo gợi ý, không cần hỏi"). Không dừng chờ duyệt kịch bản, bảng khung, xem thử như luồng từng bước.
+Nam chốt 2026-10-09: "MKT chỉ cần đưa brief, sau đó đợi output video". MKT nói/dán brief (một câu cũng được) → Claude làm hết rồi đưa video. Chỉ dừng ở **một câu hỏi**: kiểu hình (skill `chon-kieu-hinh`). Video người thật AI dừng thêm **một lần**: duyệt kịch bản + bảng thoại (giọng từng phân cảnh, từng nhân vật) trước khi tạo clip — skill `dung-canh-ai`. Concept **Claude tự chọn** theo gợi ý của mình, không hỏi MKT (Nam 2026-10-12, decisions §38: "chọn kịch bản theo gợi ý, không cần hỏi"). Không dừng chờ duyệt kịch bản, bảng khung, xem thử như luồng từng bước.
 
 **Đo thời gian máy chạy** (mục tiêu ≤ 15 phút mỗi video, không tính lúc chờ người): mọi lệnh `./reel` tự ghi giờ vào `briefs/<tên>/thoi-gian.jsonl`. **Ngay trước mỗi lần hỏi MKT** (AskUserQuestion, gửi bảng khung chờ duyệt, gửi video hỏi góp ý) chạy `./reel moc <tên-video> hoi` để khoảng chờ người không bị tính vào máy chạy. Bản xuất in "Máy chạy N phút" và ghi `cost.json` `thoiGian`.
 

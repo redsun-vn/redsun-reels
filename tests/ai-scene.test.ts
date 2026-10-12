@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { AI_VIDEO } from '../config/ai-video.ts';
-import { AiSpecSchema, budgetLeftUsd, emptyLog, framePrompt, rolePrompt, seedOf, specIssues, textVideoPrompt } from '../scripts/lib/ai-scene-spec.ts';
+import { AiSpecSchema, budgetLeftUsd, emptyLog, framePrompt, rolePrompt, scriptGateIssues, seedOf, specIssues, textVideoPrompt } from '../scripts/lib/ai-scene-spec.ts';
 import { estimateVideoUsd, hideKey, videoRequestIssues, type VideoModel } from '../scripts/lib/openrouter-ai.ts';
 
 const seedance: VideoModel = {
@@ -14,6 +14,9 @@ const seedance: VideoModel = {
 const spec = (over: Record<string, unknown> = {}) =>
   AiSpecSchema.parse({
     chung: 'Small Saigon cafe at night, wooden counter, warm pendant lamps.',
+    phongCach: 'cinematic, 35mm film look',
+    anhSang: 'warm lamp light, quiet night',
+    amThanh: 'quiet cafe ambience, no music',
     dan: { 'chu-quan': { moTa: 'Vietnamese woman about 35, black hair in a bun, plain apron', vaiTro: 'cafe owner', viTri: 'behind the wooden counter' } },
     canh: [
       { id: 'thieu-tien', khung: 3, vai: ['chu-quan'], camXuc: 'lo-lang', moTa: 'Close-up, she counts cash at the counter, worried' },
@@ -23,6 +26,12 @@ const spec = (over: Record<string, unknown> = {}) =>
   });
 
 describe('ước tiền, giới hạn model', () => {
+  it('giá có tiếng: model tính theo giây lấy giá with_audio', () => {
+    const veo: VideoModel = { id: 'google/veo-3.1-lite', supported_durations: [4, 6, 8], pricing_skus: { duration_seconds_with_audio: '0.08', duration_seconds_without_audio: '0.05' } };
+    expect(estimateVideoUsd(veo, 8, '1080x1920')).toBeCloseTo(0.4, 6);
+    expect(estimateVideoUsd(veo, 8, '1080x1920', true)).toBeCloseTo(0.64, 6);
+  });
+
   it('Seedance tính theo token video: rộng × cao × 24 × giây ÷ 1024', () => {
     expect(estimateVideoUsd(seedance, 4, '720x1280')).toBeCloseTo(((720 * 1280 * 24 * 4) / 1024) * 0.000007, 6);
     expect(estimateVideoUsd(seedance, 4, '720x1280')).toBeCloseTo(0.6048, 4);
@@ -95,6 +104,19 @@ describe('kế hoạch cảnh AI', () => {
     for (const t of ['bối cảnh chung', 'vaiTro', 'viTri', 'seedance']) expect(thin).toContain(t);
   });
 
+  it('8 thành phần + thoại trong clip: prompt có nhãn từng phần, thiếu phong cách/ánh sáng/âm thanh hay giọng vai có thoại thì chặn', () => {
+    const dan = { sep: { moTa: 'Vietnamese man about 45, charcoal suit', vaiTro: 'sales director', viTri: 'standing at the head of the table', giongNoi: 'deep calm male voice' } };
+    const c = { id: 'hop', khung: 1, vai: ['sep'], camXuc: 'nhiu-may', moTa: 'Shot 1 (0-4s): wide; the director slams the table and shouts loudly, furious: "Khách cần gì?"', video: true, tuChu: true, toanCanh: true, giay: 4 };
+    const s = spec({ dan, canh: [c] });
+    expect(specIssues(s)).toEqual([]);
+    const p = textVideoPrompt(s, s.canh[0]);
+    for (const t of ['SUBJECTS:', 'CONTEXT:', 'ACTION, CAMERA AND COMPOSITION', 'STYLE:', 'AMBIANCE AND LIGHTING:', 'AUDIO:', 'lip-synced', 'deep calm male voice']) expect(p).toContain(t);
+    const bad = specIssues(spec({ phongCach: '', amThanh: '', dan: { sep: { ...dan.sep, giongNoi: '' } }, canh: [c] })).join('\n');
+    for (const t of ['phongCach', 'amThanh', 'giongNoi']) expect(bad).toContain(t);
+    const flat = specIssues(spec({ dan, canh: [{ ...c, moTa: 'Shot 1 (0-4s): wide. Shot 2 (2-4s): the director says: "Khách cần gì?"' }] })).join('\n');
+    expect(flat).toContain('chưa ghi cách nói');
+  });
+
   it('seed cố định theo tên; phần trần còn lại theo sổ', () => {
     expect(seedOf('khung-a')).toBe(seedOf('khung-a'));
     expect(seedOf('khung-a')).not.toBe(seedOf('khung-b'));
@@ -113,4 +135,14 @@ describe('kế hoạch cảnh AI', () => {
     log.dangCho[0].chiPhiUsd = 0.5; // đã biết giá thật thì dùng giá thật
     expect(budgetLeftUsd(log, 52_000, 26_000)).toBeCloseTo(0.7, 6);
   });
+
+  it('kịch bản trước: bảng thoại đủ cột và đã duyệt mới được tạo clip có thoại', () => {
+    expect(scriptGateIssues('# x\n').join()).toContain('Bảng thoại');
+    const head = '## Bảng thoại\n| Giây | Shot | Nhân vật | Câu | Cách nói | Vì sao |\n|---|---|---|---|---|---|\n';
+    const row = '| 0,0–2,4 | 1 toàn | Sếp | Khách cần gì, trả lời đi! | Quát lớn, gắt | Mở căng |\n';
+    expect(scriptGateIssues(head + row).join()).toContain('chưa được duyệt');
+    expect(scriptGateIssues(head + '| 0,0 | 1 | Sếp | Khách cần gì? |  | |\nĐã duyệt: Nam, 2026-10-12\n').join()).toContain('thiếu cột');
+    expect(scriptGateIssues(head + row + '\nĐã duyệt: Nam, 2026-10-12\n')).toEqual([]);
+  });
 });
+

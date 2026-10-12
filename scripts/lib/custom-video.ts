@@ -164,7 +164,17 @@ export function customIssues(dir: string, script: Script, briefBody: string, tot
   // Giọng đọc AI (loi-doc.json, ./reel giong): hợp lệ, mọi câu có bản đạt máy chấm, có chỗ gắn, chống bịa số
   const voiceFile = join(dir, CUSTOM_DIR, VOICE.file);
   const kieuKe = script.concept?.kieuKe ? KIEU_KE[script.concept.kieuKe] : undefined;
-  if (kieuKe?.nhieuGiong && !existsSync(voiceFile)) err(`Kiểu kể "${kieuKe.ten}" bắt buộc có giọng đọc nhiều giọng: viết ${CUSTOM_DIR}/${VOICE.file} theo skill giong-doc rồi chạy ./reel giong <tên-video>.`);
+  // Thoại trong clip AI (clip AI không tắt tiếng): giọng nhân vật nằm trong clip, đếm chất giọng khai ở ai/canh-ai.json
+  const clipVoice = /<video\b(?![^>]*\bmuted\b)[^>]*\bsrc="ai\//.test(html);
+  if (kieuKe?.nhieuGiong && !existsSync(voiceFile)) {
+    if (!clipVoice) err(`Kiểu kể "${kieuKe.ten}" bắt buộc có giọng nhiều giọng: thoại nhân vật trong clip AI (dung-canh-ai) hoặc ${CUSTOM_DIR}/${VOICE.file} (giong-doc).`);
+    else {
+      const specFile = join(dir, 'ai', 'canh-ai.json');
+      const dan = existsSync(specFile) ? (JSON.parse(readFileSync(specFile, 'utf8')).dan ?? {}) : {};
+      const voices = new Set(Object.values(dan as Record<string, { giongNoi?: string }>).map((d) => d.giongNoi?.trim()).filter(Boolean));
+      if (voices.size < kieuKe.nhieuGiong) err(`Kiểu kể "${kieuKe.ten}" cần ít nhất ${kieuKe.nhieuGiong} chất giọng nhân vật khác nhau (ai/canh-ai.json dan[].giongNoi), đang có ${voices.size}.`);
+    }
+  }
   if (existsSync(voiceFile)) {
     let voice: ReturnType<typeof readVoice>;
     try {

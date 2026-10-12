@@ -59,18 +59,21 @@ export function videoRequestIssues(m: VideoModel, sec: number, size: string, fir
 }
 
 /**
- * Ước tiền (USD) một clip không tiếng theo bảng giá của model. Seedance tính theo token video
+ * Ước tiền (USD) một clip theo bảng giá của model (`audio`: giá có tiếng). Seedance tính theo token video
  * (rộng × cao × 24 khung × giây ÷ 1024); model khác tính theo giây. Không tìm được giá → báo lỗi (không đoán).
  */
-export function estimateVideoUsd(m: VideoModel, sec: number, size: string): number {
+export function estimateVideoUsd(m: VideoModel, sec: number, size: string, audio = false): number {
   const p = m.pricing_skus ?? {};
   const [w, h] = size.split('x').map(Number);
   const res = `${Math.min(w, h)}p`;
   const num = (k: string) => (p[k] !== undefined ? Number(p[k]) : undefined);
-  const perToken = num(`video_tokens_${res}`) ?? num('video_tokens_without_audio') ?? num('video_tokens');
+  const perToken = num(`video_tokens_${res}`) ?? (audio ? num('video_tokens') : num('video_tokens_without_audio')) ?? num('video_tokens');
   if (perToken !== undefined) return ((w * h * 24 * sec) / 1024) * perToken;
   const perSec =
-    num(`duration_seconds_without_audio_${res}`) ?? num('duration_seconds_without_audio') ?? num(`duration_seconds_${res}`) ?? num('duration_seconds') ??
+    (audio
+      ? num(`duration_seconds_with_audio_${res}`) ?? num('duration_seconds_with_audio')
+      : num(`duration_seconds_without_audio_${res}`) ?? num('duration_seconds_without_audio')) ??
+    num(`duration_seconds_${res}`) ?? num('duration_seconds') ??
     (num(`cents_per_second_output_${res}`) ?? num('cents_per_second_output') ?? NaN) / 100;
   if (!Number.isFinite(perSec)) throw new Error(`Chưa đọc được giá của ${m.id} (pricing_skus: ${Object.keys(p).join(', ') || 'trống'}). Cần dev xem lại trước khi dùng.`);
   return perSec * sec;
@@ -128,15 +131,18 @@ export interface VideoJob {
   pollingUrl: string;
 }
 
-/** Gửi việc tạo clip không tiếng (từ ảnh khung đầu, hoặc chỉ từ chữ khi không có ảnh). Trả mã việc ngay (chưa có clip). */
+/**
+ * Gửi việc tạo clip (từ ảnh khung đầu, hoặc chỉ từ chữ khi không có ảnh). `audio`: model tạo luôn tiếng (thoại khớp môi,
+ * tiếng môi trường) — Nam 2026-10-12 bỏ luật "nhân vật AI không nói". Trả mã việc ngay (chưa có clip).
+ */
 /** `provider`: tham số riêng của nhà cung cấp (OpenRouter `provider.options`), vd. negativePrompt của Veo. */
-export async function submitVideo(model: string, prompt: string, firstFrame: string | undefined, sec: number, seed: number, key = openrouterKey(), size: string = OR.videoSize, provider?: unknown): Promise<VideoJob> {
+export async function submitVideo(model: string, prompt: string, firstFrame: string | undefined, sec: number, seed: number, key = openrouterKey(), size: string = OR.videoSize, provider?: unknown, audio = false): Promise<VideoJob> {
   const body = {
     model,
     prompt,
     duration: sec,
     size,
-    generate_audio: false,
+    generate_audio: audio,
     seed,
     ...(provider ? { provider } : {}),
     ...(firstFrame ? { frame_images: [{ ...imagePart(firstFrame), frame_type: 'first_frame' }] } : {}),

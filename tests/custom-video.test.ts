@@ -115,7 +115,7 @@ describe('video dựng riêng', () => {
     writeFileSync(join(dir, 'dung-rieng', 'tieng-dong.txt'), 'lang 5 6\n1.00 dun-dun 0.5\n');
     writeFileSync(join(dir, 'dung-rieng', 'bang-canh.txt'), '0.5 | mở | bụp | cắt\n3 | sổ\n6 | điện thoại\n9 | kết\n');
     const drama = { ...script, concept: { kieuKe: 'tong-tai' } } as unknown as Script;
-    expect(customIssues(dir, drama, brief, 12).map((i) => i.message).join()).toContain('bắt buộc có giọng đọc nhiều giọng');
+    expect(customIssues(dir, drama, brief, 12).map((i) => i.message).join()).toContain('bắt buộc có giọng nhiều giọng');
     expect(customIssues(dir, script, brief, 12)).toEqual([]);
   });
 

@@ -77,6 +77,7 @@ Một khoảnh khắc căng ở công sở, nhiều người cùng phản ứng 
 - **SIPOS** (chủ quán): drama ở quầy hoặc giữa ca, chủ quán và nhân viên quán, không dựng thành phòng họp công ty.
 - **Độ căng (bắt buộc, Nam 2026-10-12: "drama kịch bản chưa đủ độ căng thẳng")**: căng thẳng phải **leo thang**, không chỉ một lần đứng hình.
   - **Áp lực dồn từ người**: sếp hỏi rồi giục ("Trả lời đi!", "Nhanh lên."), mỗi câu ngắn hơn câu trước.
+  - **Giọng theo độ căng**: mỗi câu thoại có cách nói hợp tình huống (sếp **quát lớn** khi ra lệnh, nhân viên lắp bắp nhỏ, câu chốt lạnh và chậm); độ to và gắt leo thang tới cú vỡ rồi dịu xuống ở phần giải pháp (video AI: ghi trong prompt, skill `dung-canh-ai`; hoạt hình: `cuongDo`, `dienXuat`, thẻ cảm xúc của `giong-doc`).
   - **Đồng hồ chạy**: tin nhắn khách bật liên tục, ngón tay gõ bàn, nhịp tim; tiếng nhấn dày dần.
   - **Hậu quả thấy được ngay trên hình**: khách bỏ đi, việc hỏng ("Thôi em hỏi bên khác vậy."), sếp chốt một câu lạnh. Không dừng ở "khách chờ".
   - **Nhịp cắt nhanh dần**: 1,2 giây → 0,6 giây mỗi mặt trước cú vỡ; máy rung tay, dutch tilt, crash zoom; rồi lặng 0,5 giây và cú lật to nhất.

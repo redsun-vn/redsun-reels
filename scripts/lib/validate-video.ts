@@ -7,7 +7,7 @@ import { extname, isAbsolute, join, normalize } from 'node:path';
 import type { z } from 'zod';
 import { BriefSchema, type Brief } from '../../config/brief.schema.ts';
 import { repeatedInfo } from './info-repeat.ts';
-import { aiRuleIssues, kieuHinhIssue } from './kieu-hinh-rules.ts';
+import { hasAiVoice, aiRuleIssues, kieuHinhIssue } from './kieu-hinh-rules.ts';
 import { checkTrack, findTrack, MusicManifestSchema, type MusicPurpose, usableSec } from '../../config/music-manifest.ts';
 import { countWords, sceneDurationSec } from '../../config/scene-timing.ts';
 import { availableStylePresets, hasStylePreset } from '../../config/style-preset.schema.ts';
@@ -251,7 +251,7 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose; v
   }
   // Kiểu hình: luật cứng minh hoạ / người thật do AI tạo (không có cờ bỏ qua)
   const customHtml = script.build === 'custom' && existsSync(compositionPath(dir)) ? readFileSync(compositionPath(dir), 'utf8') : '';
-  issues.push(...aiRuleIssues({ dir, kieuHinh: brief.kieuHinh, cachTaoAi: brief.cachTaoAi, script, html: customHtml, hasVoice }));
+  issues.push(...aiRuleIssues({ dir, kieuHinh: brief.kieuHinh, cachTaoAi: brief.cachTaoAi, script, html: customHtml, hasVoice: hasVoice || (script.build === 'custom' && hasAiVoice(dir)) }));
   if (brief.occasion && !getOccasion(brief.occasion)) {
     issues.push(warn(`Dịp lễ "${brief.occasion}" chưa có trong lịch, nên không tự chọn phong cách theo dịp. Có: ${OCCASIONS.map((o) => o.id).join(', ')}.`));
   }

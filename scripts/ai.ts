@@ -34,6 +34,7 @@ import {
   roleFile,
   rolePrompt,
   seedOf,
+  scriptGateIssues,
   specIssues,
   textVideoPrompt,
 } from './lib/ai-scene-spec.ts';
@@ -79,6 +80,11 @@ await runCommand(async () => {
   const spec = AiSpecSchema.parse(JSON.parse(readFileSync(specPath, 'utf8')));
   const bad = specIssues(spec);
   if (bad.length) throw new Error(bad.join('\n'));
+  if (spec.coTieng && spec.canh.some((c) => c.video)) {
+    const conceptsFile = join(dir, 'concepts.md');
+    const gate = scriptGateIssues(existsSync(conceptsFile) ? readFileSync(conceptsFile, 'utf8') : '');
+    if (gate.length) throw new Error(gate.join('\n'));
+  }
   const mismatch = methodIssues(dir, cach);
   if (mismatch.length) throw new Error(mismatch.join('\n'));
   if (only) for (const id of only) if (!spec.canh.some((c) => c.id === id) && !spec.dan[id]) throw new Error(`Không có cảnh hay vai "${id}" trong ${AI_VIDEO.specFile}.`);
@@ -220,10 +226,11 @@ await runCommand(async () => {
         const firstFrame = !c.tuChu || !!c.noiTiep;
         const issues = videoRequestIssues(model, c.giay, size, firstFrame);
         if (issues.length) throw new Error(issues.join('\n'));
-        const uocUsd = estimateVideoUsd(model, c.giay, size);
+        const audio = spec.coTieng;
+        const uocUsd = estimateVideoUsd(model, c.giay, size, audio);
         ensure(uocUsd, `Clip ${c.id} (${c.giay}s)`);
         const prompt = c.tuChu ? textVideoPrompt(spec, c) : motionPrompt(spec, c), seed = seedOf(`clip-${c.id}`);
-        const job = await submitVideo(model.id, prompt, firstFrame ? dataUrl(join(aiDir, frameFile(c.id))) : undefined, c.giay, seed, key, size, c.tuChu ? tv.provider : undefined);
+        const job = await submitVideo(model.id, prompt, firstFrame ? dataUrl(join(aiDir, frameFile(c.id))) : undefined, c.giay, seed, key, size, c.tuChu ? tv.provider : undefined, audio);
         const p: AiPending = { canh: c.id, maViec: job.id, pollingUrl: job.pollingUrl, model: model.id, prompt, anhThamChieu: firstFrame ? [frameFile(c.id)] : [], seed, giay: c.giay, uocUsd, guiLuc: new Date().toISOString() };
         log.dangCho.push(p);
         save();

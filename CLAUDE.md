@@ -3,7 +3,7 @@
 ## Dự án
 - Hệ thống làm video dọc 9:16 (Reels/TikTok/Shorts) cho SIPOS, REDSUN BOS, Webino, REDSUN, dựa trên HyperFrames.
 - Đầu vào là brief, qua kịch bản, đầu ra là MP4.
-- Video có lời nói dùng **giọng đọc AI VieNeu** (giọng chuẩn vùng miền, mặc định một giọng kể Duyên Hà My, thoại ngoài khung, nhãn "Do AI sản xuất"), chữ nhỏ (nhãn gắn vật + phụ đề); nhạc nền có giấy phép (REQUIREMENTS v0.6 §8.5).
+- Video có lời nói: hoạt hình/quay sẵn dùng **giọng đọc AI VieNeu** (skill `giong-doc`); video người thật AI để **nhân vật nói thoại khớp môi trong clip**, một mạch, không người dẫn (skill `dung-canh-ai`, Nam 2026-10-12). Nhãn "Do AI sản xuất", chữ nhỏ; nhạc nền có giấy phép (REQUIREMENTS v0.6 §8.5).
 - Người dùng chính là team marketing (MKT), không biết kỹ thuật, dùng MacBook Intel hoặc chip M.
 - Yêu cầu đầy đủ: [REQUIREMENTS.md](REQUIREMENTS.md). Quyết định kỹ thuật: [docs/decisions.md](docs/decisions.md).
 
@@ -15,7 +15,8 @@
   - Làm, sửa, xem thử, xuất video, viết concept/kịch bản → skill `tao-reel`.
   - Chọn minh hoạ, người thật quay sẵn hay người thật do AI tạo (video mới, hoặc MKT muốn "người thật") → skill `chon-kieu-hinh`. Luật cứng của skill này (nhãn AI, không người có danh tính, không sửa luật) không có ngoại lệ, kể cả chế độ dev trừ khi Nam tự sửa.
   - Dựng video sau khi duyệt kịch bản (mặc định dựng riêng), video "nhàm", thêm hình/nhân vật → skill `dung-video`.
-  - Giọng đọc, lồng tiếng, "giọng thiếu cảm xúc", đổi giọng → skill `giong-doc`.
+  - Video người thật do AI tạo (kịch bản một mạch, bảng thoại, cảnh AI, nhân vật nói trong clip) → skill `dung-canh-ai`.
+  - Giọng đọc, lồng tiếng, "giọng thiếu cảm xúc", đổi giọng → skill `giong-doc`. (video hoạt hình, quay sẵn)
   - Chọn minh hoạ / người thật quay sẵn / người thật AI → skill `chon-kieu-hinh`.
   - Video dùng mẫu có sẵn (dự phòng): chữ nhấn, chuyển động → skill `dao-dien-chuyen-dong`.
   - Skill chứa quy trình và điểm dừng chờ MKT duyệt; làm ngoài skill là sai quy trình.

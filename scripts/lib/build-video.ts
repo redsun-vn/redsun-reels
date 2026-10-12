@@ -16,6 +16,7 @@ import { AI_VIDEO, aiLabelFor } from '../../config/ai-video.ts';
 import { VOICE } from '../../config/voice.ts';
 import { STOCK_FOOTAGE } from '../../config/stock-footage.ts';
 import { mediaDir } from './brief-media.ts';
+import { hasAiVoice } from './kieu-hinh-rules.ts';
 import { formatIssues, hasErrors, type Issue, validateVideo } from './validate-video.ts';
 
 export interface BuiltVideo {
@@ -73,7 +74,7 @@ export function buildVideo(opts: { dir: string; name: string; musicPurpose: Musi
     if (check.status !== 0) throw new BuildError(`Kiểm tra bố cục (hyperframes check) chưa đạt:\n${stripAnsi(check.stdout + check.stderr)}`);
   }
 
-  return { name: opts.name, script, props, stageDir, varsFile, warnings: issues, aiLabel: aiLabelFor(brief?.kieuHinh === 'nguoi-that-ai', custom && existsSync(join(opts.dir, CUSTOM_DIR, VOICE.file))) };
+  return { name: opts.name, script, props, stageDir, varsFile, warnings: issues, aiLabel: aiLabelFor(brief?.kieuHinh === 'nguoi-that-ai', custom && hasAiVoice(opts.dir)) };
 }
 
 /**

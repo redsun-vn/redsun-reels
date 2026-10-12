@@ -43,6 +43,16 @@ Một lần tạo chứa mọi người lộ mặt, cùng một nơi; prompt vi�
 - **Cường điệu bằng diễn và máy quay, không bằng hiệu ứng da mặt** (mồ hôi giọt to, mặt ướt trông giả): ghi rõ "no exaggerated sweat drops, natural skin".
 - Cần dài hơn 8 giây cho mọi người: Seedance (tới 15 giây) thay vì chia Veo nhiều lần.
 
+## 2c. Khuôn 8 thành phần và mẹo viết prompt (rút ý từ Veo 3 Prompting Guide)
+Nguồn: [snubroot/Veo-3-Prompting-Guide](https://github.com/snubroot/Veo-3-Prompting-Guide) (không ghi giấy phép: chỉ rút ý, không chép nguyên văn; Nam gửi 2026-10-12). Áp cho mọi model tạo từ chữ (Veo, Seedance, Kling).
+- **Đủ 8 thành phần mỗi shot**: người (ai, ngoại hình) · bối cảnh · hành động · phong cách · máy quay (cỡ + chuyển động) · bố cục · ánh sáng/không khí · âm thanh (dự án tắt tiếng clip, vẫn ghi "no dialogue, quiet office ambience" để model không diễn cảnh nói). Thiếu 3 thành phần trở lên là prompt yếu.
+- **Ghi rõ máy quay đặt ở đâu** trong từng shot: "camera placed behind the director's back at standing height (that's where the camera is)". Model bám vị trí cụ thể tốt hơn chữ chung chung "over-the-shoulder"; đây cũng là cách giữ người đang có lời khuất mặt.
+- **Diễn theo chuỗi "trước rồi sau"**: "first …, then …, finally …" cho cả cảm xúc lẫn hành động; tả vi biểu cảm (mắt nheo, chân mày nhíu, ngừng nửa nhịp) thay cho tính từ chung ("angry"), tránh "mặt người mẫu" vô hồn.
+- **Nhân vật tả kỹ và lặp nguyên văn**: tuổi, giới, tóc, mắt, nét mặt, trang phục từng món, phụ kiện đặc trưng, tư thế/thói quen; câu tả giống hệt ở mọi shot và mọi lần tạo (máy tự ghép từ `dan`, đừng viết lại khác đi trong `moTa`).
+- **Nhiều người trong cảnh**: nói rõ người nền đang làm gì (gõ máy, liếc nhìn) để cảnh sống, và ai là tâm điểm (lấy nét, bố cục).
+- **Chuyển cỡ cảnh có lý do theo mốc giây**: "wide at 0s, medium at 3s, close-up at 6s", mỗi lần chuyển theo diễn biến câu chuyện.
+- **Câu phủ định cụ thể**: no subtitles, no on-screen text, no watermark, no distorted hands, no extra fingers, no lip movement (dự án: nhân vật không nói); máy tự gắn câu luật cứng `promptRules`.
+
 ## 3. Bảng thuật ngữ gọn
 | Nhóm | Từ khoá | Dùng khi |
 |---|---|---|
