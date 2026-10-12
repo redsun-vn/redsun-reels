@@ -72,6 +72,11 @@ export const AiSpecSchema = z.object({
          * liền (Nam 2026-10-12: "phải là 1 video xuyên suốt, không phải cảnh ghép cắt từ nhiều phân đoạn").
          */
         noiTiep: slug.optional(),
+        /**
+         * Ngoại lệ có duyệt cho luật "mọi câu thoại một lần tạo": ghi lý do + người duyệt (vd. "Nam 2026-10-12: thử thoại
+         * đối xứng ở lần 2"). Kết quả giọng phải ghi vào review.md làm bằng chứng.
+         */
+        duyetThoaiNoiTiep: z.string().optional(),
         /** Clip tạo thẳng từ chữ (không ảnh vai, không khung đầu), model theo `mohinh` (`textVideoModels`); `moTa` tả từng cảnh nhỏ theo giây (Shot 1 (0–2.5s): …). */
         tuChu: z.boolean().default(false),
         /** Claude đã xem khung đầu (tay, mặt, chữ rác…) và thấy đạt. Chưa đạt thì không làm clip. */
@@ -191,7 +196,7 @@ export function motionPrompt(spec: AiSpec, c: AiSpec['canh'][number]): string {
  * Thoại phải có cách nói theo độ căng của cảnh (Nam 2026-10-12: "sếp phải quát lớn khi đưa ra yêu cầu"): trước mỗi
  * `: "…"` là động từ / trạng từ chỉ âm lượng, cảm xúc, nhịp (shouts loudly, stammers quietly, says confidently…).
  */
-const DELIVERY = /\b(shout|yell|snap|bark|roar|scream|whisper|mutter|murmur|stammer|stutter|sigh|gasp|growl|hiss|plead|laugh|loud|soft|quiet|angr|furious|nervous|trembl|shak|calm|firm|sharp|cold|confident|relieved|excited|tense|urgent|gentle|warm|proud|satisf|frustrat|panic|hesitant|slow|fast|rapid)/i;
+const DELIVERY = /\b(shout|yell|snap|bark|roar|scream|whisper|mutter|murmur|stammer|stutter|sigh|gasp|growl|hiss|plead|laugh|loud|soft|quiet|angr|furious|nervous|trembl|shak|calm|firm|sharp|cold|confident|relieved|excited|tense|urgent|gentle|warm|proud|satisf|frustrat|panic|hesitant|slow|fast|rapid|quick|happ|cheer|clear|bright|joyful|delight)/i;
 /** Tối đa âm tiết mỗi câu thoại (Nam 2026-10-12: "nên tách câu ngắn, ít chữ thì veo 3 sẽ nói tốt, rõ ràng hơn"). */
 export const MAX_AM_TIET_MOI_CAU = 6;
 export function dialogueIssues(c: { id: string; moTa: string }): string[] {
@@ -242,7 +247,7 @@ export function specIssues(spec: AiSpec): string[] {
   const faceGens = spec.canh.filter((c) => c.tuChu && c.vai.length);
   const broken = faceGens.slice(1).filter((c, i) => c.noiTiep !== faceGens[i].id);
   // Giọng đổi giữa các lần tạo (Nam nghe bản 5 Veo nối tiếp, 2026-10-12: "giọng 2 video khác nhau"): mọi câu thoại một lần tạo
-  const talkGens = spec.coTieng ? spec.canh.filter((c) => c.video && /:\s*"[^"]+"/.test(c.moTa)) : [];
+  const talkGens = spec.coTieng ? spec.canh.filter((c) => c.video && /:\s*"[^"]+"/.test(c.moTa) && !c.duyetThoaiNoiTiep?.trim()) : [];
   if (talkGens.length > 1)
     out.push(`Thoại nằm ở ${talkGens.length} lần tạo (${talkGens.map((c) => c.id).join(', ')}): giọng nhân vật đổi giữa các lần tạo kể cả khi nối tiếp; mọi câu thoại phải trong một lần tạo (lần khác chỉ hình, không thoại).`);
   if (broken.length)

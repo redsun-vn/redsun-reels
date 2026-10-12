@@ -155,6 +155,7 @@ describe('kế hoạch cảnh AI', () => {
     for (const t of ['BLOCKING:', 'Exactly 1 person', 'chairs do not move', 'cuts or pans to that speaker', 'spoken entirely by the one character', 'Southern Vietnamese (Saigon']) expect(textVideoPrompt(s, s.canh[0])).toContain(t);
     const two = specIssues(spec({ dan, canh: [a, { ...a, id: 'b', khung: 2, noiTiep: 'a' }] })).join();
     expect(two).toContain('mọi câu thoại phải trong một lần tạo');
+    expect(specIssues(spec({ dan, canh: [a, { ...a, id: 'b', khung: 2, noiTiep: 'a', duyetThoaiNoiTiep: 'Nam: thử' }] })).join()).not.toContain('mọi câu thoại phải trong một lần tạo');
     expect(specIssues(spec({ dan, canh: [a, { ...a, id: 'b', khung: 2, noiTiep: 'a', moTa: 'Shot one: wide, the director nods, silent.' }] })).join()).not.toContain('một lần tạo (lần khác');
   });
 

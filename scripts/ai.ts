@@ -233,7 +233,8 @@ await runCommand(async () => {
         }
         // Nối tiếp: khung cuối clip trước làm khung đầu (mạch liền); clip trước chưa xong thì chờ lần chạy sau
         if (c.noiTiep) {
-          if (!has(clipFile(c.noiTiep))) {
+          // Kiểm thẳng file (không qua has(): ở chế độ --lai has() coi mọi file là chưa có)
+          if (!existsSync(join(aiDir, clipFile(c.noiTiep)))) {
             console.log(`… ${c.id}: chờ clip ${c.noiTiep} xong (khung cuối của nó là khung đầu cảnh này), chạy lại lệnh sau.`);
             continue;
           }
