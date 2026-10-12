@@ -560,3 +560,5 @@ Nam: "tất cả yêu cầu phải thành skill để tất cả video sau này 
 - **Kịch bản trước, clip sau**: `concepts.md` mục `## Bảng thoại` (giây · shot · nhân vật · câu · cách nói · vì sao) + `Đã duyệt: <ai>, <ngày>`; `./reel ai` từ chối tạo clip có thoại khi thiếu (`scriptGateIssues`). Video AI có thêm một điểm dừng: duyệt kịch bản + bảng thoại.
 - **Khuôn 8 thành phần** trong kế hoạch cảnh (`phongCach`, `anhSang`, `amThanh` bắt buộc khi tạo từ chữ), prompt ghép theo nhãn từng phần.
 - **Prompt lưu trong brief** (Nam: "tôi muốn trong brief lưu lại prompt để theo dõi"): `ai/prompt.md` — phần xem trước (`./reel ai <tên> --xem-prompt`, không gọi model) + lịch sử mỗi lần gửi (giờ, việc, model, giây, tiền ước, prompt nguyên văn), chỉ thêm không xoá.
+- **Khung người cố định, thoại một lần tạo, vùng giọng** (Nam xem/nghe bản 5 Veo nối tiếp: đồng nghiệp ngồi ghế trượt che sếp, lòi lưng người thứ tư, "giọng clip đầu là miền nam, giọng clip 2 là miền bắc"): prompt tự gắn mục BLOCKING (đúng số người, giữ chỗ, ai nói thì quay người đó) và câu vùng giọng (`giongVung`); `specIssues` chặn thoại nằm ở nhiều lần tạo. Nối tiếp khung cuối giữ được mặt nhưng không giữ được giọng.
+

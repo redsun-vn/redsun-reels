@@ -148,6 +148,16 @@ describe('kế hoạch cảnh AI', () => {
     expect(scriptGateIssues(head + row + '\nĐã duyệt: Nam, 2026-10-12\n')).toEqual([]);
   });
 
+  it('khung người cố định trong prompt; thoại chỉ trong một lần tạo', () => {
+    const dan = { sep: { moTa: 'Vietnamese man about 45, charcoal suit', vaiTro: 'sales director', viTri: 'standing', giongNoi: 'deep voice' } };
+    const a = { id: 'a', khung: 1, vai: ['sep'], camXuc: 'nhiu-may', moTa: 'Shot one: wide; the director shouts loudly: "Trả lời đi!"', video: true, tuChu: true, toanCanh: true, giay: 8 };
+    const s = spec({ dan, canh: [a] });
+    for (const t of ['BLOCKING:', 'Exactly 1 person', 'chairs do not move', 'cuts or pans to that speaker', 'Southern Vietnamese (Saigon']) expect(textVideoPrompt(s, s.canh[0])).toContain(t);
+    const two = specIssues(spec({ dan, canh: [a, { ...a, id: 'b', khung: 2, noiTiep: 'a' }] })).join();
+    expect(two).toContain('mọi câu thoại phải trong một lần tạo');
+    expect(specIssues(spec({ dan, canh: [a, { ...a, id: 'b', khung: 2, noiTiep: 'a', moTa: 'Shot one: wide, the director nods, silent.' }] })).join()).not.toContain('một lần tạo (lần khác');
+  });
+
   it('prompt.md: bản xem trước thay mới, lịch sử gửi chỉ thêm', () => {
     const s = spec({ canh: [{ id: 'hop', khung: 1, vai: ['chu-quan'], camXuc: 'cuoi', moTa: 'Shot 1 (0-4s): wide, she smiles warmly: "Chào"', video: true, tuChu: true, toanCanh: true, giay: 4 }] });
     const pv = promptPreview(s, { video: 'veo', image: 'img' });

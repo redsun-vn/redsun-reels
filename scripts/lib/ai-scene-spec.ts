@@ -30,6 +30,8 @@ export const AiSpecSchema = z.object({
   amThanh: z.string().default(''),
   /** Clip có tiếng (thoại khớp môi + tiếng môi trường). Nam 2026-10-12 bỏ luật "nhân vật AI không nói". */
   coTieng: z.boolean().default(true),
+  /** Vùng giọng cho mọi nhân vật (Nam 2026-10-12: hai lần tạo Veo ra giọng Nam rồi giọng Bắc): ghi rõ trong mục AUDIO. */
+  giongVung: z.enum(['nam', 'bac']).default('nam'),
   /** Cỡ clip tạo từ chữ, ghi đè cỡ mặc định của model (vd. "720x1280" cho bản thử rẻ hơn). */
   kichCo: z.enum(['720x1280', '1080x1920']).optional(),
   dan: z.record(
@@ -137,6 +139,14 @@ const castLine = (spec: AiSpec, v: string) => {
   // Gọi nhân vật bằng vai trò, không bằng mã vai: model (Veo) hay in mã/chữ trong prompt lên hình (thử 2026-10-12: "Salé")
   return `The ${d.vaiTro || 'character'}: ${d.moTa}${d.viTri ? `; position in the shared location: ${d.viTri}` : ''}${d.giongNoi ? `; voice: ${d.giongNoi}` : ''}.`;
 };
+/**
+ * Khung người cố định (Nam xem bản 5, 2026-10-12: đồng nghiệp ngồi ghế trượt che sếp, lần tạo 2 lòi lưng người thứ tư):
+ * đúng số người, mỗi người giữ chỗ, ai nói thì được quay rõ.
+ */
+const blocking = (c: AiSpec['canh'][number]) =>
+  c.vai.length
+    ? `Exactly ${c.vai.length} ${c.vai.length > 1 ? 'people' : 'person'} in the whole clip, nobody else: no extra people, backs, shoulders or heads in the foreground or background. Everyone keeps their own position for the whole clip: seated people stay seated, chairs do not move or roll, nobody walks or crosses in front of another person. Whenever someone speaks, the camera cuts or pans to that speaker and frames their face clearly.`
+    : '';
 const sharedPlace = (spec: AiSpec) =>
   spec.chung ? `One shared location for every shot, all characters are in this same place at the same time: ${spec.chung}` : '';
 const establishing = (c: AiSpec['canh'][number]) =>
@@ -163,11 +173,12 @@ export function textVideoPrompt(spec: AiSpec, c: AiSpec['canh'][number]): string
   return [
     `Vertical 9:16 cinematic short film, one continuous scene cut into multiple shots with hard cuts, the same characters keep the same face, hair, clothes and voice in every shot.`,
     who && `SUBJECTS: ${who}`,
+    blocking(c) && `BLOCKING: ${blocking(c)}`,
     spec.chung && `CONTEXT: ${sharedPlace(spec)}`,
     `ACTION, CAMERA AND COMPOSITION (shot by shot): ${[establishing(c), c.noiTiep ? 'This clip continues seamlessly from the first frame: same place, same people, same light, the action carries on without a jump.' : '', c.moTa].filter(Boolean).join(' ')}`,
     spec.phongCach && `STYLE: ${spec.phongCach}`,
     spec.anhSang && `AMBIANCE AND LIGHTING: ${spec.anhSang}`,
-    spec.coTieng ? `AUDIO: ${spec.amThanh || 'natural room sound'}. Dialogue is spoken in Vietnamese exactly as written in quotes, lip-synced, clear and intelligible: every Vietnamese syllable pronounced distinctly with correct tones, natural unhurried pace even when shouting, one speaker at a time, no mumbling, no overlapping voices, background sound kept low under speech. No subtitles.` : 'AUDIO: none.',
+    spec.coTieng ? `AUDIO: ${spec.amThanh || 'natural room sound'}. ${spec.giongVung === 'nam' ? 'Every character speaks Vietnamese with a Southern Vietnamese (Saigon, Ho Chi Minh City) accent, never a Northern (Hanoi) accent.' : 'Every character speaks Vietnamese with a Northern Vietnamese (Hanoi) accent, never a Southern accent.'} Dialogue is spoken in Vietnamese exactly as written in quotes, lip-synced, clear and intelligible: every Vietnamese syllable pronounced distinctly with correct tones, natural unhurried pace even when shouting, one speaker at a time, no mumbling, no overlapping voices, background sound kept low under speech. No subtitles.` : 'AUDIO: none.',
     AI_VIDEO.promptRules,
   ].filter(Boolean).join(' ');
 }
@@ -230,6 +241,10 @@ export function specIssues(spec: AiSpec): string[] {
     out.push(`Chưa có cảnh toàn ("toanCanh": true) thấy đủ mọi vai (${roles.join(', ')}) trong cùng khung: video AI phải là một khung hình chung.`);
   const faceGens = spec.canh.filter((c) => c.tuChu && c.vai.length);
   const broken = faceGens.slice(1).filter((c, i) => c.noiTiep !== faceGens[i].id);
+  // Giọng đổi giữa các lần tạo (Nam nghe bản 5 Veo nối tiếp, 2026-10-12: "giọng 2 video khác nhau"): mọi câu thoại một lần tạo
+  const talkGens = spec.coTieng ? spec.canh.filter((c) => c.video && /:\s*"[^"]+"/.test(c.moTa)) : [];
+  if (talkGens.length > 1)
+    out.push(`Thoại nằm ở ${talkGens.length} lần tạo (${talkGens.map((c) => c.id).join(', ')}): giọng nhân vật đổi giữa các lần tạo kể cả khi nối tiếp; mọi câu thoại phải trong một lần tạo (lần khác chỉ hình, không thoại).`);
   if (broken.length)
     out.push(`Lần tạo ${broken.map((c) => `"${c.id}"`).join(', ')} có người nhưng không nối tiếp lần tạo trước ("noiTiep"): phần AI phải là một mạch liền, mọi vai lộ mặt cùng một lần tạo hoặc chuỗi nối tiếp (khung cuối lần trước làm khung đầu lần sau).`);
   for (const c of spec.canh) {
