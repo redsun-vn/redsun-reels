@@ -30,6 +30,8 @@ export const AiSpecSchema = z.object({
   amThanh: z.string().default(''),
   /** Clip có tiếng (thoại khớp môi + tiếng môi trường). Nam 2026-10-12 bỏ luật "nhân vật AI không nói". */
   coTieng: z.boolean().default(true),
+  /** Cỡ clip tạo từ chữ, ghi đè cỡ mặc định của model (vd. "720x1280" cho bản thử rẻ hơn). */
+  kichCo: z.enum(['720x1280', '1080x1920']).optional(),
   dan: z.record(
     slug,
     z.object({
@@ -164,7 +166,7 @@ export function textVideoPrompt(spec: AiSpec, c: AiSpec['canh'][number]): string
     `ACTION, CAMERA AND COMPOSITION (shot by shot): ${[establishing(c), c.noiTiep ? 'This clip continues seamlessly from the first frame: same place, same people, same light, the action carries on without a jump.' : '', c.moTa].filter(Boolean).join(' ')}`,
     spec.phongCach && `STYLE: ${spec.phongCach}`,
     spec.anhSang && `AMBIANCE AND LIGHTING: ${spec.anhSang}`,
-    spec.coTieng ? `AUDIO: ${spec.amThanh || 'natural room sound'}. Dialogue is spoken in Vietnamese exactly as written after "says:", lip-synced. No subtitles.` : 'AUDIO: none.',
+    spec.coTieng ? `AUDIO: ${spec.amThanh || 'natural room sound'}. Dialogue is spoken in Vietnamese exactly as written in quotes, lip-synced, clear and intelligible: every Vietnamese syllable pronounced distinctly with correct tones, natural unhurried pace even when shouting, one speaker at a time, no mumbling, no overlapping voices, background sound kept low under speech. No subtitles.` : 'AUDIO: none.',
     AI_VIDEO.promptRules,
   ].filter(Boolean).join(' ');
 }

@@ -226,7 +226,7 @@ await runCommand(async () => {
       if (!c.video || !want(c.id) || has(clipFile(c.id)) || log.dangCho.some((p) => p.canh === c.id)) continue;
       try {
         const tv = OR.textVideoModels[spec.mohinh];
-        const model = modelOf(c.tuChu ? tv.id : OR.videoModel), size = c.tuChu ? tv.size : OR.videoSize;
+        const model = modelOf(c.tuChu ? tv.id : OR.videoModel), size = c.tuChu ? (spec.kichCo ?? tv.size) : OR.videoSize;
         if (!c.tuChu && !c.duyetKhung) {
           console.log(`! ${c.id}: khung đầu chưa duyệt (duyetKhung), bỏ qua clip.`);
           continue;
