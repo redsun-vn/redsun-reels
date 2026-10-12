@@ -134,7 +134,8 @@ export const seedOf = (name: string) => parseInt(createHash('sha256').update(nam
 /** Vai: hình đúng vai trò + vị trí trong bối cảnh chung (blocking), để mọi cảnh dựng cùng một không gian. */
 const castLine = (spec: AiSpec, v: string) => {
   const d = spec.dan[v];
-  return `${v}${d.vaiTro ? ` (${d.vaiTro})` : ''}: ${d.moTa}${d.viTri ? `; position in the shared location: ${d.viTri}` : ''}${d.giongNoi ? `; voice: ${d.giongNoi}` : ''}.`;
+  // Gọi nhân vật bằng vai trò, không bằng mã vai: model (Veo) hay in mã/chữ trong prompt lên hình (thử 2026-10-12: "Salé")
+  return `The ${d.vaiTro || 'character'}: ${d.moTa}${d.viTri ? `; position in the shared location: ${d.viTri}` : ''}${d.giongNoi ? `; voice: ${d.giongNoi}` : ''}.`;
 };
 const sharedPlace = (spec: AiSpec) =>
   spec.chung ? `One shared location for every shot, all characters are in this same place at the same time: ${spec.chung}` : '';
@@ -180,9 +181,15 @@ export function motionPrompt(spec: AiSpec, c: AiSpec['canh'][number]): string {
  * `: "…"` là động từ / trạng từ chỉ âm lượng, cảm xúc, nhịp (shouts loudly, stammers quietly, says confidently…).
  */
 const DELIVERY = /\b(shout|yell|snap|bark|roar|scream|whisper|mutter|murmur|stammer|stutter|sigh|gasp|growl|hiss|plead|laugh|loud|soft|quiet|angr|furious|nervous|trembl|shak|calm|firm|sharp|cold|confident|relieved|excited|tense|urgent|gentle|warm|proud|satisf|frustrat|panic|hesitant|slow|fast|rapid)/i;
+/** Tối đa âm tiết mỗi câu thoại (Nam 2026-10-12: "nên tách câu ngắn, ít chữ thì veo 3 sẽ nói tốt, rõ ràng hơn"). */
+export const MAX_AM_TIET_MOI_CAU = 6;
 export function dialogueIssues(c: { id: string; moTa: string }): string[] {
   const out: string[] = [];
   for (const m of c.moTa.matchAll(/:\s*"([^"]+)"/g)) {
+    for (const cau of m[1].split(/[.!?…:;,]+/).map((x) => x.trim()).filter(Boolean)) {
+      const n = cau.split(/\s+/).length;
+      if (n > MAX_AM_TIET_MOI_CAU) out.push(`Cảnh "${c.id}": câu thoại "${cau}" có ${n} âm tiết, quá ${MAX_AM_TIET_MOI_CAU}: tách thành câu ngắn (model nói tiếng Việt rõ hơn khi câu ít chữ).`);
+    }
     const before = c.moTa.slice(Math.max(0, m.index! - 90), m.index);
     const lead = before.split(/[.;]\s/).pop() ?? before;
     if (!DELIVERY.test(lead)) out.push(`Cảnh "${c.id}": câu thoại "${m[1].slice(0, 40)}" chưa ghi cách nói (âm lượng, cảm xúc, nhịp hợp độ căng của shot), vd. 'the director slams the table and shouts loudly, furious: "…"', 'she stammers quietly, voice trembling: "…"'.`);

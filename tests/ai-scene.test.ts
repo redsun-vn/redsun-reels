@@ -85,7 +85,7 @@ describe('kế hoạch cảnh AI', () => {
     const s = spec({ canh: [{ id: 'dem', khung: 2, vai: ['chu-quan'], camXuc: 'lo-lang', moTa: 'Shot 1 (0-3s): she counts cash. Shot 2 (3-6s): close-up, worried.', video: true, tuChu: true, giay: 6 }] });
     expect(specIssues(s)).toEqual([]);
     const p = textVideoPrompt(s, s.canh[0]);
-    for (const t of ['multiple shots', 'same face', 'chu-quan (cafe owner): Vietnamese woman', 'Shot 2', AI_VIDEO.promptRules]) expect(p).toContain(t);
+    for (const t of ['multiple shots', 'same face', 'The cafe owner: Vietnamese woman', 'Shot 2', AI_VIDEO.promptRules]) expect(p).toContain(t);
     expect(specIssues(spec({ canh: [{ id: 'x', khung: 1, camXuc: 'cuoi', moTa: 'a smiling person at a counter', tuChu: true }] })).join()).toContain('phải là clip');
   });
 
@@ -115,6 +115,9 @@ describe('kế hoạch cảnh AI', () => {
     for (const t of ['phongCach', 'amThanh', 'giongNoi']) expect(bad).toContain(t);
     const flat = specIssues(spec({ dan, canh: [{ ...c, moTa: 'Shot 1 (0-4s): wide. Shot 2 (2-4s): the director says: "Khách cần gì?"' }] })).join('\n');
     expect(flat).toContain('chưa ghi cách nói');
+    const dai = specIssues(spec({ dan, canh: [{ ...c, moTa: 'Shot one: the director shouts loudly: "Có AI tóm tắt rồi khách cần báo giá"' }] })).join('\n');
+    expect(dai).toContain('tách thành câu ngắn');
+    expect(specIssues(spec({ dan, canh: [{ ...c, moTa: 'Shot one: the director shouts loudly: "AI tóm tắt rồi. Khách cần báo giá!"' }] }))).toEqual([]);
   });
 
   it('seed cố định theo tên; phần trần còn lại theo sổ', () => {
