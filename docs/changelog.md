@@ -2,8 +2,15 @@
 
 Đánh số `MAJOR.MINOR.PATCH`. Trước 1.0: MINOR tăng khi có tính năng mới, PATCH khi chỉ sửa lỗi. Mỗi bản gắn tag git `vX.Y.Z` và có trang Release trên GitHub. Số bản nằm ở `package.json` (`./reel doctor` in ra).
 
-## Chưa phát hành
-Reel hấp dẫn hơn và làm nhanh hơn (dự kiến bản 0.6.0).
+## 0.6.0 — 2026-10-12
+Reel hấp dẫn hơn, làm nhanh hơn; video người thật AI có nhân vật nói thoại.
+
+- **Video người thật AI là một mạch phim**: một khung hình chung (một bối cảnh, cảnh toàn đủ mọi người), nhân vật nói thoại khớp môi ngay trong clip, không người dẫn; mỗi câu thoại ghi cách nói hợp độ căng (sếp quát lớn…), câu ngắn ≤ 6 âm tiết để nghe rõ; nhiều nhân vật quay một cú máy liền, đúng số người, người nói lên hình. Quy trình gom ở skill mới `dung-canh-ai`.
+- **Kịch bản và bảng thoại duyệt trước khi tạo clip AI**; prompt gửi model lưu trong brief (`ai/prompt.md`, xem trước không tốn tiền), clip thử lưu ở `ai/so-sanh/`.
+- **Veo 3.1 Lite có tiếng** là mặc định cho video người thật AI; mọi câu thoại dồn vào một lần tạo để giọng và vùng miền không đổi (ngoại lệ chỉ khi Nam duyệt).
+- **Trước / sau rõ ràng**: giữa hai phân cảnh có nhịp chuyển riêng khoảng 1,5 giây (cửa màu sản phẩm đóng mở, chữ "SAU KHI DÙNG …" đập vào); đoạn chốt riêng 3 giây sau mạch AI (logo, câu tổng kết, nút), không đè lên phân cảnh cuối.
+- Đọc đúng tên: REDSUN BOS = "Red sun bi-ô-ét", REDSUN = "Red sun".
+- Thêm 4 bài nhạc drama (Mixkit).
 
 - **6 kiểu kể**: tiểu phẩm hài, POV "khi bạn là chủ quán…", chuyện có cú lật, mẹo / số liệu, drama văn phòng, drama tổng tài. Ba ý tưởng của một video thuộc ba kiểu kể khác nhau.
 - Hai kiểu drama có thêm tiếng động phim ngắn (tèn tèn tén, nhịp tim, bước giày, đứng hình) và nhân vật mặc vest.
