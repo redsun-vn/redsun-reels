@@ -145,7 +145,7 @@ const castLine = (spec: AiSpec, v: string) => {
  */
 const blocking = (c: AiSpec['canh'][number]) =>
   c.vai.length
-    ? `Exactly ${c.vai.length} ${c.vai.length > 1 ? 'people' : 'person'} in the whole clip, nobody else: no extra people, backs, shoulders or heads in the foreground or background. Everyone keeps their own position for the whole clip: seated people stay seated, chairs do not move or roll, nobody walks or crosses in front of another person. Whenever someone speaks, the camera cuts or pans to that speaker and frames their face clearly.`
+    ? `Exactly ${c.vai.length} ${c.vai.length > 1 ? 'people' : 'person'} in the whole clip, nobody else: no extra people, backs, shoulders or heads in the foreground or background. Everyone keeps their own position for the whole clip: seated people stay seated, chairs do not move or roll, nobody walks or crosses in front of another person. Whenever someone speaks, the camera cuts or pans to that speaker and frames their face clearly. Each quoted line is spoken entirely by the one character it is given to, every sentence of it in the same voice; nobody else speaks, finishes or repeats that line.`
     : '';
 const sharedPlace = (spec: AiSpec) =>
   spec.chung ? `One shared location for every shot, all characters are in this same place at the same time: ${spec.chung}` : '';

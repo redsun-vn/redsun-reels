@@ -152,7 +152,7 @@ describe('kế hoạch cảnh AI', () => {
     const dan = { sep: { moTa: 'Vietnamese man about 45, charcoal suit', vaiTro: 'sales director', viTri: 'standing', giongNoi: 'deep voice' } };
     const a = { id: 'a', khung: 1, vai: ['sep'], camXuc: 'nhiu-may', moTa: 'Shot one: wide; the director shouts loudly: "Trả lời đi!"', video: true, tuChu: true, toanCanh: true, giay: 8 };
     const s = spec({ dan, canh: [a] });
-    for (const t of ['BLOCKING:', 'Exactly 1 person', 'chairs do not move', 'cuts or pans to that speaker', 'Southern Vietnamese (Saigon']) expect(textVideoPrompt(s, s.canh[0])).toContain(t);
+    for (const t of ['BLOCKING:', 'Exactly 1 person', 'chairs do not move', 'cuts or pans to that speaker', 'spoken entirely by the one character', 'Southern Vietnamese (Saigon']) expect(textVideoPrompt(s, s.canh[0])).toContain(t);
     const two = specIssues(spec({ dan, canh: [a, { ...a, id: 'b', khung: 2, noiTiep: 'a' }] })).join();
     expect(two).toContain('mọi câu thoại phải trong một lần tạo');
     expect(specIssues(spec({ dan, canh: [a, { ...a, id: 'b', khung: 2, noiTiep: 'a', moTa: 'Shot one: wide, the director nods, silent.' }] })).join()).not.toContain('một lần tạo (lần khác');

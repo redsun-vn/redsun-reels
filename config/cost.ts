@@ -10,8 +10,8 @@ export const COST = {
   vndPerUsd: 26_000,
   /** Trần cho cảnh người thật do AI tạo (ảnh vai, khung đầu, clip; OpenRouter, Nam 2026-10-11), đồng mỗi video. */
   aiCapVndPerVideo: 50_000,
-  /** Trần cảnh AI riêng cho từng video (chỉ Nam nâng). Nam 2026-10-11: bản thử Veo nâng 60.000đ (lượt bị lọc vẫn bị tính 10.400đ). */
-  aiCapVndOverride: { '2026-10-11-sipos-qr-chuyen-khoan-gia-veo': 60_000 } as Record<string, number>,
+  /** Trần cảnh AI riêng cho từng video (chỉ Nam nâng). Nam 2026-10-11: bản thử Veo nâng 60.000đ (lượt bị lọc vẫn bị tính 10.400đ). Nam 2026-10-12: drama CRM bản 6 nâng 70.000đ (tạo lại lần 1 lệch kịch bản). */
+  aiCapVndOverride: { '2026-10-11-sipos-qr-chuyen-khoan-gia-veo': 60_000, '2026-10-12-bos-crm-ai-drama-van-phong-v6': 70_000 } as Record<string, number>,
   /** VieNeu tính bằng token của gói (không đổi ra đồng được khi đang dùng thử): trần token mỗi video. */
   vieneuTokenCapPerVideo: 20_000,
   /** Giá theo model: input, output (output gồm cả phần "suy nghĩ"). */

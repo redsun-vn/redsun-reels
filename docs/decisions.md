@@ -561,4 +561,4 @@ Nam: "tất cả yêu cầu phải thành skill để tất cả video sau này 
 - **Khuôn 8 thành phần** trong kế hoạch cảnh (`phongCach`, `anhSang`, `amThanh` bắt buộc khi tạo từ chữ), prompt ghép theo nhãn từng phần.
 - **Prompt lưu trong brief** (Nam: "tôi muốn trong brief lưu lại prompt để theo dõi"): `ai/prompt.md` — phần xem trước (`./reel ai <tên> --xem-prompt`, không gọi model) + lịch sử mỗi lần gửi (giờ, việc, model, giây, tiền ước, prompt nguyên văn), chỉ thêm không xoá.
 - **Khung người cố định, thoại một lần tạo, vùng giọng** (Nam xem/nghe bản 5 Veo nối tiếp: đồng nghiệp ngồi ghế trượt che sếp, lòi lưng người thứ tư, "giọng clip đầu là miền nam, giọng clip 2 là miền bắc"): prompt tự gắn mục BLOCKING (đúng số người, giữ chỗ, ai nói thì quay người đó) và câu vùng giọng (`giongVung`); `specIssues` chặn thoại nằm ở nhiều lần tạo. Nối tiếp khung cuối giữ được mặt nhưng không giữ được giọng.
-
+- **Veo 3.1 Lite là model mặc định cho video người thật AI** (Nam sau các lần so sánh 2026-10-12: "lần so sánh sau này thì veo 3.1 lite tốt"; Seedance 2.0 Fast hình tốt nhưng tiếng Việt không rõ). `mohinh` mặc định `veo` (`ai-scene-spec.ts`).

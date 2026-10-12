@@ -82,6 +82,7 @@ Một khoảnh khắc căng ở công sở, nhiều người cùng phản ứng 
   - **Hậu quả thấy được ngay trên hình**: khách bỏ đi, việc hỏng ("Thôi em hỏi bên khác vậy."), sếp chốt một câu lạnh. Không dừng ở "khách chờ".
   - **Nhịp cắt nhanh dần**: 1,2 giây → 0,6 giây mỗi mặt trước cú vỡ; máy rung tay, dutch tilt, crash zoom; rồi lặng 0,5 giây và cú lật to nhất.
   - **Gọi lại cùng khoảnh khắc**: nửa sau lặp đúng câu hỏi mở đầu, lần này có câu trả lời.
+  - **Phần sau sản phẩm bùng lên**: thấy sản phẩm làm việc cụ thể trên màn hình và người gây áp lực vui vỡ oà (bật cười, vỗ tay, giơ ngón cái), mạnh ngang lúc căng nhất; không kết bằng cái gật đầu nhẹ.
   - **Một bối cảnh chung**: mở bằng cảnh toàn thấy cả phòng (họp, quầy, kho…) và mọi người trong đó, hành động chính (đập bàn, ném hồ sơ xuống) quay đủ rộng để thấy người làm và cả phòng phản ứng (luật chung cảnh AI, `chon-kieu-hinh`).
 - **Giọng đa dạng (bắt buộc)**: mỗi nhân vật chính một giọng, xen nam nữ (sếp, nhân viên kinh doanh, kế toán…), skill `giong-doc` mục "Ngoại lệ — kiểu kể drama".
 - **Máy quay, tiếng**: cầm tay hơi rung, lia nhanh giữa các gương mặt, cận phản ứng; `dung-hinh`, `tim-dap` trong khoảng lặng, `hoi-tho` khi gỡ xong. Xem [ngon-ngu-may-quay.md](../../dung-video/references/ngon-ngu-may-quay.md).
