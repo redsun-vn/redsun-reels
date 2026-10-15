@@ -2,6 +2,16 @@
 
 Đánh số `MAJOR.MINOR.PATCH`. Trước 1.0: MINOR tăng khi có tính năng mới, PATCH khi chỉ sửa lỗi. Mỗi bản gắn tag git `vX.Y.Z` và có trang Release trên GitHub. Số bản nằm ở `package.json` (`./reel doctor` in ra).
 
+## 0.7.0 — 2026-10-15
+Video có chiều sâu cả hình lẫn câu chuyện; chữ không còn lọt dưới nút và tên trang của Reels.
+
+- **Hình có chiều sâu**: mỗi cảnh có lớp xa (mờ), lớp giữa (người, đồ vật) và lớp gần sát ống kính (mép quầy, ly nước, lá cây), trượt lệch nhau khi máy đi; ánh sáng có nguồn (chùm nắng, đèn bàn, vệt sáng quét qua màn hình); viền tối và hạt nhẹ suốt video.
+- **Chuyển cảnh ngay trong khung hình**: máy lao vào màn hình điện thoại rồi lùi ra ở cảnh sau, tấm ảnh bong khỏi màn hình bay về phía người xem, người lướt sát ống kính kèm cú lia máy, màu tràn kín khung. Mỗi video 1–3 lần, ở khoảnh khắc quan trọng.
+- **Câu chuyện có chiều sâu**: mỗi ý tưởng có một so sánh lấy từ đời người xem; mỗi cảnh ghi rõ phải cho thấy gì và không được cho thấy gì; nhân vật đổi tư thế đúng phách nhạc, tắt tiếng vẫn hiểu chuyện.
+- **Vùng an toàn Facebook / TikTok, máy tự chặn**: chữ không được sát mép, không lọt dưới cột nút bên phải hay tên trang ở đáy; sai là không xuất được video. Nút kêu gọi đặt ngay trên tên trang, bàn tay bấm chỉ về phía đó.
+- Hướng dẫn MKT cho video người thật AI có thoại: duyệt bảng thoại, chuyển cảnh trước / sau.
+- Sửa: pháo giấy ở cảnh kết không còn hiện sẵn một chấm nhỏ từ đầu cảnh.
+
 ## 0.6.0 — 2026-10-12
 Reel hấp dẫn hơn, làm nhanh hơn; video người thật AI có nhân vật nói thoại.
 
