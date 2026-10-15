@@ -36,6 +36,8 @@ Skill kỹ thuật của plugin HyperFrames (chỉ đọc, **không** chạy cre
 - `hyperframes:hyperframes-creative` → `references/house-style.md`, `references/video-composition.md`, `references/beat-direction.md`, `references/motion-principles.md`.
 - `hyperframes:hyperframes-animation` → `blueprints-index.md`, chọn 1–3 blueprint hợp cảnh (vd. `kinetic-type-beats`, `overwhelm-surround`, `device-surface-showcase`).
 
+Của dự án (bắt buộc): [references/chieu-sau-hinh.md](references/chieu-sau-hinh.md) (lớp chiều sâu, cột máy quay, ánh sáng, lớp hoàn thiện, chuyển cảnh trong khung hình) và [tao-reel/references/chieu-sau-cau-chuyen.md](../tao-reel/references/chieu-sau-cau-chuyen.md) (phải thấy / không được thấy, diễn mỗi nhịp một tư thế, kể được khi tắt tiếng).
+
 ## Quy trình
 **Nhịp làm nhanh** (mục tiêu ≤ 15 phút máy chạy mỗi video, `./reel render` in "Máy chạy N phút"): việc chờ mạng chạy nền, việc kiểm không lặp thừa.
 - Có giọng: viết `loi-doc.json` trước, chạy `./reel giong <tên>` **nền** (Bash `run_in_background`) rồi mới viết `index.html`; dựng hình theo độ dài giọng khi giọng xong.
@@ -48,9 +50,11 @@ Skill kỹ thuật của plugin HyperFrames (chỉ đọc, **không** chạy cre
    - **Dựng theo bảng nhịp** (`concepts.md` mục `## Bảng nhịp`, kiểu kể ở `tao-reel/references/kieu-ke.md`): mỗi dòng bảng là một nhịp diễn — ai phản ứng gì, mặt ra sao; cú ngắt hài / cú lật đặt đúng giây của bảng, có lặng ngắn trước nó và tiếng nhấn ngay lúc đó. Tiểu phẩm: hài nằm ở phản ứng nhân vật (nét mặt, tư thế, khoảng dừng), không ở chữ. Twist: không lộ cú lật trước giây của bảng.
    - Lấy nhịp: `./reel info nhip <id-nhạc>` → đặt điểm cắt cảnh/nhấn mạnh (chữ dập, dấu, bật) lên **phách mạnh**, hành động nhỏ lên phách thường. Ghi các phách vào chú thích đầu composition.
    - Mỗi cảnh: chọn nền riêng (bối cảnh `RS.set`, đổi nơi/ánh sáng/tông giữa các cảnh); cỡ cảnh xen kẽ (toàn → chèn cận vật → trung → cận mặt); nối hình giữa các cảnh (vật cuối cảnh trước = vật đầu cảnh sau: đồng hồ quán → đồng hồ đêm; điện thoại → ảnh trên màn hình).
+   - **Chiều sâu** ([chieu-sau-hinh.md](references/chieu-sau-hinh.md)): mỗi cảnh ghi lớp xa / giữa / gần / sát ống kính và nguồn sáng; storyboard có **bảng cột máy quay** (cỡ, góc, chuyển động, lớp sát ống kính, không trùng ở hai cảnh liền); chọn 1–3 chỗ **chuyển cảnh trong khung hình** (lao vào chi tiết, vật thoát khung, vật lướt, màu tràn) ở khoảnh khắc quan trọng.
+   - **Câu chuyện** ([chieu-sau-cau-chuyen.md](../tao-reel/references/chieu-sau-cau-chuyen.md)): mỗi cảnh hai dòng `Phải thấy:` / `Không được thấy:` (validate cảnh báo khi thiếu); **bảng nhịp diễn** (giây · phách · ai · tư thế · mặt · nhìn về): tư thế chính trên phách, giữ 1–2 phách sau tư thế quan trọng, phản ứng trễ nửa phách, mặt đủ to ở nhịp cần đọc mặt. Thành ngữ hình lấy từ mục `## So sánh` của `concepts.md`.
 2. **Dựng thô + bảng khung chính** (luồng từng bước của `tao-reel`: **DỪNG chờ MKT duyệt**; luồng tự động: tự soát bảng theo "Luật kể chuyện", sửa, rồi làm tiếp và gửi bảng kèm video). Viết `briefs/<tên>/dung-rieng/index.html` theo khung dưới đủ để từng khoảnh khắc chính đúng hình: bối cảnh, nhân vật đúng nét mặt/tư thế, chữ, đạo cụ (chuyển động kỹ, tiếng động làm sau). Thời lượng gốc = tổng `durationSec` của kịch bản; cảnh kịch bản có thể chia nhiều nhịp nhỏ. Khai `bang-canh.txt` (mỗi nhịp một khung, 4–18 khung): `giây | điều xảy ra | tiếng | chuyển sang khung sau`. Chạy `./reel bang <tên>` → `out/snap/<tên>/bang/bang-canh.png`, tự soát bảng theo "Luật kể chuyện" rồi gửi MKT ảnh bảng (SendUserFile nếu có) và hỏi: **"đạt" hay "sửa khung số …"**. Sửa đến khi MKT duyệt; ghi kết quả vào `review.md`. Ở luồng từng bước, không làm bước 3 khi bảng chưa duyệt: sai câu chuyện hay hình thì sửa ở đây rẻ hơn sửa cả video.
 3. **Làm kỹ**: chuyển động đầy đủ (máy quay, nhân vật, nền sống), `tieng-dong.txt` (tiếng động theo giây + một khoảng lặng `lang` ngay trước khoảnh khắc vỡ lẽ), điểm cắt/nhấn theo phách.
-3b. **Giọng đọc** (video có lời nói): gọi skill `giong-doc` — dàn giọng VieNeu (người duyệt nghe thử chọn), tạo giọng trước rồi dựng hình theo độ dài giọng, thoại ngoài khung, người dẫn kể trên mặt người phản ứng và đọc thông điệp cuối, chữ nhỏ, nhãn "Do AI sản xuất". Nút bấm dùng bàn tay `RS.tayBam`/`RS.bam`.
+3b. **Giọng đọc** (video có lời nói): gọi skill `giong-doc` — dàn giọng VieNeu (người duyệt nghe thử chọn), tạo giọng trước rồi dựng hình theo độ dài giọng, thoại ngoài khung, người dẫn kể trên mặt người phản ứng và đọc thông điệp cuối, chữ nhỏ, nhãn "Do AI sản xuất". Nút bấm dùng bàn tay `RS.tayBam(el, góc)`/`RS.bam` (CTA: góc 200, chỉ về tên trang).
 4. **Kiểm**: `./reel validate <tên>` (không còn ✗), rồi `./reel snap <tên>` (dựng + kiểm bố cục/tương phản + so nền các cảnh + chụp khung). Xem khung hình và **tự soát** theo danh sách dưới. Sửa đến khi đạt (tối đa 3 vòng; vòng 2–3 chỉ `--at=` chỗ đã sửa). Soát riêng **mọi khoảnh khắc cảm xúc** và chỗ chuyển cảnh: `./reel snap <tên> --at=…`.
 5. **Xuất**: `./reel render <tên>` (một lần, khi snap đã sạch). Bước xuất đo trên file thật và in: đoạn gần như đứng hình, "Lặng trước vỡ lẽ" (khoảng lặng thấp hơn ≥ 8 dB, tiếng to nhất video rơi ngay lúc vỡ lẽ), "Chuyển hình trên phách" (≥ 70% cú chuyển bắt đầu hoặc dừng đúng phách). Dòng nào bắt đầu bằng "!" thì sửa rồi xuất lại. Rồi `./reel post <tên>` (brief có caption sẵn thì thay `post.md` bằng caption của brief).
 
@@ -63,10 +67,12 @@ Skill kỹ thuật của plugin HyperFrames (chỉ đọc, **không** chạy cre
 <link rel="stylesheet" href="brand/brand.css" />
 <link rel="stylesheet" href="_rieng/rieng.css" />
 <link rel="stylesheet" href="_rieng/boi-canh.css" />
+<link rel="stylesheet" href="_rieng/chieu-sau.css" />
 <script src="runtime/gsap/gsap.min.js"></script>
 <script src="_rieng/rieng.js"></script>
 <script src="_rieng/nhan-vat.js"></script>
 <script src="_rieng/boi-canh.js"></script>
+<script src="_rieng/chieu-sau.js"></script>
 <style> /* CSS riêng của video; màu qua var(--color-*), var(--prop-*) */ </style>
 </head>
 <body>
@@ -85,8 +91,11 @@ Skill kỹ thuật của plugin HyperFrames (chỉ đọc, **không** chạy cre
 </div>
 <script>
 RS.ready(function (tl) {
+  RS.hoanThien(null, { vignette: 0.35, hat: 0.07, tong: "am" });         // lớp hoàn thiện, một lần
   const bgA = RS.set(document.querySelector("#camA"), "quan", { light: "ngay" });
   RS.setLive(tl, bgA, 0, 3.4, 1);
+  const lyA = RS.tienCanh("#camA", "ly", { x: 760, y: 1500, w: 420, h: 520 }); // vật sát ống kính, mờ
+  RS.truotLech(tl, RS.lopCanh(bgA, ["#nv", "#khach"], [lyA]), 0, 3.4, { x: 60, zoom: 1.05 }); // thị sai
   // tl.fromTo(...) cho mọi chuyển động, đặt theo giây tuyệt đối
   window.__timelines["main"] = tl;   // bắt buộc, cuối hàm
 });
@@ -124,6 +133,7 @@ Máy quay: mỗi kiểu chuyển động máy (lùi ra, đẩy vào, lao vào v�
   - `light`: `ngay` · `chieu` · `dem` (tường tối, đèn sáng quầng, cửa sổ trăng sao, phố lên đèn). `tone` tường: `kem` · `hong` · `mint` · `xanh` · `vang` · `xam`. Cùng một nơi ở hai cảnh thì đổi `light`/`tone` để nền khác nhau.
   - `RS.setLive(tl, bg, từ, đến, seed)` (luôn gọi): đèn đung đưa, lá rung, mây trôi, khói cốc, đèn nháy ban đêm, tia xoay. `RS.clockSpin(tl, bg, at, dur, vòng)`: kim quay (thời gian trôi; `gio: [giờ, phút]` đặt kim ban đầu để nối khớp sang đồng hồ cảnh sau).
 - Tiếng động (`brand/sfx/`, tự tổng hợp, `pnpm gen:sfx`, khai trong `tieng-dong.txt`): `pop` (bong bóng, chữ bật) · `tap` (bấm) · `tick` (dò từng dòng, kim đồng hồ) · `whoosh` (chuyển cảnh, vật bay) · `whoosh-nhanh` (chữ trượt) · `ding` (thông báo) · `coin` (tiền vào) · `dap-dau` (dấu dập, va mạnh) · `thump` (đặt vật) · `glitch` (ảnh giả, lỗi) · `sai` (thiếu, sai) · `sparkle` (giải pháp, nhẹ nhõm) · `riser` (dâng lên trước khi lật tẩy) · `boom` (khoảnh khắc lớn) · `hoi-tho` (thở phào). Bộ drama (kiểu kể drama văn phòng, tổng tài): `dun-dun` (tèn tèn tén ở cú lật, câu chốt hạ) · `tim-dap` (nhịp tim trong khoảng `lang`, ≤ 0.25) · `buoc-chan` (sếp bước vào) · `whoosh-tram` (quay chậm, sếp xuất hiện) · `dung-hinh` (đĩa xước, cả phòng đứng hình); đập bàn dùng `dap-dau`. Chuyển động máy quay theo thể loại: [references/ngon-ngu-may-quay.md](references/ngon-ngu-may-quay.md). Âm lượng 0.2–0.6; tiếng nền nhỏ (bong bóng chat trôi) 0.2.
+- **Chiều sâu** (chieu-sau.js, cách dùng ở [references/chieu-sau-hinh.md](references/chieu-sau-hinh.md)): lớp `RS.lopCanh(bg, giữa, sátỐngKính)`, thị sai `RS.truotLech(tl, lớp, at, dur, { x, y, zoom, le })`, mờ theo độ sâu `RS.moSau(el, px)`, chuyển nét `RS.doiNet(tl, từ, đến, at, dur, px)`, vật sát ống kính `RS.tienCanh(parent, "mep-quay|la|ly|vai|cot", { x, y, w, h, mo, lat })`; ánh sáng `RS.chumSang(tl, parent, từ, đến, opts)`, `RS.quetSang(tl, el, at, dur)`, `RS.loe(tl, root, at, { x, y })`; lớp hoàn thiện `RS.hoanThien(root, { vignette, hat, tong })`; thẻ trong không gian `RS.the3d(tl, el, at, { rotY, rotX })`; chuyển cảnh trong khung hình `RS.laoVao(tl, cam, vật, at, dur)`, `RS.lui(…)`, `RS.thoatKhung(tl, khung, vật, at, opts)`, `RS.vatLuot(tl, root, "nguoi|cot|la", at)`, `RS.tranMau(tl, root, màu, at, { x, y, rut })`.
 - Thiếu đạo cụ hay nơi chốn thì tự vẽ bằng HTML/CSS/SVG trong composition. Cần dùng lại nhiều lần (nơi chốn mới, đạo cụ hay gặp) → ghi `review.md` mục `## Cần dev` để thêm vào bộ dụng cụ.
 
 ## Luật nội dung (validate chặn)
@@ -138,7 +148,10 @@ Máy quay: mỗi kiểu chuyển động máy (lùi ra, đẩy vào, lao vào v�
 - Tween chạy sau trong timeline mà đặt trạng thái đầu khác hiện tại: thêm `immediateRender: false` (vd. chớp sáng, đổi ca).
 - Chữ cố ý chồng lên nhau (giấy nhớ phủ sổ): `data-layout-allow-overlap` **trên chính phần tử chữ**; bị che cố ý: `data-layout-allow-occlusion`; phần trang trí tràn khung: `data-layout-allow-overflow`.
 - Tương phản ≥ 3:1: màu nhấn trên nền tối dùng `var(--color-accent-glow)`; chữ xanh "đã nhận" trên nền trắng dùng `var(--prop-ok-ink)`. Chuyển nền kiểu "mở tròn" dùng `clip-path: circle()` trên lớp phủ kín khung (không scale chấm tròn, bộ đo tương phản đọc sai).
-- Chữ quan trọng trong vùng an toàn: trái 80, phải 160 (tính từ mép phải: chữ không quá x = 920), trên 220, dưới 420 (không thấp hơn y = 1500).
+- **Vùng an toàn Reels/TikTok/Shorts (máy chặn, Nam 2026-10-15)**: mọi chữ đang hiện rõ và đứng yên phải nằm trong x 80–920, y 220–1500 (biến `--safe-*` của brand.css). Bên phải x > 920 là cột nút (thích, bình luận, chia sẻ), dưới y > 1500 là tên trang và mô tả, trên y < 220 là thanh tiêu đề. `rieng.js` tự đo khi `check`/`snap`/`render` tua timeline và báo lỗi "Vùng an toàn: chữ … lấn …" (chặn xuất). Miễn: chữ trong đạo cụ minh hoạ (`data-minh-hoa`), nhãn AI, chữ trang trí cố ý ghi `data-ngoai-vung`. Đạo cụ có chữ quan trọng (dòng "Không thấy" của sổ) vẫn đặt trong x ≤ 920.
+  - `RS.fit` chỉ đo đúng trên phần tử không bị kéo giãn bởi `left` + `right`: bọc chữ trong một `<div>` con rồi fit khối con.
+  - Không dùng chữ dài một dòng `white-space: nowrap` cỡ cố định mà không `RS.fit`: chữ tràn qua mép phải là lỗi hay gặp.
+- **CTA sát tên trang**: nút kêu gọi đặt ở đáy vùng an toàn, lệch trái (vd. `left: 80px; width ≤ 780px; top ≈ 1320px; cao 160px` → đáy ≈ 1480), ngay trên chỗ Facebook/TikTok hiện tên trang. Bàn tay bấm `RS.tayBam(el, 200)` chỉ xuống chéo trái (về phía tên trang), bấm trên phách bằng `RS.bam`; không để tay chỉ lên trời.
 
 ## Luật kể chuyện (soát ở bảng khung chính, rồi ở bản xuất)
 - **Nỗi đau thấy được, giải pháp thấy được** (LUẬT SỐ 2): cảnh nỗi đau có hậu quả + người phản ứng; cảnh giải pháp có màn hình sản phẩm làm đúng việc gỡ nỗi đau đó (cùng vật/người: sổ thiếu tiền → màn hình gom doanh thu theo ca), không chỉ logo.
@@ -148,7 +161,9 @@ Máy quay: mỗi kiểu chuyển động máy (lùi ra, đẩy vào, lao vào v�
 - **Lặng trước, to nhất lúc vỡ lẽ**: 0.5–2 giây lặng (khai `lang`) giữ hình, rồi tiếng nhấn to nhất đúng khoảnh khắc vỡ lẽ. Đoạn dày hình nhất nằm ngay trước khoảng lặng, không trùng điểm vỡ lẽ.
 - **Thông tin không lặp lại, thông điệp xuyên suốt** (Nam 2026-10-11, skill `tao-reel`): không dựng lại cùng một khoảnh khắc hai lần (vd. dấu GIẢ dập ở hook rồi dập lại lúc vỡ lẽ); lúc vỡ lẽ ở giữa video cho thấy điều mới (dòng "Ảnh · Thư viện": ảnh có sẵn, không phải giao dịch). Mỗi cảnh nối về `concept.thongDiep`.
 - **Kết là mở đầu đã đổi khác**: cảnh cuối gọi lại hình mở đầu với điều câu chuyện mang lại (quầy quán ban đầu → cùng quầy, giờ có SIPOS, hai người cười).
-- **Mỗi lần chuyển cảnh nói được lý do** (ghi ở cột "chuyển sang khung sau"): bước tiếp theo · nối hình (vật cuối cảnh trước = vật đầu cảnh sau) · biến hình (vật này thành vật kia) · mở/đóng tròn vào nhân vật · phóng vào bên trong / lùi ra toàn cảnh · nhìn thấy gì (góc nhìn nhân vật) · nguyên nhân → kết quả · thời gian trôi (kim quay, trời tối) · gọi lại cảnh trước.
+- **Mỗi lần chuyển cảnh nói được lý do** (ghi ở cột "chuyển sang khung sau"): bước tiếp theo · nối hình (vật cuối cảnh trước = vật đầu cảnh sau) · biến hình (vật này thành vật kia) · mở/đóng tròn vào nhân vật · phóng vào bên trong (`RS.laoVao`) / lùi ra toàn cảnh (`RS.lui`) · vật thoát khỏi khung (`RS.thoatKhung`) · vật lướt che cú cắt (`RS.vatLuot`) · màu tràn (`RS.tranMau`) · nhìn thấy gì (góc nhìn nhân vật) · nguyên nhân → kết quả · thời gian trôi (kim quay, trời tối) · gọi lại cảnh trước. Chuyển cảnh trong khung hình 1–3 lần mỗi video, không cùng kiểu liền nhau.
+- **Chiều sâu mỗi khung** ([chieu-sau-hinh.md](references/chieu-sau-hinh.md)): ≥ 3 lớp độ sâu trượt lệch theo máy; chủ thể nét, xa và sát ống kính mờ; một nguồn sáng có trong hình; lớp hoàn thiện (viền tối + hạt) suốt video; cột máy quay không trùng ở hai cảnh liền.
+- **Phải thấy / không được thấy** ([chieu-sau-cau-chuyen.md](../tao-reel/references/chieu-sau-cau-chuyen.md)): khung nào gọi được bằng tên ý bên cạnh (nỗi đau khác, tính năng brief không có, lời hứa bị cấm) là lỗi nội dung, sửa storyboard.
 - **Diễn ý bằng hình, không dán nhãn**: "kiểm tiền thiếu" = ngón tay dò từng dòng, một dòng đỏ "Không thấy"; chữ chỉ gọi tên.
 - **Cỡ cảnh xen kẽ**, có ít nhất **một cận cực sát** (mặt, ngón tay, dấu tick).
 - **Mỗi khung có ít nhất 3 chi tiết sống** ở nền hoặc người (đèn đung đưa, khói cốc, chớp mắt, người xếp hàng nhún, đèn cửa sổ nháy): `RS.idle`, `RS.setLive`.
@@ -171,13 +186,15 @@ Máy quay: mỗi kiểu chuyển động máy (lùi ra, đẩy vào, lao vào v�
 ## Tự soát khung hình (mỗi vòng snap)
 - [ ] **Nét mặt từng nhân vật đúng cảm xúc câu chuyện** ở mọi khoảnh khắc (soát riêng từng khoảnh khắc bằng `--at`).
 - [ ] Nhân vật thân thiện với người Việt (tóc, áo, bối cảnh quán xá Việt), đủ to, không bị cắt mặt.
-- [ ] Mỗi khung có **một điểm nhìn** rõ và ít nhất 2 lớp (nền có chiều sâu + nội dung + chi tiết).
+- [ ] Mỗi khung có **một điểm nhìn** rõ và ít nhất 3 lớp độ sâu (xa + chủ thể + gần/sát ống kính).
 - [ ] Không khung nào trống nửa màn hình; không chữ dạng "slide" trôi giữa nền trơn.
 - [ ] Có **con người** (hình MKT gửi hoặc nhân vật) khi câu chuyện có người; có **sản phẩm** (màn hình app) ở cảnh giải pháp.
 - [ ] Chữ đọc được: tiêu đề ≥ 60px, không dính chữ, không gãy dòng xấu (chữ đơn lẻ rơi xuống dòng), không tràn khung, không bị che.
 - [ ] Hình động đúng nghĩa câu (vật/động từ khớp ý), đổi hình ít nhất mỗi 2 giây, cảnh cuối giữ đủ lâu nhưng vẫn chuyển động.
 - [ ] Mỗi hành động có tiếng động hợp; điểm nhấn rơi trên phách; có khoảng lặng ngay trước khoảnh khắc vỡ lẽ.
 - [ ] Đủ "Luật kể chuyện": một thứ để mắt bám, một màu một nghĩa, kết gọi lại mở đầu, mỗi chuyển cảnh có lý do, có cận cực sát, ≥ 3 chi tiết sống mỗi khung.
+- [ ] Chiều sâu: soát mục 7 của [chieu-sau-hinh.md](references/chieu-sau-hinh.md) (lớp, thị sai, mờ, cột máy quay, lớp hoàn thiện, chuyển cảnh trong khung hình, ánh sáng).
+- [ ] Diễn: tư thế chính đúng phách, có giữ sau tư thế quan trọng, mắt nhân vật nhìn vào thứ quan trọng, tắt tiếng vẫn hiểu chuyện (mục 5–6, 8 của [chieu-sau-cau-chuyen.md](../tao-reel/references/chieu-sau-cau-chuyen.md)).
 - [ ] Khác hẳn video gần đây cùng sản phẩm/dịp.
 
 ## Mẫu (đọc để lấy chuẩn chất lượng)

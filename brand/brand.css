@@ -176,6 +176,19 @@
   --set-concrete-d: #9EA3A8;
   --set-desk: #F1EEE8;
 
+  /*
+   * Chiều sâu, ánh sáng, lớp hoàn thiện (templates/_rieng/chieu-sau.js): viền tối góc, chùm sáng, vệt quét, tông,
+   * vật tiền cảnh sát ống kính (bóng tối, mờ).
+   */
+  --fx-vignette: rgba(8, 10, 22, 0.55);
+  --fx-light: rgba(255, 236, 196, 0.5);
+  --fx-light-cool: rgba(205, 228, 255, 0.42);
+  --fx-sweep: rgba(255, 255, 255, 0.55);
+  --fx-tint-am: rgba(255, 168, 88, 0.1);
+  --fx-tint-lanh: rgba(70, 110, 200, 0.12);
+  --fx-silhouette: #15161C;
+  --fx-silhouette-2: #2A2C36;
+
   /* Mặc định = Redsun (công ty) */
   --color-primary: #BA0000;
   --color-secondary: #58595B;

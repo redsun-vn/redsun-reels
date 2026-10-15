@@ -18,8 +18,66 @@
    */
   RS.ready = function (build) {
     var tl = gsap.timeline({ paused: true });
-    document.fonts.load("900 100px Montserrat").then(function () { return document.fonts.ready; }).then(function () { build(tl); });
+    document.fonts.load("900 100px Montserrat").then(function () { return document.fonts.ready; }).then(function () { build(tl); kiemVungAnToan(tl); });
   };
+
+  /*
+   * Vùng an toàn của Reels/TikTok/Shorts (Nam 2026-10-15: chữ dính mép, lọt dưới cột nút bên phải và tên trang ở đáy).
+   * Mỗi lần timeline được tua tới (hyperframes check, snapshot, render), chữ đang hiện rõ và đứng yên (không nằm trong
+   * tween nào của nó hay của lớp cha) mà ra ngoài khung --safe-* của brand.css thì ghi console.error: `check` báo lỗi
+   * runtime và chặn xuất. Miễn: đạo cụ minh hoạ (data-minh-hoa), nhãn AI, phần tử ghi data-ngoai-vung (chữ trang trí cố ý).
+   */
+  function kiemVungAnToan(tl) {
+    var root = document.querySelector("[data-composition-id]");
+    if (!root) return;
+    var cs = getComputedStyle(root), px = function (n) { return parseFloat(cs.getPropertyValue(n)) || 0; };
+    var W = +root.getAttribute("data-width") || 1080, H = +root.getAttribute("data-height") || 1920;
+    var box = { l: px("--safe-left"), t: px("--safe-top"), r: W - px("--safe-right"), b: H - px("--safe-bottom") };
+    var texts = [], walk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    for (var n = walk.nextNode(); n; n = walk.nextNode()) {
+      if (!n.nodeValue.trim() || !n.parentElement) continue;
+      if (n.parentElement.closest("[data-minh-hoa],[data-ngoai-vung],.rs-nhan-ai,script,style,svg")) continue;
+      texts.push(n);
+    }
+    var busy = null, reported = {};
+    function moving(el, t) {
+      if (!busy) {
+        busy = [];
+        tl.getChildren(true, true, false).forEach(function (tw) {
+          var s = tw.startTime(), e = s + tw.totalDuration();
+          (tw.targets() || []).forEach(function (x) { if (x && x.nodeType === 1) busy.push([x, s, e]); });
+        });
+      }
+      for (var i = 0; i < busy.length; i++) if (t >= busy[i][1] - 0.02 && t <= busy[i][2] + 0.02 && busy[i][0].contains(el)) return true;
+      return false;
+    }
+    function shown(el, t) {
+      // Chữ của cảnh chưa tới hoặc đã qua (ngoài data-start + data-duration của clip chứa nó) không tính
+      var clip = el.closest("[data-start][data-duration]");
+      if (clip && clip !== root && (t < +clip.getAttribute("data-start") || t >= +clip.getAttribute("data-start") + +clip.getAttribute("data-duration"))) return false;
+      if (el.checkVisibility && !el.checkVisibility({ visibilityProperty: true })) return false;
+      var o = 1;
+      for (var x = el; x && x !== root.parentNode; x = x.parentElement) o *= +getComputedStyle(x).opacity;
+      return o >= 0.9;
+    }
+    tl.eventCallback("onUpdate", function () {
+      var t = tl.time();
+      texts.forEach(function (node, i) {
+        if (reported[i]) return;
+        var el = node.parentElement;
+        if (!shown(el, t) || moving(el, t)) return;
+        var rg = document.createRange(); rg.selectNodeContents(node);
+        var r = rg.getBoundingClientRect();
+        if (!r.width) return;
+        var side = r.left < box.l - 4 ? "mép trái" : r.right > box.r + 4 ? "mép phải (cột nút)" : r.top < box.t - 4 ? "mép trên" : r.bottom > box.b + 4 ? "đáy (tên trang, mô tả)" : "";
+        if (!side) return;
+        reported[i] = true;
+        console.error("Vùng an toàn: chữ \"" + node.nodeValue.trim().slice(0, 40) + "\" lấn " + side + " ở giây " + t.toFixed(2) +
+          " (x " + Math.round(r.left) + "–" + Math.round(r.right) + ", y " + Math.round(r.top) + "–" + Math.round(r.bottom) +
+          "). Giữ chữ trong x " + box.l + "–" + box.r + ", y " + box.t + "–" + box.b + ".");
+      });
+    });
+  }
 
   /** Phóng cỡ chữ cho dòng chữ vừa `width` px (tối đa `max`, tối thiểu `min`). Phần tử nên có white-space: nowrap. */
   RS.fit = function (el, width, max, min) {
@@ -100,8 +158,10 @@
       parent.appendChild(p);
       var a = (i / n) * Math.PI * 2 + r() * 0.4;
       var d = (opts.spread || 360) * (0.7 + r() * 0.6);
+      // Ẩn tới lúc bung: không thì hạt đứng sẵn ở tâm (một chấm nhỏ) từ đầu cảnh
+      tl.set(p, { opacity: 0 }, 0);
       tl.fromTo(p, { x: 0, y: 0, scale: 0.3, rotation: 0, opacity: 1 },
-        { x: Math.cos(a) * d, y: Math.sin(a) * d + (opts.rise == null ? 140 : opts.rise), scale: 0.6 + r() * 0.7, rotation: 160 + r() * 260, opacity: 0, duration: opts.dur || 1.2, ease: "power2.out" }, opts.at);
+        { x: Math.cos(a) * d, y: Math.sin(a) * d + (opts.rise == null ? 140 : opts.rise), scale: 0.6 + r() * 0.7, rotation: 160 + r() * 260, opacity: 0, duration: opts.dur || 1.2, ease: "power2.out", immediateRender: false }, opts.at);
     }
   };
 
@@ -187,10 +247,16 @@
     });
   };
 
-  /** Bàn tay giơ ngón trỏ (SVG) vào phần tử `el` (class rs-tay). Đầu ngón ở 40% ngang, 4% dọc của khung tay. */
-  RS.tayBam = function (el) {
+  /**
+   * Bàn tay giơ ngón trỏ (SVG) vào phần tử `el` (class rs-tay). `goc` (độ, mặc định 0 = ngón chỉ lên) xoay cả bàn tay quanh
+   * tâm khung: 180 = chỉ thẳng xuống, 200–210 = chỉ xuống chéo trái (về phía tên trang ở đáy trái của Reels/TikTok).
+   * Đầu ngón (khi chưa xoay) ở 40% ngang, 4% dọc của khung tay; RS.bam tự tính lại theo góc.
+   */
+  RS.tayBam = function (el, goc) {
     el = typeof el === "string" ? document.querySelector(el) : el;
     el.classList.add("rs-tay");
+    el._goc = goc || 0;
+    if (el._goc) gsap.set(el, { rotation: el._goc, transformOrigin: "50% 50%" });
     el.innerHTML = '<svg viewBox="0 0 100 140" aria-hidden="true">' +
       '<rect class="tay-ao" x="24" y="114" width="56" height="26" rx="6"/>' +
       '<rect class="da" x="30" y="4" width="20" height="74" rx="10"/>' +
@@ -210,10 +276,14 @@
     hand = typeof hand === "string" ? document.querySelector(hand) : hand;
     var gon = document.createElement("div");
     gon.className = "rs-gon";
-    gon.style.left = hand.offsetLeft + hand.offsetWidth * 0.4 + "px";
-    gon.style.top = hand.offsetTop + hand.offsetHeight * 0.04 + "px";
+    // Đầu ngón sau khi xoay `_goc` quanh tâm khung tay; bấm là đẩy tay theo hướng ngón chỉ
+    var w = hand.offsetWidth, h = hand.offsetHeight, g = ((hand._goc || 0) * Math.PI) / 180;
+    var vx = -0.1 * w, vy = -0.46 * h, tx = vx * Math.cos(g) - vy * Math.sin(g), ty = vx * Math.sin(g) + vy * Math.cos(g);
+    var len = Math.hypot(tx, ty) || 1;
+    gon.style.left = hand.offsetLeft + w / 2 + tx + "px";
+    gon.style.top = hand.offsetTop + h / 2 + ty + "px";
     hand.parentNode.insertBefore(gon, hand);
-    tl.to(hand, { y: "+=12", scale: 0.94, duration: 0.08, yoyo: true, repeat: 1, ease: "power2.in" }, at - 0.08);
+    tl.to(hand, { x: "+=" + ((tx / len) * 12).toFixed(1), y: "+=" + ((ty / len) * 12).toFixed(1), scale: 0.94, duration: 0.08, yoyo: true, repeat: 1, ease: "power2.in" }, at - 0.08);
     if (target) tl.to(target, { scale: 0.95, duration: 0.08, yoyo: true, repeat: 1, ease: "power2.in" }, at - 0.08);
     tl.fromTo(gon, { scale: 0.2, opacity: 0.95 }, { scale: 2.4, opacity: 0, duration: 0.5, ease: "power2.out", immediateRender: false }, at);
     tl.set(gon, { opacity: 0 }, 0);

@@ -97,6 +97,9 @@ function scriptCopy(script: Script): string[] {
     .map(strip);
 }
 
+/** Hàm của templates/_rieng/chieu-sau.js (cần nạp chieu-sau.js + chieu-sau.css). */
+const DEPTH_FN_RE = /\bRS\.(lopCanh|truotLech|moSau|doiNet|tienCanh|chumSang|quetSang|loe|hoanThien|the3d|laoVao|lui|thoatKhung|vatLuot|tranMau)\(/;
+
 /** Tên bối cảnh vẽ sẵn trong templates/_rieng/boi-canh.js. */
 export function backdropNames(): string[] {
   return [...readFileSync(join(REPO_ROOT, 'templates', '_rieng', 'boi-canh.js'), 'utf8').matchAll(/SETS\["([a-z-]+)"\]\s*=/g)].map((m) => m[1]);
@@ -236,12 +239,23 @@ export function customIssues(dir: string, script: Script, briefBody: string, tot
     for (const e of [...errors, ...(Number.isFinite(d) ? boardIssues(panels, d) : [])]) err(e);
   } else warn(`Chưa có bảng khung chính ${CUSTOM_DIR}/${BOARD_FILE} (mỗi dòng "giây | điều xảy ra | tiếng | chuyển sang khung sau") để MKT duyệt bằng hình: ./reel bang <tên>.`);
 
+  // Storyboard: mỗi cảnh ghi phải thấy / không được thấy (tao-reel/references/chieu-sau-cau-chuyen.md mục 3), chỉ cảnh báo
+  const storyFile = join(dir, CUSTOM_DIR, 'storyboard.md');
+  if (existsSync(storyFile)) {
+    const story = readFileSync(storyFile, 'utf8');
+    if (!/Phải thấy\s*:/i.test(story) || !/Không được thấy\s*:/i.test(story)) warn(`${CUSTOM_DIR}/storyboard.md chưa ghi "Phải thấy:" / "Không được thấy:" cho từng cảnh (tránh hình bị đọc thành ý bên cạnh).`);
+  }
+
   // Bối cảnh vẽ sẵn: nạp đủ bộ, tên bối cảnh phải có
   if (/RS\.set\(/.test(html)) {
     if (!html.includes('src="_rieng/boi-canh.js"') || !html.includes('href="_rieng/boi-canh.css"')) err('Dùng bối cảnh RS.set thì nạp <link rel="stylesheet" href="_rieng/boi-canh.css" /> và <script src="_rieng/boi-canh.js"></script> (sau nhan-vat.js).');
     const known = backdropNames();
     for (const m of html.matchAll(/RS\.set\([^,]+,\s*["']([^"']+)["']/g)) if (!known.includes(m[1])) err(`Không có bối cảnh "${m[1]}". Có: ${known.join(', ')}.`);
   }
+
+  // Chiều sâu, ánh sáng, lớp hoàn thiện, chuyển cảnh trong khung hình: nạp đủ bộ chieu-sau
+  if (DEPTH_FN_RE.test(html) && (!html.includes('src="_rieng/chieu-sau.js"') || !html.includes('href="_rieng/chieu-sau.css"')))
+    err('Dùng hàm chiều sâu (RS.truotLech, RS.hoanThien, RS.laoVao…) thì nạp <link rel="stylesheet" href="_rieng/chieu-sau.css" /> và <script src="_rieng/chieu-sau.js"></script> (sau boi-canh.js).');
 
   // Tiếng động: khai trong tieng-dong.txt, bước dựng tự sinh thẻ <audio> vào chỗ đánh dấu
   const cueFile = join(dir, CUSTOM_DIR, CUE_FILE);

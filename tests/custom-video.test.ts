@@ -30,13 +30,14 @@ window.__timelines["main"] = tl;</script></body></html>`;
 }
 const OK_BODY = '<h1>Chị chủ quán, <em>tối nay</em> lại ngồi cộng sổ?</h1><img alt="SIPOS" src="brand/logos/sipos/x.png" /><b>lo</b><i>kho</i><div class="stamp">-20%</div><p>Tìm hiểu thêm tại sipos<span>.</span>vn</p>';
 
-function issues(html: string, cues: string | null = 'lang 5 6\n1.00 pop 0.5\n') {
+function issues(html: string, cues: string | null = 'lang 5 6\n1.00 pop 0.5\n', story?: string) {
   mkdirSync(tmpRoot, { recursive: true });
   const dir = mkdtempSync(join(tmpRoot, 'b-'));
   mkdirSync(join(dir, 'dung-rieng'));
   writeFileSync(join(dir, 'dung-rieng', 'index.html'), html);
   if (cues !== null) writeFileSync(join(dir, 'dung-rieng', 'tieng-dong.txt'), cues);
   writeFileSync(join(dir, 'dung-rieng', 'bang-canh.txt'), '0.5 | mở | bụp | cắt\n3 | sổ\n6 | điện thoại\n9 | kết\n');
+  if (story !== undefined) writeFileSync(join(dir, 'dung-rieng', 'storyboard.md'), story);
   return customIssues(dir, script, brief, 12);
 }
 const errors = (html: string) => issues(html).filter((i) => i.level === 'error').map((i) => i.message);
@@ -95,6 +96,18 @@ describe('video dựng riêng', () => {
     expect(errors(page(OK_BODY + head, 'RS.set(document.body, "quan", {});'))).toEqual([]);
     expect(errors(page(OK_BODY, 'RS.set(document.body, "quan");')).join('\n')).toContain('boi-canh.js');
     expect(errors(page(OK_BODY + head, 'RS.set(document.body, "san-bay");')).join('\n')).toContain('"san-bay"');
+  });
+
+  it('storyboard thiếu phải thấy / không được thấy thì cảnh báo', () => {
+    const warns = (story: string) => issues(page(OK_BODY), undefined, story).filter((i) => i.level === 'warning').map((i) => i.message).join('\n');
+    expect(warns('### C0\nQuầy đông.\n')).toContain('Phải thấy');
+    expect(warns('### C0\nPhải thấy: khách giơ điện thoại.\nKhông được thấy: tên ngân hàng.\n')).not.toContain('Phải thấy');
+  });
+
+  it('hàm chiều sâu: phải nạp chieu-sau.js và chieu-sau.css', () => {
+    const head = '<link rel="stylesheet" href="_rieng/chieu-sau.css" /><script src="_rieng/chieu-sau.js"></script>';
+    expect(errors(page(OK_BODY + head, 'RS.hoanThien(null, { tong: "am" });'))).toEqual([]);
+    expect(errors(page(OK_BODY, 'RS.truotLech(tl, [], 0, 2, { x: 40 });')).join('\n')).toContain('chieu-sau.js');
   });
 
   it('nhân vật tạo lẻ (không qua dàn nhân vật) thì cảnh báo', () => {

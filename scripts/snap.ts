@@ -19,7 +19,7 @@ await runCommand(() => {
   if (built.warnings.length) console.log(formatIssues(built.warnings));
   const check = runHyperframes(['check', built.stageDir]);
   const log = stripAnsi(check.stdout + check.stderr);
-  console.log(check.status === 0 ? 'Kiểm tra bố cục/tương phản: đạt.' : `Kiểm tra bố cục/tương phản CHƯA đạt:\n${log.split('\n').filter((l) => /✗|⚠ (content|text|container)|need 3:1|error\(s\)/.test(l)).join('\n')}`);
+  console.log(check.status === 0 ? 'Kiểm tra bố cục/tương phản: đạt.' : `Kiểm tra bố cục/tương phản CHƯA đạt:\n${log.split('\n').filter((l) => /✗|⚠ (content|text|container)|need 3:1|error\(s\)|Vùng an toàn/.test(l)).join('\n')}`);
 
   const total = built.props.totalSec;
   const at = atArg?.slice(5) || Array.from({ length: Math.floor(total / 1.25) }, (_, i) => (0.6 + i * 1.25).toFixed(2)).join(',');

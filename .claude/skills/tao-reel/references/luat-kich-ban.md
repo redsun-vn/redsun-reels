@@ -37,3 +37,6 @@ Nam: "quy tắc là thông tin không lặp lại, thông điệp phải xuyên 
 - **Một câu thông điệp xuyên suốt** ghi ở `concept.thongDiep` (vd. "Đừng tin ảnh chụp chuyển khoản: SIPOS tự xác nhận tiền vào, không còn sót tiền"). Mỗi cảnh nối về câu đó; cảnh kết **khép vòng** với nỗi đau ở đầu (đầu "bỏ sót tiền" → kết "không còn sót tiền").
 - **Khi tự chấm**: lập bảng `Cảnh · Thông tin mới của cảnh`; hai cảnh cùng một thông tin thì viết lại cảnh sau. Lời nói của brief bị lặp do mình thêm hook thì đổi lời của cảnh sau và báo MKT (nêu câu cũ → câu mới).
 - Máy: validate cảnh báo (!) khi thiếu `concept.thongDiep` và khi hai cảnh trùng phần lớn chữ có nghĩa (`scripts/lib/info-repeat.ts`; trùng ý khác chữ máy không bắt được, Claude soát theo bảng trên).
+
+## Chiều sâu câu chuyện (Nam 2026-10-15)
+Nam: video "thiếu chiều sâu". Không thêm luật chặn; cách làm ở [chieu-sau-cau-chuyen.md](chieu-sau-cau-chuyen.md): 5 câu nghĩ trước khi có ý, **so sánh từ đời người xem** (`concepts.md` mục `## So sánh`), **phải thấy / không được thấy** mỗi cảnh (`dung-rieng/storyboard.md`), **mỗi nhịp một tư thế trên phách**, kể được khi tắt tiếng. Máy chỉ cảnh báo khi thiếu mục `## So sánh` hoặc hai dòng phải thấy / không được thấy.

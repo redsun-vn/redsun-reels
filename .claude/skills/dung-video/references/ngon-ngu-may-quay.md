@@ -77,7 +77,7 @@ Nguồn: [snubroot/Veo-3-Prompting-Guide](https://github.com/snubroot/Veo-3-Prom
 Hài trong drama đến từ **độ cường điệu** (quay chậm, `dun-dun` cho một chuyện văn phòng nhỏ), không từ làm nhục ai.
 
 ## 5. Làm chuyển động bằng HyperFrames (video hoạt hình)
-Mỗi chuyển động một lớp `.cam` lồng nhau (`#camC > #camB > #camA`), không đổi `transformOrigin` trên lớp đang phóng to.
+Mỗi chuyển động một lớp `.cam` lồng nhau (`#camC > #camB > #camA`), không đổi `transformOrigin` trên lớp đang phóng to. Thị sai giữa các lớp, chuyển nét, cột máy quay của cả video, lao vào chi tiết / lùi ra: [chieu-sau-hinh.md](chieu-sau-hinh.md).
 
 | Chuyển động | Cách làm (GSAP trên lớp `.cam`) |
 |---|---|

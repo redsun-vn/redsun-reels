@@ -44,7 +44,7 @@ function baseScript(): Script {
   };
 }
 
-function makeDir(script: unknown, brief = BRIEF, concepts = '# Concept\n\n## Điểm hấp dẫn\n| Ứng viên | Tổng |\n|---|---|\n| Mỗi tối đếm hàng bằng sổ tay | 21 |\n'): string {
+function makeDir(script: unknown, brief = BRIEF, concepts = '# Concept\n\n## Điểm hấp dẫn\n| Ứng viên | Tổng |\n|---|---|\n| Mỗi tối đếm hàng bằng sổ tay | 21 |\n\n## So sánh\n- Concept 1: sổ tay như chiếc két không khoá.\n'): string {
   const dir = mkdtempSync(join(tmpdir(), 'reel-'));
   writeFileSync(join(dir, 'brief.md'), brief);
   if (concepts) writeFileSync(join(dir, 'concepts.md'), concepts);
@@ -134,6 +134,8 @@ describe('validateVideo', () => {
     expect(bad).toContain('không hợp kiểu hình');
     const good = warnsOf(head + 'Kiểu kể: tieu-pham\nKiểu kể: pov\nKiểu kể: twist\n\n## Lựa chọn\nConcept 1\n');
     expect(good).not.toMatch(/Kiểu kể:/);
+    expect(good).toContain('## So sánh');
+    expect(warnsOf(head + '## So sánh\n- a\n')).not.toContain('## So sánh');
     s.concept.kieuKe = 'tong-tai';
     expect(warnsOf(head + 'Kiểu kể: tong-tai\nKiểu kể: pov\nKiểu kể: twist\n\n## Lựa chọn\nConcept 1\n', BRIEF.replace('kieuHinh: minh-hoa', 'kieuHinh: nguoi-that-quay-san'))).toContain('"Drama tổng tài" không hợp kiểu hình');
   });

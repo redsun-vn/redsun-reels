@@ -124,6 +124,8 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose; v
   else if (dhd.diem < 20) issues.push(err(`LUẬT SỐ 1 — 3 giây đầu: điểm hấp dẫn "${dhd.ungVien}" chỉ ${dhd.diem}/25 (cần ≥ 20). Chọn ứng viên mạnh hơn trong brief.`));
   const conceptsFile = join(dir, 'concepts.md');
   if (!existsSync(conceptsFile) || !/^##\s*Điểm hấp dẫn/m.test(readFileSync(conceptsFile, 'utf8'))) issues.push(err('LUẬT SỐ 1 — 3 giây đầu: concepts.md thiếu mục "## Điểm hấp dẫn" (bảng ứng viên + điểm 5 tiêu chí).'));
+  // Chiều sâu câu chuyện: so sánh lấy từ đời người xem (tao-reel/references/chieu-sau-cau-chuyen.md), chỉ cảnh báo
+  if (existsSync(conceptsFile) && !/^##\s*So sánh/m.test(readFileSync(conceptsFile, 'utf8'))) issues.push(warn('concepts.md chưa có mục "## So sánh": mỗi concept một so sánh lấy từ đời người xem, cùng cấu trúc với ý (tao-reel/references/chieu-sau-cau-chuyen.md mục 2).'));
   const hookScene = script.scenes[0];
   // Cảnh hook gói trong 3,5 giây; hook 8 từ không giọng được vừa đủ thời gian đọc chữ hook (3,7 giây), không hơn
   const hookCap = hookScene ? Math.max(3.5, sceneDurationSec(hookScene.onScreenText)) : 3.5;
