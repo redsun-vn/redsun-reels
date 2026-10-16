@@ -2,6 +2,17 @@
 
 Đánh số `MAJOR.MINOR.PATCH`. Trước 1.0: MINOR tăng khi có tính năng mới, PATCH khi chỉ sửa lỗi. Mỗi bản gắn tag git `vX.Y.Z` và có trang Release trên GitHub. Số bản nằm ở `package.json` (`./reel doctor` in ra).
 
+## 0.8.0 — 2026-10-16
+Video hoạt hình có thêm ba kiểu vẽ (truyện tranh, manga, siêu anh hùng) để bớt nhàm và giữ mắt người xem ngay 3 giây đầu.
+
+- **Kiểu truyện tranh (comic)**: video là chuỗi trang truyện; mỗi nhịp một ô đập vào theo nhạc, lật trang sang cảnh, chấm in báo, bóng thoại viền đen, ô lời dẫn vàng, chữ "BÙM!" trên nền nổ, nhân vật phá khung, trang kết lặp lại trang mở.
+- **Kiểu manga**: đen trắng, ô xiên, chỉ màn hình sản phẩm có màu; ô cận mắt, đường dồn, nhân vật hoá chibi khi hoảng, hắc khí "ẦM ẦM" trước cú lật, chớp trắng + đứng hình nghiêng, dấu cảm xúc phóng đại; thế giới trở lại màu khi có sản phẩm.
+- **Kiểu siêu anh hùng**: nỗi đau thành kẻ phản diện; người hùng đáp xuống, góc máy thấp, tung tuyệt chiêu (tia năng lượng) đúng lúc sản phẩm làm việc, kẻ xấu vỡ tan; biến hình khi có sản phẩm; áo choàng, mặt nạ, logo sản phẩm trên ngực.
+- Mỗi kiểu có **mẫu nhịp riêng** (6 nhịp): kịch bản tự chấm theo mẫu, thiếu nhịp thì viết lại, để video mang đúng chất thể loại chứ không chỉ đổi trang phục.
+- Claude tự chọn kiểu hợp nội dung và đổi kiểu giữa các video cùng sản phẩm; MKT muốn kiểu nào thì nói "làm kiểu manga". Video người thật không có các kiểu này.
+- Font chữ truyện tranh Bangers (đủ dấu tiếng Việt) chỉ dùng cho chữ tượng thanh; mọi chữ khác vẫn Montserrat.
+- **Nhạc do Claude chọn cho từng video** theo câu chuyện và nhịp hình, không cố định theo kiểu vẽ. MKT chê nhạc thì đổi bài mà giữ nguyên hình: các cú nhấn tự dời cho khớp phách bài mới.
+
 ## 0.7.0 — 2026-10-15
 Video có chiều sâu cả hình lẫn câu chuyện; chữ không còn lọt dưới nút và tên trang của Reels.
 

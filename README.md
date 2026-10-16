@@ -4,7 +4,7 @@ Hệ thống làm video ngắn dọc 9:16 (Facebook Reels, TikTok, YouTube Short
 
 Mỗi video được **dựng riêng** như một đoạn phim ngắn: nhân vật hoặc người thật, bối cảnh, tiếng động, nhạc có giấy phép, và **giọng đọc AI** tiếng Việt khi có lời nói. Nền tảng render là [HyperFrames](https://github.com/heygen-com/hyperframes).
 
-- Bản đang dùng: `0.5.0`. Điểm mới từng bản: [`docs/changelog.md`](docs/changelog.md), [trang Releases](https://github.com/redsun-vn/redsun-reels/releases).
+- Bản đang dùng: `0.8.0`. Điểm mới từng bản: [`docs/changelog.md`](docs/changelog.md), [trang Releases](https://github.com/redsun-vn/redsun-reels/releases).
 - Yêu cầu: [`REQUIREMENTS.md`](REQUIREMENTS.md) (v0.6). Quyết định kỹ thuật, version đã khoá: [`docs/decisions.md`](docs/decisions.md).
 - Sổ tay cho MKT: [`docs/huong-dan-mkt.md`](docs/huong-dan-mkt.md).
 - Owner, dev maintainer: Vũ Đức Nam (CTO).
