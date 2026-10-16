@@ -20,14 +20,24 @@
   font-display: block;
 }
 
+/* Font thứ hai (docs/decisions.md §43): Bangers, chỉ cho chữ tượng thanh và tiêu đề kiểu truyện khi phong cách hình khác "thuong" */
+@font-face {
+  font-family: "Bangers";
+  src: url("./fonts/bangers-regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
 :root {
   /* Canvas */
   --canvas-width: 1080px;
   --canvas-height: 1920px;
 
-  /* Font: một họ duy nhất (Montserrat), tối đa 2 font theo frame.md */
+  /* Font: Montserrat cho mọi chữ; Bangers chỉ cho chữ kiểu truyện tranh (frame.md) */
   --font-heading: "Montserrat", sans-serif;
   --font-body: "Montserrat", sans-serif;
+  --font-comic: "Bangers", "Montserrat", sans-serif;
   --weight-hero: 800;
   --weight-heading: 700;
   --weight-body: 500;
@@ -188,6 +198,25 @@
   --fx-tint-lanh: rgba(70, 110, 200, 0.12);
   --fx-silhouette: #15161C;
   --fx-silhouette-2: #2A2C36;
+
+  /*
+   * Phong cách hình kiểu truyện (templates/_rieng/phong-cach*.js, docs/decisions.md §43): mực, giấy, chấm halftone,
+   * screentone manga, ô lời dẫn, dấu cảm xúc. Là màu nét vẽ, không thay màu brand: màu nhấn vẫn theo sản phẩm.
+   */
+  --comic-ink: #121212;
+  --comic-paper: #FFF8E8;
+  --comic-dot: rgba(18, 18, 18, 0.2);
+  --comic-dot-light: rgba(255, 255, 255, 0.22);
+  --comic-tone: rgba(18, 18, 18, 0.14);
+  --comic-caption: #FFE45C;
+  --comic-speed: rgba(255, 255, 255, 0.92);
+  --comic-gian: #E5322D;
+  --comic-giot: #9ED8F5;
+  --comic-ma: #F07C8C;
+  --comic-dust: #D9D2C3;
+  --comic-ac: rgba(146, 60, 220, 0.95);
+  --comic-ac-2: rgba(70, 230, 140, 0.55);
+  --comic-sao: #FFD84D;
 
   /* Mặc định = Redsun (công ty) */
   --color-primary: #BA0000;

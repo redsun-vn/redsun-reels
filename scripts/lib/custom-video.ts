@@ -15,6 +15,7 @@ import { VOICE } from '../../config/voice.ts';
 import { readVoice } from './voice-stage.ts';
 import { spokenText, voiceScriptIssues, voiceVarietyIssues } from './voice-script.ts';
 import { KIEU_KE } from '../../config/kieu-ke.ts';
+import { phongCachCua, type PhongCachHinh } from '../../config/phong-cach-hinh.ts';
 import { faceClips, voiceFaceIssues } from './voice-sync.ts';
 import { stockLog } from './kieu-hinh-rules.ts';
 
@@ -99,6 +100,56 @@ function scriptCopy(script: Script): string[] {
 
 /** Hàm của templates/_rieng/chieu-sau.js (cần nạp chieu-sau.js + chieu-sau.css). */
 const DEPTH_FN_RE = /\bRS\.(lopCanh|truotLech|moSau|doiNet|tienCanh|chumSang|quetSang|loe|hoanThien|the3d|laoVao|lui|thoatKhung|vatLuot|tranMau)\(/;
+
+/** Hàm của templates/_rieng/phong-cach.js (cần nạp phong-cach.js + phong-cach.css). */
+const PHONG_CACH_FN_RE = /\bRS\.(phongCach|oTruyen|danO|tuongThanh|duongToc|duongTocChay|khungVaCham|dungHinh|moDau)\(/;
+/** Hàm của templates/_rieng/phong-cach-truyen.js. */
+const TRUYEN_FN_RE = /\bRS\.(latTrang|chibi|hacKhi|chopTrang)\(/;
+/** Hàm của templates/_rieng/phong-cach-anh-hung.js. */
+const ANH_HUNG_FN_RE = /\bRS\.(bienHinh|gocThap|tiaNangLuong|phanDien|vo)\(/;
+/** Hàm của templates/_rieng/phong-cach-nhan-vat.js. */
+const PHONG_CACH_NV_FN_RE = /\bRS\.(anhHung|choangBay|dauCamXuc)\(/;
+
+/**
+ * Phong cách hình (config/phong-cach-hinh.ts): kịch bản và composition phải khớp. Phong cách khác "thuong" thì gọi
+ * RS.phongCach(…, "<mã>") đúng mã và nạp bộ phong-cach; "thuong" thì không gắn phong cách truyện.
+ */
+export function phongCachIssues(html: string, phongCachHinh: PhongCachHinh | undefined, product?: string): string[] {
+  const id = phongCachCua(phongCachHinh);
+  const out: string[] = [];
+  const goi = [...html.matchAll(/\bRS\.phongCach\([^,]*,\s*["']([a-z-]+)["']/g)].map((m) => m[1]);
+  if (id === 'thuong') {
+    if (/\bRS\.phongCach\(/.test(html)) out.push('Composition gọi RS.phongCach nhưng kịch bản là phong cách "thuong": ghi concept.phongCachHinh trong script.json cho khớp, hoặc bỏ RS.phongCach.');
+  } else {
+    if (!goi.length) out.push(`Kịch bản chọn phong cách hình "${id}": gọi RS.phongCach(null, "${id}") ở đầu hàm dựng (skill dung-video, references/phong-cach-hinh.md).`);
+    else if (goi.some((g) => g !== id)) out.push(`RS.phongCach gọi "${goi.find((g) => g !== id)}" nhưng kịch bản chọn "${id}": hai bên phải cùng một phong cách.`);
+  }
+  if ((PHONG_CACH_FN_RE.test(html) || id !== 'thuong') && (!html.includes('src="_rieng/phong-cach.js"') || !html.includes('href="_rieng/phong-cach.css"')))
+    out.push('Dùng phong cách hình (RS.phongCach, RS.oTruyen, RS.tuongThanh, RS.moDau…) thì nạp <link rel="stylesheet" href="_rieng/phong-cach.css" /> và <script src="_rieng/phong-cach.js"></script> (sau chieu-sau.js).');
+  if (PHONG_CACH_NV_FN_RE.test(html) && !html.includes('src="_rieng/phong-cach-nhan-vat.js"'))
+    out.push('Dùng phụ kiện/dấu cảm xúc kiểu truyện (RS.anhHung, RS.choangBay, RS.dauCamXuc) thì nạp <script src="_rieng/phong-cach-nhan-vat.js"></script> (sau phong-cach.js).');
+  if (TRUYEN_FN_RE.test(html) && !html.includes('src="_rieng/phong-cach-truyen.js"'))
+    out.push('Dùng thủ pháp trang truyện (RS.latTrang, RS.chibi, RS.hacKhi, RS.chopTrang) thì nạp <script src="_rieng/phong-cach-truyen.js"></script> (sau phong-cach.js).');
+  if (ANH_HUNG_FN_RE.test(html) && !html.includes('src="_rieng/phong-cach-anh-hung.js"'))
+    out.push('Dùng hiệu ứng siêu anh hùng (RS.bienHinh, RS.gocThap, RS.tiaNangLuong, RS.phanDien, RS.vo) thì nạp <script src="_rieng/phong-cach-anh-hung.js"></script> (sau phong-cach-nhan-vat.js).');
+  if (id === 'thuong' && /var\(--font-comic\)|\brs-(tuong-thanh|tieu-de-truyen)\b/.test(html))
+    out.push('Chữ kiểu truyện (Bangers, var(--font-comic), rs-tuong-thanh) chỉ dùng khi phong cách hình là comic, manga hoặc sieu-anh-hung.');
+  // Chữ Bangers: ≤ 3 từ, không chữ số (giá, số liệu luôn Montserrat)
+  for (const m of html.matchAll(/<[a-z]+\b[^>]*\bclass="([^"]*\brs-(?:tuong-thanh|tieu-de-truyen)\b[^"]*)"[^>]*>((?:[^<]|<\/?span\b[^>]*>)*)</g)) {
+    const t = m[2].replace(/<[^>]+>/g, '').trim();
+    if (/\bno\b/.test(m[1]) && !/<span\b/.test(m[2])) out.push(`Chữ tượng thanh nền nổ "${t}" phải viết trong <span> (để chữ nằm trên nền nổ): <div class="rs-tuong-thanh no"><span>${t}</span></div>.`);
+    if (t.split(/\s+/).length > 3 || /\d/.test(t)) out.push(`Chữ kiểu truyện "${t}" phải ≤ 3 từ và không có chữ số (câu, giá, số liệu dùng Montserrat).`);
+  }
+  // Logo ngực siêu anh hùng: ghi thẳng đường dẫn, file có thật, đúng thư mục logo của sản phẩm
+  for (const m of html.matchAll(/\bbieuTuong\s*:\s*([^,}\s]+)/g)) {
+    const lit = /^["']([^"']+)["']$/.exec(m[1]);
+    if (!lit) { out.push('RS.anhHung: ghi thẳng đường dẫn logo vào bieuTuong ("brand/logos/<sản phẩm>/<file>") để máy kiểm được.'); continue; }
+    const src = lit[1];
+    if (product && !src.startsWith(`brand/logos/${product}/`)) out.push(`Logo ngực "${src}" phải là logo của sản phẩm video (brand/logos/${product}/…).`);
+    else if (!existsSync(join(REPO_ROOT, normalize(src)))) out.push(`Logo ngực "${src}" không có trong dự án.`);
+  }
+  return out;
+}
 
 /** Tên bối cảnh vẽ sẵn trong templates/_rieng/boi-canh.js. */
 export function backdropNames(): string[] {
@@ -271,12 +322,15 @@ export function customIssues(dir: string, script: Script, briefBody: string, tot
     if (!cues.length) warn(`${CUE_FILE} chưa có tiếng động nào.`);
   } else if (!manualSfx) warn(`Chưa có tiếng động: khai trong ${CUSTOM_DIR}/${CUE_FILE} (mỗi dòng "giây tên âm-lượng"), đặt ${CUE_MARKER} trong index.html.`);
 
-  // Không tải gì từ mạng; font chỉ Montserrat
+  for (const m of phongCachIssues(html, script.concept?.phongCachHinh, script.product)) err(m);
+
+  // Không tải gì từ mạng; font chỉ Montserrat (Bangers qua var(--font-comic) khi có phong cách hình truyện)
   const remote = html.match(/(?:src|href)\s*=\s*["'](?:https?:)?\/\/[^"']+|url\(\s*["']?(?:https?:)?\/\/[^)]+/gi);
   if (remote) err(`Bản dựng riêng tải tài nguyên từ mạng: ${remote.slice(0, 3).join(', ')}. Chỉ dùng file trong dự án.`);
   for (const f of html.matchAll(/font-family\s*:\s*([^;}"]+)/gi)) {
     const v = f[1].trim();
-    if (!/^(var\(--font-(heading|body)\)|["']?Montserrat["']?(,\s*sans-serif)?)$/i.test(v)) err(`Font "${v}" không đúng brand: chỉ dùng Montserrat (var(--font-body)).`);
+    if (/^var\(--font-comic\)$/i.test(v)) continue; // phạm vi kiểm ở phongCachIssues
+    if (!/^(var\(--font-(heading|body)\)|["']?Montserrat["']?(,\s*sans-serif)?)$/i.test(v)) err(`Font "${v}" không đúng brand: chỉ dùng Montserrat (var(--font-body)); chữ kiểu truyện dùng var(--font-comic).`);
   }
 
   // Hình/clip/tiếng động tham chiếu phải có thật

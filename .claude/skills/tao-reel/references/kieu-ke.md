@@ -9,10 +9,11 @@ Mỗi concept ghi đủ:
 ```
 ### Concept 1 — <tên>
 Kiểu kể: twist
+Phong cách hình: manga
 Câu chuyện: <một dòng: ai, chuyện gì, cú ngắt/lật ở đâu, sản phẩm vào lúc nào>
 Hook: <câu hook ≤ 8 từ>
 ```
-Kịch bản ghi `concept.kieuKe` đúng mã của concept đã chọn. Mục `## Lựa chọn` ghi concept số mấy được chọn và vì sao (validate cảnh báo khi thiếu, hoặc 3 concept không thuộc 3 kiểu kể khác nhau).
+Kịch bản ghi `concept.kieuKe` (và `concept.phongCachHinh`) đúng mã của concept đã chọn. Mục `## Lựa chọn` ghi concept số mấy được chọn và vì sao (validate cảnh báo khi thiếu, hoặc 3 concept không thuộc 3 kiểu kể khác nhau).
 
 ## Bảng nhịp (mọi kiểu kể)
 Sau khi chọn concept, trước `script.json`, viết mục `## Bảng nhịp` trong `concepts.md`:
@@ -119,6 +120,16 @@ Nhại phim ngắn tổng tài: sếp xuất hiện đầy uy lực, câu chốt
 | Khoảnh khắc nghề lặp lại hằng ngày | POV |
 | Tình huống công sở nhiều người (họp, deadline, số liệu lệch giữa phòng ban) | drama văn phòng |
 | Áp lực từ sếp / chủ doanh nghiệp, cần một cú lật ấn tượng | drama tổng tài |
+
+Phong cách hình hay đi cùng (gợi ý, không luật; chỉ video hoạt hình; tránh trùng video gần nhất cùng sản phẩm):
+
+| Kiểu kể | Phong cách hình gợi ý |
+|---|---|
+| Tiểu phẩm "giải cứu quán" | `sieu-anh-hung`, `comic` |
+| Twist (tưởng A hoá ra B) | `manga` (đứng hình ở cú lật), `comic` |
+| Drama văn phòng | `comic` (nhiều người, chia ô) |
+| Drama tổng tài | `manga` |
+| POV, mẹo / số liệu | `thuong`, `comic` |
 
 Ba concept khác kiểu kể không có nghĩa ba câu chuyện khác nhau hoàn toàn: cùng nỗi đau, cùng giải pháp của brief, kể theo ba cách.
 

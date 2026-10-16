@@ -113,8 +113,21 @@ Mọi video dài **15–30 giây**: video ngắn dễ được xem hết, nền 
 
 **Phong cách** (19 kiểu: tối giản, sang trọng, vui nhộn, lễ hội, điện ảnh, bí ẩn…): nói "dùng phong cách vui nhộn". Không nói thì Claude dùng kiểu hợp với loại video. Video theo dịp lễ (8/3, 20/10, Halloween, Tết…) tự chọn kiểu hợp dịp. Xem danh sách dịp: nói "có những dịp lễ nào".
 
+**Kiểu vẽ** (chỉ video hoạt hình). Ngoài kiểu thường còn ba kiểu, mỗi kiểu kể chuyện theo đúng chất của nó chứ không chỉ đổi trang phục:
+
+| Kiểu | Bạn sẽ thấy | Hợp khi |
+|---|---|---|
+| **Truyện tranh** | Video như lật từng trang truyện: mỗi nhịp một ô đập vào theo nhạc, ô lời dẫn vàng, chữ "BÙM!" trên nền nổ, trang cuối lặp lại trang đầu | Chuyện nhiều bước, nhiều người, trước / sau |
+| **Manga** | Đen trắng, chỉ sản phẩm có màu; mắt phóng to, nhân vật hoá "chibi" (đầu to người nhỏ) khi hoảng, khung đứng hình nghiêng ở cú lật; khi có sản phẩm thì thế giới trở lại màu | Cảm xúc phóng đại: sốc, ngượng, drama |
+| **Siêu anh hùng** | Nỗi đau thành "kẻ phản diện"; chủ quán / đội sale biến hình thành người hùng (áo choàng, mặt nạ, logo sản phẩm trên ngực), tung tuyệt chiêu đúng lúc sản phẩm làm việc | Sản phẩm "giải cứu" một tình huống khó |
+
+- Claude **tự chọn** kiểu hợp nội dung và đổi kiểu giữa các video của cùng sản phẩm để không nhàm, báo bạn kiểu đã dùng. Muốn kiểu nào thì nói: "làm kiểu manga", "đổi sang truyện tranh", "làm bản siêu anh hùng".
+- Video người thật không có các kiểu này.
+- Chữ "BÙM!", "ỐI!", "TING!" dùng font truyện tranh; câu chữ chính, giá, lời kêu gọi vẫn font thường của công ty.
+
 ## 6. Nhạc
-- Video có nhạc nền. Thư viện có sẵn 23 bài Mixkit dùng để đăng được, đã được Nam nghe và duyệt. Claude tự chọn bài hợp phong cách. Muốn đổi bài: nói "đổi nhạc khác vui hơn".
+- Video có nhạc nền. Thư viện có sẵn các bài Mixkit dùng để đăng được, đã được Nam nghe và duyệt. **Claude tự chọn bài cho từng video** theo câu chuyện và nhịp hình (bắt tai, có phách rõ cho các cú nhấn), không cố định theo kiểu vẽ.
+- Thấy nhạc chưa hợp: nói "đổi nhạc khác vui hơn" (hoặc "dùng nhạc giống video …"). Claude đổi bài và **giữ nguyên hình**, chỉ dời các cú nhấn cho khớp nhịp bài mới.
 - Bài ghi **"chỉ xem thử"** không đăng được.
 - **Dùng nhạc bạn tự tìm:**
   1. Chỉ lấy từ [Pixabay Music](https://pixabay.com/music/) hoặc [Mixkit](https://mixkit.co/free-stock-music/), bài **không lời**, **bắt tai** (có nhịp ngay mấy giây đầu; reel cần giữ người xem). Không dùng nhạc YouTube, nhạc ca sĩ, nhạc thịnh hành trên TikTok.
@@ -142,6 +155,8 @@ Mọi video dài **15–30 giây**: video ngắn dễ được xem hết, nền 
 | "duyệt", "câu … đổi thành …", "sếp nói to hơn" | Duyệt hoặc sửa bảng thoại video người thật AI trước khi tạo clip |
 | "cảnh 3 đổi chữ thành …", "bỏ cảnh 4", "ngắn lại còn 15 giây" | Sửa kịch bản |
 | "đổi phong cách sang …", "đổi nhạc" | Đổi kiểu hiệu ứng, đổi bài |
+| "làm kiểu truyện tranh / manga / siêu anh hùng" | Đổi kiểu vẽ của video hoạt hình (dựng lại theo đúng chất kiểu đó) |
+| "nhạc chưa hay", "dùng nhạc giống video …" | Đổi bài nhạc, giữ nguyên hình |
 | "sửa khung 3, 5: …" | Sửa đúng các khung trên **bảng khung chính** (ảnh Claude gửi kèm video, mỗi khung một số) |
 | "xem thử" | Mở bản xem thử ở `http://localhost:3002` |
 | "xem thử có vùng an toàn" | Xem thử, tô đỏ vùng chữ không được lấn vào |

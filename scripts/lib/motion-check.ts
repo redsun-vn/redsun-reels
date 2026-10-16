@@ -4,6 +4,7 @@
  * glitch-cut ngoài phong cách công nghệ.
  */
 import type { Script } from '../../config/script.schema.ts';
+import { PHONG_CACH_HINH_IDS, phongCachCua } from '../../config/phong-cach-hinh.ts';
 
 export interface MotionIssue {
   level: 'error' | 'warning';
@@ -84,4 +85,19 @@ export function repetitionIssues(script: Script, recent: Array<{ name: string; s
     }
   }
   return out;
+}
+
+/**
+ * Video dựng riêng minh hoạ: phong cách hình giống video minh hoạ gần nhất CÙNG SẢN PHẨM (7 ngày) là cảnh báo (Nam 2026-10-16),
+ * để các video của một sản phẩm xoay vòng thường / comic / manga / siêu anh hùng. `recent` xếp mới nhất trước, chỉ gồm video
+ * minh hoạ (người thật luôn "thuong", không tính).
+ */
+export function phongCachLapIssues(script: Script, recent: Array<{ name: string; script: Script }>): MotionIssue[] {
+  const prev = recent.find((r) => r.script.product === script.product && r.script.build === 'custom');
+  if (!prev) return [];
+  const id = phongCachCua(script.concept.phongCachHinh);
+  if (phongCachCua(prev.script.concept.phongCachHinh) !== id) return [];
+  const khac = PHONG_CACH_HINH_IDS.filter((x) => x !== id).join(', ');
+  const ten = { sipos: 'SIPOS', bos: 'REDSUN BOS', webino: 'Webino', redsun: 'REDSUN' }[script.product];
+  return [{ level: 'warning', message: `Phong cách hình "${id}" giống video ${ten} gần nhất "${prev.name}". Đổi sang phong cách khác (${khac}) nếu hợp brief (config/phong-cach-hinh.ts).` }];
 }

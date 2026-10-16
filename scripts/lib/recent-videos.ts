@@ -5,6 +5,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { basename, dirname, join } from 'node:path';
 import { ScriptSchema, type Script } from '../../config/script.schema.ts';
+import { readBriefFile } from './brief.ts';
 
 export function recentVideos(briefsRoot: string, opts: { exclude?: string; days?: number; limit?: number } = {}): Array<{ name: string; script: Script; mtime: number }> {
   if (!existsSync(briefsRoot)) return [];
@@ -28,4 +29,19 @@ export function recentVideos(briefsRoot: string, opts: { exclude?: string; days?
 
 export function recentForBrief(briefDir: string): Array<{ name: string; script: Script }> {
   return recentVideos(dirname(briefDir), { exclude: basename(briefDir) });
+}
+
+/** Kiểu hình ghi trong brief.md của một video (brief hỏng hoặc thiếu: undefined). */
+export function kieuHinhOf(dir: string): string | undefined {
+  try {
+    const fm = readBriefFile(dir).frontmatter as { kieuHinh?: unknown } | null;
+    return typeof fm?.kieuHinh === 'string' ? fm.kieuHinh : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/** Video gần đây cùng thư mục briefs có kiểu hình `kieuHinh` (mới nhất trước). */
+export function recentSameKieuHinh(briefDir: string, kieuHinh: string): Array<{ name: string; script: Script }> {
+  return recentForBrief(briefDir).filter((r) => kieuHinhOf(join(dirname(briefDir), r.name)) === kieuHinh);
 }

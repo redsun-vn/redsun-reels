@@ -55,10 +55,11 @@ await runCommand(() => {
       console.log('Chưa có video nào trong 7 ngày qua.');
       return;
     }
-    console.log('VIDEO GẦN ĐÂY (mới nhất trước) — video mới nên KHÁC phong cách / bố cục / kiểu nhấn với các video cùng dịp, cùng sản phẩm:');
+    console.log('VIDEO GẦN ĐÂY (mới nhất trước) — video mới nên KHÁC phong cách / phong cách hình / bố cục / kiểu nhấn với các video cùng dịp, cùng sản phẩm:');
     for (const v of list) {
       const sig = signatureOf(v.script);
-      console.log(`  ${v.name}: ${v.script.product} · ${v.script.videoType} · ${sig.template} · ${sig.style}`);
+      const pc = v.script.build === 'custom' ? ` · phong cách hình ${v.script.concept.phongCachHinh ?? 'thuong'}` : '';
+      console.log(`  ${v.name}: ${v.script.product} · ${v.script.videoType} · ${sig.template} · ${sig.style}${pc}`);
       console.log(`      cảnh (bố cục/hiện chữ/nhấn/hoạt cảnh/chuyển cảnh): ${sig.scenes.join(' | ')}`);
     }
     return;

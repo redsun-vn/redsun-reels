@@ -1,0 +1,144 @@
+/*
+ * Phong cách hình kiểu truyện (phong-cach.js, phong-cach-nhan-vat.js): comic, manga, siêu anh hùng. Nạp sau chieu-sau.css.
+ * RS.phongCach(root, id) gắn lớp pc-<id> lên gốc composition; mọi luật dưới đây chỉ chạy trong lớp đó.
+ * Màu qua --comic-* trong brand.css; màu nhấn vẫn là màu sản phẩm. Chữ kiểu truyện dùng var(--font-comic) (Bangers).
+ */
+
+/* ---------- Nét mực trên nhân vật SVG (chỉ đường viền ngoài, không viền chi tiết mặt) ---------- */
+.pc-comic .rs-person svg :is(.skin, .hair, .shirt, .apron, .non-la),
+.pc-sieu-anh-hung .rs-person svg :is(.skin, .hair, .shirt, .apron, .non-la),
+.pc-manga .rs-person svg :is(.skin, .hair, .shirt, .apron, .non-la) {
+  stroke: var(--comic-ink); stroke-width: 9px; stroke-linejoin: round; paint-order: stroke fill;
+}
+.pc-manga .rs-person svg :is(.skin, .hair, .shirt, .apron, .non-la) { stroke-width: 6px; }
+.pc-comic .rs-person svg .brow, .pc-sieu-anh-hung .rs-person svg .brow { stroke-width: 15px; }
+
+/* ---------- Chất liệu nền: halftone (comic, siêu anh hùng), screentone + đen trắng (manga) ---------- */
+.pc-comic .bc-sau::after, .pc-sieu-anh-hung .bc-sau::after, .pc-manga .bc-sau::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+}
+.pc-comic .bc-sau::after {
+  background-image: radial-gradient(circle, var(--comic-dot) 32%, transparent 34%);
+  background-size: 20px 20px; mix-blend-mode: multiply;
+}
+.pc-sieu-anh-hung .bc-sau::after {
+  background-image: radial-gradient(circle, var(--comic-dot) 26%, transparent 28%);
+  background-size: 16px 16px; mix-blend-mode: multiply; opacity: 0.7;
+}
+.pc-manga .bc-sau::after {
+  background-image: repeating-linear-gradient(-45deg, var(--comic-tone) 0 3px, transparent 3px 9px);
+}
+.pc-comic .bc-sau > *, .pc-sieu-anh-hung .bc-sau > * { filter: saturate(1.35) contrast(1.08); }
+/* Manga: đen trắng, giữ màu cho đạo cụ (màn hình sản phẩm, data-minh-hoa) và phụ kiện = màu nhấn duy nhất */
+/* Lọc ở lớp con (RS.moSau ghi filter lên chính .bc-sau vẫn mờ được); dấu cảm xúc (.pc-dau) và áo choàng giữ màu */
+.pc-manga :is(.bc-sau, .bc-gan) > *, .pc-manga .rs-person > svg > .j-body > :not(.j-head, .pc-cape-g),
+.pc-manga .rs-person .j-head > :not(.pc-dau) { filter: grayscale(1) contrast(1.18); }
+/* Nền thương hiệu (cảnh kết) giữ màu sản phẩm; cảnh ghi lớp pc-mau (thường là cảnh giải pháp) trở lại màu */
+.pc-manga .bc-set-thuong-hieu > *, .pc-manga .pc-mau :is(.bc-sau, .bc-gan) > *,
+.pc-manga .pc-mau .rs-person > svg > .j-body > :not(.j-head, .pc-cape-g), .pc-manga .pc-mau .rs-person .j-head > :not(.pc-dau) { filter: none; }
+
+/* ---------- Bóng thoại kiểu truyện: viền mực, bóng lệch cứng ---------- */
+.pc-comic .rs-bubble, .pc-manga .rs-bubble, .pc-sieu-anh-hung .rs-bubble {
+  border: 7px solid var(--comic-ink); border-radius: 56px; box-shadow: 12px 12px 0 var(--comic-ink);
+}
+.pc-comic .rs-bubble::before, .pc-manga .rs-bubble::before, .pc-sieu-anh-hung .rs-bubble::before {
+  content: ""; position: absolute; bottom: -42px; width: 0; height: 0; border-top: 46px solid var(--comic-ink);
+}
+.pc-comic .rs-bubble.left::before, .pc-manga .rs-bubble.left::before, .pc-sieu-anh-hung .rs-bubble.left::before { left: 48px; border-right: 46px solid transparent; }
+.pc-comic .rs-bubble.right::before, .pc-manga .rs-bubble.right::before, .pc-sieu-anh-hung .rs-bubble.right::before { right: 48px; border-left: 46px solid transparent; }
+.pc-comic .rs-bubble::after, .pc-manga .rs-bubble::after, .pc-sieu-anh-hung .rs-bubble::after { z-index: 1; }
+/* Bóng hét: răng cưa */
+.rs-bubble.het { border-radius: 0; box-shadow: none; border: 0; padding: 70px 80px; background: transparent; color: var(--comic-ink);
+  filter: drop-shadow(10px 10px 0 var(--comic-ink)); }
+.rs-bubble.het::before, :is(.pc-comic, .pc-manga, .pc-sieu-anh-hung) .rs-bubble.het:is(.left, .right, *)::before { content: ""; position: absolute; inset: 0; width: auto; height: auto; border: 0; background: var(--color-white);
+  clip-path: polygon(0 18%, 12% 22%, 8% 0, 26% 14%, 36% 0, 46% 14%, 58% 0, 66% 15%, 80% 2%, 84% 20%, 100% 14%, 92% 34%, 100% 48%, 90% 58%, 100% 76%, 84% 78%, 88% 100%, 70% 86%, 58% 100%, 48% 86%, 34% 100%, 28% 84%, 10% 96%, 14% 76%, 0 70%, 8% 52%, 0 38%, 10% 32%); }
+.rs-bubble.het::after { display: none; }
+
+/* ---------- Ô lời dẫn (hộp vàng góc ô truyện), chữ Montserrat ---------- */
+.rs-loi-dan { position: absolute; padding: 16px 26px; background: var(--comic-caption); color: var(--comic-ink); border: 6px solid var(--comic-ink);
+  box-shadow: 8px 8px 0 var(--comic-ink); font-weight: 900; font-size: var(--type-caption); line-height: 1.3; text-transform: uppercase; white-space: nowrap; }
+
+/* ---------- Chữ tượng thanh (BÙM!, ỐI!) — Bangers, viền mực, bóng lệch ---------- */
+.rs-tuong-thanh { position: absolute; font-family: var(--font-comic); font-weight: 400; font-size: calc(var(--type-hero) * 1.5); line-height: 1.6;
+  letter-spacing: 0.03em; white-space: nowrap; color: var(--color-accent); -webkit-text-stroke: 12px var(--comic-ink); paint-order: stroke fill;
+  text-shadow: 14px 14px 0 var(--comic-ink); transform-origin: 50% 60%; }
+.rs-tuong-thanh.vang { color: var(--comic-caption); }
+.rs-tuong-thanh.trang { color: var(--color-white); }
+.rs-tuong-thanh.do { color: var(--comic-gian); }
+.rs-tuong-thanh.nho { font-size: var(--type-hero); -webkit-text-stroke-width: 9px; text-shadow: 10px 10px 0 var(--comic-ink); }
+/* Tiêu đề kiểu truyện ≤ 3 từ */
+.rs-tieu-de-truyen { position: absolute; font-family: var(--font-comic); font-weight: 400; font-size: var(--type-h1); line-height: 1.6; white-space: nowrap;
+  color: var(--color-white); -webkit-text-stroke: 8px var(--comic-ink); paint-order: stroke fill; text-shadow: 8px 8px 0 var(--comic-ink); }
+
+/* ---------- Trang và ô truyện (RS.oTruyen) ---------- */
+.rs-trang { position: absolute; inset: 0; background: var(--comic-paper); overflow: hidden; }
+.rs-o { position: absolute; inset: 0; pointer-events: none; }
+.rs-o-noi { position: absolute; inset: 0; overflow: hidden; background: var(--color-background); }
+.rs-o-vien { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+.rs-o-vien polygon { fill: none; stroke: var(--comic-ink); stroke-width: 22px; stroke-linejoin: miter; }
+
+/* ---------- Đường tốc độ, khung va chạm, đứng hình, tia ngược sáng ---------- */
+.rs-duong-toc { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; pointer-events: none; }
+.rs-duong-toc path { fill: var(--comic-ink); }
+.rs-duong-toc path { display: none; }
+.rs-duong-toc[data-b="0"] .b0, .rs-duong-toc[data-b="1"] .b1, .rs-duong-toc[data-b="2"] .b2 { display: inline; }
+.rs-duong-toc.trang path { fill: var(--comic-speed); }
+.rs-va-cham { position: absolute; inset: 0; pointer-events: none; backdrop-filter: invert(1) grayscale(1) contrast(2.2); }
+.rs-va-cham .rs-duong-toc path { fill: var(--color-white); }
+.rs-dung-hinh { position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 0 26px var(--comic-ink);
+  background-image: radial-gradient(circle, var(--comic-dot) 34%, transparent 36%); background-size: 14px 14px; mix-blend-mode: multiply; }
+.rs-tia-sang { position: absolute; left: -460px; top: -40px; width: 2000px; height: 2000px; pointer-events: none;
+  background: repeating-conic-gradient(from 0deg at 50% 50%, color-mix(in srgb, var(--color-white) 34%, transparent) 0 7deg, transparent 7deg 18deg);
+  mask-image: radial-gradient(circle at 50% 50%, var(--color-black) 18%, transparent 62%); }
+.rs-p.bui-dat { border-radius: 50%; background: var(--comic-dust); border: 5px solid var(--comic-ink); }
+
+/* ---------- Phụ kiện nhân vật (phong-cach-nhan-vat.js) ---------- */
+.rs-person .pc-cape { fill: var(--pc-cape, var(--color-accent)); stroke: var(--comic-ink); stroke-width: 9px; stroke-linejoin: round; }
+.rs-person .pc-cape-d { fill: color-mix(in srgb, var(--pc-cape, var(--color-accent)) 70%, var(--comic-ink)); }
+.rs-person .pc-mat-na { fill: var(--pc-mask, var(--comic-ink)); fill-rule: evenodd; }
+.rs-person .pc-bieu-tuong { position: absolute; display: flex; align-items: center; justify-content: center; box-sizing: border-box;
+  background: var(--color-white); border: 7px solid var(--comic-ink); border-radius: 18% 18% 50% 50% / 14% 14% 60% 60%; box-shadow: 6px 6px 0 var(--comic-ink); }
+.rs-person .pc-bieu-tuong img { width: 100%; height: 100%; object-fit: contain; }
+.rs-person .pc-dau { display: none; }
+.rs-person .pc-gan { fill: none; stroke: var(--comic-gian); stroke-width: 10px; stroke-linecap: round; }
+.rs-person .pc-giot { fill: var(--comic-giot); stroke: var(--comic-ink); stroke-width: 6px; }
+.rs-person .pc-ma-hong { fill: none; stroke: var(--comic-ma); stroke-width: 7px; stroke-linecap: round; }
+.rs-person .pc-u-am { fill: none; stroke: var(--comic-ink); stroke-width: 6px; stroke-linecap: round; opacity: 0.7; }
+.rs-person .pc-lap-lanh { fill: var(--color-white); stroke: var(--comic-ink); stroke-width: 3px; }
+.rs-person .pc-cham-than { fill: var(--comic-gian); stroke: var(--comic-ink); stroke-width: 6px; }
+
+/* ---------- Siêu anh hùng (phong-cach-anh-hung.js) ---------- */
+.rs-bien-hinh-sang { position: absolute; width: 1200px; height: 1200px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, var(--color-white) 0%, color-mix(in srgb, var(--color-accent) 60%, transparent) 30%, transparent 62%); mix-blend-mode: screen; }
+.rs-tia-nl { position: absolute; pointer-events: none; transform-origin: 0% 50%; border-radius: 999px;
+  background: linear-gradient(180deg, transparent 0%, var(--color-accent) 18%, var(--color-white) 42%, var(--color-white) 58%, var(--color-accent) 82%, transparent 100%);
+  box-shadow: 0 0 40px var(--color-accent), 0 0 90px color-mix(in srgb, var(--color-accent) 60%, transparent); }
+.rs-nl-tu { position: absolute; width: 140px; height: 140px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, var(--color-white) 0%, var(--color-accent) 45%, transparent 70%); mix-blend-mode: screen; }
+.rs-nl-no { position: absolute; width: 320px; height: 320px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, var(--color-white) 0%, var(--comic-sao) 30%, color-mix(in srgb, var(--color-accent) 50%, transparent) 55%, transparent 70%); mix-blend-mode: screen; }
+.rs-phan-dien { position: absolute; pointer-events: none; border-radius: 40%;
+  background: radial-gradient(closest-side, var(--comic-ac) 0%, var(--comic-ac) 45%, var(--comic-ac-2) 75%, transparent 100%); filter: blur(14px); }
+.rs-manh-khung { position: absolute; pointer-events: none; overflow: visible; }
+.rs-manh { position: absolute; left: 0; top: 0; }
+.rs-p.sao { width: 34px; height: 34px; background: var(--comic-sao); clip-path: polygon(50% 0, 61% 38%, 100% 50%, 61% 62%, 50% 100%, 39% 62%, 0 50%, 39% 38%); }
+
+/* ---------- Trang truyện comic / manga (phong-cach-truyen.js) ---------- */
+.rs-bong-trang { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, var(--comic-ink) 0%, transparent 35%); }
+.rs-hac-khi { position: absolute; pointer-events: none; border-radius: 44%;
+  background: radial-gradient(closest-side, var(--comic-ink) 30%, color-mix(in srgb, var(--comic-ink) 70%, transparent) 60%, transparent 100%);
+  -webkit-mask-image: repeating-conic-gradient(var(--color-black) 0 10deg, transparent 10deg 16deg); mask-image: repeating-conic-gradient(var(--color-black) 0 10deg, transparent 10deg 16deg); }
+.rs-chop-trang { position: absolute; inset: 0; pointer-events: none; background: var(--color-white); }
+/* Chữ tượng thanh trên nền nổ hình sao (comic) */
+/* Chữ viết trong <span> (định vị) để nằm trên nền nổ; không dùng z-index âm (HyperFrames check chặn) */
+.rs-tuong-thanh.no { padding: 40px 70px; }
+.rs-tuong-thanh.no > span, .rs-bubble.het > span { position: relative; }
+.rs-tuong-thanh.no::before { content: ""; position: absolute; inset: 0; background: var(--comic-caption); filter: drop-shadow(10px 10px 0 var(--comic-ink));
+  clip-path: polygon(50% 0, 60% 22%, 82% 6%, 78% 32%, 100% 30%, 86% 52%, 100% 72%, 76% 72%, 82% 98%, 60% 80%, 48% 100%, 38% 80%, 14% 96%, 20% 70%, 0 66%, 16% 48%, 2% 26%, 26% 30%, 22% 4%, 42% 22%); }
+.rs-tuong-thanh.no.vang::before { background: var(--color-white); }
+/* Bóng nghĩ hình mây (comic, manga) */
+.rs-bubble.nghi, :is(.pc-comic, .pc-manga, .pc-sieu-anh-hung) .rs-bubble.nghi { border-radius: 60px / 50px; font-style: italic; }
+.rs-bubble.nghi::after, :is(.pc-comic, .pc-manga, .pc-sieu-anh-hung) .rs-bubble.nghi::after { border: 0; width: 40px; height: 40px; border-radius: 50%; background: var(--prop-bubble); bottom: -54px; left: 70px; right: auto; z-index: 1; box-shadow: 0 0 0 7px var(--comic-ink); }
+.rs-bubble.nghi::before, :is(.pc-comic, .pc-manga, .pc-sieu-anh-hung) .rs-bubble.nghi::before { content: ""; border: 0; position: absolute; width: 22px; height: 22px; border-radius: 50%; background: var(--prop-bubble); bottom: -92px; left: 46px; right: auto; box-shadow: 0 0 0 6px var(--comic-ink); }
+/* Bong bóng trôi (nền lấp lánh manga, dùng với RS.drift) */
+.rs-p.bong { border-radius: 50%; background: transparent; box-shadow: inset 0 0 0 5px var(--color-white), 0 0 18px color-mix(in srgb, var(--color-white) 60%, transparent); }

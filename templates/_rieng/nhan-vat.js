@@ -35,6 +35,9 @@
     "giu-nguc": { L: [336, 660, "duoi"], R: XR },            // đặt tay lên ngực (thở phào)
     "an-mung": { L: [110, 150], R: [490, 150] },             // giơ hai tay ăn mừng
     "nam-tay": { L: XL, R: [470, 420] },                     // nắm tay "yes!"
+    "chong-hong": { L: [150, 800], R: [450, 800] },          // hai tay chống hông (siêu anh hùng đứng tấn)
+    "dam": { L: [190, 760, "duoi"], R: [600, 420] },         // tay phải đấm vút lên chéo, tay trái thủ bên hông
+    "bay": { L: XL, R: [470, 120] },                         // vươn một tay lên trời (cất cánh)
   };
 
   var DEG = 180 / Math.PI;

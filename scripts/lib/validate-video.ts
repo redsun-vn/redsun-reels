@@ -18,8 +18,9 @@ import { clipIssues } from './clip-check.ts';
 import { mediaWarnings } from './brief-media.ts';
 import { compositionPath, CUSTOM_DIR, customIssues } from './custom-video.ts';
 import { VOICE } from '../../config/voice.ts';
-import { motionIssues, repetitionIssues } from './motion-check.ts';
-import { recentForBrief } from './recent-videos.ts';
+import { motionIssues, phongCachLapIssues, repetitionIssues } from './motion-check.ts';
+import { KIEU_HINH_PHONG_CACH, PHONG_CACH_HINH } from '../../config/phong-cach-hinh.ts';
+import { recentForBrief, recentSameKieuHinh } from './recent-videos.ts';
 import { getOccasion, OCCASIONS } from '../../config/occasions.ts';
 import { ScriptSchema, type Script } from '../../config/script.schema.ts';
 import { GIAI_PHAP_MIN, GIAI_PHAP_MIN_CU, GIAI_PHAP_TRUOC, GIAI_PHAP_TRUOC_CU, KIEU_KE, KIEU_KE_IDS } from '../../config/kieu-ke.ts';
@@ -247,6 +248,18 @@ export function validateVideo(dir: string, opts: { musicPurpose: MusicPurpose; v
     // Dựng riêng: bố cục/chuyển động do composition quyết định; kiểm composition (cấu trúc, nhạc, chống bịa chữ)
     const totalSec = script.scenes.reduce((sum, s) => sum + s.durationSec, 0);
     issues.push(...customIssues(dir, script, briefBody, Math.round(totalSec * 1000) / 1000, opts.voiceDraft));
+    // Phong cách hình (config/phong-cach-hinh.ts): chỉ video hoạt hình; Claude chọn; xoay vòng theo sản phẩm
+    const pch = script.concept.phongCachHinh;
+    if (pch && pch !== 'thuong' && !KIEU_HINH_PHONG_CACH.includes(brief.kieuHinh))
+      issues.push(err(`Phong cách hình "${PHONG_CACH_HINH[pch].ten}" chỉ dùng cho video hoạt hình (kiểu hình minh-hoa). Video người thật để "thuong".`));
+    const mau = pch && pch !== 'thuong' && script.selfScore ? new RegExp(`Mẫu ${pch} (\\d)/${PHONG_CACH_HINH[pch].mauNhip.length}`).exec(script.selfScore.notes ?? '') : null;
+    if (mau && Number(mau[1]) < PHONG_CACH_HINH[pch!].mauNhip.length - 1)
+      issues.push(warn(`Kịch bản chỉ đạt ${mau[1]}/${PHONG_CACH_HINH[pch!].mauNhip.length} nhịp mẫu "${PHONG_CACH_HINH[pch!].ten}" (cần ≥ ${PHONG_CACH_HINH[pch!].mauNhip.length - 1}): viết lại cho đủ nhịp trước khi dựng, không thì video chỉ đổi trang phục.`));
+    if (pch && pch !== 'thuong' && script.selfScore && !mau)
+      issues.push(warn(`Tự chấm chưa đối chiếu mẫu nhịp "${PHONG_CACH_HINH[pch].ten}": ghi "Mẫu ${pch} N/${PHONG_CACH_HINH[pch].mauNhip.length} (…)" trong selfScore.notes (tao-reel/references/script-format.md mục "Tự chấm"). Thiếu nhịp mẫu thì video chỉ đổi trang phục, chưa đậm chất phong cách.`));
+    if (!pch && KIEU_HINH_PHONG_CACH.includes(brief.kieuHinh))
+      issues.push(warn('Kịch bản chưa ghi concept.phongCachHinh (thuong, comic, manga, sieu-anh-hung): Claude chọn theo brief ở bước concept (skill tao-reel); bỏ trống coi như "thuong".'));
+    if (KIEU_HINH_PHONG_CACH.includes(brief.kieuHinh)) issues.push(...phongCachLapIssues(script, recentSameKieuHinh(dir, brief.kieuHinh)));
   } else {
     issues.push(...motionIssues(script));
     issues.push(...repetitionIssues(script, recentForBrief(dir)));

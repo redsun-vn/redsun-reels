@@ -18,7 +18,7 @@
    */
   RS.ready = function (build) {
     var tl = gsap.timeline({ paused: true });
-    document.fonts.load("900 100px Montserrat").then(function () { return document.fonts.ready; }).then(function () { build(tl); kiemVungAnToan(tl); });
+    Promise.all([document.fonts.load("900 100px Montserrat"), document.fonts.load("400 100px Bangers").catch(function () {})]).then(function () { return document.fonts.ready; }).then(function () { build(tl); kiemVungAnToan(tl); });
   };
 
   /*
@@ -44,7 +44,7 @@
       if (!busy) {
         busy = [];
         tl.getChildren(true, true, false).forEach(function (tw) {
-          var s = tw.startTime(), e = s + tw.totalDuration();
+          var s = tw.startTime(), e = tw.endTime(); // endTime tính cả timeScale (RS.doiNhip)
           (tw.targets() || []).forEach(function (x) { if (x && x.nodeType === 1) busy.push([x, s, e]); });
         });
       }
@@ -78,6 +78,28 @@
       });
     });
   }
+
+  /**
+   * Đổi nhịp cả timeline theo mốc [[giây cũ, giây mới], …] (tăng dần): khi đổi bài nhạc, giữ nguyên bản dựng và dời mọi chuyển
+   * động để các mốc rơi đúng phách bài mới (nội suy tuyến tính giữa hai mốc, ngoài mốc thì dời đều). Gọi cuối hàm dựng, trước
+   * window.__timelines. data-start / data-duration của cảnh và tieng-dong.txt dời theo cùng mốc. Trả hàm đổi giây cũ → mới.
+   */
+  RS.doiNhip = function (tl, moc) {
+    var M = function (t) {
+      if (t <= moc[0][0]) return t - moc[0][0] + moc[0][1];
+      for (var i = 1; i < moc.length; i++) {
+        if (t <= moc[i][0]) { var a = moc[i - 1], b = moc[i]; return a[1] + ((t - a[0]) * (b[1] - a[1])) / (b[0] - a[0]); }
+      }
+      var z = moc[moc.length - 1];
+      return t - z[0] + z[1];
+    };
+    tl.getChildren(false, true, true).forEach(function (k) {
+      var s = k.startTime(), span = k.totalDuration() / k.timeScale(), ns = M(s), ne = M(s + span);
+      k.startTime(ns);
+      if (span > 0 && ne > ns) k.timeScale(span / (ne - ns));
+    });
+    return M;
+  };
 
   /** Phóng cỡ chữ cho dòng chữ vừa `width` px (tối đa `max`, tối thiểu `min`). Phần tử nên có white-space: nowrap. */
   RS.fit = function (el, width, max, min) {

@@ -56,7 +56,7 @@ Kiểm kê skill đã cài (danh sách skill của runtime + `.claude/skills/` +
 
 ## Brand
 - Chỉ dùng biến CSS trong `brand/brand.css`, tuân thủ `brand/frame.md`.
-- Font Montserrat (local, `brand/fonts/`).
+- Font Montserrat (local, `brand/fonts/`). Bangers (`var(--font-comic)`) chỉ cho chữ tượng thanh/tiêu đề kiểu truyện ≤ 3 từ trong video có phong cách hình comic/manga/siêu anh hùng (`docs/decisions.md` §43).
 - Màu lấy từ logo; logo dùng file có sẵn trong `brand/logos/`.
 - Viết đúng tên: SIPOS, REDSUN BOS, Webino, REDSUN. Redsun BOS không gọi là "ERP".
 - Kiểm: `./reel lint:brand`.

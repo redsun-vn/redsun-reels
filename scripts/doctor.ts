@@ -45,7 +45,7 @@ add({
   fix: 'Chạy lại "corepack pnpm install --frozen-lockfile" (ffmpeg-static tải binary lúc cài).',
 });
 
-for (const f of ['montserrat-variable.ttf', 'montserrat-italic-variable.ttf']) {
+for (const f of ['montserrat-variable.ttf', 'montserrat-italic-variable.ttf', 'bangers-regular.ttf']) {
   add({ name: `Font ${f}`, ok: existsSync(join(REPO_ROOT, 'brand', 'fonts', f)), detail: `brand/fonts/${f}` });
 }
 add({ name: 'GSAP local', ok: existsSync(join(REPO_ROOT, 'runtime', 'gsap', 'gsap.min.js')), detail: 'runtime/gsap/gsap.min.js' });

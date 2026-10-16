@@ -1,3 +1,7 @@
 Montserrat (SIL Open Font License 1.1)
 Nguồn: https://github.com/google/fonts/tree/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/montserrat
 montserrat-variable.ttf = Montserrat[wght].ttf, montserrat-italic-variable.ttf = Montserrat-Italic[wght].ttf (đổi tên để dùng trong CSS)
+
+Bangers (SIL Open Font License 1.1, giấy phép: bangers-OFL.txt)
+Nguồn: https://github.com/google/fonts/tree/c13390277dfb1fcc7415d84ef7ef9cfc1e52f8c1/ofl/bangers
+bangers-regular.ttf = Bangers-Regular.ttf (đổi tên). Đủ dấu tiếng Việt (kiểm bằng ảnh chụp 2026-10-16). Chỉ cho chữ kiểu truyện tranh (docs/decisions.md §43).

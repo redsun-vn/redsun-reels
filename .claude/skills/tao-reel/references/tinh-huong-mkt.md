@@ -19,6 +19,7 @@ Nói với MKT bằng lời thường. Không nhắc tên lệnh, file JSON, log
 | Brief thiếu nỗi đau cụ thể / tính năng giải quyết / hook đủ mạnh, hoặc ghi "cần team xác nhận" | Hỏi MKT một lần (≤ 5 câu, có lựa chọn) theo mục "Brief đủ chưa" của `SKILL.md`; MKT chọn "làm luôn bản tạm" thì ghi phần thiếu vào `review.md` mục `## Cần team xác nhận` |
 | "chọn ý N" | Ghi lựa chọn vào cuối `concepts.md`, viết `script.json`, `./reel validate <tên>` |
 | "cảnh N đổi chữ…", "bỏ cảnh…", "ngắn lại…" | Sửa `script.json`; tính lại thời lượng bằng `./reel info thoi-luong "<chữ>"`; `./reel validate` |
+| "làm kiểu truyện tranh / manga / siêu anh hùng", "đổi phong cách hình", "đừng vẽ kiểu cũ nữa" | Video hoạt hình: đổi `concept.phongCachHinh` (comic / manga / sieu-anh-hung / thuong), dựng lại theo `dung-video/references/phong-cach-hinh.md`, không hỏi thêm. Video người thật: nói phong cách truyện chỉ có ở video hoạt hình, hỏi có muốn đổi sang hoạt hình không |
 | "đổi phong cách sang …" | Sửa `style` ở cả brief và kịch bản; đổi nhạc nếu bài cũ không hợp mood (`./reel info nhac <phong-cách>`) |
 | "đổi nhạc", "nhạc vui hơn" | `./reel info nhac <phong-cách>`, chọn bài "đăng được" dài hơn video, sửa `music` ở kịch bản (và brief nếu brief không để `auto`) |
 | "xem thử" / "xem thử có vùng an toàn" | `./reel preview <tên>` / thêm `--safe-zone`. Mở `http://localhost:3002` |

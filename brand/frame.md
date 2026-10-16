@@ -77,7 +77,8 @@ Video ngắn dọc cho 3 sản phẩm (SIPOS, Redsun BOS, Webino) và thương h
 - Mỗi sản phẩm có bộ màu riêng (`[data-product]` trong `brand.css`). Nền thường là màu chính hoặc màu chữ logo; chữ trắng trên nền đậm.
 
 ## Typography
-- **Chỉ Montserrat** (variable 100–900, có italic), file local ở `brand/fonts/`. Không thêm font thứ hai cho mọi phong cách, kể cả `thu-cong`.
+- **Montserrat** (variable 100–900, có italic) cho mọi chữ, file local ở `brand/fonts/`. Không thêm font cho phong cách chuyển động, kể cả `thu-cong`.
+- **Bangers** (`var(--font-comic)`, local) là font thứ hai duy nhất: chỉ cho chữ tượng thanh ("BÙM!") và tiêu đề kiểu truyện ≤ 3 từ, chỉ trong video có phong cách hình `comic`, `manga`, `sieu-anh-hung` (docs/decisions.md §43). Câu kịch bản, phụ đề, CTA vẫn Montserrat. Khoảng cách dòng Bangers ≥ 1.6 (dấu chồng cao).
 - Khoảng cách dòng tối thiểu 1.25 cho tiêu đề, 1.45 cho chữ thường (dấu chồng tiếng Việt cần chỗ).
 - Chữ dài tự co cỡ theo thang hero → h1 → h2 → h3 → body để không tràn vùng (hook tối đa 3 dòng, chữ cảnh 4 dòng).
 - Hook dùng `hero` 800; chữ cảnh dùng `h1`/`h2` 700; dòng phụ dùng `body` 500. Chữ số viết bằng số (30%, 199.000đ).
@@ -96,7 +97,7 @@ Video ngắn dọc cho 3 sản phẩm (SIPOS, Redsun BOS, Webino) và thương h
 
 ## Don'ts
 - Không gradient cầu vồng. Gradient chỉ xuất hiện bên trong file logo (Webino, Redsun BOS), không dùng gradient đó cho nền hay chữ.
-- Không quá 2 font (thực tế: 1 font).
+- Không quá 2 font (Montserrat; Bangers chỉ trong phạm vi ở mục Typography).
 - Không chữ chạy chéo.
 - Không vẽ lại hay đổi màu logo.
 - Không nhấp nháy mạnh hơn 3 lần/giây (glitch, hành động).

@@ -196,7 +196,7 @@ redsun-reels/
 ### 5.1 `brand/frame.md`
 Nguồn sự thật duy nhất cho định hướng thị giác, viết theo chuẩn `frame.md` của HyperFrames (đọc skill `/hyperframes:hyperframes-creative`). Nội dung bắt buộc:
 - **Bảng màu**: primary, secondary, accent, background, text, textInverse. Tách "màu logo" khỏi "màu nền". Giá trị theo mục 5.3.
-- **Typography: Montserrat** cho mọi thương hiệu (Google Fonts, SIL OFL, đủ dấu tiếng Việt, đã kiểm ở Spike S2). Thang cỡ chữ cho canvas 1080×1920. Font file nằm ở `brand/fonts/`, không tải từ Google Fonts lúc render.
+- **Typography: Montserrat** cho mọi thương hiệu (Google Fonts, SIL OFL, đủ dấu tiếng Việt, đã kiểm ở Spike S2). Thang cỡ chữ cho canvas 1080×1920. Font file nằm ở `brand/fonts/`, không tải từ Google Fonts lúc render. Thêm Bangers (OFL, đủ dấu) chỉ cho chữ kiểu truyện tranh khi video có phong cách hình comic/manga/siêu anh hùng (`docs/decisions.md` §43).
 - Quy tắc chuyển động: tốc độ vào/ra, easing, mức "năng lượng". Mỗi phong cách (mục 7.3) là một biến thể của quy tắc này.
 - Quy tắc bố cục: lưới, lề, safe zone (5.4).
 - Những điều cấm: gradient cầu vồng, quá 2 font, text chạy chéo.
@@ -578,7 +578,7 @@ Ràng buộc skill:
   - **Chế độ Dev** (khi người dùng nói rõ "chế độ dev"): được sửa template, preset phong cách, config; dùng đầy đủ skill HyperFrames (tên có namespace `/hyperframes:…`).
 - Quy tắc kiểm kê skill có sẵn trước khi tạo skill mới (mục 0).
 - Rule kịch bản ở mục 6.2. Giọng đọc AI chỉ cho video dựng riêng (mục 8.5).
-- Rule brand: chỉ dùng biến trong `brand.css`, tuân thủ `frame.md`, font Montserrat.
+- Rule brand: chỉ dùng biến trong `brand.css`, tuân thủ `frame.md`, font Montserrat (Bangers chỉ cho chữ kiểu truyện tranh, §43).
 - Rule nhạc: chỉ track trong `brand/music/manifest.json` (mục 8).
 - Rule tiếng Việt: NFC, `lang="vi"`, viết đúng tên sản phẩm.
 - Version HyperFrames đã pin + cấm tự nâng.

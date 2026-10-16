@@ -6,7 +6,7 @@ Schema chuẩn: `config/script.schema.ts`. `./reel validate <tên-video>` kiểm
 
 | Trường | Ý nghĩa |
 |---|---|
-| `concept` | `{ title, bigIdea, hookAngle, diemHapDan: { ungVien, diem } }`. `noiDau: { khach, canh }`, `thongDiep` (một câu thông điệp xuyên suốt; thiếu thì validate cảnh báo). `giaiPhap: { cach, canh }` **bắt buộc** (LUẬT SỐ 2, trừ loại video miễn): nỗi đau cụ thể của khách + cảnh hook/problem làm nó nổi bật; sản phẩm giải quyết thế nào + cảnh solution cho thấy. `diemHapDan` **bắt buộc** (LUẬT SỐ 1): ứng viên mạnh nhất chọn từ brief và điểm 5 tiêu chí (≥ 20/25), khớp bảng `## Điểm hấp dẫn` của `concepts.md`. `kieuKe` (kiểu kể của concept MKT chọn): `tieu-pham`, `pov`, `twist`, `meo-so-lieu` (references/kieu-ke.md); có kiểu kể thì giải pháp ≥ 12% video, bắt đầu trước 85%. `hookAngle` là một trong: `con-so`, `lat-nguoc`, `truoc-sau`, `thuong-hieu`, `sap-thay-doi`, `cau-hoi-noi-dau`, `quote` |
+| `concept` | `{ title, bigIdea, hookAngle, diemHapDan: { ungVien, diem } }`. `noiDau: { khach, canh }`, `thongDiep` (một câu thông điệp xuyên suốt; thiếu thì validate cảnh báo). `giaiPhap: { cach, canh }` **bắt buộc** (LUẬT SỐ 2, trừ loại video miễn): nỗi đau cụ thể của khách + cảnh hook/problem làm nó nổi bật; sản phẩm giải quyết thế nào + cảnh solution cho thấy. `diemHapDan` **bắt buộc** (LUẬT SỐ 1): ứng viên mạnh nhất chọn từ brief và điểm 5 tiêu chí (≥ 20/25), khớp bảng `## Điểm hấp dẫn` của `concepts.md`. `kieuKe` (kiểu kể của concept MKT chọn): `tieu-pham`, `pov`, `twist`, `meo-so-lieu` (references/kieu-ke.md); có kiểu kể thì giải pháp ≥ 12% video, bắt đầu trước 85%. `phongCachHinh` (phong cách hình Claude tự chọn theo brief, `config/phong-cach-hinh.ts`): `thuong`, `comic`, `manga`, `sieu-anh-hung`; chỉ video `minh-hoa` được khác `thuong`; thiếu = `thuong` (validate cảnh báo ở video dựng riêng minh hoạ). `hookAngle` là một trong: `con-so`, `lat-nguoc`, `truoc-sau`, `thuong-hieu`, `sap-thay-doi`, `cau-hoi-noi-dau`, `quote` |
 | `videoType` | id loại video (`./reel info`) |
 | `style` | id phong cách đã dựng được (`./reel info`) |
 | `template` | Template của loại video (`./reel info <loại>`); với dựng riêng chỉ để quy định thứ tự cảnh gợi ý |
@@ -86,6 +86,12 @@ Tổng thời lượng phải đạt cả hai điều kiện:
 | Đọc kịp | 10 | Mọi cảnh đạt công thức thời lượng; chữ ngắn, một ý mỗi cảnh |
 | Đúng brand, đúng sự thật | 15 | Không con số, giá, ưu đãi ngoài brief; đúng tên sản phẩm; BOS không gọi "ERP" |
 | CTA | 10 | Rõ việc cần làm; khớp CTA của brief |
+
+**Phong cách hình khác `thuong`: chấm theo mẫu nhịp của thể loại** (Nam 2026-10-16: "chỉ thay nhân vật là không đủ"). Mẫu nằm ở `config/phong-cach-hinh.ts` (`mauNhip`, 6 nhịp mỗi phong cách) và `dung-video/references/phong-cach-hinh.md` mục 5. Cách chấm:
+1. Trong `## Bảng nhịp` của `concepts.md`, mỗi dòng ghi nhịp mẫu nó đảm nhận (vd. `· mẫu 3 biến hình`).
+2. Đếm số nhịp mẫu có trong kịch bản. Thiếu mỗi nhịp **trừ 3 điểm "Hấp dẫn"**; dưới 5/6 nhịp thì viết lại, không đưa đi dựng. Nhịp chỉ có ở trang phục (nhân vật mặc đồ mà câu chuyện không đổi) không được tính.
+3. **Nhạc do Claude chọn cho từng video**, không theo bảng cố định của phong cách (Nam 2026-10-16): nghe hợp câu chuyện và nhịp dựng — bắt tai ngay 3 giây đầu, phách rõ để ô đập / cú nhấn / biến hình rơi đúng phách, cảm xúc hợp bảng nhịp (hài thì vui nảy, hành động thì dồn dập), khác bài video gần nhất cùng sản phẩm. Ghi lý do chọn một câu trong `notes`. Nhạc nhạt, lệch cảm xúc của bảng nhịp trừ 2 điểm "Hấp dẫn" (vd. manga hài dùng nhạc bí ẩn chậm: Nam chê bản Tapis). Đổi nhạc sau khi đã dựng: `RS.doiNhip` (dung-video/references/phong-cach-hinh.md mục 5b).
+4. Ghi vào `notes`: `"Mẫu sieu-anh-hung 6/6 (hiểm hoạ c0, xuất hiện c0, biến hình c4, tuyệt chiêu c0+c4, hạ phản diện c0, chiến thắng c5)."` — validate cảnh báo khi thiếu dòng `Mẫu <phong cách> N/6`.
 
 Điểm "Hấp dẫn" là **bước lọc** trước khi đưa MKT, không thay phép thử thật: so mù bản cũ/mới và số liệu sau đăng (tab "Số liệu video" của Google Sheet chung, `docs/huong-dan-mkt.md`).
 
